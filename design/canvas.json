@@ -1,0 +1,9 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "title": "홈 (데스크톱)", "x": 0, "y": 0, "w": 1440, "h": 1640 },
+    { "file": "Projects.dc.html", "title": "프로젝트", "x": 1540, "y": 0, "w": 1440, "h": 1480 },
+    { "file": "StudyLog.dc.html", "title": "스터디 기록", "x": 3080, "y": 0, "w": 1440, "h": 1760 },
+    { "file": "Seminars.dc.html", "title": "세미나 기록", "x": 4620, "y": 0, "w": 1440, "h": 2620 }
+  ],
+  "launch": { "view": "focused", "file": "Main.dc.html" }
+}

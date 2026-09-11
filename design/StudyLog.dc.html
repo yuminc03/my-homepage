@@ -1,0 +1,204 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;800;900&display=swap">
+<style>
+  *{box-sizing:border-box;}
+  body,html{margin:0;padding:0;}
+  .site{font-family:'Noto Sans KR',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;}
+  a{color:oklch(62% 0.19 262);text-decoration:none;transition:color .15s ease;}
+  a:hover{color:oklch(52% 0.19 262);}
+  .menuitem{color:oklch(82% 0.01 260);transition:color .15s ease;}
+  .menuitem:hover{color:oklch(97% 0.004 260);}
+  .row{transition:border-color .2s ease;}
+  .row:hover{border-color:oklch(70% 0.12 262);}
+</style>
+</helmet>
+
+<div class="site" style="width:1440px;min-height:1760px;background:oklch(15% 0.012 260);position:relative;overflow:hidden;">
+
+  <div style="position:absolute;top:-240px;left:-180px;width:760px;height:760px;border-radius:50%;background:oklch(55% 0.2 262);filter:blur(160px);opacity:0.3;"></div>
+  <div style="position:absolute;top:520px;right:-240px;width:680px;height:680px;border-radius:50%;background:oklch(45% 0.18 305);filter:blur(180px);opacity:0.26;"></div>
+
+  <!-- MENU BAR -->
+  <div style="position:sticky;top:0;z-index:80;display:flex;align-items:center;justify-content:space-between;height:36px;padding:0 18px;background:oklch(100% 0 0 / 0.10);backdrop-filter:blur(28px) saturate(180%);-webkit-backdrop-filter:blur(28px) saturate(180%);border-bottom:1px solid oklch(100% 0 0 / 0.12);box-shadow:inset 0 1px 0 oklch(100% 0 0 / 0.18), 0 8px 32px oklch(10% 0.02 265 / 0.35);">
+    <div style="display:flex;align-items:center;gap:22px;">
+      <div style="display:flex;align-items:center;gap:9px;">
+        <div style="width:19px;height:19px;border-radius:6px;background:linear-gradient(140deg, oklch(66% 0.18 262), oklch(52% 0.17 300));display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:800;color:oklch(99% 0 0);letter-spacing:-0.02em;">CY</div>
+        <span style="font-size:13px;font-weight:700;color:oklch(97% 0.004 260);">Chu Yumin</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <span class="menuitem" style="font-size:12.5px;padding:4px 10px;border-radius:7px;">홈</span>
+        <span class="menuitem" style="font-size:12.5px;padding:4px 10px;border-radius:7px;">프로젝트</span>
+        <span class="menuitem" style="font-size:12.5px;font-weight:600;color:oklch(97% 0.004 260);padding:4px 10px;border-radius:7px;background:oklch(100% 0 0 / 0.14);">스터디 기록</span>
+        <span class="menuitem" style="font-size:12.5px;padding:4px 10px;border-radius:7px;">세미나 기록</span>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:16px;">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="oklch(88% 0.01 260)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg>
+      <span style="font-size:12.5px;font-weight:500;color:oklch(88% 0.01 260);">11:52</span>
+    </div>
+  </div>
+
+  <!-- STUDY LOG WINDOW -->
+  <div style="position:relative;z-index:2;padding:56px 0 0 0;">
+    <div style="width:1240px;margin:0 auto;border-radius:16px;overflow:hidden;background:oklch(98% 0.004 260);border:1px solid oklch(100% 0 0 / 0.12);box-shadow:0 44px 96px oklch(6% 0.02 265 / 0.55);">
+      <div style="position:relative;display:flex;align-items:center;justify-content:center;height:44px;background:oklch(94% 0.004 260);border-bottom:1px solid oklch(89% 0.005 260);">
+        <div style="position:absolute;left:16px;display:flex;gap:8px;">
+          <div style="width:11px;height:11px;border-radius:50%;background:oklch(70% 0.07 262);"></div>
+          <div style="width:11px;height:11px;border-radius:50%;background:oklch(80% 0.045 262);"></div>
+          <div style="width:11px;height:11px;border-radius:50%;background:oklch(88% 0.025 262);"></div>
+        </div>
+        <span style="font-size:13px;font-weight:600;color:oklch(42% 0.01 260);">Study Log</span>
+      </div>
+
+      <div style="padding:48px;">
+        <h1 style="margin:0 0 14px 0;font-size:44px;line-height:1.2;font-weight:900;letter-spacing:-0.02em;color:oklch(18% 0.01 260);">Study Log</h1>
+        <p style="margin:0 0 36px 0;font-size:17px;font-weight:300;color:oklch(46% 0.01 260);">공부하고 정리한 내용을 기록합니다.</p>
+
+        <div style="display:flex;gap:10px;margin-bottom:40px;">
+          <span style="font-size:14px;font-weight:600;padding:9px 20px;border-radius:999px;background:oklch(20% 0.01 260);color:oklch(98% 0.004 260);">전체</span>
+          <span style="font-size:14px;font-weight:500;padding:9px 20px;border-radius:999px;background:oklch(98% 0.004 260);border:1px solid oklch(88% 0.005 260);color:oklch(40% 0.01 260);">[카테고리 1]</span>
+          <span style="font-size:14px;font-weight:500;padding:9px 20px;border-radius:999px;background:oklch(98% 0.004 260);border:1px solid oklch(88% 0.005 260);color:oklch(40% 0.01 260);">[카테고리 2]</span>
+          <span style="font-size:14px;font-weight:500;padding:9px 20px;border-radius:999px;background:oklch(98% 0.004 260);border:1px solid oklch(88% 0.005 260);color:oklch(40% 0.01 260);">[카테고리 3]</span>
+          <span style="font-size:14px;font-weight:500;padding:9px 20px;border-radius:999px;background:oklch(98% 0.004 260);border:1px solid oklch(88% 0.005 260);color:oklch(40% 0.01 260);">회고</span>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:20px;">
+
+          <div class="row" style="display:flex;align-items:flex-start;justify-content:space-between;gap:40px;padding:28px 32px;border-radius:18px;background:oklch(96% 0.005 260);border:1px solid oklch(91% 0.005 260);">
+            <div style="display:flex;flex-direction:column;gap:10px;flex-grow:1;">
+              <span style="align-self:flex-start;font-size:12.5px;font-weight:700;padding:5px 12px;border-radius:999px;background:oklch(94% 0.03 262);color:oklch(45% 0.15 262);">[카테고리]</span>
+              <div style="font-size:19px;font-weight:700;color:oklch(18% 0.01 260);">[포스트 제목을 입력하세요]</div>
+              <div style="font-size:14.5px;line-height:1.65;color:oklch(48% 0.01 260);max-width:800px;">[포스트 요약 내용이 두 줄 정도 들어갑니다. 무엇을 공부했고 어떤 점이 핵심이었는지 짧게 적어두면 나중에 다시 찾기 좋습니다.]</div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;white-space:nowrap;">
+              <span style="font-size:14px;color:oklch(50% 0.01 260);">[YYYY.MM.DD]</span>
+              <span style="font-size:13px;color:oklch(62% 0.01 260);">[N분 소요]</span>
+            </div>
+          </div>
+
+          <div class="row" style="display:flex;align-items:flex-start;justify-content:space-between;gap:40px;padding:28px 32px;border-radius:18px;background:oklch(96% 0.005 260);border:1px solid oklch(91% 0.005 260);">
+            <div style="display:flex;flex-direction:column;gap:10px;flex-grow:1;">
+              <span style="align-self:flex-start;font-size:12.5px;font-weight:700;padding:5px 12px;border-radius:999px;background:oklch(94% 0.03 262);color:oklch(45% 0.15 262);">[카테고리]</span>
+              <div style="font-size:19px;font-weight:700;color:oklch(18% 0.01 260);">[포스트 제목을 입력하세요]</div>
+              <div style="font-size:14.5px;line-height:1.65;color:oklch(48% 0.01 260);max-width:800px;">[포스트 요약 내용이 두 줄 정도 들어갑니다. 무엇을 공부했고 어떤 점이 핵심이었는지 짧게 적어두면 나중에 다시 찾기 좋습니다.]</div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;white-space:nowrap;">
+              <span style="font-size:14px;color:oklch(50% 0.01 260);">[YYYY.MM.DD]</span>
+              <span style="font-size:13px;color:oklch(62% 0.01 260);">[N분 소요]</span>
+            </div>
+          </div>
+
+          <div class="row" style="display:flex;align-items:flex-start;justify-content:space-between;gap:40px;padding:28px 32px;border-radius:18px;background:oklch(96% 0.005 260);border:1px solid oklch(91% 0.005 260);">
+            <div style="display:flex;flex-direction:column;gap:10px;flex-grow:1;">
+              <span style="align-self:flex-start;font-size:12.5px;font-weight:700;padding:5px 12px;border-radius:999px;background:oklch(94% 0.03 262);color:oklch(45% 0.15 262);">[카테고리]</span>
+              <div style="font-size:19px;font-weight:700;color:oklch(18% 0.01 260);">[포스트 제목을 입력하세요]</div>
+              <div style="font-size:14.5px;line-height:1.65;color:oklch(48% 0.01 260);max-width:800px;">[포스트 요약 내용이 두 줄 정도 들어갑니다. 무엇을 공부했고 어떤 점이 핵심이었는지 짧게 적어두면 나중에 다시 찾기 좋습니다.]</div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;white-space:nowrap;">
+              <span style="font-size:14px;color:oklch(50% 0.01 260);">[YYYY.MM.DD]</span>
+              <span style="font-size:13px;color:oklch(62% 0.01 260);">[N분 소요]</span>
+            </div>
+          </div>
+
+          <div class="row" style="display:flex;align-items:flex-start;justify-content:space-between;gap:40px;padding:28px 32px;border-radius:18px;background:oklch(96% 0.005 260);border:1px solid oklch(91% 0.005 260);">
+            <div style="display:flex;flex-direction:column;gap:10px;flex-grow:1;">
+              <span style="align-self:flex-start;font-size:12.5px;font-weight:700;padding:5px 12px;border-radius:999px;background:oklch(94% 0.03 262);color:oklch(45% 0.15 262);">[카테고리]</span>
+              <div style="font-size:19px;font-weight:700;color:oklch(18% 0.01 260);">[포스트 제목을 입력하세요]</div>
+              <div style="font-size:14.5px;line-height:1.65;color:oklch(48% 0.01 260);max-width:800px;">[포스트 요약 내용이 두 줄 정도 들어갑니다. 무엇을 공부했고 어떤 점이 핵심이었는지 짧게 적어두면 나중에 다시 찾기 좋습니다.]</div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;white-space:nowrap;">
+              <span style="font-size:14px;color:oklch(50% 0.01 260);">[YYYY.MM.DD]</span>
+              <span style="font-size:13px;color:oklch(62% 0.01 260);">[N분 소요]</span>
+            </div>
+          </div>
+
+          <div class="row" style="display:flex;align-items:flex-start;justify-content:space-between;gap:40px;padding:28px 32px;border-radius:18px;background:oklch(96% 0.005 260);border:1px solid oklch(91% 0.005 260);">
+            <div style="display:flex;flex-direction:column;gap:10px;flex-grow:1;">
+              <span style="align-self:flex-start;font-size:12.5px;font-weight:700;padding:5px 12px;border-radius:999px;background:oklch(94% 0.03 262);color:oklch(45% 0.15 262);">[카테고리]</span>
+              <div style="font-size:19px;font-weight:700;color:oklch(18% 0.01 260);">[포스트 제목을 입력하세요]</div>
+              <div style="font-size:14.5px;line-height:1.65;color:oklch(48% 0.01 260);max-width:800px;">[포스트 요약 내용이 두 줄 정도 들어갑니다. 무엇을 공부했고 어떤 점이 핵심이었는지 짧게 적어두면 나중에 다시 찾기 좋습니다.]</div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;white-space:nowrap;">
+              <span style="font-size:14px;color:oklch(50% 0.01 260);">[YYYY.MM.DD]</span>
+              <span style="font-size:13px;color:oklch(62% 0.01 260);">[N분 소요]</span>
+            </div>
+          </div>
+
+          <div class="row" style="display:flex;align-items:flex-start;justify-content:space-between;gap:40px;padding:28px 32px;border-radius:18px;background:oklch(96% 0.005 260);border:1px solid oklch(91% 0.005 260);">
+            <div style="display:flex;flex-direction:column;gap:10px;flex-grow:1;">
+              <span style="align-self:flex-start;font-size:12.5px;font-weight:700;padding:5px 12px;border-radius:999px;background:oklch(94% 0.03 262);color:oklch(45% 0.15 262);">[카테고리]</span>
+              <div style="font-size:19px;font-weight:700;color:oklch(18% 0.01 260);">[포스트 제목을 입력하세요]</div>
+              <div style="font-size:14.5px;line-height:1.65;color:oklch(48% 0.01 260);max-width:800px;">[포스트 요약 내용이 두 줄 정도 들어갑니다. 무엇을 공부했고 어떤 점이 핵심이었는지 짧게 적어두면 나중에 다시 찾기 좋습니다.]</div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;white-space:nowrap;">
+              <span style="font-size:14px;color:oklch(50% 0.01 260);">[YYYY.MM.DD]</span>
+              <span style="font-size:13px;color:oklch(62% 0.01 260);">[N분 소요]</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DOCK -->
+  <div style="position:relative;z-index:6;display:flex;justify-content:center;padding:64px 0 40px 0;">
+    <div style="display:flex;align-items:flex-end;gap:12px;padding:10px 14px;border-radius:24px;background:oklch(100% 0 0 / 0.10);backdrop-filter:blur(28px) saturate(180%);-webkit-backdrop-filter:blur(28px) saturate(180%);border:1px solid oklch(100% 0 0 / 0.12);box-shadow:inset 0 1px 0 oklch(100% 0 0 / 0.18), 0 18px 44px oklch(8% 0.02 265 / 0.5);">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+        <div style="width:52px;height:52px;border-radius:15px;background:linear-gradient(145deg, oklch(66% 0.18 262), oklch(52% 0.17 298));display:flex;align-items:center;justify-content:center;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="oklch(99% 0 0)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5 12 4l8 6.5V20H4z"/></svg>
+        </div>
+        <div style="width:4px;height:4px;border-radius:50%;background:oklch(100% 0 0 / 0);"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+        <div style="width:52px;height:52px;border-radius:15px;background:linear-gradient(145deg, oklch(62% 0.16 220), oklch(50% 0.16 268));display:flex;align-items:center;justify-content:center;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="oklch(99% 0 0)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h6l2 2h10v9H3z"/></svg>
+        </div>
+        <div style="width:4px;height:4px;border-radius:50%;background:oklch(100% 0 0 / 0);"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+        <div style="width:52px;height:52px;border-radius:15px;background:linear-gradient(145deg, oklch(64% 0.16 300), oklch(52% 0.16 255));display:flex;align-items:center;justify-content:center;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="oklch(99% 0 0)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/></svg>
+        </div>
+        <div style="width:4px;height:4px;border-radius:50%;background:oklch(90% 0.01 260);"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+        <div style="width:52px;height:52px;border-radius:15px;background:linear-gradient(145deg, oklch(68% 0.15 245), oklch(54% 0.15 310));display:flex;align-items:center;justify-content:center;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="oklch(99% 0 0)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+        </div>
+        <div style="width:4px;height:4px;border-radius:50%;background:oklch(100% 0 0 / 0);"></div>
+      </div>
+      <div style="width:1px;height:44px;background:oklch(100% 0 0 / 0.16);margin:0 4px;"></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+        <div style="width:52px;height:52px;border-radius:15px;background:oklch(28% 0.015 265);display:flex;align-items:center;justify-content:center;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="oklch(92% 0.008 260)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6L3 12l5 6M16 6l5 6-5 6"/></svg>
+        </div>
+        <div style="width:4px;height:4px;border-radius:50%;background:oklch(100% 0 0 / 0);"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+        <div style="width:52px;height:52px;border-radius:15px;background:linear-gradient(145deg, oklch(72% 0.13 240), oklch(58% 0.14 280));display:flex;align-items:center;justify-content:center;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="oklch(99% 0 0)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18v12H3z"/><path d="M3 7l9 6 9-6"/></svg>
+        </div>
+        <div style="width:4px;height:4px;border-radius:50%;background:oklch(100% 0 0 / 0);"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+        <div style="width:52px;height:52px;border-radius:15px;background:oklch(22% 0.013 265);display:flex;align-items:center;justify-content:center;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="oklch(88% 0.12 150)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v14H4z"/><path d="M8 10l3 2.5L8 15"/><path d="M13 15h4"/></svg>
+        </div>
+        <div style="width:4px;height:4px;border-radius:50%;background:oklch(100% 0 0 / 0);"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>
