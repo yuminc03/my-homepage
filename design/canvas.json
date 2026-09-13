@@ -1,13 +1,25 @@
 {
+  "pages": [
+    { "id": "page-1", "name": "시안" },
+    { "id": "page-2", "name": "색상 방향" }
+  ],
   "artboards": [
-    { "file": "Main.dc.html", "title": "홈 (데스크톱)", "x": 0, "y": 0, "w": 1440, "h": 1640 },
-    { "file": "Projects.dc.html", "title": "프로젝트", "x": 1540, "y": 0, "w": 1440, "h": 1480 },
-    { "file": "StudyLog.dc.html", "title": "스터디 기록", "x": 3080, "y": 0, "w": 1440, "h": 1760 },
-    { "file": "Seminars.dc.html", "title": "세미나 기록", "x": 4620, "y": 0, "w": 1440, "h": 2620 }
+    { "file": "Main.dc.html", "title": "홈 (데스크톱)", "x": 0, "y": 0, "w": 1440, "h": 1640, "page": "page-1" },
+    { "file": "Projects.dc.html", "title": "프로젝트", "x": 1540, "y": 0, "w": 1440, "h": 1480, "page": "page-1" },
+    { "file": "StudyLog.dc.html", "title": "스터디 기록", "x": 3080, "y": 0, "w": 1440, "h": 1760, "page": "page-1" },
+    { "file": "Seminars.dc.html", "title": "세미나 기록", "x": 4620, "y": 0, "w": 1440, "h": 2620, "page": "page-1" },
+    { "file": "DirectionA.dc.html", "title": "A · 미드나이트 인디고 (현재)", "x": 0, "y": 0, "w": 1232, "h": 720, "page": "page-2" },
+    { "file": "DirectionB.dc.html", "title": "B · 그래파이트", "x": 1332, "y": 0, "w": 1232, "h": 720, "page": "page-2" },
+    { "file": "DirectionC.dc.html", "title": "C · 샌드", "x": 0, "y": 840, "w": 1232, "h": 720, "page": "page-2" },
+    { "file": "DirectionD.dc.html", "title": "D · 포레스트", "x": 1332, "y": 840, "w": 1232, "h": 720, "page": "page-2" },
+    { "file": "DirectionE.dc.html", "title": "E · 앰버 코랄", "x": 0, "y": 1680, "w": 1232, "h": 720, "page": "page-2" },
+    { "file": "DirectionF.dc.html", "title": "F · 티타늄 마젠타", "x": 1332, "y": 1680, "w": 1232, "h": 720, "page": "page-2" },
+    { "file": "DirectionG.dc.html", "title": "G · 라일락 & 민트", "x": 0, "y": 2520, "w": 1232, "h": 720, "page": "page-2" }
   ],
   "annotations": [
-    { "id": "theme-rule", "x": 0, "y": 1740, "w": 520, "text": "라이트/다크 모드\n- 바탕(데스크톱)과 메뉴바·Dock 유리, 바탕 위 글자만 전환한다\n- 창 본문은 두 모드 모두 밝게 유지, 코드 에디터 창은 항상 어둡게\n- 각 화면 위 theme 칩으로 dark / light 확인" },
-    { "id": "dock-rule", "x": 600, "y": 1740, "w": 560, "text": "Dock 자동 숨김 (홈 화면에서 동작)\n- 처음에는 보인다\n- 아래로 스크롤하면 숨는다\n- 위로 스크롤하면 나타난다\n- 마우스가 화면 하단 영역에 들어오면 나타나고, 스크롤로 숨겨진 상태였다면 벗어날 때 다시 숨는다\n- 숨은 동안 하단 중앙에 얇은 힌트 막대를 남긴다\n- 모바일은 hover가 없으므로 스크롤 규칙만 적용\n- dockPreview 칩: auto(동작) / shown / hidden" }
+    { "id": "theme-rule", "x": 0, "y": 1740, "w": 520, "page": "page-1", "text": "라이트/다크 모드\n- 바탕(데스크톱)과 메뉴바·Dock 유리, 바탕 위 글자만 전환한다\n- 창 본문은 두 모드 모두 밝게 유지, 코드 에디터 창은 항상 어둡게\n- 각 화면 위 theme 칩으로 dark / light 확인" },
+    { "id": "dock-rule", "x": 600, "y": 1740, "w": 560, "page": "page-1", "text": "Dock 자동 숨김 (홈 화면에서 동작)\n- 처음에는 보인다\n- 아래로 스크롤하면 숨는다\n- 위로 스크롤하면 나타난다\n- 마우스가 화면 하단 영역에 들어오면 나타나고, 스크롤로 숨겨진 상태였다면 벗어날 때 다시 숨는다\n- 숨은 동안 하단 중앙에 얇은 힌트 막대를 남긴다\n- 모바일은 hover가 없으므로 스크롤 규칙만 적용\n- dockPreview 칩: auto(동작) / shown / hidden" },
+    { "id": "direction-guide", "x": 0, "y": -220, "w": 620, "page": "page-2", "text": "색상 방향 고르기\n- 구조·타이포·크기는 모두 같고 색만 다르다\n- 각 방향마다 다크/라이트 바탕을 나란히 두었다 (창 본문은 두 모드 모두 밝게)\n- 하나를 고르거나, 섞고 싶은 부분(예: B의 절제 + C의 액센트)을 말해 주면 그 조합으로 4개 화면에 반영한다\n- E·F·G는 'iOS 개발자 인상 + 개성'을 기준으로 추가한 조합이다" }
   ],
-  "launch": { "view": "focused", "file": "Main.dc.html" }
+  "launch": { "view": "canvas", "page": "page-2" }
 }
