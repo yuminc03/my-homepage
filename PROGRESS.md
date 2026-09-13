@@ -15,7 +15,9 @@
 - `feature/design-theme-dock`: 라이트/다크 모드 + Dock 자동 숨김 (완료, `develop` 미병합)
 - `feature/design-color-direction`: 색상 방향 후보 비교 → G 확정 → 4개 화면 적용 (완료, `feature/design-theme-dock`에서 분기, `develop` 미병합)
 - `feature/design-theme-toggle`: 홈 메뉴바 테마 전환 버튼 (완료, `feature/design-color-direction`에서 분기, `develop` 미병합)
-- `feature/design-detail-screens`: 스터디 글 상세·행사 상세 시안 (현재 작업 브랜치, `feature/design-theme-toggle`에서 분기, `develop` 미병합)
+- `feature/design-detail-screens`: 스터디 글 상세·행사 상세 시안 (완료, `feature/design-theme-toggle`에서 분기, `develop` 미병합)
+- `feature/design-project-detail`: 프로젝트 상세 시안 (현재 작업 브랜치, `feature/design-detail-screens`에서 분기, `develop` 미병합)
+- 다음 순서(사용자 지시, 2026-09-13): 프로젝트 상세 커밋 → feature 브랜치 5개를 만든 순서대로 `develop`에 병합 → 병합된 feature 브랜치 삭제 → 남은 설계(모션·반응형)
 
 ## 확정된 결정
 - 디자인 방향: **데스크톱 OS 메타포**. 상단 유리 메뉴바가 네비게이션, 각 페이지는 창 안에 열리고, 하단에 Dock
@@ -29,6 +31,7 @@
 - **라이트/다크 모드 (2026-09-13 확정)**: 바탕만 전환한다. 데스크톱 바탕·글로우, 메뉴바·Dock 유리, 바탕 위 글자(메뉴·바로가기 라벨·스크롤 힌트)만 바뀌고, 창 본문은 두 모드 모두 밝게, 코드 에디터 창은 항상 어둡게 유지
 - **테마 전환 버튼 (2026-09-13 추가)**: 홈 메뉴바 오른쪽, 검색 아이콘 왼쪽에 28×22 버튼. 직접 그린 SVG로 누르면 바뀔 모드의 아이콘을 보여줌(다크=해, 라이트=달), `aria-label`은 "라이트/다크 모드로 전환". 실제 구현 시에는 모든 화면의 메뉴바에 두고, 첫 방문은 `prefers-color-scheme`을 따르며 선택값은 `localStorage`에 저장한다. 모바일에서는 누르는 영역을 44px 이상으로 키운다
 - **상세 화면 (2026-09-13 추가, 정적 시안)**: 목록 항목을 누르면 같은 창 안에서 상세로 바뀌고 상단 `← 목록 이름` 링크로 돌아간다. 메뉴바·Dock 활성 표시는 목록과 같게 유지
+  - 프로젝트 상세(2026-09-13 추가): 읽기 폭 800px. ← Projects → 앱 아이콘(88px)·이름(36px)·한 줄 소개·태그 → 링크 버튼(App Store에서 보기 / GitHub, 로고 없이 글자 + 바깥 화살표, 높이 44px) → 기간·역할·기술·플랫폼 4칸 요약 → 창 폭 스크린샷 띠(iPhone 4대, 가짜 상태 표시줄 없음) → 소개 → 주요 기능(폰 화면과 설명을 좌우 번갈아, `FEATURE 01` 라벨) → 기술적으로 고민한 점(문제·해결 카드) → 배운 점 → 이전/다음 프로젝트
   - 스터디 글 상세: 카테고리·제목(36px)·날짜·읽는 시간 → 본문(17px / 줄 간격 1.85, 소제목 24px, 인라인 코드, Swift 코드 블록) + 오른쪽 목차(240px, 현재 위치는 라일락 선) → 이전/다음 글 카드
   - 행사 상세는 **글 흐름형으로 확정**(2026-09-13). 사용자가 "세미나 내용이 길 수 있으니 글 몇 줄에 사진 한두 장씩 넣는 레이아웃"을 요청해 사진 묶음형(A)과 비교한 뒤 선택. A안은 커밋 `1769266`에 남아 있다
     - 구성: 읽기 폭 800px. 날짜·장소·제목 → 창 폭 표지 사진 → 도입 문단 → 세션별 섹션(`SESSION 01 · [발표자]` + 제목 + 문단 사이 사진) → 배운 점·소감 → 이전/다음 행사
@@ -77,7 +80,7 @@ macOS·Xcode의 실제 UI는 복제하지 않는다. Apple 로고, SF Symbols, �
 
 ## 시안 캔버스
 - URL: https://claude.ai/code/artifact/48a3c34c-b882-4f13-8e2f-7e3668bdb7b1
-- v1: 일반 웹페이지 4장 → v2: iOS 정체성 강화(iPhone 목업, 이력서 제거) → v3: 데스크톱 메타포 → v4: 라이트/다크 + Dock 자동 숨김 → v5~v6: 색상 방향 후보 A~G 비교 → v7: G · 라일락 & 민트 적용 → v8: 홈 메뉴바 테마 전환 버튼 → v9: 스터디 글 상세·행사 상세 화면 → v10: 행사 상세 B 글 흐름형 추가 → **v11: 행사 상세를 글 흐름형으로 확정(현재)**
+- v1: 일반 웹페이지 4장 → v2: iOS 정체성 강화(iPhone 목업, 이력서 제거) → v3: 데스크톱 메타포 → v4: 라이트/다크 + Dock 자동 숨김 → v5~v6: 색상 방향 후보 A~G 비교 → v7: G · 라일락 & 민트 적용 → v8: 홈 메뉴바 테마 전환 버튼 → v9: 스터디 글 상세·행사 상세 화면 → v10: 행사 상세 B 글 흐름형 추가 → v11: 행사 상세를 글 흐름형으로 확정 → **v12: 프로젝트 상세 화면(현재)**
 - 페이지 2개: `시안`(4개 화면 + 테마·Dock 규칙 메모, 캔버스를 열면 홈 화면부터 보임) / `색상 방향`(G 팔레트 기준표 1장 + 결정 메모)
 - 각 화면 위의 조절 칩: `theme`(dark / light). 홈에만 `dockPreview`(auto = 실제 동작 / shown / hidden)
 
@@ -86,6 +89,7 @@ macOS·Xcode의 실제 UI는 복제하지 않는다. Apple 로고, SF Symbols, �
 - `design/Projects.dc.html` — 프로젝트 창(카드 6개, iPhone 프레임 썸네일 + 앱 아이콘 스퀘어클, 필터 칩)
 - `design/StudyLog.dc.html` — 스터디 기록 창(포스트 6개, 카테고리 필터)
 - `design/Seminars.dc.html` — 세미나 기록 창(타임라인 5개, 사진 자리)
+- `design/ProjectDetail.dc.html` — 프로젝트 상세(헤더·링크 버튼·요약·스크린샷 띠·기능·고민한 점·배운 점·이전/다음). 캔버스에서 프로젝트 목록 바로 아래
 - `design/StudyPost.dc.html` — 스터디 글 상세(본문·코드 블록·목차·이전/다음 글). 캔버스에서 스터디 기록 목록 바로 아래
 - `design/SeminarDetail.dc.html` — 행사 상세, 글 흐름형(표지 사진·세션별 문단 사이 사진·소감·이전/다음 행사). 캔버스에서 세미나 기록 목록 바로 아래
 - `design/DirectionG.dc.html` — G 팔레트 기준표(다크/라이트 미니 홈 화면 + 색 견본)
@@ -100,12 +104,12 @@ macOS·Xcode의 실제 UI는 복제하지 않는다. Apple 로고, SF Symbols, �
 
 1. 새 세션이라면 먼저 캔버스를 읽어(`Artifact` read) GUI에서 저장된 변경이 있는지 확인한다. `seed-canvas.mjs --extract <저장된 파일> --to <빈 폴더>`로 꺼내 `design/` 파일과 비교하고, 다르면 추출본을 기준으로 작업한다
 2. `design/*.dc.html` 또는 `canvas.json`을 수정한다
-3. 재조립: `node "<design 스킬 경로>/seed-canvas.mjs" --template "<design 스킬 경로>/payload.template.html" --out chu-yumin-portfolio.html --title "Chu Yumin Portfolio" --artboard Main.dc.html --artboard Projects.dc.html --artboard StudyLog.dc.html --artboard Seminars.dc.html --artboard StudyPost.dc.html --artboard SeminarDetail.dc.html --artboard DirectionG.dc.html --canvas canvas.json`
+3. 재조립: `node "<design 스킬 경로>/seed-canvas.mjs" --template "<design 스킬 경로>/payload.template.html" --out chu-yumin-portfolio.html --title "Chu Yumin Portfolio" --artboard Main.dc.html --artboard Projects.dc.html --artboard StudyLog.dc.html --artboard Seminars.dc.html --artboard ProjectDetail.dc.html --artboard StudyPost.dc.html --artboard SeminarDetail.dc.html --artboard DirectionG.dc.html --canvas canvas.json`
 4. 검증: 같은 스크립트에 `--check chu-yumin-portfolio.html`
 5. Artifact 재발행. 새 세션에서는 반드시 위 URL을 `url`로 넘긴다(안 넘기면 새 캔버스가 생김). `contract: 0.1.31`, favicon `💻`, `capabilities`는 생략
 
 ## 다음에 할 일
-- [ ] 프로젝트 상세 화면이 필요한지 확인(필요하면 같은 흐름으로 시안 추가)
+- [ ] feature 브랜치 5개를 `develop`에 차례로 병합하고 정리(프로젝트 상세 커밋 확인 후)
 - (G 적용 결과는 사용자가 확인 후 "만족"으로 마무리, 2026-09-13)
 - [ ] 실제 모션 설계(스크롤 등장, 창 포커스 전환). 현재 시안에는 스크롤 힌트, Dock 숨김, 테마 전환 트랜지션만 있음
 - [ ] 반응형 설계(모바일에서 창·Dock·메뉴바를 어떻게 접을지)
