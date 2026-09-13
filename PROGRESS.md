@@ -2,7 +2,7 @@
 최종 업데이트: 2026-09-13
 
 ## 현재 상태 한 줄 요약
-디자인 시안(4개 화면)은 **데스크톱 메타포**로 확정되었고, **라이트/다크 모드(바탕만 전환)**, **Dock 자동 숨김**, **G · 라일락 & 민트 색상**까지 시안에 반영했다. 남은 시안 작업은 적용 결과 세부 조정, 모션·반응형 설계이며, 기술 스택은 시안을 마무리한 뒤 정하기로 보류했다. 아직 사이트 코드는 작성하지 않았다.
+디자인 시안은 **데스크톱 메타포**로 확정되었고, 목록 4화면(홈·프로젝트·스터디 기록·세미나 기록)과 상세 3화면(프로젝트·스터디 글·행사), **라이트/다크 모드(바탕만 전환)**와 전환 버튼, **Dock 자동 숨김**, **G · 라일락 & 민트 색상**까지 반영해 모두 `develop`에 병합했다. 남은 시안 작업은 모션·반응형 설계이며, 기술 스택은 시안을 마무리한 뒤 정하기로 보류했다. 아직 사이트 코드는 작성하지 않았다.
 
 ## 프로젝트 개요
 - 자기소개, 프로젝트 포트폴리오, 학습 기록, 세미나·행사 기록(사진 포함)을 모으는 개인 홈페이지
@@ -12,12 +12,14 @@
 
 ## 브랜치
 - Git Flow를 따른다. `master`(배포) ← `develop`(통합) ← `feature/*`(작업)
-- `feature/design-theme-dock`: 라이트/다크 모드 + Dock 자동 숨김 (완료, `develop` 미병합)
-- `feature/design-color-direction`: 색상 방향 후보 비교 → G 확정 → 4개 화면 적용 (완료, `feature/design-theme-dock`에서 분기, `develop` 미병합)
-- `feature/design-theme-toggle`: 홈 메뉴바 테마 전환 버튼 (완료, `feature/design-color-direction`에서 분기, `develop` 미병합)
-- `feature/design-detail-screens`: 스터디 글 상세·행사 상세 시안 (완료, `feature/design-theme-toggle`에서 분기, `develop` 미병합)
-- `feature/design-project-detail`: 프로젝트 상세 시안 (현재 작업 브랜치, `feature/design-detail-screens`에서 분기, `develop` 미병합)
-- 다음 순서(사용자 지시, 2026-09-13): 프로젝트 상세 커밋 → feature 브랜치 5개를 만든 순서대로 `develop`에 병합 → 병합된 feature 브랜치 삭제 → 남은 설계(모션·반응형)
+- 현재 상태(2026-09-13): 로컬 브랜치는 `master`와 `develop` 두 개. 지금까지의 시안 작업은 모두 `develop`에 들어가 있고, `master`와 원격(`origin`)에는 아직 반영하지 않았다
+- `develop`에 `--no-ff`로 병합한 뒤 삭제한 feature 브랜치(만든 순서, 병합 커밋)
+  - `feature/design-theme-dock` — 라이트/다크 모드 + Dock 자동 숨김
+  - `feature/design-color-direction` — 색상 방향 비교 → G · 라일락 & 민트 적용 (`fab45e5`)
+  - `feature/design-theme-toggle` — 홈 메뉴바 테마 전환 버튼 (`e610858`)
+  - `feature/design-detail-screens` — 스터디 글 상세·행사 상세(글 흐름형) (`bfcf341`)
+  - `feature/design-project-detail` — 프로젝트 상세 (`0c7d2c9`)
+- 새 작업은 `develop`에서 `feature/*` 브랜치를 만들어 시작한다. 다음 작업: 모션·반응형 설계
 
 ## 확정된 결정
 - 디자인 방향: **데스크톱 OS 메타포**. 상단 유리 메뉴바가 네비게이션, 각 페이지는 창 안에 열리고, 하단에 Dock
@@ -109,7 +111,7 @@ macOS·Xcode의 실제 UI는 복제하지 않는다. Apple 로고, SF Symbols, �
 5. Artifact 재발행. 새 세션에서는 반드시 위 URL을 `url`로 넘긴다(안 넘기면 새 캔버스가 생김). `contract: 0.1.31`, favicon `💻`, `capabilities`는 생략
 
 ## 다음에 할 일
-- [ ] feature 브랜치 5개를 `develop`에 차례로 병합하고 정리(프로젝트 상세 커밋 확인 후)
+- (feature 브랜치 5개 `develop` 병합·정리 완료, 2026-09-13)
 - (G 적용 결과는 사용자가 확인 후 "만족"으로 마무리, 2026-09-13)
 - [ ] 실제 모션 설계(스크롤 등장, 창 포커스 전환). 현재 시안에는 스크롤 힌트, Dock 숨김, 테마 전환 트랜지션만 있음
 - [ ] 반응형 설계(모바일에서 창·Dock·메뉴바를 어떻게 접을지)
