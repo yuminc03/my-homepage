@@ -1,13 +1,19 @@
 {
+  "pages": [
+    { "id": "page-1", "name": "시안" },
+    { "id": "page-2", "name": "색상 방향" }
+  ],
   "artboards": [
-    { "file": "Main.dc.html", "title": "홈 (데스크톱)", "x": 0, "y": 0, "w": 1440, "h": 1640 },
-    { "file": "Projects.dc.html", "title": "프로젝트", "x": 1540, "y": 0, "w": 1440, "h": 1480 },
-    { "file": "StudyLog.dc.html", "title": "스터디 기록", "x": 3080, "y": 0, "w": 1440, "h": 1760 },
-    { "file": "Seminars.dc.html", "title": "세미나 기록", "x": 4620, "y": 0, "w": 1440, "h": 2620 }
+    { "file": "Main.dc.html", "title": "홈 (데스크톱)", "x": 0, "y": 0, "w": 1440, "h": 1640, "page": "page-1" },
+    { "file": "Projects.dc.html", "title": "프로젝트", "x": 1540, "y": 0, "w": 1440, "h": 1480, "page": "page-1" },
+    { "file": "StudyLog.dc.html", "title": "스터디 기록", "x": 3080, "y": 0, "w": 1440, "h": 1760, "page": "page-1" },
+    { "file": "Seminars.dc.html", "title": "세미나 기록", "x": 4620, "y": 0, "w": 1440, "h": 2620, "page": "page-1" },
+    { "file": "DirectionG.dc.html", "title": "G · 라일락 & 민트 (확정)", "x": 0, "y": 0, "w": 1232, "h": 720, "page": "page-2" }
   ],
   "annotations": [
-    { "id": "theme-rule", "x": 0, "y": 1740, "w": 520, "text": "라이트/다크 모드\n- 바탕(데스크톱)과 메뉴바·Dock 유리, 바탕 위 글자만 전환한다\n- 창 본문은 두 모드 모두 밝게 유지, 코드 에디터 창은 항상 어둡게\n- 각 화면 위 theme 칩으로 dark / light 확인" },
-    { "id": "dock-rule", "x": 600, "y": 1740, "w": 560, "text": "Dock 자동 숨김 (홈 화면에서 동작)\n- 처음에는 보인다\n- 아래로 스크롤하면 숨는다\n- 위로 스크롤하면 나타난다\n- 마우스가 화면 하단 영역에 들어오면 나타나고, 스크롤로 숨겨진 상태였다면 벗어날 때 다시 숨는다\n- 숨은 동안 하단 중앙에 얇은 힌트 막대를 남긴다\n- 모바일은 hover가 없으므로 스크롤 규칙만 적용\n- dockPreview 칩: auto(동작) / shown / hidden" }
+    { "id": "theme-rule", "x": 0, "y": 1740, "w": 520, "page": "page-1", "text": "라이트/다크 모드\n- 바탕(데스크톱)과 메뉴바·Dock 유리, 바탕 위 글자만 전환한다\n- 창 본문은 두 모드 모두 밝게 유지, 코드 에디터 창은 항상 어둡게\n- 각 화면 위 theme 칩으로 dark / light 확인" },
+    { "id": "dock-rule", "x": 600, "y": 1740, "w": 560, "page": "page-1", "text": "Dock 자동 숨김 (홈 화면에서 동작)\n- 처음에는 보인다\n- 아래로 스크롤하면 숨는다\n- 위로 스크롤하면 나타난다\n- 마우스가 화면 하단 영역에 들어오면 나타나고, 스크롤로 숨겨진 상태였다면 벗어날 때 다시 숨는다\n- 숨은 동안 하단 중앙에 얇은 힌트 막대를 남긴다\n- 모바일은 hover가 없으므로 스크롤 규칙만 적용\n- dockPreview 칩: auto(동작) / shown / hidden" },
+    { "id": "direction-guide", "x": 0, "y": -220, "w": 620, "page": "page-2", "text": "색상 방향: G · 라일락 & 민트로 확정 (2026-09-13)\n- 라일락 = 주 액센트 (링크·태그·활성 표시)\n- 민트 = 보조 액센트 (아이콘·코드 강조)\n- 이 보드는 팔레트 기준표로 남겨 둔다. 비교했던 A~F는 커밋 기록에 있다" }
   ],
   "launch": { "view": "focused", "file": "Main.dc.html" }
 }
