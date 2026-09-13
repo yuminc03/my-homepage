@@ -26,6 +26,12 @@
   .dock-hint{opacity:0;transition:opacity .28s ease;}
   .dockzone[data-state="hidden"] .dock{transform:translateY(calc(100% + 32px));opacity:0;pointer-events:none;}
   .dockzone[data-state="hidden"] .dock-hint{opacity:1;}
+  /* 테마 전환 버튼: 누르면 바뀔 모드의 아이콘(다크=해, 라이트=달)을 보여준다 */
+  .themebtn{display:flex;align-items:center;justify-content:center;width:28px;height:22px;padding:0;border:0;border-radius:6px;background:transparent;color:var(--ink);cursor:pointer;transition:background-color .15s ease,color .15s ease;}
+  .themebtn:hover{background:var(--menu-active);color:var(--ink-strong);}
+  .themebtn:focus-visible{outline:2px solid oklch(60% 0.15 295);outline-offset:1px;}
+  .themebtn svg{transition:transform .35s cubic-bezier(.2,.8,.2,1);}
+  .themebtn:hover svg{transform:rotate(-18deg);}
 </style>
 </helmet>
 
@@ -50,6 +56,14 @@
       </div>
     </div>
     <div style="display:flex;align-items:center;gap:16px;">
+      <button type="button" class="themebtn" aria-label="{{themeToggleLabel}}" title="{{themeToggleLabel}}" onClick="{{toggleTheme}}">
+        <sc-if value="{{isDark}}" hint-placeholder-val="{{ true }}">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>
+        </sc-if>
+        <sc-if value="{{isLight}}" hint-placeholder-val="{{ false }}">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+        </sc-if>
+      </button>
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="color:var(--ink);" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg>
       <span style="font-size:12.5px;font-weight:500;color:var(--ink);">11:52</span>
     </div>
@@ -332,7 +346,8 @@
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { dockShown: true };
+    // theme: 버튼으로 바꾼 값. null이면 theme 조절 칩(props) 값을 따른다
+    this.state = { dockShown: true, theme: null };
     this.scrolledDown = false;
     this.hideTimer = null;
     this.showDock = () => {
@@ -345,6 +360,13 @@ class Component extends DCLogic {
     };
   }
 
+  componentDidUpdate(prevProps) {
+    // 조절 칩을 바꾸면 버튼으로 바꾼 상태를 버리고 칩 값을 따른다
+    if (prevProps.theme !== this.props.theme && this.state.theme !== null) {
+      this.setState({ theme: null });
+    }
+  }
+
   componentWillUnmount() {
     clearTimeout(this.hideTimer);
   }
@@ -352,8 +374,14 @@ class Component extends DCLogic {
   renderVals() {
     const preview = this.props.dockPreview ?? 'auto';
     const shown = preview === 'shown' ? true : preview === 'hidden' ? false : this.state.dockShown;
+    const theme = this.state.theme ?? this.props.theme ?? 'dark';
+    const isDark = theme === 'dark';
     return {
-      theme: this.props.theme ?? 'dark',
+      theme,
+      isDark,
+      isLight: !isDark,
+      themeToggleLabel: isDark ? '라이트 모드로 전환' : '다크 모드로 전환',
+      toggleTheme: () => this.setState({ theme: isDark ? 'light' : 'dark' }),
       dockState: shown ? 'shown' : 'hidden',
       revealDock: this.showDock,
       // 아래로 스크롤해 숨겨진 상태에서 마우스로 불러냈다면, 영역을 벗어날 때 다시 숨긴다
