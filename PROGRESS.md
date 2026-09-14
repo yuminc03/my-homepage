@@ -4,24 +4,25 @@
 
 ## 1. 한눈에 보기
 - **무엇을 만드나**: iOS 개발자 Chu Yumin의 개인 홈페이지(자기소개·프로젝트·스터디 기록·세미나 기록)
-- **지금 단계**: 디자인 시안 단계. 사이트 코드는 아직 없다
+- **지금 단계**: 디자인 시안 완료, 기술 스택 확정(Astro + 일반 CSS). 사이트 코드는 아직 없다
 - **시안 진행도**
   - 데스크톱 7화면(홈·목록 3·상세 3) — 완료
   - 모바일 7화면(홈 화면 메타포) — 완료
   - 태블릿 7화면(모바일 확장형) — 완료
   - 모션 설계(토큰 보드 + 데스크톱·모바일 클릭 프로토타입) — 완료, `develop` 병합
   - 데스크톱 창 ✕ 닫기 버튼 — 채택(2026-09-14), 데스크톱 창 화면 6장에 반영, `develop` 병합
+- **기술 스택**: Astro + 일반 CSS + TypeScript + Markdown Content Collections 확정(2026-09-14). 비교·약점·면접 질문은 `docs/tech-stack.md`
 - **시안 캔버스**: https://claude.ai/code/artifact/48a3c34c-b882-4f13-8e2f-7e3668bdb7b1 (v22, 페이지 5개 · 아트보드 25장)
-- **Git**: 모든 시안 작업이 `develop`에 병합되어 있다(마지막: `feature/design-motion` 커밋 3개 → `develop` 병합 → 브랜치 삭제, 2026-09-14). 로컬 브랜치는 `master`·`develop`. `master`·원격 push는 한 번도 하지 않았다
-- **다음 단계**: 기술 스택 확정(8장)
+- **Git**: 시안 작업과 기술 스택 결정 문서가 모두 `develop`에 병합되어 있다(마지막: `feature/tech-stack` 커밋 → `develop` 병합 → 브랜치 삭제, 2026-09-14). 로컬 브랜치는 `master`·`develop`. `master`·원격 push는 한 번도 하지 않았다
+- **다음 단계**: 사이트 구현 준비(Astro 프로젝트 생성·토큰 이식)
 
 ## 2. 새 채팅에서 이어서 시작하기
 ### 2-1. 지금 바로 할 일
-1. `git status`로 `develop` 브랜치이고 시안 변경이 모두 커밋되어 있는지 확인한다
+1. `git status`로 브랜치와 작업 트리를 확인한다
    - 커밋하지 않고 남겨 둔 파일(건드리지 않는다): `.claude/settings.json`(사용자가 바꾼 파일), 저장소 루트 `스크린샷 2026-09-14 오전 11.34.29.png`
-2. 사용자에게 시작 확인을 받고 `develop`에서 새 브랜치(예: `feature/tech-stack`)를 만든다
-3. 기술 스택 확정: 아래 "8. 기술 스택 결정 기준"대로 비교표·약점을 감수하는 이유·예상 면접 질문을 만들어 사용자와 결정하고, 결정 기록을 이 문서 5장에 옮긴다
-4. 끝나면 커밋 제안 → 사용자 확인 → 커밋 → `develop` `--no-ff` 병합 → 브랜치 삭제
+2. 다음 작업 후보(사용자에게 순서 확인)
+   - 사이트 구현 준비: `develop`에서 `feature/astro-setup` 브랜치 → Astro 프로젝트 생성(npm, TypeScript), 전역 토큰 CSS(`--desk`·`--glass`·`--win-*`·모션 토큰) 이식, 콘텐츠 컬렉션 3개 스키마 정의. 이때 `CLAUDE.md`의 명령어·아키텍처 섹션을 실제 내용으로 갱신
+   - 대괄호 `[ ]` placeholder에 들어갈 실제 콘텐츠 정리(4장 남은 일)
 
 ### 2-2. 세션 시작 체크리스트 (매번)
 1. `git status`, `git branch --show-current`로 브랜치와 작업 트리 확인
@@ -58,10 +59,14 @@
 | 모션 설계 | 토큰 보드 + 데스크톱·모바일 프로토타입 | `feature/design-motion` | 커밋 → `develop` 병합 → 브랜치 삭제(2026-09-14) |
 | 데스크톱 ✕ 버튼 | 데스크톱 창 화면 6장 타이틀 바에 닫기 버튼 | `feature/design-motion` | 같은 브랜치에서 별도 커밋, 함께 병합 |
 | 인수인계 문서 | `PROGRESS.md` 재정리, `CLAUDE.md` 현재 상태 갱신 | `feature/design-motion` | 같은 브랜치에서 별도 커밋, 함께 병합 |
+| 기술 스택 확정 | Astro·Next.js·Vite + React SPA·순수 HTML 비교 → Astro + 일반 CSS 확정, `docs/tech-stack.md` 작성 | `feature/tech-stack` | 커밋 → `develop` 병합 → 브랜치 삭제(2026-09-14) |
 
 ### 남은 일
 - [x] 모션·✕·문서 커밋 → `develop` 병합 → 브랜치 삭제 (2026-09-14, 사용자 확인)
-- [ ] 기술 스택·콘텐츠 관리 방식 확정 (8장 기준대로)
+- [x] 기술 스택·콘텐츠 관리 방식 확정 (2026-09-14, 5-11)
+- [x] `feature/tech-stack` 커밋 → `develop` 병합 → 브랜치 삭제 (2026-09-14, 사용자 확인)
+- [ ] Astro 프로젝트 생성·토큰 이식·콘텐츠 스키마 정의
+- [ ] 배포 호스팅 확정(GitHub Pages 또는 Cloudflare Pages)
 - [ ] 대괄호 `[ ]` placeholder를 실제 내용으로 교체 — 프로젝트 이름·소개·태그, 포스트 제목·요약·날짜, 세미나 이름·장소·소감, 연락처 링크(GitHub/Email/LinkedIn)
 - [ ] 사이트 구현
 - [ ] `develop` → `master` 병합·원격 push (사용자 확인 후)
@@ -138,10 +143,22 @@
 - 구현 방침(기술 스택과 무관): CSS transition·@keyframes + custom property 토큰만. `transform`·`opacity`만 애니메이션(리플로우 없음), blur 값은 애니메이션하지 않음
 - 태블릿은 모바일 값을 그대로 쓴다
 
-### 5-10. 콘텐츠 관리 방식 (제안, 기술 스택과 함께 확정)
-- **저장소의 Markdown 파일 + Astro Content Collections** 추천. 글 하나 = 파일 하나라 git 기록이 활동 기록이 되고, 필드 검사·이미지 최적화·무료 정적 배포가 가능
+### 5-10. 콘텐츠 관리 방식 (2026-09-14 확정)
+- **저장소의 Markdown 파일 + Astro Content Collections**. 글 하나 = 파일 하나라 git 기록이 활동 기록이 되고, 필드 검사·이미지 최적화·무료 정적 배포가 가능
+- 컬렉션: 프로젝트·스터디·세미나 3개. 사진은 글 폴더 옆에 두고 `astro:assets`로 최적화
 - 브라우저에서 글을 쓰고 싶어지면 Keystatic·Decap CMS(git 기반), 사진이 많아지면 사진만 이미지 서비스로
 - Firebase는 관리자 화면·인증을 직접 만들어야 하고 검색 노출·비용 면에서 과하다
+
+### 5-11. 기술 스택 (2026-09-14 확정)
+- 전체 비교표·약점·예상 면접 질문 7개는 **`docs/tech-stack.md`** 가 기준이다
+- 결정: **Astro**(SSG) + **일반 CSS**(컴포넌트 스코프 `<style>` + 전역 토큰 파일) + **TypeScript** + Markdown Content Collections
+- 페이지 전환: View Transitions(`ClientRouter`), 메뉴바·Dock은 `transition:persist`. 테마는 `<head>` 인라인 스크립트로 깜빡임 방지
+- Astro를 고른 이유: 읽기 전용·사진 많음·링크로 공유되는 사이트라 SSG + 기본 JS 0KB + 콘텐츠 검사·이미지 최적화 내장이 가장 잘 맞는다
+- 제외: Next.js(서버 기능 불필요, 복잡도·JS 비용), Vite + React SPA(링크 미리보기·검색 노출 약함), 순수 HTML/CSS/JS(공통 요소 복제·수동 목록 관리)
+- Tailwind → 일반 CSS로 변경한 이유: 시안이 이미 토큰 기반 CSS라 그대로 이식할 수 있고, Astro 스코프 스타일이 스타일 충돌 문제를 이미 해결한다
+- 감수하는 약점: MPA라 전환 연결이 SPA보다 까다로움, island 간 상태 공유 불편, React보다 작은 생태계, 수정 시 재빌드
+- 보류: 배포 호스팅(GitHub Pages 또는 Cloudflare Pages), 패키지 매니저(npm 제안) — 프로젝트 생성·구현 단계에서 확정
+- 다시 검토할 조건: 여러 창 동시 표시·드래그 같은 앱형 UI, 로그인·댓글 같은 서버 기능이 필요해질 때
 
 ## 6. 저작권 주의선
 - macOS·Xcode의 실제 UI를 복제하지 않는다. Apple 로고, SF Symbols, 신호등 색(빨강·노랑·초록) 창 컨트롤, 실제 메뉴 구조를 쓰지 않는다
@@ -184,13 +201,13 @@
 ### 7-3. 모션 토큰
 - `.site{--ease-out;--ease-in;--ease-sheet;--dur-press:120ms;--dur-fast:200ms;--dur-close:200ms;--dur-sheet-close:300ms;--dur-pop:300ms;--dur-window:320ms;--dur-push:360ms;--dur-dock:380ms;--dur-theme:400ms;--dur-sheet:420ms;--dur-reveal:480ms;--stagger:50ms}` — 현재는 `Motion*.dc.html` 3장에만 들어 있다. 구현 시 전역 토큰으로 옮긴다
 
-## 8. 기술 스택 결정 기준 (보류 중, 다음 단계)
-- 확정할 때 이 문서에 남길 것(2026-09-14 사용자 요청)
-  - 후보별 비교표: 렌더링 방식, JS 번들 크기, 콘텐츠 관리, 창 전환 같은 인터랙션 구현 난이도, 배포·비용, 학습 곡선, 생태계
+## 8. 기술 스택 결정 기준 (2026-09-14 확정 → 5-11, `docs/tech-stack.md`)
+- 확정할 때 남기기로 한 것(2026-09-14 사용자 요청) — 모두 `docs/tech-stack.md`에 작성함
+  - 후보별 비교표: 렌더링 방식, JS 번들 크기, 콘텐츠 관리, 이미지 최적화, 창 전환 같은 인터랙션 구현 난이도, 링크 미리보기·검색 노출, 배포·비용, 학습 곡선, 생태계, 공통 요소 재사용
   - 고른 기술의 약점과 그 약점을 감수하는 이유
-  - 예상 면접 질문과 답변 요지(예: "왜 React/Next.js가 아니라 Astro인가?", "island 구조의 한계는?")
-- 현재 추천: **Astro + Tailwind CSS + Markdown Content Collections**(콘텐츠 중심, 이미지 최적화 내장, 필요한 부분만 island). 창 전환 같은 동적 인터랙션이 커지면 Next.js도 비교
-- 판단 재료: 사이트는 콘텐츠 중심·정적 배포·이미지 많음이고, 모션은 CSS만으로 설계했다(5-9). 동적인 부분은 창 열기/닫기·테마·Dock 숨김 정도
+  - 예상 면접 질문과 답변 요지
+- 비교한 후보(사용자 선택): Astro · Next.js(React) · Vite + React SPA · 순수 HTML/CSS/JS
+- 이후 스택 관련 결정(배포 호스팅 등)도 같은 기준으로 `docs/tech-stack.md` 7장 결정 기록에 추가한다
 
 ## 9. 시안 캔버스
 - URL: https://claude.ai/code/artifact/48a3c34c-b882-4f13-8e2f-7e3668bdb7b1
@@ -227,6 +244,7 @@
 | `MotionMobile.dc.html` | 390×844 | 모바일 모션 프로토타입(시트·상세 push·Dock 숨김·등장·테마) |
 
 ### 10-2. 그 밖의 파일
+- `docs/tech-stack.md` — 기술 스택 비교표·약점·예상 면접 질문·결정 기록
 - `design/canvas.json` — 페이지·아트보드 배치·크기·메모·첫 화면
 - `design/chu-yumin-portfolio.html` — 조립 결과물. **직접 편집하지 말고 항상 재조립**
 - `스크린샷 2026-09-11 오후 11.52.51.png` — 참고한 데스크톱형 포트폴리오 사례
@@ -250,7 +268,7 @@
 
 ## 12. 브랜치·커밋 기록
 - 로컬 브랜치: `master`, `develop`. 원격(`origin`)과 `master`에는 아직 반영하지 않았다
-- 병합 후 삭제한 브랜치(순서대로): `feature/design-theme-dock`, `feature/design-color-direction`(`fab45e5`), `feature/design-theme-toggle`(`e610858`), `feature/design-detail-screens`(`bfcf341`), `feature/design-project-detail`(`0c7d2c9`), `feature/design-mobile`(`74c8149`), `feature/design-dark-windows`, `feature/design-iphone-mockup`(`eceb50a`), `feature/design-tablet`(`2d280cd`), `bugfix/profileview-code-widget`(`aa62f64`), `feature/design-tablet-rest`(`c1e2f5c`), `feature/design-motion`(모션 설계 · 데스크톱 창 ✕ 버튼 · 인수인계 문서, 2026-09-14)
+- 병합 후 삭제한 브랜치(순서대로): `feature/design-theme-dock`, `feature/design-color-direction`(`fab45e5`), `feature/design-theme-toggle`(`e610858`), `feature/design-detail-screens`(`bfcf341`), `feature/design-project-detail`(`0c7d2c9`), `feature/design-mobile`(`74c8149`), `feature/design-dark-windows`, `feature/design-iphone-mockup`(`eceb50a`), `feature/design-tablet`(`2d280cd`), `bugfix/profileview-code-widget`(`aa62f64`), `feature/design-tablet-rest`(`c1e2f5c`), `feature/design-motion`(모션 설계 · 데스크톱 창 ✕ 버튼 · 인수인계 문서, 2026-09-14), `feature/tech-stack`(기술 스택 결정 문서, 2026-09-14)
 - 참고로 남겨 둔 비교안 커밋: 색상 A~F `de7d440`, 행사 상세 사진 묶음형 A `1769266`
 
 ## 13. 문서 관리 규칙

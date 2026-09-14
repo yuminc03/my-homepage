@@ -10,7 +10,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - **새 채팅을 시작하면 먼저 `PROGRESS.md`를 읽는다.** 현재 상태, 지금 할 일, 확정된 결정, 시안 재게시 방법이 모두 정리된 단일 기준 문서다.
 - 디자인 시안 단계입니다. `design/`에 Claude Design 캔버스용 `.dc.html` 시안(데스크톱·모바일·태블릿 각 7화면 + 모션 3장)과 `canvas.json`, 조립 결과물 `chu-yumin-portfolio.html`이 있습니다.
-- 사이트 소스 코드·패키지 매니페스트·빌드 설정은 아직 없습니다. 기술 스택은 보류 중이며(기준은 `PROGRESS.md` 8장), 결정되면 이 섹션을 실제 명령어(설치, 개발 서버 실행, 빌드, 테스트, 린트 등)로 갱신해야 합니다.
+- 기술 스택은 **Astro + 일반 CSS + TypeScript + Markdown Content Collections**로 확정했습니다(2026-09-14, 근거는 `docs/tech-stack.md`, 요약은 `PROGRESS.md` 5-11).
+- 사이트 소스 코드·패키지 매니페스트·빌드 설정은 아직 없습니다. Astro 프로젝트를 만들면 이 섹션을 실제 명령어(설치, 개발 서버 실행, 빌드, 테스트, 린트 등)로 갱신해야 합니다.
 
 ## 아키텍처
 
