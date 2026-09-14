@@ -11,11 +11,21 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **새 채팅을 시작하면 먼저 `PROGRESS.md`를 읽는다.** 현재 상태, 지금 할 일, 확정된 결정, 시안 재게시 방법이 모두 정리된 단일 기준 문서다.
 - 디자인 시안 단계입니다. `design/`에 Claude Design 캔버스용 `.dc.html` 시안(데스크톱·모바일·태블릿 각 7화면 + 모션 3장)과 `canvas.json`, 조립 결과물 `chu-yumin-portfolio.html`이 있습니다.
 - 기술 스택은 **Astro + 일반 CSS + TypeScript + Markdown Content Collections**로 확정했습니다(2026-09-14, 근거는 `docs/tech-stack.md`, 요약은 `PROGRESS.md` 5-11).
-- 사이트 소스 코드·패키지 매니페스트·빌드 설정은 아직 없습니다. Astro 프로젝트를 만들면 이 섹션을 실제 명령어(설치, 개발 서버 실행, 빌드, 테스트, 린트 등)로 갱신해야 합니다.
+- Astro 프로젝트를 저장소 루트에 생성했습니다(임시 홈 1장). 배포 주소는 GitHub Pages 하위 경로 `https://yuminc03.github.io/my-homepage/`입니다.
+
+## 명령어
+
+- Node 24를 사용합니다(`.nvmrc`). 셸 기본 Node가 21이라 먼저 `source ~/.nvm/nvm.sh && nvm use`를 실행합니다. Astro 7은 Node 22.12 이상이 필요합니다.
+- 설치: `npm install`
+- 개발 서버: `npm run dev` → `http://localhost:4321/my-homepage/`
+- 빌드: `npm run build` (결과물 `dist/`)
+- 빌드 결과 미리보기: `npm run preview`
+- 테스트·린트는 아직 설정하지 않았습니다.
 
 ## 아키텍처
 
-- 아직 사이트 코드가 없어 설명할 아키텍처가 없습니다. 기술 스택과 구조가 정해지면 이 섹션에 "여러 파일을 함께 봐야 이해되는" 상위 수준 설계를 기록합니다.
+- 아직 임시 홈뿐이라 설명할 구조가 없습니다. 레이아웃·토큰·콘텐츠 컬렉션이 생기면 이 섹션에 "여러 파일을 함께 봐야 이해되는" 상위 수준 설계를 기록합니다.
+- `astro.config.mjs`의 `base: '/my-homepage'` 때문에 내부 링크와 `public/` 에셋 경로는 `import.meta.env.BASE_URL`을 붙여 만들어야 합니다. `/`로 시작하는 절대 경로를 직접 쓰면 배포 후 404가 납니다.
 - 시안 파일끼리의 관계: 각 `.dc.html`은 캔버스에서 독립 아트보드라 CSS를 공유할 수 없어, 테마 토큰(`.site` / `.site[data-theme="light"]`, `--win-*`)이 모든 화면 파일에 복제되어 있습니다. 토큰을 바꿀 때는 모든 화면 파일을 함께 고치고, `chu-yumin-portfolio.html`은 직접 편집하지 않고 재조립합니다(`PROGRESS.md` 11장).
 
 ## 코딩 가이드라인

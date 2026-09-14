@@ -4,7 +4,7 @@
 
 ## 1. 한눈에 보기
 - **무엇을 만드나**: iOS 개발자 Chu Yumin의 개인 홈페이지(자기소개·프로젝트·스터디 기록·세미나 기록)
-- **지금 단계**: 디자인 시안 완료, 기술 스택 확정(Astro + 일반 CSS). 사이트 코드는 아직 없다
+- **지금 단계**: 디자인 시안 완료, 기술 스택 확정(Astro + 일반 CSS), **Astro 프로젝트 생성**(임시 홈 1장, 빌드 확인)
 - **시안 진행도**
   - 데스크톱 7화면(홈·목록 3·상세 3) — 완료
   - 모바일 7화면(홈 화면 메타포) — 완료
@@ -13,16 +13,19 @@
   - 데스크톱 창 ✕ 닫기 버튼 — 채택(2026-09-14), 데스크톱 창 화면 6장에 반영, `develop` 병합
 - **기술 스택**: Astro + 일반 CSS + TypeScript + Markdown Content Collections 확정(2026-09-14). 비교·약점·면접 질문은 `docs/tech-stack.md`
 - **시안 캔버스**: https://claude.ai/code/artifact/48a3c34c-b882-4f13-8e2f-7e3668bdb7b1 (v22, 페이지 5개 · 아트보드 25장)
-- **Git**: 시안 작업과 기술 스택 결정 문서가 모두 `develop`에 병합되어 있다(마지막: `feature/tech-stack` 커밋 → `develop` 병합 → 브랜치 삭제, 2026-09-14). 로컬 브랜치는 `master`·`develop`. `master`·원격 push는 한 번도 하지 않았다
-- **다음 단계**: 사이트 구현 준비(Astro 프로젝트 생성·토큰 이식)
+- **Git**: 시안·기술 스택 문서·`.claude/settings.json`(`92083d0`)이 `develop`에 반영되어 있다. `feature/astro-setup` 브랜치에서 작업 중 — Astro 프로젝트 생성 커밋 완료(2026-09-14), 다음은 전역 토큰 CSS 이식. `master`·원격 push는 한 번도 하지 않았다
+- **다음 단계**: 전역 토큰 CSS 이식 → 콘텐츠 컬렉션 스키마 정의(같은 브랜치에서 커밋을 나눠 진행)
 
 ## 2. 새 채팅에서 이어서 시작하기
 ### 2-1. 지금 바로 할 일
-1. `git status`로 브랜치와 작업 트리를 확인한다
-   - 커밋하지 않고 남겨 둔 파일(건드리지 않는다): `.claude/settings.json`(사용자가 바꾼 파일), 저장소 루트 `스크린샷 2026-09-14 오전 11.34.29.png`
-2. 다음 작업 후보(사용자에게 순서 확인)
-   - 사이트 구현 준비: `develop`에서 `feature/astro-setup` 브랜치 → Astro 프로젝트 생성(npm, TypeScript), 전역 토큰 CSS(`--desk`·`--glass`·`--win-*`·모션 토큰) 이식, 콘텐츠 컬렉션 3개 스키마 정의. 이때 `CLAUDE.md`의 명령어·아키텍처 섹션을 실제 내용으로 갱신
-   - 대괄호 `[ ]` placeholder에 들어갈 실제 콘텐츠 정리(4장 남은 일)
+1. `git status`로 브랜치와 작업 트리를 확인한다. 커밋하지 않고 남겨 둔 파일은 없다(스크린샷은 사용자가 삭제, 설정 파일은 커밋함)
+2. Node는 **nvm의 24**를 쓴다. 셸 기본값이 21.7.3이라 명령 전에 `source ~/.nvm/nvm.sh && nvm use`(`.nvmrc` = 24)를 먼저 실행한다. Astro 7은 Node 22.12 이상이 필요하다
+3. `feature/astro-setup` 브랜치의 작업을 커밋 단위로 이어간다(각 커밋마다 제안 → 사용자 확인)
+   1. Astro 프로젝트 생성 — 파일 작성·`npm run build`·`/my-homepage/` 미리보기 확인, **커밋 완료**(사용자 확인)
+   2. 전역 토큰 CSS 이식: 시안 헬멧의 `.site` / `.site[data-theme="light"]` 토큰(7장)과 모션 토큰(7-3)을 `src/styles/tokens.css`로 옮기고 공통 레이아웃에서 불러온다
+   3. 콘텐츠 컬렉션 스키마: 프로젝트·스터디·세미나 3개(`src/content.config.ts`), 필드는 시안 화면의 항목 기준
+   4. 끝나면 `develop` `--no-ff` 병합 → 브랜치 삭제
+4. 그 뒤 후보: 대괄호 `[ ]` placeholder에 들어갈 실제 콘텐츠 정리(4장 남은 일), 화면 구현
 
 ### 2-2. 세션 시작 체크리스트 (매번)
 1. `git status`, `git branch --show-current`로 브랜치와 작업 트리 확인
@@ -60,13 +63,18 @@
 | 데스크톱 ✕ 버튼 | 데스크톱 창 화면 6장 타이틀 바에 닫기 버튼 | `feature/design-motion` | 같은 브랜치에서 별도 커밋, 함께 병합 |
 | 인수인계 문서 | `PROGRESS.md` 재정리, `CLAUDE.md` 현재 상태 갱신 | `feature/design-motion` | 같은 브랜치에서 별도 커밋, 함께 병합 |
 | 기술 스택 확정 | Astro·Next.js·Vite + React SPA·순수 HTML 비교 → Astro + 일반 CSS 확정, `docs/tech-stack.md` 작성 | `feature/tech-stack` | 커밋 → `develop` 병합 → 브랜치 삭제(2026-09-14) |
+| Claude 설정 | `.claude/settings.json`에 `Bash(bash -c ' *)` 허용(시안 재조립용) | `develop` 직접 | 커밋 `92083d0`(2026-09-14) |
+| Astro 생성 | 최소 템플릿 기반, GitHub Pages 하위 경로(`base: '/my-homepage'`), Node 24 고정, 임시 홈 | `feature/astro-setup` | 커밋 완료, 브랜치 작업 계속(2026-09-14) |
 
 ### 남은 일
 - [x] 모션·✕·문서 커밋 → `develop` 병합 → 브랜치 삭제 (2026-09-14, 사용자 확인)
 - [x] 기술 스택·콘텐츠 관리 방식 확정 (2026-09-14, 5-11)
 - [x] `feature/tech-stack` 커밋 → `develop` 병합 → 브랜치 삭제 (2026-09-14, 사용자 확인)
-- [ ] Astro 프로젝트 생성·토큰 이식·콘텐츠 스키마 정의
-- [ ] 배포 호스팅 확정(GitHub Pages 또는 Cloudflare Pages)
+- [x] 배포 주소 확정: GitHub Pages 하위 경로 `https://yuminc03.github.io/my-homepage/` (2026-09-14, 사용자 선택)
+- [x] Astro 프로젝트 생성 커밋 (2026-09-14, 사용자 확인)
+- [ ] 전역 토큰 CSS 이식
+- [ ] 콘텐츠 컬렉션 스키마 정의
+- [ ] GitHub Actions로 GitHub Pages 자동 배포 설정(원격 push가 필요하므로 사용자 확인 후)
 - [ ] 대괄호 `[ ]` placeholder를 실제 내용으로 교체 — 프로젝트 이름·소개·태그, 포스트 제목·요약·날짜, 세미나 이름·장소·소감, 연락처 링크(GitHub/Email/LinkedIn)
 - [ ] 사이트 구현
 - [ ] `develop` → `master` 병합·원격 push (사용자 확인 후)
@@ -157,7 +165,8 @@
 - 제외: Next.js(서버 기능 불필요, 복잡도·JS 비용), Vite + React SPA(링크 미리보기·검색 노출 약함), 순수 HTML/CSS/JS(공통 요소 복제·수동 목록 관리)
 - Tailwind → 일반 CSS로 변경한 이유: 시안이 이미 토큰 기반 CSS라 그대로 이식할 수 있고, Astro 스코프 스타일이 스타일 충돌 문제를 이미 해결한다
 - 감수하는 약점: MPA라 전환 연결이 SPA보다 까다로움, island 간 상태 공유 불편, React보다 작은 생태계, 수정 시 재빌드
-- 보류: 배포 호스팅(GitHub Pages 또는 Cloudflare Pages), 패키지 매니저(npm 제안) — 프로젝트 생성·구현 단계에서 확정
+- 배포: **GitHub Pages 하위 경로** `https://yuminc03.github.io/my-homepage/` (2026-09-14 확정). `astro.config.mjs`에 `site`·`base: '/my-homepage'`를 두고, **내부 링크와 `public/` 에셋 경로는 반드시 `import.meta.env.BASE_URL`을 붙여 만든다**(`/projects`처럼 슬래시로 시작하는 절대 경로를 직접 쓰면 배포 후 404)
+- 패키지 매니저 npm, Node 24(`.nvmrc`), Astro 7.3.x (2026-09-14 확정)
 - 다시 검토할 조건: 여러 창 동시 표시·드래그 같은 앱형 UI, 로그인·댓글 같은 서버 기능이 필요해질 때
 
 ## 6. 저작권 주의선
@@ -243,7 +252,19 @@
 | `MotionDesktop.dc.html` | 1440×900 | 데스크톱 모션 프로토타입(창 열기/닫기·포커스·활성 표시·등장·테마) |
 | `MotionMobile.dc.html` | 390×844 | 모바일 모션 프로토타입(시트·상세 push·Dock 숨김·등장·테마) |
 
-### 10-2. 그 밖의 파일
+### 10-2. 사이트 파일 (저장소 루트, Astro)
+| 파일 | 내용 |
+| --- | --- |
+| `package.json` · `package-lock.json` | 이름 `my-homepage`, 의존성 `astro` ^7.3.2, 스크립트 `dev`·`build`·`preview`, `engines.node >=22.12.0` |
+| `astro.config.mjs` | `site: 'https://yuminc03.github.io'`, `base: '/my-homepage'` |
+| `tsconfig.json` | `astro/tsconfigs/strict` 상속, `dist`·`design` 제외 |
+| `.nvmrc` | `24` |
+| `.gitignore` | `dist/`·`.astro/`·`node_modules/`·`.env`·`.DS_Store` 등(Astro 템플릿 그대로) |
+| `.vscode/extensions.json` | Astro VS Code 확장 추천 |
+| `src/pages/index.astro` | 생성 확인용 임시 홈(`lang="ko"`, 인사말 한 줄). 화면 구현 때 교체 |
+- 템플릿에서 가져오지 않은 것: `README.md`·`AGENTS.md`(기존 README·`CLAUDE.md` 사용), `.vscode/launch.json`, 기본 Astro 파비콘(나중에 자체 아이콘으로 추가)
+
+### 10-3. 그 밖의 파일
 - `docs/tech-stack.md` — 기술 스택 비교표·약점·예상 면접 질문·결정 기록
 - `design/canvas.json` — 페이지·아트보드 배치·크기·메모·첫 화면
 - `design/chu-yumin-portfolio.html` — 조립 결과물. **직접 편집하지 말고 항상 재조립**
@@ -267,7 +288,8 @@
 - 인터랙션은 `onClick="{{handler}}"`, 조건 표시는 `<sc-if value="{{bool}}">`, 상태 스타일은 `data-*="{{값}}"` + CSS 선택자로 만든다(`class`에 값 끼워 넣기는 쓰지 않았다)
 
 ## 12. 브랜치·커밋 기록
-- 로컬 브랜치: `master`, `develop`. 원격(`origin`)과 `master`에는 아직 반영하지 않았다
+- 로컬 브랜치: `master`, `develop`, `feature/astro-setup`(작업 중). 원격(`origin`)과 `master`에는 아직 반영하지 않았다
+- `develop` 직접 커밋: `92083d0` `.claude/settings.json` 권한 추가(2026-09-14)
 - 병합 후 삭제한 브랜치(순서대로): `feature/design-theme-dock`, `feature/design-color-direction`(`fab45e5`), `feature/design-theme-toggle`(`e610858`), `feature/design-detail-screens`(`bfcf341`), `feature/design-project-detail`(`0c7d2c9`), `feature/design-mobile`(`74c8149`), `feature/design-dark-windows`, `feature/design-iphone-mockup`(`eceb50a`), `feature/design-tablet`(`2d280cd`), `bugfix/profileview-code-widget`(`aa62f64`), `feature/design-tablet-rest`(`c1e2f5c`), `feature/design-motion`(모션 설계 · 데스크톱 창 ✕ 버튼 · 인수인계 문서, 2026-09-14), `feature/tech-stack`(기술 스택 결정 문서, 2026-09-14)
 - 참고로 남겨 둔 비교안 커밋: 색상 A~F `de7d440`, 행사 상세 사진 묶음형 A `1769266`
 

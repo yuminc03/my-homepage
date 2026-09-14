@@ -66,8 +66,8 @@
 ### 5-2. 그 밖의 구성
 - 언어: **TypeScript**(Astro 기본). Content Collections 스키마가 글의 필드를 검사하고 타입을 만들어 준다
 - 콘텐츠: `src/content/`의 Markdown(프로젝트·스터디·세미나 컬렉션 3개), 사진은 글 폴더 옆에 두고 `astro:assets`로 최적화
-- 배포: 정적 호스팅(GitHub Pages 또는 Cloudflare Pages). 원격 저장소가 GitHub에 있어 GitHub Actions 자동 배포가 가장 간단하다. 사이트 구현 단계에서 확정
-- 패키지 매니저: npm(추가 도구 설치 없이 시작)
+- 배포: **GitHub Pages 하위 경로** `https://yuminc03.github.io/my-homepage/`. 원격 저장소가 GitHub에 있어 GitHub Actions 자동 배포가 가장 간단하다. 하위 경로라 `base: '/my-homepage'`를 설정하고 내부 링크·에셋에 `import.meta.env.BASE_URL`을 붙인다
+- 패키지 매니저: npm(추가 도구 설치 없이 시작). Node 24를 `.nvmrc`로 고정(Astro 7은 Node 22.12 이상 필요)
 
 ## 6. 예상 면접 질문과 답변 요지
 ### Q1. 왜 React나 Next.js가 아니라 Astro인가요?
@@ -111,8 +111,8 @@
 | 콘텐츠 | **Markdown + Content Collections**(프로젝트·스터디·세미나 3개 컬렉션) | 확정(2026-09-14) | 글 하나 = 파일 하나, git 기록이 활동 기록, 빌드 시 필드 검사 |
 | 언어 | TypeScript | 확정(Astro 기본) | 스키마에서 타입 자동 생성 |
 | 페이지 전환 | View Transitions(`ClientRouter`) + `transition:persist` | 확정 | 모션 설계(`transform`·`opacity`)를 페이지 이동 사이에 연결 |
-| 배포 | GitHub Pages 또는 Cloudflare Pages | 보류 — 사이트 구현 단계에서 확정 | 둘 다 정적 호스팅 무료 |
-| 패키지 매니저 | npm | 제안 — 프로젝트 생성 시 확정 | 추가 설치 없이 시작 |
+| 배포 | **GitHub Pages 하위 경로**(`yuminc03.github.io/my-homepage`, `base: '/my-homepage'`) | 확정(2026-09-14) | 저장소가 이미 GitHub에 있어 Actions로 자동 배포, 무료. 루트 주소 대신 하위 경로를 사용자가 선택 |
+| 패키지 매니저·런타임 | npm · Node 24(`.nvmrc`) · Astro 7.3.x | 확정(2026-09-14) | 추가 설치 없이 시작. Astro 7은 Node 22.12 이상 필요 |
 
 - 비교에서 제외한 후보: Next.js(서버 기능이 필요 없어 복잡도·JS 비용만 증가), Vite + React SPA(링크 미리보기·검색 노출 약함), 순수 HTML/CSS/JS(공통 요소 복제·수동 목록 관리)
 - 다시 검토할 조건: 여러 창을 동시에 띄우고 드래그하는 앱형 UI로 커질 때, 로그인·댓글 같은 서버 기능이 필요해질 때
