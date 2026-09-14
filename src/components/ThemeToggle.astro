@@ -1,0 +1,151 @@
+---
+// 테마 전환 버튼: 누르면 바뀔 모드의 아이콘을 보여준다(다크일 때 해, 라이트일 때 달)
+// - 선택값은 localStorage('theme')에 저장하고 <html data-theme>에 반영한다. 첫 적용은 BaseLayout의 <head> 인라인 스크립트
+// - 저장값이 없으면 시스템 설정을 따르며, 시스템 설정이 바뀌면 버튼 이름도 따라 바뀐다
+// - size: desktop = 메뉴바 28×22, touch = 누르는 영역 44×44(모바일·태블릿)
+interface Props {
+	size?: 'desktop' | 'touch';
+}
+
+const { size = 'desktop' } = Astro.props;
+---
+
+<button type="button" class="theme-toggle" data-size={size} data-theme-toggle aria-label="테마 전환">
+	<svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+		<circle cx="12" cy="12" r="4"></circle>
+		<path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"></path>
+	</svg>
+	<svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+		<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"></path>
+	</svg>
+</button>
+
+<style>
+	.theme-toggle {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0;
+		border: 0;
+		background: transparent;
+		color: var(--ink);
+		cursor: pointer;
+		transition:
+			background-color var(--dur-fast) var(--ease-out),
+			color var(--dur-fast) var(--ease-out);
+	}
+
+	.theme-toggle:focus-visible {
+		outline: 2px solid var(--win-accent);
+		outline-offset: 1px;
+	}
+
+	.theme-toggle[data-size='desktop'] {
+		width: 28px;
+		height: 22px;
+		border-radius: 6px;
+	}
+
+	.theme-toggle[data-size='desktop'] svg {
+		width: 15px;
+		height: 15px;
+		stroke-width: 1.9;
+	}
+
+	.theme-toggle[data-size='touch'] {
+		width: 44px;
+		height: 44px;
+		border-radius: 12px;
+	}
+
+	.theme-toggle[data-size='touch'] svg {
+		width: 20px;
+		height: 20px;
+		stroke-width: 1.8;
+	}
+
+	@media (hover: hover) {
+		.theme-toggle:hover {
+			background: var(--menu-active);
+			color: var(--ink-strong);
+		}
+	}
+
+	.theme-toggle:active {
+		background: var(--menu-active);
+	}
+
+	/* 지금 테마가 다크면 해(→ 라이트로), 라이트면 달(→ 다크로). data-theme이 없으면 시스템 설정 기준 */
+	.sun {
+		display: none;
+	}
+
+	:global(:root[data-theme='dark']) .sun {
+		display: block;
+	}
+
+	:global(:root[data-theme='dark']) .moon {
+		display: none;
+	}
+
+	@media (prefers-color-scheme: dark) {
+		:global(:root:not([data-theme])) .sun {
+			display: block;
+		}
+
+		:global(:root:not([data-theme])) .moon {
+			display: none;
+		}
+	}
+
+	/* 누른 뒤에만 아이콘이 돌며 나타난다(페이지를 열 때는 움직이지 않음). 모션: rotate(-90deg) scale(.6) → 원래, 350ms */
+	@media (prefers-reduced-motion: no-preference) {
+		.theme-toggle[data-animate] svg {
+			animation: theme-icon-in 350ms var(--ease-out);
+		}
+	}
+
+	@keyframes theme-icon-in {
+		from {
+			transform: rotate(-90deg) scale(0.6);
+			opacity: 0;
+		}
+	}
+</style>
+
+<script>
+	const root = document.documentElement;
+	const systemDark = window.matchMedia('(prefers-color-scheme: dark)');
+
+	const currentTheme = () => root.dataset.theme ?? (systemDark.matches ? 'dark' : 'light');
+
+	// 버튼 이름은 "누르면 무엇이 되는지"를 말한다
+	const syncLabels = () => {
+		const label = currentTheme() === 'dark' ? '라이트 모드로 전환' : '다크 모드로 전환';
+		for (const button of document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]')) {
+			button.setAttribute('aria-label', label);
+			button.title = label;
+		}
+	};
+
+	// 버튼이 여러 개(메뉴바·모바일 메뉴바)여도 한 번만 등록되도록 문서에 위임한다
+	document.addEventListener('click', (event) => {
+		const button = (event.target as Element | null)?.closest<HTMLButtonElement>('[data-theme-toggle]');
+		if (!button) return;
+
+		const next = currentTheme() === 'dark' ? 'light' : 'dark';
+		root.dataset.theme = next;
+		try {
+			localStorage.setItem('theme', next);
+		} catch {
+			// 저장소를 쓸 수 없어도(사생활 보호 모드 등) 이번 페이지에서는 전환된다
+		}
+		button.toggleAttribute('data-animate', false);
+		void button.offsetWidth; // 연속으로 눌러도 애니메이션이 다시 시작되도록 리플로우
+		button.toggleAttribute('data-animate', true);
+		syncLabels();
+	});
+
+	systemDark.addEventListener('change', syncLabels);
+	syncLabels();
+</script>

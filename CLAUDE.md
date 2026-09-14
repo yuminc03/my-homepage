@@ -26,7 +26,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## 아키텍처
 
 - 스타일 계층: `src/layouts/BaseLayout.astro`가 `src/styles/tokens.css`(색·모션 토큰)와 `src/styles/global.css`(전역 기본)를 한 번 불러오고, 화면별 스타일은 각 컴포넌트의 스코프 `<style>`에서 토큰(`var(--…)`)만 참조합니다. 색 값을 컴포넌트에 직접 쓰지 않습니다(앱 아이콘 그라디언트·코드 에디터·iPhone 앱 화면처럼 테마와 무관한 고정색은 예외).
-- 테마: 색 토큰은 `light-dark(라이트, 다크)` 한 쌍이고, `:root`의 `color-scheme`이 어느 쪽을 쓸지 정합니다. 기본은 시스템 설정, `<html data-theme="dark"|"light">`이면 그 테마로 고정합니다. 테마를 바꾸는 코드는 `data-theme`만 바꿉니다.
+- 테마: 색 토큰은 `light-dark(라이트, 다크)` 한 쌍이고, `:root`의 `color-scheme`이 어느 쪽을 쓸지 정합니다. 기본은 시스템 설정, `<html data-theme="dark"|"light">`이면 그 테마로 고정합니다. 테마를 바꾸는 코드는 `data-theme`만 바꿉니다. 사용자 선택은 `src/components/ThemeToggle.astro`가 `localStorage('theme')`에 저장하고, `BaseLayout`의 `<head>` 인라인 스크립트가 첫 화면을 그리기 전에 다시 적용합니다(깜빡임 방지). 저장값이 없으면 속성을 붙이지 않아 시스템 설정을 따릅니다.
+- 셸 원칙과 반응형 구간(모바일 `< 744px` · 태블릿 `744–1179px` · 데스크톱 `≥ 1180px`)은 `PROGRESS.md` 5-12. 동작이 없는 버튼·아이콘은 만들지 않습니다.
 - 콘텐츠: `src/content.config.ts`가 `src/content/` 아래 세 컬렉션(`projects`·`study`·`seminars`)의 스키마를 정의합니다. 사진이 있는 글은 폴더(`slug/index.md(x)`)로 만들고 이미지를 옆에 둡니다. 페이지는 `getCollection()`으로 읽고 `draft: true`를 제외해야 합니다. 세미나 MDX 본문의 `Photo`·`PhotoPair`·`PhotoSide`는 상세 페이지가 `<Content components={{ ... }} />`로 넘겨야 렌더링됩니다. 필드 목록은 `PROGRESS.md` 5-10.
 - `src/content/*/sample-*`는 스키마 검증과 새 글 복사용 예시(`draft: true`)입니다.
 - 페이지 구조가 생기면 이 섹션에 추가합니다.

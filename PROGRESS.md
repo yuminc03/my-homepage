@@ -4,7 +4,7 @@
 
 ## 1. 한눈에 보기
 - **무엇을 만드나**: iOS 개발자 Chu Yumin의 개인 홈페이지(자기소개·프로젝트·스터디 기록·세미나 기록)
-- **지금 단계**: 디자인 시안 완료, 기술 스택 확정(Astro + 일반 CSS), **Astro 프로젝트 생성**(임시 홈 1장, 빌드 확인), **전역 토큰 CSS 이식**(`src/styles/tokens.css`), **콘텐츠 컬렉션 스키마**(프로젝트·스터디·세미나, MDX)
+- **지금 단계**: 디자인 시안 완료, 기술 스택 확정(Astro + 일반 CSS), **Astro 프로젝트 생성**(임시 홈 1장, 빌드 확인), **전역 토큰 CSS 이식**(`src/styles/tokens.css`), **콘텐츠 컬렉션 스키마**(프로젝트·스터디·세미나, MDX) — 여기까지 `develop` 병합. 지금은 **공통 셸**(테마 버튼·메뉴바·Dock·창) 구현 중
 - **시안 진행도**
   - 데스크톱 7화면(홈·목록 3·상세 3) — 완료
   - 모바일 7화면(홈 화면 메타포) — 완료
@@ -13,8 +13,8 @@
   - 데스크톱 창 ✕ 닫기 버튼 — 채택(2026-09-14), 데스크톱 창 화면 6장에 반영, `develop` 병합
 - **기술 스택**: Astro + 일반 CSS + TypeScript + Markdown Content Collections 확정(2026-09-14). 비교·약점·면접 질문은 `docs/tech-stack.md`
 - **시안 캔버스**: https://claude.ai/code/artifact/48a3c34c-b882-4f13-8e2f-7e3668bdb7b1 (v22, 페이지 5개 · 아트보드 25장)
-- **Git**: 시안·기술 스택 문서·`.claude/settings.json`(`92083d0`)이 `develop`에 반영되어 있다. `feature/astro-setup` 브랜치에서 작업 중 — Astro 프로젝트 생성 커밋 완료, 전역 토큰 CSS 이식 커밋 완료, MDX 통합·콘텐츠 컬렉션 스키마 커밋 완료(2026-09-14). `develop` 병합은 사용자 확인 대기. `master`·원격 push는 한 번도 하지 않았다
-- **다음 단계**: 사용자 확인 후 `feature/astro-setup`을 `develop`에 병합 → 화면 구현(공통 셸: 메뉴바·Dock·창)
+- **Git**: 시안·기술 스택 문서·`.claude/settings.json`(`92083d0`)이 `develop`에 반영되어 있다. `feature/astro-setup`(커밋 4개)을 `develop`에 병합 `004589b` → 브랜치 삭제(2026-09-14). 지금은 `feature/site-shell` 브랜치에서 작업 중(테마 버튼 커밋 완료, 다음은 메뉴바·Dock·창). `master`·원격 push는 한 번도 하지 않았다
+- **다음 단계**: 셸(메뉴바·Dock·창·목록 페이지 틀) → Dock 자동 숨김 → 시계 → `develop` 병합. 그 뒤 페이지 구현, 콘텐츠 검색
 
 ## 2. 새 채팅에서 이어서 시작하기
 ### 2-1. 지금 바로 할 일
@@ -22,12 +22,13 @@
 2. Node는 **nvm의 24**를 쓴다. 셸 기본값이 21.7.3이라 명령 전에 `source ~/.nvm/nvm.sh && nvm use`(`.nvmrc` = 24)를 먼저 실행한다. Astro 7은 Node 22.12 이상이 필요하다
    - `astro preview`는 백그라운드로 분리되는 단일 서버다. 검증 후 반드시 `npx astro preview stop`으로 끈다(`pkill`로 안 잡히고, 남아 있으면 다음 실행이 "already running"으로 건너뛴다)
    - 화면 확인은 headless Chrome `--screenshot`(시스템 다크는 `--force-dark-mode`)을 쓰되, Chrome이 저장 후 종료되지 않으므로 파일이 생기면 `pkill -f "user-data-dir=..."`로 끈다
-3. `feature/astro-setup` 브랜치의 작업을 커밋 단위로 이어간다(각 커밋마다 제안 → 사용자 확인)
-   1. Astro 프로젝트 생성 — 파일 작성·`npm run build`·`/my-homepage/` 미리보기 확인, **커밋 완료**(사용자 확인)
-   2. 전역 토큰 CSS 이식 — `src/styles/tokens.css`(색 55쌍 `light-dark()` + 모션 15개), `src/styles/global.css`, `src/layouts/BaseLayout.astro`, 임시 홈이 레이아웃 사용. 빌드·시스템 다크/라이트 스크린샷 확인, 사용자가 개발 서버 Console에서 `data-theme` 전환 확인, **커밋 완료**
-   3. 콘텐츠 컬렉션 스키마 — `@astrojs/mdx` 추가, `src/content.config.ts`(스키마 3개, 5-10), 예시 글 3개(`draft: true`)와 단색 임시 이미지. sync·빌드·렌더링·틀린 글 실패 확인, **커밋 완료**(2개로 나눔: MDX 통합 / 스키마·예시·문서)
-   4. 끝나면 `develop` `--no-ff` 병합 → 브랜치 삭제
-4. 그 뒤 후보: 대괄호 `[ ]` placeholder에 들어갈 실제 콘텐츠 정리(4장 남은 일), 화면 구현
+3. `feature/site-shell` 브랜치의 작업을 커밋 단위로 이어간다(각 커밋마다 제안 → 사용자 확인). 결정은 5-12
+   1. 테마 전환 버튼 — `src/components/ThemeToggle.astro`, `BaseLayout` `<head>` 인라인 스크립트, body 바탕 전환. 빌드 확인, **커밋 완료**(사용자 확인)
+   2. 셸: 앱 목록 데이터(홈·프로젝트·스터디 기록·세미나 기록 + 연락처) → `MenuBar`·`Dock`·`Window`(데스크톱 창 / 모바일·태블릿 시트) 컴포넌트 → `SiteLayout` → 목록 페이지 틀 3개(`/projects/`·`/study/`·`/seminars/`)와 활성 표시
+   3. Dock 자동 숨김(스크롤·하단 hover, 힌트 막대)
+   4. 데스크톱 메뉴바 시계
+   5. 끝나면 `develop` `--no-ff` 병합 → 브랜치 삭제
+4. 그 뒤: 홈·목록·상세 페이지 구현 → 콘텐츠 검색(5-12) → 대괄호 `[ ]` placeholder 실제 콘텐츠 정리
 
 ### 2-2. 세션 시작 체크리스트 (매번)
 1. `git status`, `git branch --show-current`로 브랜치와 작업 트리 확인
@@ -69,7 +70,9 @@
 | Astro 생성 | 최소 템플릿 기반, GitHub Pages 하위 경로(`base: '/my-homepage'`), Node 24 고정, 임시 홈 | `feature/astro-setup` | 커밋 `acbfd2f`(2026-09-14) |
 | 토큰 이식 | 시안 토큰을 `light-dark()` 한 쌍으로 합쳐 `src/styles/tokens.css` 생성, 전역 스타일·공통 레이아웃 | `feature/astro-setup` | 사용자 Console 확인 후 커밋 `c5b875d`(2026-09-14) |
 | MDX 통합 | `@astrojs/mdx` 설치(`astro add`, `@astrojs/markdown-satteri` 함께 추가), `integrations: [mdx()]` | `feature/astro-setup` | 커밋(2026-09-14) |
-| 콘텐츠 스키마 | 프로젝트·스터디·세미나 컬렉션, 예시 글 3개, 검증 | `feature/astro-setup` | 커밋(2026-09-14), `develop` 병합 대기 |
+| 콘텐츠 스키마 | 프로젝트·스터디·세미나 컬렉션, 예시 글 3개, 검증 | `feature/astro-setup` | 커밋 `f949af1`(2026-09-14) |
+| Astro 기반 병합 | Astro 생성·토큰·MDX·스키마 커밋 4개 | `feature/astro-setup` | `develop` 병합 `004589b` → 브랜치 삭제(2026-09-14) |
+| 테마 전환 버튼 | `ThemeToggle` 컴포넌트, `<head>` 인라인 스크립트로 저장 테마 먼저 적용 | `feature/site-shell` | 커밋(2026-09-14) |
 
 ### 남은 일
 - [x] 모션·✕·문서 커밋 → `develop` 병합 → 브랜치 삭제 (2026-09-14, 사용자 확인)
@@ -78,11 +81,14 @@
 - [x] 배포 주소 확정: GitHub Pages 하위 경로 `https://yuminc03.github.io/my-homepage/` (2026-09-14, 사용자 선택)
 - [x] Astro 프로젝트 생성 커밋 (2026-09-14, 사용자 확인)
 - [x] 전역 토큰 CSS 이식 커밋 (2026-09-14, 사용자 확인)
-- [ ] 테마 전환 스크립트·버튼(`<head>` 인라인 스크립트로 `localStorage` 값을 `data-theme`에 먼저 적용) — 화면 구현 때
+- [x] 테마 전환 스크립트·버튼(`<head>` 인라인 스크립트로 `localStorage` 값을 `data-theme`에 먼저 적용) (2026-09-14, 사용자 확인 후 커밋)
 - [ ] 글꼴 로딩 방식 확정: 지금은 시안처럼 Google Fonts `<link>`. 자체 호스팅(서브셋)과 비교 — 화면 구현 때
 - [x] 프로젝트 분류는 여러 개 가능, 세미나 사진 배치는 MDX 컴포넌트, 예시 글은 컬렉션마다 1개 `draft` (2026-09-14, 사용자 선택)
 - [x] MDX 통합·콘텐츠 컬렉션 스키마 커밋 (2026-09-14, 사용자 확인)
-- [ ] `feature/astro-setup` → `develop` 병합 → 브랜치 삭제
+- [x] `feature/astro-setup` → `develop` 병합 `004589b` → 브랜치 삭제 (2026-09-14, 사용자 확인)
+- [x] 셸 미정 요소 결정: 연락처 = About me 링크로 이동, 검색 = 실제 콘텐츠 검색으로 구현, Dock 터미널 아이콘 제거, 시계 유지(데스크톱) (2026-09-14, 5-12)
+- [ ] 공통 셸(메뉴바·Dock·창·목록 틀) → Dock 자동 숨김 → 시계 → `feature/site-shell` 병합
+- [ ] 콘텐츠 검색 기능 — 목록·상세 페이지 구현 뒤 별도 브랜치(방식은 5-12 추천안을 사용자와 확정)
 - [ ] 화면 구현 때 함께: `draft` 제외 헬퍼, 스터디 읽는 시간 계산, 세미나 MDX 컴포넌트 `Photo`·`PhotoPair`·`PhotoSide`(상세 페이지에서 `<Content components={{ ... }} />`로 넘김), 목록 정렬(날짜 내림차순)
 - [ ] 실제 글을 쓰면 예시 글 3개(`sample-*`)와 임시 이미지 삭제
 - [ ] GitHub Actions로 GitHub Pages 자동 배포 설정(원격 push가 필요하므로 사용자 확인 후)
@@ -187,6 +193,17 @@
 - 테마 토큰 구조(2026-09-14): 시안의 두 블록(`.site` 다크 / `.site[data-theme="light"]`) 대신 **토큰 하나 = `light-dark(라이트, 다크)` 한 줄**. `:root{color-scheme: light dark}`이면 시스템 설정을 따르고, `:root[data-theme="dark"|"light"]`가 `color-scheme`만 바꿔 사용자 선택을 고정한다. 같은 값을 두 번 쓰지 않고도 JS 없이 첫 방문 시스템 테마가 적용된다(Asset Catalog의 Any/Dark 한 쌍과 같은 구조)
 - 다시 검토할 조건: 여러 창 동시 표시·드래그 같은 앱형 UI, 로그인·댓글 같은 서버 기능이 필요해질 때
 
+### 5-12. 사이트 셸 (2026-09-14 결정)
+- 원칙: **누를 수 있어 보이는데 아무 일도 없는 요소는 만들지 않는다**. 시안에서 동작이 정해지지 않은 요소는 기능을 정하거나 뺀다
+- 연락처(모바일 홈 앱 아이콘·Dock 메일 아이콘): **홈 About me의 GitHub·Email·LinkedIn 링크 영역으로 이동**(`/#contact`, 도착하면 강조). 모션 프로토타입에서는 `noop`이었다
+- Dock `</>` 코드 에디터 아이콘(데스크톱): 홈으로 가서 코드 에디터 창을 앞으로(모션 프로토타입 `focusCode`)
+- Dock 터미널 아이콘(데스크톱): **제거**(어느 시안에도 기능 없음)
+- 메뉴바 검색 아이콘: **내 콘텐츠(프로젝트·스터디·세미나) 검색으로 구현**하기로 함(사용자 제안). 결과가 상세 페이지로 연결되어야 하므로 목록·상세 페이지 구현 뒤 별도 작업. 그전까지 아이콘은 두지 않는다
+  - 추천안(확정 전): 빌드 때 컬렉션에서 제목·요약·태그·카테고리·본문 텍스트를 모은 JSON 색인을 만들고, 브라우저에서 부분 문자열로 찾는다. 한국어는 조사가 붙어 단어 단위 색인(Pagefind 등)에서 "스터디"로 "스터디를"을 놓칠 수 있는데, 부분 문자열 방식은 글 수가 적은 이 사이트에서 가볍고 정확하다. UI는 데스크톱 ⌘K / 메뉴바 아이콘으로 여는 가운데 검색 창
+- 메뉴바 시계: **데스크톱에만** 실제 현재 시각(분 단위 갱신). 모바일·태블릿은 기기 상태 표시줄과 겹치므로 두지 않는다(시안 규칙)
+- 반응형 구간(구현 기준): 모바일 `< 744px`(시안 390) · 태블릿 `744–1179px`(시안 768) · 데스크톱 `≥ 1180px`(시안 1440). 데스크톱 창은 `min(1240px, 100% - 좌우 여백)`으로 줄어든다
+- 테마 버튼: `ThemeToggle.astro`(`size="desktop"` 28×22 / `size="touch"` 44×44). 누른 뒤에만 아이콘이 rotate(-90deg) scale(.6)→원래 350ms로 나타나고(페이지를 열 때는 움직이지 않음), `prefers-reduced-motion`이면 생략. 버튼 이름은 "누르면 무엇이 되는지"(라이트/다크 모드로 전환)이며 시스템 설정이 바뀌면 따라 바뀐다
+
 ## 6. 저작권 주의선
 - macOS·Xcode의 실제 UI를 복제하지 않는다. Apple 로고, SF Symbols, 신호등 색(빨강·노랑·초록) 창 컨트롤, 실제 메뉴 구조를 쓰지 않는다
 - 자체 팔레트와 직접 그린 SVG 아이콘을 쓴다. 창 컨트롤 점은 라일락 2개 + 민트 1개(장식이며 기능 없음). 닫기는 별도 ✕ 버튼으로 둔다
@@ -286,7 +303,8 @@
 | `.gitignore` | `dist/`·`.astro/`·`node_modules/`·`.env`·`.DS_Store` 등(Astro 템플릿 그대로) |
 | `.vscode/extensions.json` | Astro VS Code 확장 추천 |
 | `src/pages/index.astro` | 토큰 확인용 임시 홈(`BaseLayout` 사용, 인사말·좋아하는 문구·링크). 화면 구현 때 교체 |
-| `src/layouts/BaseLayout.astro` | 모든 페이지 공통 문서 뼈대: `lang="ko"`, 메타(title·description 기본값), Noto Sans KR `<link>`, `tokens.css`·`global.css` import, `<slot />` |
+| `src/layouts/BaseLayout.astro` | 모든 페이지 공통 문서 뼈대: `lang="ko"`, 메타(title·description 기본값), Noto Sans KR `<link>`, `tokens.css`·`global.css` import, `<head>` 인라인 스크립트(저장된 테마를 첫 화면 전에 `data-theme`에 적용), `<slot />` |
+| `src/components/ThemeToggle.astro` | 테마 전환 버튼(해/달 아이콘, `size` desktop/touch). 문서 위임 클릭 → `data-theme`·`localStorage('theme')` 저장, 버튼 이름 갱신, 누른 뒤 아이콘 애니메이션 |
 | `src/styles/tokens.css` | 디자인 토큰. 모션 곡선 3·시간 12, 색 55쌍 `light-dark()`, `color-scheme` 3가지(`:root`·`[data-theme="dark"]`·`[data-theme="light"]`) |
 | `src/styles/global.css` | 전역 기본: box-sizing, body 바탕 `--desk`·글자 `--ink`·글꼴, 링크 `--win-accent`(hover 전환은 모션 토큰), `img` 반응형, `.code` 고정폭 글꼴 |
 - 템플릿에서 가져오지 않은 것: `README.md`·`AGENTS.md`(기존 README·`CLAUDE.md` 사용), `.vscode/launch.json`, 기본 Astro 파비콘(나중에 자체 아이콘으로 추가)
@@ -315,9 +333,9 @@
 - 인터랙션은 `onClick="{{handler}}"`, 조건 표시는 `<sc-if value="{{bool}}">`, 상태 스타일은 `data-*="{{값}}"` + CSS 선택자로 만든다(`class`에 값 끼워 넣기는 쓰지 않았다)
 
 ## 12. 브랜치·커밋 기록
-- 로컬 브랜치: `master`, `develop`, `feature/astro-setup`(작업 중). 원격(`origin`)과 `master`에는 아직 반영하지 않았다
+- 로컬 브랜치: `master`, `develop`, `feature/site-shell`(작업 중). 원격(`origin`)과 `master`에는 아직 반영하지 않았다
 - `develop` 직접 커밋: `92083d0` `.claude/settings.json` 권한 추가(2026-09-14)
-- 병합 후 삭제한 브랜치(순서대로): `feature/design-theme-dock`, `feature/design-color-direction`(`fab45e5`), `feature/design-theme-toggle`(`e610858`), `feature/design-detail-screens`(`bfcf341`), `feature/design-project-detail`(`0c7d2c9`), `feature/design-mobile`(`74c8149`), `feature/design-dark-windows`, `feature/design-iphone-mockup`(`eceb50a`), `feature/design-tablet`(`2d280cd`), `bugfix/profileview-code-widget`(`aa62f64`), `feature/design-tablet-rest`(`c1e2f5c`), `feature/design-motion`(모션 설계 · 데스크톱 창 ✕ 버튼 · 인수인계 문서, 2026-09-14), `feature/tech-stack`(기술 스택 결정 문서, 2026-09-14)
+- 병합 후 삭제한 브랜치(순서대로): `feature/design-theme-dock`, `feature/design-color-direction`(`fab45e5`), `feature/design-theme-toggle`(`e610858`), `feature/design-detail-screens`(`bfcf341`), `feature/design-project-detail`(`0c7d2c9`), `feature/design-mobile`(`74c8149`), `feature/design-dark-windows`, `feature/design-iphone-mockup`(`eceb50a`), `feature/design-tablet`(`2d280cd`), `bugfix/profileview-code-widget`(`aa62f64`), `feature/design-tablet-rest`(`c1e2f5c`), `feature/design-motion`(모션 설계 · 데스크톱 창 ✕ 버튼 · 인수인계 문서, 2026-09-14), `feature/tech-stack`(기술 스택 결정 문서, 2026-09-14), `feature/astro-setup`(Astro 생성·토큰·MDX·스키마, 병합 `004589b`, 2026-09-14)
 - 참고로 남겨 둔 비교안 커밋: 색상 A~F `de7d440`, 행사 상세 사진 묶음형 A `1769266`
 
 ## 13. 문서 관리 규칙

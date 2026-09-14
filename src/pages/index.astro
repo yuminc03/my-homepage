@@ -1,10 +1,13 @@
 ---
 // 토큰 적용 확인용 임시 홈. 화면 구현 단계에서 데스크톱 메타포 홈으로 교체한다
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
 ---
 
 <BaseLayout>
 	<main>
+		<ThemeToggle />
+		<ThemeToggle size="touch" />
 		<h1>안녕하세요, iOS 개발자 Chu Yumin입니다.</h1>
 		<p>기회가 주어지면 최선을 다하는 것이 아니라 최선을 다하고 있으면 기회가 주어지는 것이다.</p>
 		<a href={import.meta.env.BASE_URL}>홈</a>
