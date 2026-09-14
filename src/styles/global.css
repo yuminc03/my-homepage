@@ -1,0 +1,48 @@
+/*
+ * 전역 기본 스타일
+ * - 색·모션 값은 tokens.css의 custom property만 쓴다
+ * - 화면별 스타일은 각 Astro 컴포넌트의 <style>(스코프)에 둔다
+ */
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	min-height: 100vh;
+	background: var(--desk);
+	color: var(--ink);
+	font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+	-webkit-font-smoothing: antialiased;
+}
+
+a {
+	color: var(--win-accent);
+	text-decoration: none;
+	transition: color var(--dur-fast) var(--ease-out);
+}
+
+a:hover {
+	color: var(--win-accent-hover);
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+}
+
+/* 코드 에디터·코드 블록 공통 글꼴 (색은 테마와 무관한 고정값이라 각 컴포넌트에서 지정) */
+.code {
+	font-family: ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace;
+	font-size: 13px;
+	line-height: 22px;
+	white-space: pre;
+}

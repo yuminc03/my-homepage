@@ -1,0 +1,116 @@
+/*
+ * 디자인 토큰 (G · 라일락 & 민트)
+ * - 원본: design/Main.dc.html 헬멧의 .site / .site[data-theme="light"], design/MotionDesktop.dc.html 모션 토큰
+ * - 색 토큰은 light-dark(라이트, 다크) 한 쌍이다. 어느 쪽이 쓰일지는 color-scheme이 정한다
+ *   - data-theme 없음: 시스템 설정(prefers-color-scheme)을 따른다
+ *   - data-theme="dark" | "light": 사용자가 고른 테마로 고정한다
+ * - 앱 아이콘 그라디언트, iPhone 목업 안쪽 앱 화면, 코드 에디터 색은 테마와 무관한 고정값이라 여기에 두지 않는다
+ */
+
+:root {
+	color-scheme: light dark;
+
+	/* 모션: 곡선 */
+	--ease-out: cubic-bezier(.2,.8,.2,1);
+	--ease-in: cubic-bezier(.4,0,1,1);
+	--ease-sheet: cubic-bezier(.32,.72,0,1);
+
+	/* 모션: 시간 (PROGRESS.md 5-9) */
+	--dur-press: 120ms;
+	--dur-fast: 200ms;
+	--dur-window: 320ms;
+	--dur-close: 200ms;
+	--dur-sheet: 420ms;
+	--dur-sheet-close: 300ms;
+	--dur-push: 360ms;
+	--dur-pop: 300ms;
+	--dur-reveal: 480ms;
+	--stagger: 50ms;
+	--dur-dock: 380ms;
+	--dur-theme: 400ms;
+
+	/* 바탕·블러 글로우 */
+	--desk: light-dark(oklch(96% 0.012 290), oklch(18% 0.02 290));
+	--glow-a: light-dark(oklch(86% 0.08 300), oklch(58% 0.13 300));
+	--glow-b: light-dark(oklch(89% 0.07 170), oklch(60% 0.1 170));
+	--glow-c: light-dark(oklch(90% 0.06 300), oklch(52% 0.12 300));
+
+	/* 메뉴바·Dock 유리 */
+	--glass: light-dark(oklch(100% 0 0 / 0.55), oklch(100% 0 0 / 0.10));
+	--glass-line: light-dark(oklch(25% 0.022 290 / 0.08), oklch(100% 0 0 / 0.12));
+	--glass-hi: light-dark(oklch(100% 0 0 / 0.7), oklch(100% 0 0 / 0.18));
+	--glass-shadow: light-dark(oklch(40% 0.024 295 / 0.10), oklch(10% 0.022 290 / 0.35));
+
+	/* 메뉴바 글자·활성 메뉴 */
+	--ink-strong: light-dark(oklch(20% 0.015 290), oklch(97% 0.006 290));
+	--ink: light-dark(oklch(32% 0.015 290), oklch(88% 0.015 290));
+	--ink-muted: light-dark(oklch(42% 0.015 290), oklch(82% 0.015 290));
+	--menu-active: light-dark(oklch(25% 0.022 290 / 0.08), oklch(100% 0 0 / 0.14));
+
+	/* 바로가기 라벨·스크롤 힌트·Dock */
+	--label: light-dark(oklch(28% 0.015 290), oklch(90% 0.012 290));
+	--cue: light-dark(oklch(46% 0.022 290), oklch(76% 0.022 290));
+	--dock-sep: light-dark(oklch(25% 0.022 290 / 0.14), oklch(100% 0 0 / 0.16));
+	--dock-dot: light-dark(oklch(35% 0.015 290), oklch(90% 0.015 290));
+	--dock-shadow: light-dark(oklch(40% 0.024 295 / 0.16), oklch(8% 0.022 290 / 0.5));
+
+	/* 창 테두리·그림자, 아이콘 그림자 */
+	--win-line: light-dark(oklch(25% 0.022 290 / 0.08), oklch(100% 0 0 / 0.12));
+	--win-shadow: light-dark(oklch(35% 0.024 295 / 0.18), oklch(6% 0.022 290 / 0.55));
+	--icon-shadow: light-dark(oklch(40% 0.024 295 / 0.22), oklch(8% 0.022 290 / 0.45));
+
+	/* 창 본문 */
+	--win-bg: light-dark(oklch(98% 0.006 290), oklch(23% 0.018 290));
+	--win-bar: light-dark(oklch(94% 0.006 290), oklch(27% 0.02 290));
+	--win-bar-line: light-dark(oklch(89% 0.007 290), oklch(33% 0.02 290));
+	--win-card: light-dark(oklch(96% 0.007 290), oklch(27% 0.019 290));
+	--win-divider: light-dark(oklch(91% 0.007 290), oklch(33% 0.02 290));
+	--win-chip-line: light-dark(oklch(88% 0.007 290), oklch(38% 0.02 290));
+	--win-ink-strong: light-dark(oklch(18% 0.015 290), oklch(95% 0.008 290));
+	--win-ink: light-dark(oklch(30% 0.015 290), oklch(85% 0.012 290));
+	--win-ink-2: light-dark(oklch(36% 0.015 290), oklch(80% 0.012 290));
+	--win-ink-muted: light-dark(oklch(46% 0.015 290), oklch(72% 0.015 290));
+	--win-ink-sub: light-dark(oklch(54% 0.015 290), oklch(66% 0.015 290));
+	--win-title: light-dark(oklch(42% 0.015 290), oklch(78% 0.015 290));
+	--win-icon: light-dark(oklch(40% 0.015 290), oklch(80% 0.015 290));
+	--win-dot: light-dark(oklch(70% 0.015 290), oklch(50% 0.015 290));
+
+	/* 태그·링크 액센트(라일락) */
+	--win-tag-bg: light-dark(oklch(95% 0.03 295), oklch(33% 0.05 295));
+	--win-tag-ink: light-dark(oklch(46% 0.14 295), oklch(84% 0.09 295));
+	--win-accent: light-dark(oklch(60% 0.15 295), oklch(76% 0.12 295));
+	--win-accent-hover: light-dark(oklch(50% 0.15 295), oklch(84% 0.1 295));
+
+	/* 채운 버튼·활성 칩(다크에서 밝게 반전) */
+	--win-solid-bg: light-dark(oklch(20% 0.015 290), oklch(93% 0.01 290));
+	--win-solid-ink: light-dark(oklch(98% 0.006 290), oklch(20% 0.015 290));
+	--win-solid-press: light-dark(oklch(30% 0.03 295), oklch(84% 0.03 295));
+
+	/* 창 점(장식)·누름·힌트 막대 */
+	--win-ctrl-a: light-dark(oklch(72% 0.06 295), oklch(62% 0.08 295));
+	--win-ctrl-b: light-dark(oklch(81% 0.04 295), oklch(52% 0.06 295));
+	--win-ctrl-c: light-dark(oklch(86% 0.06 170), oklch(56% 0.07 170));
+	--win-press: light-dark(oklch(25% 0.022 290 / 0.06), oklch(100% 0 0 / 0.08));
+	--win-hint: light-dark(oklch(25% 0.022 290 / 0.22), oklch(100% 0 0 / 0.3));
+
+	/* 창 위 Dock */
+	--win-dock-glass: light-dark(oklch(98% 0.006 290 / 0.78), oklch(26% 0.02 290 / 0.78));
+	--win-dock-line: light-dark(oklch(25% 0.022 290 / 0.08), oklch(100% 0 0 / 0.1));
+	--win-dock-hi: light-dark(oklch(100% 0 0 / 0.7), oklch(100% 0 0 / 0.12));
+	--win-dock-shadow: light-dark(oklch(35% 0.024 295 / 0.2), oklch(6% 0.022 290 / 0.5));
+	--win-dock-sep: light-dark(oklch(25% 0.022 290 / 0.14), oklch(100% 0 0 / 0.16));
+	--win-dock-dot: light-dark(oklch(35% 0.015 290), oklch(90% 0.015 290));
+
+	/* 사진 자리·코드 블록 */
+	--win-media-icon: light-dark(oklch(35% 0.022 290), oklch(90% 0.012 290 / 0.75));
+	--win-media-dim: light-dark(oklch(100% 0 0 / 0), oklch(16% 0.02 290 / 0.6));
+	--win-code-line: light-dark(oklch(100% 0 0 / 0), oklch(100% 0 0 / 0.08));
+}
+
+:root[data-theme="dark"] {
+	color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+	color-scheme: light;
+}

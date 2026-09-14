@@ -4,7 +4,7 @@
 
 ## 1. 한눈에 보기
 - **무엇을 만드나**: iOS 개발자 Chu Yumin의 개인 홈페이지(자기소개·프로젝트·스터디 기록·세미나 기록)
-- **지금 단계**: 디자인 시안 완료, 기술 스택 확정(Astro + 일반 CSS), **Astro 프로젝트 생성**(임시 홈 1장, 빌드 확인)
+- **지금 단계**: 디자인 시안 완료, 기술 스택 확정(Astro + 일반 CSS), **Astro 프로젝트 생성**(임시 홈 1장, 빌드 확인), **전역 토큰 CSS 이식**(`src/styles/tokens.css`)
 - **시안 진행도**
   - 데스크톱 7화면(홈·목록 3·상세 3) — 완료
   - 모바일 7화면(홈 화면 메타포) — 완료
@@ -13,16 +13,18 @@
   - 데스크톱 창 ✕ 닫기 버튼 — 채택(2026-09-14), 데스크톱 창 화면 6장에 반영, `develop` 병합
 - **기술 스택**: Astro + 일반 CSS + TypeScript + Markdown Content Collections 확정(2026-09-14). 비교·약점·면접 질문은 `docs/tech-stack.md`
 - **시안 캔버스**: https://claude.ai/code/artifact/48a3c34c-b882-4f13-8e2f-7e3668bdb7b1 (v22, 페이지 5개 · 아트보드 25장)
-- **Git**: 시안·기술 스택 문서·`.claude/settings.json`(`92083d0`)이 `develop`에 반영되어 있다. `feature/astro-setup` 브랜치에서 작업 중 — Astro 프로젝트 생성 커밋 완료(2026-09-14), 다음은 전역 토큰 CSS 이식. `master`·원격 push는 한 번도 하지 않았다
-- **다음 단계**: 전역 토큰 CSS 이식 → 콘텐츠 컬렉션 스키마 정의(같은 브랜치에서 커밋을 나눠 진행)
+- **Git**: 시안·기술 스택 문서·`.claude/settings.json`(`92083d0`)이 `develop`에 반영되어 있다. `feature/astro-setup` 브랜치에서 작업 중 — Astro 프로젝트 생성 커밋 완료, 전역 토큰 CSS 이식 커밋 완료(2026-09-14), 다음은 콘텐츠 컬렉션 스키마. `master`·원격 push는 한 번도 하지 않았다
+- **다음 단계**: 콘텐츠 컬렉션 스키마 정의(같은 브랜치에서 이어서 진행)
 
 ## 2. 새 채팅에서 이어서 시작하기
 ### 2-1. 지금 바로 할 일
 1. `git status`로 브랜치와 작업 트리를 확인한다. 커밋하지 않고 남겨 둔 파일은 없다(스크린샷은 사용자가 삭제, 설정 파일은 커밋함)
 2. Node는 **nvm의 24**를 쓴다. 셸 기본값이 21.7.3이라 명령 전에 `source ~/.nvm/nvm.sh && nvm use`(`.nvmrc` = 24)를 먼저 실행한다. Astro 7은 Node 22.12 이상이 필요하다
+   - `astro preview`는 백그라운드로 분리되는 단일 서버다. 검증 후 반드시 `npx astro preview stop`으로 끈다(`pkill`로 안 잡히고, 남아 있으면 다음 실행이 "already running"으로 건너뛴다)
+   - 화면 확인은 headless Chrome `--screenshot`(시스템 다크는 `--force-dark-mode`)을 쓰되, Chrome이 저장 후 종료되지 않으므로 파일이 생기면 `pkill -f "user-data-dir=..."`로 끈다
 3. `feature/astro-setup` 브랜치의 작업을 커밋 단위로 이어간다(각 커밋마다 제안 → 사용자 확인)
    1. Astro 프로젝트 생성 — 파일 작성·`npm run build`·`/my-homepage/` 미리보기 확인, **커밋 완료**(사용자 확인)
-   2. 전역 토큰 CSS 이식: 시안 헬멧의 `.site` / `.site[data-theme="light"]` 토큰(7장)과 모션 토큰(7-3)을 `src/styles/tokens.css`로 옮기고 공통 레이아웃에서 불러온다
+   2. 전역 토큰 CSS 이식 — `src/styles/tokens.css`(색 55쌍 `light-dark()` + 모션 15개), `src/styles/global.css`, `src/layouts/BaseLayout.astro`, 임시 홈이 레이아웃 사용. 빌드·시스템 다크/라이트 스크린샷 확인, 사용자가 개발 서버 Console에서 `data-theme` 전환 확인, **커밋 완료**
    3. 콘텐츠 컬렉션 스키마: 프로젝트·스터디·세미나 3개(`src/content.config.ts`), 필드는 시안 화면의 항목 기준
    4. 끝나면 `develop` `--no-ff` 병합 → 브랜치 삭제
 4. 그 뒤 후보: 대괄호 `[ ]` placeholder에 들어갈 실제 콘텐츠 정리(4장 남은 일), 화면 구현
@@ -64,7 +66,8 @@
 | 인수인계 문서 | `PROGRESS.md` 재정리, `CLAUDE.md` 현재 상태 갱신 | `feature/design-motion` | 같은 브랜치에서 별도 커밋, 함께 병합 |
 | 기술 스택 확정 | Astro·Next.js·Vite + React SPA·순수 HTML 비교 → Astro + 일반 CSS 확정, `docs/tech-stack.md` 작성 | `feature/tech-stack` | 커밋 → `develop` 병합 → 브랜치 삭제(2026-09-14) |
 | Claude 설정 | `.claude/settings.json`에 `Bash(bash -c ' *)` 허용(시안 재조립용) | `develop` 직접 | 커밋 `92083d0`(2026-09-14) |
-| Astro 생성 | 최소 템플릿 기반, GitHub Pages 하위 경로(`base: '/my-homepage'`), Node 24 고정, 임시 홈 | `feature/astro-setup` | 커밋 완료, 브랜치 작업 계속(2026-09-14) |
+| Astro 생성 | 최소 템플릿 기반, GitHub Pages 하위 경로(`base: '/my-homepage'`), Node 24 고정, 임시 홈 | `feature/astro-setup` | 커밋 `acbfd2f`(2026-09-14) |
+| 토큰 이식 | 시안 토큰을 `light-dark()` 한 쌍으로 합쳐 `src/styles/tokens.css` 생성, 전역 스타일·공통 레이아웃 | `feature/astro-setup` | 사용자 Console 확인 후 커밋(2026-09-14) |
 
 ### 남은 일
 - [x] 모션·✕·문서 커밋 → `develop` 병합 → 브랜치 삭제 (2026-09-14, 사용자 확인)
@@ -72,7 +75,9 @@
 - [x] `feature/tech-stack` 커밋 → `develop` 병합 → 브랜치 삭제 (2026-09-14, 사용자 확인)
 - [x] 배포 주소 확정: GitHub Pages 하위 경로 `https://yuminc03.github.io/my-homepage/` (2026-09-14, 사용자 선택)
 - [x] Astro 프로젝트 생성 커밋 (2026-09-14, 사용자 확인)
-- [ ] 전역 토큰 CSS 이식
+- [x] 전역 토큰 CSS 이식 커밋 (2026-09-14, 사용자 확인)
+- [ ] 테마 전환 스크립트·버튼(`<head>` 인라인 스크립트로 `localStorage` 값을 `data-theme`에 먼저 적용) — 화면 구현 때
+- [ ] 글꼴 로딩 방식 확정: 지금은 시안처럼 Google Fonts `<link>`. 자체 호스팅(서브셋)과 비교 — 화면 구현 때
 - [ ] 콘텐츠 컬렉션 스키마 정의
 - [ ] GitHub Actions로 GitHub Pages 자동 배포 설정(원격 push가 필요하므로 사용자 확인 후)
 - [ ] 대괄호 `[ ]` placeholder를 실제 내용으로 교체 — 프로젝트 이름·소개·태그, 포스트 제목·요약·날짜, 세미나 이름·장소·소감, 연락처 링크(GitHub/Email/LinkedIn)
@@ -167,6 +172,7 @@
 - 감수하는 약점: MPA라 전환 연결이 SPA보다 까다로움, island 간 상태 공유 불편, React보다 작은 생태계, 수정 시 재빌드
 - 배포: **GitHub Pages 하위 경로** `https://yuminc03.github.io/my-homepage/` (2026-09-14 확정). `astro.config.mjs`에 `site`·`base: '/my-homepage'`를 두고, **내부 링크와 `public/` 에셋 경로는 반드시 `import.meta.env.BASE_URL`을 붙여 만든다**(`/projects`처럼 슬래시로 시작하는 절대 경로를 직접 쓰면 배포 후 404)
 - 패키지 매니저 npm, Node 24(`.nvmrc`), Astro 7.3.x (2026-09-14 확정)
+- 테마 토큰 구조(2026-09-14): 시안의 두 블록(`.site` 다크 / `.site[data-theme="light"]`) 대신 **토큰 하나 = `light-dark(라이트, 다크)` 한 줄**. `:root{color-scheme: light dark}`이면 시스템 설정을 따르고, `:root[data-theme="dark"|"light"]`가 `color-scheme`만 바꿔 사용자 선택을 고정한다. 같은 값을 두 번 쓰지 않고도 JS 없이 첫 방문 시스템 테마가 적용된다(Asset Catalog의 Any/Dark 한 쌍과 같은 구조)
 - 다시 검토할 조건: 여러 창 동시 표시·드래그 같은 앱형 UI, 로그인·댓글 같은 서버 기능이 필요해질 때
 
 ## 6. 저작권 주의선
@@ -181,7 +187,9 @@
 - 앱 아이콘 그라디언트(메뉴바 로고·바로가기·Dock 공통, **그라디언트 안의 색은 테마 토큰으로 바꾸지 않는다**): 홈 `70% 0.13 300 → 58% 0.15 285` / 프로젝트 `76% 0.11 170 → 64% 0.11 185` / 스터디 `72% 0.12 340 → 60% 0.14 320` / 세미나 `78% 0.1 220 → 64% 0.12 255` / 연락처 `74% 0.1 195 → 62% 0.11 215`
 - 코드 에디터(고정): 바탕 `oklch(19% 0.018 290)`, 키워드 `76% 0.13 300` / 타입 `80% 0.11 170` / 메서드·숫자 `80% 0.1 220` / 문자열 `82% 0.1 80`
 - 유리 재질(메뉴바·Dock): `var(--glass)` + `blur(28px) saturate(180%)` + `inset 0 1px 0 var(--glass-hi)` + 그림자
-- 토큰은 각 `.dc.html` `<helmet><style>`의 `.site`(다크 기본)와 `.site[data-theme="light"]`에 정의. 캔버스 아트보드끼리 CSS를 공유할 수 없어 **모든 화면 파일에 같은 토큰 줄이 복제**되어 있다. 값을 바꿀 때는 모든 파일을 함께 수정한다
+- 토큰은 각 `.dc.html` `<helmet><style>`의 `.site`(다크 기본)와 `.site[data-theme="light"]`에 정의. 캔버스 아트보드끼리 CSS를 공유할 수 없어 **모든 화면 파일에 같은 토큰 줄이 복제**되어 있다(2026-09-14 확인: 화면 23장 모두 동일). 값을 바꿀 때는 모든 파일을 함께 수정한다
+- **사이트 구현의 기준은 `src/styles/tokens.css`** 다(2026-09-14 이식). `design/Main.dc.html`·`MotionDesktop.dc.html`에서 스크립트로 변환해 만들었다(색 55쌍 `light-dark(라이트, 다크)` + 모션 15개). 이후 토큰을 바꾸면 `tokens.css`를 먼저 고치고, 시안에도 반영할지는 따로 정한다
+- 변환 방법(스크립트는 scratchpad에 있어 사라짐): 두 블록을 `;`로 나눠 이름→값 맵으로 만들고, 이름 집합이 같은지 검사한 뒤 다크 순서대로 `--이름: light-dark(라이트값, 다크값);`을 쓰고 섹션 주석을 붙였다
 
 ### 7-1. 바탕·유리 토큰
 | 토큰 | 용도 | 다크 | 라이트 |
@@ -208,7 +216,7 @@
 - 사진 덮개 `--win-media-dim` `16% 0.02 290 / 0.6`(라이트 투명), 코드 블록 테두리 `--win-code-line` 흰색 `/ 0.08`(라이트 투명)
 
 ### 7-3. 모션 토큰
-- `.site{--ease-out;--ease-in;--ease-sheet;--dur-press:120ms;--dur-fast:200ms;--dur-close:200ms;--dur-sheet-close:300ms;--dur-pop:300ms;--dur-window:320ms;--dur-push:360ms;--dur-dock:380ms;--dur-theme:400ms;--dur-sheet:420ms;--dur-reveal:480ms;--stagger:50ms}` — 현재는 `Motion*.dc.html` 3장에만 들어 있다. 구현 시 전역 토큰으로 옮긴다
+- `.site{--ease-out;--ease-in;--ease-sheet;--dur-press:120ms;--dur-fast:200ms;--dur-close:200ms;--dur-sheet-close:300ms;--dur-pop:300ms;--dur-window:320ms;--dur-push:360ms;--dur-dock:380ms;--dur-theme:400ms;--dur-sheet:420ms;--dur-reveal:480ms;--stagger:50ms}` — 시안에서는 `Motion*.dc.html`에만 들어 있다. 사이트에서는 `src/styles/tokens.css`의 `:root`로 옮겼다(2026-09-14)
 
 ## 8. 기술 스택 결정 기준 (2026-09-14 확정 → 5-11, `docs/tech-stack.md`)
 - 확정할 때 남기기로 한 것(2026-09-14 사용자 요청) — 모두 `docs/tech-stack.md`에 작성함
@@ -261,7 +269,10 @@
 | `.nvmrc` | `24` |
 | `.gitignore` | `dist/`·`.astro/`·`node_modules/`·`.env`·`.DS_Store` 등(Astro 템플릿 그대로) |
 | `.vscode/extensions.json` | Astro VS Code 확장 추천 |
-| `src/pages/index.astro` | 생성 확인용 임시 홈(`lang="ko"`, 인사말 한 줄). 화면 구현 때 교체 |
+| `src/pages/index.astro` | 토큰 확인용 임시 홈(`BaseLayout` 사용, 인사말·좋아하는 문구·링크). 화면 구현 때 교체 |
+| `src/layouts/BaseLayout.astro` | 모든 페이지 공통 문서 뼈대: `lang="ko"`, 메타(title·description 기본값), Noto Sans KR `<link>`, `tokens.css`·`global.css` import, `<slot />` |
+| `src/styles/tokens.css` | 디자인 토큰. 모션 곡선 3·시간 12, 색 55쌍 `light-dark()`, `color-scheme` 3가지(`:root`·`[data-theme="dark"]`·`[data-theme="light"]`) |
+| `src/styles/global.css` | 전역 기본: box-sizing, body 바탕 `--desk`·글자 `--ink`·글꼴, 링크 `--win-accent`(hover 전환은 모션 토큰), `img` 반응형, `.code` 고정폭 글꼴 |
 - 템플릿에서 가져오지 않은 것: `README.md`·`AGENTS.md`(기존 README·`CLAUDE.md` 사용), `.vscode/launch.json`, 기본 Astro 파비콘(나중에 자체 아이콘으로 추가)
 
 ### 10-3. 그 밖의 파일

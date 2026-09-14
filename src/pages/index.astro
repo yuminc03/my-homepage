@@ -1,15 +1,32 @@
 ---
-// 프로젝트 생성 확인용 임시 홈. 레이아웃·토큰 이식 단계에서 데스크톱 메타포 홈으로 교체한다
+// 토큰 적용 확인용 임시 홈. 화면 구현 단계에서 데스크톱 메타포 홈으로 교체한다
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<html lang="ko">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Chu Yumin</title>
-	</head>
-	<body>
+<BaseLayout>
+	<main>
 		<h1>안녕하세요, iOS 개발자 Chu Yumin입니다.</h1>
-	</body>
-</html>
+		<p>기회가 주어지면 최선을 다하는 것이 아니라 최선을 다하고 있으면 기회가 주어지는 것이다.</p>
+		<a href={import.meta.env.BASE_URL}>홈</a>
+	</main>
+</BaseLayout>
+
+<style>
+	main {
+		max-width: 800px;
+		margin: 0 auto;
+		padding: 64px 24px;
+	}
+
+	h1 {
+		margin: 0 0 12px;
+		color: var(--ink-strong);
+		font-size: 24px;
+		font-weight: 700;
+	}
+
+	p {
+		margin: 0 0 24px;
+		color: var(--ink-muted);
+	}
+</style>

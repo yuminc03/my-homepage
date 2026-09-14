@@ -20,13 +20,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - 개발 서버: `npm run dev` → `http://localhost:4321/my-homepage/`
 - 빌드: `npm run build` (결과물 `dist/`)
 - 빌드 결과 미리보기: `npm run preview`
+- Astro 7의 `preview` 서버는 백그라운드로 분리되어 계속 떠 있고 한 번에 하나만 실행됩니다. 이미 떠 있으면 다른 포트로 실행해도 "already running"만 출력하고 건너뜁니다. `pkill`로는 잡히지 않으니 `npx astro preview status` / `npx astro preview stop`으로 확인·종료합니다.
 - 테스트·린트는 아직 설정하지 않았습니다.
 
 ## 아키텍처
 
-- 아직 임시 홈뿐이라 설명할 구조가 없습니다. 레이아웃·토큰·콘텐츠 컬렉션이 생기면 이 섹션에 "여러 파일을 함께 봐야 이해되는" 상위 수준 설계를 기록합니다.
+- 스타일 계층: `src/layouts/BaseLayout.astro`가 `src/styles/tokens.css`(색·모션 토큰)와 `src/styles/global.css`(전역 기본)를 한 번 불러오고, 화면별 스타일은 각 컴포넌트의 스코프 `<style>`에서 토큰(`var(--…)`)만 참조합니다. 색 값을 컴포넌트에 직접 쓰지 않습니다(앱 아이콘 그라디언트·코드 에디터·iPhone 앱 화면처럼 테마와 무관한 고정색은 예외).
+- 테마: 색 토큰은 `light-dark(라이트, 다크)` 한 쌍이고, `:root`의 `color-scheme`이 어느 쪽을 쓸지 정합니다. 기본은 시스템 설정, `<html data-theme="dark"|"light">`이면 그 테마로 고정합니다. 테마를 바꾸는 코드는 `data-theme`만 바꿉니다.
+- 콘텐츠 컬렉션·페이지 구조가 생기면 이 섹션에 추가합니다.
 - `astro.config.mjs`의 `base: '/my-homepage'` 때문에 내부 링크와 `public/` 에셋 경로는 `import.meta.env.BASE_URL`을 붙여 만들어야 합니다. `/`로 시작하는 절대 경로를 직접 쓰면 배포 후 404가 납니다.
-- 시안 파일끼리의 관계: 각 `.dc.html`은 캔버스에서 독립 아트보드라 CSS를 공유할 수 없어, 테마 토큰(`.site` / `.site[data-theme="light"]`, `--win-*`)이 모든 화면 파일에 복제되어 있습니다. 토큰을 바꿀 때는 모든 화면 파일을 함께 고치고, `chu-yumin-portfolio.html`은 직접 편집하지 않고 재조립합니다(`PROGRESS.md` 11장).
+- 시안 파일끼리의 관계: 각 `.dc.html`은 캔버스에서 독립 아트보드라 CSS를 공유할 수 없어, 테마 토큰(`.site` / `.site[data-theme="light"]`, `--win-*`)이 모든 화면 파일에 복제되어 있습니다. 시안 토큰을 바꿀 때는 모든 화면 파일을 함께 고치고(사이트 구현의 기준은 `src/styles/tokens.css`), `chu-yumin-portfolio.html`은 직접 편집하지 않고 재조립합니다(`PROGRESS.md` 11장).
 
 ## 코딩 가이드라인
 
