@@ -4,7 +4,7 @@
 
 ## 1. 한눈에 보기
 - **무엇을 만드나**: iOS 개발자 Chu Yumin의 개인 홈페이지(자기소개·프로젝트·스터디 기록·세미나 기록)
-- **지금 단계**: 디자인 시안 완료, 기술 스택 확정(Astro + 일반 CSS), **Astro 프로젝트 생성**(임시 홈 1장, 빌드 확인), **전역 토큰 CSS 이식**(`src/styles/tokens.css`)
+- **지금 단계**: 디자인 시안 완료, 기술 스택 확정(Astro + 일반 CSS), **Astro 프로젝트 생성**(임시 홈 1장, 빌드 확인), **전역 토큰 CSS 이식**(`src/styles/tokens.css`), **콘텐츠 컬렉션 스키마**(프로젝트·스터디·세미나, MDX)
 - **시안 진행도**
   - 데스크톱 7화면(홈·목록 3·상세 3) — 완료
   - 모바일 7화면(홈 화면 메타포) — 완료
@@ -13,8 +13,8 @@
   - 데스크톱 창 ✕ 닫기 버튼 — 채택(2026-09-14), 데스크톱 창 화면 6장에 반영, `develop` 병합
 - **기술 스택**: Astro + 일반 CSS + TypeScript + Markdown Content Collections 확정(2026-09-14). 비교·약점·면접 질문은 `docs/tech-stack.md`
 - **시안 캔버스**: https://claude.ai/code/artifact/48a3c34c-b882-4f13-8e2f-7e3668bdb7b1 (v22, 페이지 5개 · 아트보드 25장)
-- **Git**: 시안·기술 스택 문서·`.claude/settings.json`(`92083d0`)이 `develop`에 반영되어 있다. `feature/astro-setup` 브랜치에서 작업 중 — Astro 프로젝트 생성 커밋 완료, 전역 토큰 CSS 이식 커밋 완료(2026-09-14), 다음은 콘텐츠 컬렉션 스키마. `master`·원격 push는 한 번도 하지 않았다
-- **다음 단계**: 콘텐츠 컬렉션 스키마 정의(같은 브랜치에서 이어서 진행)
+- **Git**: 시안·기술 스택 문서·`.claude/settings.json`(`92083d0`)이 `develop`에 반영되어 있다. `feature/astro-setup` 브랜치에서 작업 중 — Astro 프로젝트 생성 커밋 완료, 전역 토큰 CSS 이식 커밋 완료, MDX 통합·콘텐츠 컬렉션 스키마 커밋 완료(2026-09-14). `develop` 병합은 사용자 확인 대기. `master`·원격 push는 한 번도 하지 않았다
+- **다음 단계**: 사용자 확인 후 `feature/astro-setup`을 `develop`에 병합 → 화면 구현(공통 셸: 메뉴바·Dock·창)
 
 ## 2. 새 채팅에서 이어서 시작하기
 ### 2-1. 지금 바로 할 일
@@ -25,7 +25,7 @@
 3. `feature/astro-setup` 브랜치의 작업을 커밋 단위로 이어간다(각 커밋마다 제안 → 사용자 확인)
    1. Astro 프로젝트 생성 — 파일 작성·`npm run build`·`/my-homepage/` 미리보기 확인, **커밋 완료**(사용자 확인)
    2. 전역 토큰 CSS 이식 — `src/styles/tokens.css`(색 55쌍 `light-dark()` + 모션 15개), `src/styles/global.css`, `src/layouts/BaseLayout.astro`, 임시 홈이 레이아웃 사용. 빌드·시스템 다크/라이트 스크린샷 확인, 사용자가 개발 서버 Console에서 `data-theme` 전환 확인, **커밋 완료**
-   3. 콘텐츠 컬렉션 스키마: 프로젝트·스터디·세미나 3개(`src/content.config.ts`), 필드는 시안 화면의 항목 기준
+   3. 콘텐츠 컬렉션 스키마 — `@astrojs/mdx` 추가, `src/content.config.ts`(스키마 3개, 5-10), 예시 글 3개(`draft: true`)와 단색 임시 이미지. sync·빌드·렌더링·틀린 글 실패 확인, **커밋 완료**(2개로 나눔: MDX 통합 / 스키마·예시·문서)
    4. 끝나면 `develop` `--no-ff` 병합 → 브랜치 삭제
 4. 그 뒤 후보: 대괄호 `[ ]` placeholder에 들어갈 실제 콘텐츠 정리(4장 남은 일), 화면 구현
 
@@ -67,7 +67,9 @@
 | 기술 스택 확정 | Astro·Next.js·Vite + React SPA·순수 HTML 비교 → Astro + 일반 CSS 확정, `docs/tech-stack.md` 작성 | `feature/tech-stack` | 커밋 → `develop` 병합 → 브랜치 삭제(2026-09-14) |
 | Claude 설정 | `.claude/settings.json`에 `Bash(bash -c ' *)` 허용(시안 재조립용) | `develop` 직접 | 커밋 `92083d0`(2026-09-14) |
 | Astro 생성 | 최소 템플릿 기반, GitHub Pages 하위 경로(`base: '/my-homepage'`), Node 24 고정, 임시 홈 | `feature/astro-setup` | 커밋 `acbfd2f`(2026-09-14) |
-| 토큰 이식 | 시안 토큰을 `light-dark()` 한 쌍으로 합쳐 `src/styles/tokens.css` 생성, 전역 스타일·공통 레이아웃 | `feature/astro-setup` | 사용자 Console 확인 후 커밋(2026-09-14) |
+| 토큰 이식 | 시안 토큰을 `light-dark()` 한 쌍으로 합쳐 `src/styles/tokens.css` 생성, 전역 스타일·공통 레이아웃 | `feature/astro-setup` | 사용자 Console 확인 후 커밋 `c5b875d`(2026-09-14) |
+| MDX 통합 | `@astrojs/mdx` 설치(`astro add`, `@astrojs/markdown-satteri` 함께 추가), `integrations: [mdx()]` | `feature/astro-setup` | 커밋(2026-09-14) |
+| 콘텐츠 스키마 | 프로젝트·스터디·세미나 컬렉션, 예시 글 3개, 검증 | `feature/astro-setup` | 커밋(2026-09-14), `develop` 병합 대기 |
 
 ### 남은 일
 - [x] 모션·✕·문서 커밋 → `develop` 병합 → 브랜치 삭제 (2026-09-14, 사용자 확인)
@@ -78,7 +80,11 @@
 - [x] 전역 토큰 CSS 이식 커밋 (2026-09-14, 사용자 확인)
 - [ ] 테마 전환 스크립트·버튼(`<head>` 인라인 스크립트로 `localStorage` 값을 `data-theme`에 먼저 적용) — 화면 구현 때
 - [ ] 글꼴 로딩 방식 확정: 지금은 시안처럼 Google Fonts `<link>`. 자체 호스팅(서브셋)과 비교 — 화면 구현 때
-- [ ] 콘텐츠 컬렉션 스키마 정의
+- [x] 프로젝트 분류는 여러 개 가능, 세미나 사진 배치는 MDX 컴포넌트, 예시 글은 컬렉션마다 1개 `draft` (2026-09-14, 사용자 선택)
+- [x] MDX 통합·콘텐츠 컬렉션 스키마 커밋 (2026-09-14, 사용자 확인)
+- [ ] `feature/astro-setup` → `develop` 병합 → 브랜치 삭제
+- [ ] 화면 구현 때 함께: `draft` 제외 헬퍼, 스터디 읽는 시간 계산, 세미나 MDX 컴포넌트 `Photo`·`PhotoPair`·`PhotoSide`(상세 페이지에서 `<Content components={{ ... }} />`로 넘김), 목록 정렬(날짜 내림차순)
+- [ ] 실제 글을 쓰면 예시 글 3개(`sample-*`)와 임시 이미지 삭제
 - [ ] GitHub Actions로 GitHub Pages 자동 배포 설정(원격 push가 필요하므로 사용자 확인 후)
 - [ ] 대괄호 `[ ]` placeholder를 실제 내용으로 교체 — 프로젝트 이름·소개·태그, 포스트 제목·요약·날짜, 세미나 이름·장소·소감, 연락처 링크(GitHub/Email/LinkedIn)
 - [ ] 사이트 구현
@@ -159,6 +165,12 @@
 ### 5-10. 콘텐츠 관리 방식 (2026-09-14 확정)
 - **저장소의 Markdown 파일 + Astro Content Collections**. 글 하나 = 파일 하나라 git 기록이 활동 기록이 되고, 필드 검사·이미지 최적화·무료 정적 배포가 가능
 - 컬렉션: 프로젝트·스터디·세미나 3개. 사진은 글 폴더 옆에 두고 `astro:assets`로 최적화
+- 스키마 `src/content.config.ts` (2026-09-14 정의, 필드는 시안 화면 항목 기준. `z`는 `astro/zod`(zod v4), 이미지는 `image()`로 경로 검사)
+  - 공통: 폴더형(`slug/index.md`)은 폴더 이름, 파일형(`slug.md`)은 파일 이름이 id(주소). `draft`(기본 false)
+  - **projects** `src/content/projects/*/index.{md,mdx}`: `title`·`summary`·`categories`(`iOS`/`Web`/`Side Project` 중 1개 이상, 여러 개 가능)·`tags`·`icon`(이미지)·`startDate`·`endDate`(없으면 진행 중)·`role`·`stack`(1개 이상)·`platform`·`links.appStore`/`links.github`(URL)·`screenshots`(이미지 배열)·`features[]`(`title`·`description`·`image`). 본문은 `## 소개` / `## 기술적으로 고민한 점` / `## 배운 점`
+  - **study** `src/content/study/**/*.{md,mdx}`: `title`·`summary`·`category`(자유 문자열, 필터 칩은 글에서 모아 만듦)·`pubDate`·`updatedDate`. 읽는 시간·목차는 본문에서 계산(`render()`의 `headings`)
+  - **seminars** `src/content/seminars/*/index.{md,mdx}`: `title`·`date`·`location`·`summary`·`cover`(이미지)·`coverAlt`. 본문은 MDX: `## SESSION 01 · 발표자` + `### 세션 제목`, 사진은 `<Photo>`(넓게 1장) · `<PhotoPair>`(2장 나란히) · `<PhotoSide>`(사진 옆 글) — 이미지는 본문에서 `import`해 넘긴다
+- 새 글 쓰기: `src/content/<컬렉션>/sample-*`를 복사해 이름을 바꾸고 `draft: false`로. 필드가 틀리면 `npm run build`(또는 `npx astro sync`)가 어떤 필드가 왜 틀렸는지 알려 주며 실패한다
 - 브라우저에서 글을 쓰고 싶어지면 Keystatic·Decap CMS(git 기반), 사진이 많아지면 사진만 이미지 서비스로
 - Firebase는 관리자 화면·인증을 직접 만들어야 하고 검색 노출·비용 면에서 과하다
 
@@ -263,8 +275,12 @@
 ### 10-2. 사이트 파일 (저장소 루트, Astro)
 | 파일 | 내용 |
 | --- | --- |
-| `package.json` · `package-lock.json` | 이름 `my-homepage`, 의존성 `astro` ^7.3.2, 스크립트 `dev`·`build`·`preview`, `engines.node >=22.12.0` |
-| `astro.config.mjs` | `site: 'https://yuminc03.github.io'`, `base: '/my-homepage'` |
+| `package.json` · `package-lock.json` | 이름 `my-homepage`, 의존성 `astro` ^7.3.2 · `@astrojs/mdx` ^8.0.1 · `@astrojs/markdown-satteri` ^0.4.1(MDX가 요구), 스크립트 `dev`·`build`·`preview`, `engines.node >=22.12.0` |
+| `astro.config.mjs` | `site: 'https://yuminc03.github.io'`, `base: '/my-homepage'`, `integrations: [mdx()]` |
+| `src/content.config.ts` | 콘텐츠 컬렉션 `projects`·`study`·`seminars` 스키마(5-10), `PROJECT_CATEGORIES` 내보내기, 폴더형/파일형 id 생성 |
+| `src/content/projects/sample-project/` | 예시 프로젝트 `index.md`(`draft: true`) + 단색 임시 이미지 5장(아이콘·스크린샷 2·기능 2) |
+| `src/content/study/sample-post.md` | 예시 스터디 글(`draft: true`, 인라인 코드·Swift 코드 블록) |
+| `src/content/seminars/sample-seminar/` | 예시 행사 `index.mdx`(`draft: true`, 세션 3개·사진 컴포넌트 3종) + 단색 임시 이미지 5장(표지·사진 4) |
 | `tsconfig.json` | `astro/tsconfigs/strict` 상속, `dist`·`design` 제외 |
 | `.nvmrc` | `24` |
 | `.gitignore` | `dist/`·`.astro/`·`node_modules/`·`.env`·`.DS_Store` 등(Astro 템플릿 그대로) |
