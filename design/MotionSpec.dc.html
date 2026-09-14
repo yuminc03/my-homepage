@@ -1,0 +1,289 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800&display=swap">
+<style>
+  *{box-sizing:border-box;}
+  body,html{margin:0;padding:0;}
+  .board{font-family:'Noto Sans KR',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;}
+</style>
+</helmet>
+
+<div class="board" style="width:1232px;min-height:2600px;padding:44px;background:oklch(97.5% 0.003 260);display:flex;flex-direction:column;gap:36px;">
+
+  <div style="display:flex;flex-direction:column;gap:8px;">
+    <div style="font-size:22px;font-weight:800;color:oklch(20% 0.01 260);">모션 설계</div>
+    <div style="font-size:14px;line-height:1.6;color:oklch(32% 0.01 260);">데스크톱·모바일·태블릿 공통 모션 토큰과 인터랙션별 값입니다. 옆의 두 프로토타입(데스크톱 · 모바일)이 이 값 그대로 움직입니다. 태블릿은 모바일 값을 따릅니다.</div>
+  </div>
+
+  <!-- 원칙 -->
+  <div style="display:flex;flex-direction:column;gap:14px;">
+    <div style="font-size:15px;font-weight:800;color:oklch(20% 0.01 260);">원칙</div>
+    <div style="display:flex;gap:14px;">
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:8px;padding:18px 20px;background:oklch(100% 0 0);border:1px solid oklch(20% 0.01 260 / 0.08);border-radius:14px;">
+        <span style="font-size:12px;font-weight:800;color:oklch(60% 0.15 295);">01</span>
+        <span style="font-size:15px;font-weight:800;color:oklch(20% 0.01 260);">빠르게 반응하고 부드럽게 멈춘다</span>
+        <span style="font-size:12.5px;line-height:1.65;color:oklch(32% 0.01 260);">누르는 순간 120ms 안에 반응하고, 움직임은 감속 곡선(ease-out)으로 끝을 길게 둔다. 300ms를 넘는 것은 화면 전체가 바뀌는 전환뿐이다.</span>
+      </div>
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:8px;padding:18px 20px;background:oklch(100% 0 0);border:1px solid oklch(20% 0.01 260 / 0.08);border-radius:14px;">
+        <span style="font-size:12px;font-weight:800;color:oklch(60% 0.15 295);">02</span>
+        <span style="font-size:15px;font-weight:800;color:oklch(20% 0.01 260);">들어올 때보다 나갈 때 빠르게</span>
+        <span style="font-size:12.5px;line-height:1.65;color:oklch(32% 0.01 260);">닫기는 열기의 약 60~70% 시간에 가속 곡선(ease-in). 사용자가 이미 떠나기로 한 화면을 붙잡지 않는다.</span>
+      </div>
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:8px;padding:18px 20px;background:oklch(100% 0 0);border:1px solid oklch(20% 0.01 260 / 0.08);border-radius:14px;">
+        <span style="font-size:12px;font-weight:800;color:oklch(60% 0.15 295);">03</span>
+        <span style="font-size:15px;font-weight:800;color:oklch(20% 0.01 260);">출발점을 보여준다</span>
+        <span style="font-size:12.5px;line-height:1.65;color:oklch(32% 0.01 260);">데스크톱 창은 누른 아이콘·메뉴·Dock 쪽에서 커지고, 모바일 창은 Dock이 있는 아래에서 올라온다. 상세는 오른쪽에서 들어와 뒤로 가면 오른쪽으로 나간다.</span>
+      </div>
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:8px;padding:18px 20px;background:oklch(100% 0 0);border:1px solid oklch(20% 0.01 260 / 0.08);border-radius:14px;">
+        <span style="font-size:12px;font-weight:800;color:oklch(60% 0.15 295);">04</span>
+        <span style="font-size:15px;font-weight:800;color:oklch(20% 0.01 260);">줄이기 설정을 존중한다</span>
+        <span style="font-size:12.5px;line-height:1.65;color:oklch(32% 0.01 260);">기기의 "동작 줄이기"가 켜져 있으면 이동·확대를 모두 짧은 페이드로 바꾸고, 등장 애니메이션과 반복 모션을 끈다.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 곡선 · 시간 -->
+  <div style="display:flex;flex-direction:column;gap:14px;">
+    <div style="font-size:15px;font-weight:800;color:oklch(20% 0.01 260);">곡선과 시간 토큰</div>
+    <div style="display:flex;gap:14px;">
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:10px;padding:18px;background:oklch(100% 0 0);border:1px solid oklch(20% 0.01 260 / 0.08);border-radius:14px;">
+        <svg width="200" height="132" viewBox="0 0 200 132" style="align-self:center;overflow:visible;">
+          <rect x="14" y="14" width="172" height="104" fill="none" stroke="oklch(20% 0.01 260 / 0.08)" stroke-width="1"/>
+          <line x1="14" y1="118" x2="48.4" y2="34.8" stroke="oklch(70% 0.01 260)" stroke-width="1" stroke-dasharray="3 3"/>
+          <line x1="186" y1="14" x2="48.4" y2="14.0" stroke="oklch(70% 0.01 260)" stroke-width="1" stroke-dasharray="3 3"/>
+          <path d="M14.0,118.0 C48.4,34.8 48.4,14.0 186.0,14.0" fill="none" stroke="oklch(60% 0.15 295)" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="48.4" cy="34.8" r="3.5" fill="oklch(60% 0.15 295)"/>
+          <circle cx="48.4" cy="14.0" r="3.5" fill="oklch(60% 0.15 295)"/>
+        </svg>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <span style="font-size:14px;font-weight:800;color:oklch(20% 0.01 260);">감속 (기본)</span>
+          <span style="font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:oklch(60% 0.15 295);">--ease-out: cubic-bezier(0.2, 0.8, 0.2, 1)</span>
+          <span style="font-size:12.5px;line-height:1.6;color:oklch(32% 0.01 260);">들어오는 모든 움직임, 호버, 누름, Dock. 기존 Dock 숨김 곡선을 기본값으로 삼았다.</span>
+        </div>
+      </div>
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:10px;padding:18px;background:oklch(100% 0 0);border:1px solid oklch(20% 0.01 260 / 0.08);border-radius:14px;">
+        <svg width="200" height="132" viewBox="0 0 200 132" style="align-self:center;overflow:visible;">
+          <rect x="14" y="14" width="172" height="104" fill="none" stroke="oklch(20% 0.01 260 / 0.08)" stroke-width="1"/>
+          <line x1="14" y1="118" x2="82.8" y2="118.0" stroke="oklch(70% 0.01 260)" stroke-width="1" stroke-dasharray="3 3"/>
+          <line x1="186" y1="14" x2="186.0" y2="14.0" stroke="oklch(70% 0.01 260)" stroke-width="1" stroke-dasharray="3 3"/>
+          <path d="M14.0,118.0 C82.8,118.0 186.0,14.0 186.0,14.0" fill="none" stroke="oklch(62% 0.1 170)" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="82.8" cy="118.0" r="3.5" fill="oklch(62% 0.1 170)"/>
+          <circle cx="186.0" cy="14.0" r="3.5" fill="oklch(62% 0.1 170)"/>
+        </svg>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <span style="font-size:14px;font-weight:800;color:oklch(20% 0.01 260);">가속 (나가기)</span>
+          <span style="font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:oklch(60% 0.15 295);">--ease-in: cubic-bezier(0.4, 0, 1, 1)</span>
+          <span style="font-size:12.5px;line-height:1.6;color:oklch(32% 0.01 260);">닫히는 창·시트. 시작은 느리고 끝이 빨라 화면에서 빠르게 사라진다.</span>
+        </div>
+      </div>
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:10px;padding:18px;background:oklch(100% 0 0);border:1px solid oklch(20% 0.01 260 / 0.08);border-radius:14px;">
+        <svg width="200" height="132" viewBox="0 0 200 132" style="align-self:center;overflow:visible;">
+          <rect x="14" y="14" width="172" height="104" fill="none" stroke="oklch(20% 0.01 260 / 0.08)" stroke-width="1"/>
+          <line x1="14" y1="118" x2="69.0" y2="43.1" stroke="oklch(70% 0.01 260)" stroke-width="1" stroke-dasharray="3 3"/>
+          <line x1="186" y1="14" x2="14.0" y2="14.0" stroke="oklch(70% 0.01 260)" stroke-width="1" stroke-dasharray="3 3"/>
+          <path d="M14.0,118.0 C69.0,43.1 14.0,14.0 186.0,14.0" fill="none" stroke="oklch(64% 0.12 340)" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="69.0" cy="43.1" r="3.5" fill="oklch(64% 0.12 340)"/>
+          <circle cx="14.0" cy="14.0" r="3.5" fill="oklch(64% 0.12 340)"/>
+        </svg>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <span style="font-size:14px;font-weight:800;color:oklch(20% 0.01 260);">시트</span>
+          <span style="font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:oklch(60% 0.15 295);">--ease-sheet: cubic-bezier(0.32, 0.72, 0, 1)</span>
+          <span style="font-size:12.5px;line-height:1.6;color:oklch(32% 0.01 260);">모바일·태블릿 창 시트. 초반에 빨리 올라와 마지막 20%를 길게 감속한다.</span>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:2px;padding:16px 20px;background:oklch(100% 0 0);border:1px solid oklch(20% 0.01 260 / 0.08);border-radius:14px;">
+        <div style="display:grid;grid-template-columns:150px 1fr 190px;align-items:center;gap:12px;height:30px;">
+          <span style="font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:oklch(32% 0.01 260);">--dur-press</span>
+          <div style="display:flex;align-items:center;gap:8px;"><div style="height:8px;width:50px;border-radius:4px;background:linear-gradient(90deg, oklch(60% 0.15 295), oklch(72% 0.11 300));"></div><span style="font-size:12px;font-weight:700;color:oklch(20% 0.01 260);">120ms</span></div>
+          <span style="font-size:12px;color:oklch(50% 0.01 260);">누름 반응</span>
+        </div>
+        <div style="display:grid;grid-template-columns:150px 1fr 190px;align-items:center;gap:12px;height:30px;">
+          <span style="font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:oklch(32% 0.01 260);">--dur-fast</span>
+          <div style="display:flex;align-items:center;gap:8px;"><div style="height:8px;width:84px;border-radius:4px;background:linear-gradient(90deg, oklch(60% 0.15 295), oklch(72% 0.11 300));"></div><span style="font-size:12px;font-weight:700;color:oklch(20% 0.01 260);">200ms</span></div>
+          <span style="font-size:12px;color:oklch(50% 0.01 260);">호버·포커스·데스크톱 창 닫기</span>
+        </div>
+        <div style="display:grid;grid-template-columns:150px 1fr 190px;align-items:center;gap:12px;height:30px;">
+          <span style="font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:oklch(32% 0.01 260);">--dur-sheet-close</span>
+          <div style="display:flex;align-items:center;gap:8px;"><div style="height:8px;width:126px;border-radius:4px;background:linear-gradient(90deg, oklch(60% 0.15 295), oklch(72% 0.11 300));"></div><span style="font-size:12px;font-weight:700;color:oklch(20% 0.01 260);">300ms</span></div>
+          <span style="font-size:12px;color:oklch(50% 0.01 260);">시트 닫기·상세에서 뒤로</span>
+        </div>
+        <div style="display:grid;grid-template-columns:150px 1fr 190px;align-items:center;gap:12px;height:30px;">
+          <span style="font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:oklch(32% 0.01 260);">--dur-window</span>
+          <div style="display:flex;align-items:center;gap:8px;"><div style="height:8px;width:134px;border-radius:4px;background:linear-gradient(90deg, oklch(60% 0.15 295), oklch(72% 0.11 300));"></div><span style="font-size:12px;font-weight:700;color:oklch(20% 0.01 260);">320ms</span></div>
+          <span style="font-size:12px;color:oklch(50% 0.01 260);">데스크톱 창 열기</span>
+        </div>
+        <div style="display:grid;grid-template-columns:150px 1fr 190px;align-items:center;gap:12px;height:30px;">
+          <span style="font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:oklch(32% 0.01 260);">--dur-push</span>
+          <div style="display:flex;align-items:center;gap:8px;"><div style="height:8px;width:151px;border-radius:4px;background:linear-gradient(90deg, oklch(60% 0.15 295), oklch(72% 0.11 300));"></div><span style="font-size:12px;font-weight:700;color:oklch(20% 0.01 260);">360ms</span></div>
+          <span style="font-size:12px;color:oklch(50% 0.01 260);">상세로 들어가기</span>
+        </div>
+        <div style="display:grid;grid-template-columns:150px 1fr 190px;align-items:center;gap:12px;height:30px;">
+          <span style="font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:oklch(32% 0.01 260);">--dur-dock</span>
+          <div style="display:flex;align-items:center;gap:8px;"><div style="height:8px;width:160px;border-radius:4px;background:linear-gradient(90deg, oklch(60% 0.15 295), oklch(72% 0.11 300));"></div><span style="font-size:12px;font-weight:700;color:oklch(20% 0.01 260);">380ms</span></div>
+          <span style="font-size:12px;color:oklch(50% 0.01 260);">Dock 숨김·표시</span>
+        </div>
+        <div style="display:grid;grid-template-columns:150px 1fr 190px;align-items:center;gap:12px;height:30px;">
+          <span style="font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:oklch(32% 0.01 260);">--dur-theme</span>
+          <div style="display:flex;align-items:center;gap:8px;"><div style="height:8px;width:168px;border-radius:4px;background:linear-gradient(90deg, oklch(60% 0.15 295), oklch(72% 0.11 300));"></div><span style="font-size:12px;font-weight:700;color:oklch(20% 0.01 260);">400ms</span></div>
+          <span style="font-size:12px;color:oklch(50% 0.01 260);">테마 색 전환</span>
+        </div>
+        <div style="display:grid;grid-template-columns:150px 1fr 190px;align-items:center;gap:12px;height:30px;">
+          <span style="font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:oklch(32% 0.01 260);">--dur-sheet</span>
+          <div style="display:flex;align-items:center;gap:8px;"><div style="height:8px;width:176px;border-radius:4px;background:linear-gradient(90deg, oklch(60% 0.15 295), oklch(72% 0.11 300));"></div><span style="font-size:12px;font-weight:700;color:oklch(20% 0.01 260);">420ms</span></div>
+          <span style="font-size:12px;color:oklch(50% 0.01 260);">모바일·태블릿 창 시트 열기</span>
+        </div>
+        <div style="display:grid;grid-template-columns:150px 1fr 190px;align-items:center;gap:12px;height:30px;">
+          <span style="font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:oklch(32% 0.01 260);">--dur-reveal</span>
+          <div style="display:flex;align-items:center;gap:8px;"><div style="height:8px;width:202px;border-radius:4px;background:linear-gradient(90deg, oklch(60% 0.15 295), oklch(72% 0.11 300));"></div><span style="font-size:12px;font-weight:700;color:oklch(20% 0.01 260);">480ms</span></div>
+          <span style="font-size:12px;color:oklch(50% 0.01 260);">콘텐츠 등장 (+ 항목당 50ms)</span>
+        </div>
+    </div>
+  </div>
+
+  <!-- 인터랙션별 값 -->
+  <div style="display:flex;flex-direction:column;gap:14px;">
+    <div style="font-size:15px;font-weight:800;color:oklch(20% 0.01 260);">인터랙션별 값</div>
+    <div style="border-radius:14px;overflow:hidden;border:1px solid oklch(20% 0.01 260 / 0.08);">
+      <div style="display:grid;grid-template-columns:150px 180px minmax(0, 1fr) 190px 150px;gap:16px;padding:12px 18px;background:oklch(94% 0.012 295);">
+        <span style="font-size:12px;font-weight:800;color:oklch(32% 0.01 260);">요소</span>
+        <span style="font-size:12px;font-weight:800;color:oklch(32% 0.01 260);">언제</span>
+        <span style="font-size:12px;font-weight:800;color:oklch(32% 0.01 260);">무엇이 움직이나</span>
+        <span style="font-size:12px;font-weight:800;color:oklch(32% 0.01 260);">시간 · 곡선</span>
+        <span style="font-size:12px;font-weight:800;color:oklch(32% 0.01 260);">동작 줄이기</span>
+      </div>
+        <div style="display:grid;grid-template-columns:150px 180px minmax(0, 1fr) 190px 150px;gap:16px;padding:13px 18px;background:oklch(100% 0 0);border-top:1px solid oklch(20% 0.01 260 / 0.08);">
+          <span style="font-size:13px;font-weight:700;color:oklch(20% 0.01 260);">누름 반응</span>
+          <span style="font-size:12.5px;line-height:1.55;color:oklch(32% 0.01 260);">아이콘·카드·버튼을 누를 때</span>
+          <span style="font-size:12.5px;line-height:1.55;color:oklch(32% 0.01 260);">아이콘 scale(.92~.94), 카드 scale(.985). 떼면 원래 크기로</span>
+          <span style="font-size:12.5px;line-height:1.55;font-weight:600;color:oklch(20% 0.01 260);">누름 120ms / 복귀 200ms · ease-out</span>
+          <span style="font-size:12.5px;line-height:1.55;color:oklch(50% 0.01 260);">그대로 (이동 없는 작은 크기 변화)</span>
+        </div>
+        <div style="display:grid;grid-template-columns:150px 180px minmax(0, 1fr) 190px 150px;gap:16px;padding:13px 18px;background:oklch(98.8% 0.002 260);border-top:1px solid oklch(20% 0.01 260 / 0.08);">
+          <span style="font-size:13px;font-weight:700;color:oklch(20% 0.01 260);">호버 (데스크톱)</span>
+          <span style="font-size:12.5px;line-height:1.55;color:oklch(32% 0.01 260);">마우스를 올릴 때</span>
+          <span style="font-size:12.5px;line-height:1.55;color:oklch(32% 0.01 260);">바탕 아이콘·Dock translateY(-3px), 카드 썸네일 -4px</span>
+          <span style="font-size:12.5px;line-height:1.55;font-weight:600;color:oklch(20% 0.01 260);">200ms (썸네일 350ms) · ease-out</span>
+          <span style="font-size:12.5px;line-height:1.55;color:oklch(50% 0.01 260);">이동 없음 (색만)</span>
+        </div>
+        <div style="display:grid;grid-template-columns:150px 180px minmax(0, 1fr) 190px 150px;gap:16px;padding:13px 18px;background:oklch(100% 0 0);border-top:1px solid oklch(20% 0.01 260 / 0.08);">
+          <span style="font-size:13px;font-weight:700;color:oklch(20% 0.01 260);">데스크톱 창 열기</span>
+          <span style="font-size:12.5px;line-height:1.55;color:oklch(32% 0.01 260);">바탕 아이콘·메뉴·Dock을 누를 때</span>
+          <span style="font-size:12.5px;line-height:1.55;color:oklch(32% 0.01 260);">opacity 0→1, translateY(10px) scale(.95)→원래. 누른 위치 쪽이 transform-origin</span>
+          <span style="font-size:12.5px;line-height:1.55;font-weight:600;color:oklch(20% 0.01 260);">320ms · ease-out</span>
+          <span style="font-size:12.5px;line-height:1.55;color:oklch(50% 0.01 260);">opacity만 150ms linear</span>
+        </div>
+        <div style="display:grid;grid-template-columns:150px 180px minmax(0, 1fr) 190px 150px;gap:16px;padding:13px 18px;background:oklch(98.8% 0.002 260);border-top:1px solid oklch(20% 0.01 260 / 0.08);">
+          <span style="font-size:13px;font-weight:700;color:oklch(20% 0.01 260);">데스크톱 창 닫기</span>
+          <span style="font-size:12.5px;line-height:1.55;color:oklch(32% 0.01 260);">닫기·메뉴 홈·Dock 홈</span>
+          <span style="font-size:12.5px;line-height:1.55;color:oklch(32% 0.01 260);">열기의 반대로 작아지며 사라짐</span>
+          <span style="font-size:12.5px;line-height:1.55;font-weight:600;color:oklch(20% 0.01 260);">200ms · ease-in</span>
+          <span style="font-size:12.5px;line-height:1.55;color:oklch(50% 0.01 260);">opacity만 150ms</span>
+        </div>
+        <div style="display:grid;grid-template-columns:150px 180px minmax(0, 1fr) 190px 150px;gap:16px;padding:13px 18px;background:oklch(100% 0 0);border-top:1px solid oklch(20% 0.01 260 / 0.08);">
+          <span style="font-size:13px;font-weight:700;color:oklch(20% 0.01 260);">창 포커스 전환</span>
+          <span style="font-size:12.5px;line-height:1.55;color:oklch(32% 0.01 260);">홈에서 뒤쪽 창을 누를 때</span>
+          <span style="font-size:12.5px;line-height:1.55;color:oklch(32% 0.01 260);">앞 창 z-index 즉시, 그림자 20/48 → 44/96, 뒤 창 제목 opacity .5</span>
+          <span style="font-size:12.5px;line-height:1.55;font-weight:600;color:oklch(20% 0.01 260);">200ms · ease-out</span>
+          <span style="font-size:12.5px;line-height:1.55;color:oklch(50% 0.01 260);">그대로</span>
+        </div>
+        <div style="display:grid;grid-template-columns:150px 180px minmax(0, 1fr) 190px 150px;gap:16px;padding:13px 18px;background:oklch(98.8% 0.002 260);border-top:1px solid oklch(20% 0.01 260 / 0.08);">
+          <span style="font-size:13px;font-weight:700;color:oklch(20% 0.01 260);">메뉴바·Dock 활성 표시</span>
+          <span style="font-size:12.5px;line-height:1.55;color:oklch(32% 0.01 260);">열린 창이 바뀔 때</span>
+          <span style="font-size:12.5px;line-height:1.55;color:oklch(32% 0.01 260);">메뉴 배경색 이동, Dock 실행 점 opacity·scale(.3→1)</span>
+          <span style="font-size:12.5px;line-height:1.55;font-weight:600;color:oklch(20% 0.01 260);">200ms / 점 240ms · ease-out</span>
+          <span style="font-size:12.5px;line-height:1.55;color:oklch(50% 0.01 260);">그대로</span>
+        </div>
+        <div style="display:grid;grid-template-columns:150px 180px minmax(0, 1fr) 190px 150px;gap:16px;padding:13px 18px;background:oklch(100% 0 0);border-top:1px solid oklch(20% 0.01 260 / 0.08);">
+          <span style="font-size:13px;font-weight:700;color:oklch(20% 0.01 260);">창 시트 열기 (모바일·태블릿)</span>
+          <span style="font-size:12.5px;line-height:1.55;color:oklch(32% 0.01 260);">홈 앱 아이콘·Dock</span>
+          <span style="font-size:12.5px;line-height:1.55;color:oklch(32% 0.01 260);">시트 translateY(100%)→0, 홈 scale(.94) + 어둡게(scrim .45)</span>
+          <span style="font-size:12.5px;line-height:1.55;font-weight:600;color:oklch(20% 0.01 260);">420ms · ease-sheet</span>
+          <span style="font-size:12.5px;line-height:1.55;color:oklch(50% 0.01 260);">시트 opacity 200ms, 홈 고정</span>
+        </div>
+        <div style="display:grid;grid-template-columns:150px 180px minmax(0, 1fr) 190px 150px;gap:16px;padding:13px 18px;background:oklch(98.8% 0.002 260);border-top:1px solid oklch(20% 0.01 260 / 0.08);">
+          <span style="font-size:13px;font-weight:700;color:oklch(20% 0.01 260);">창 시트 닫기</span>
+          <span style="font-size:12.5px;line-height:1.55;color:oklch(32% 0.01 260);">✕·Dock 홈·어두운 바탕 누름</span>
+          <span style="font-size:12.5px;line-height:1.55;color:oklch(32% 0.01 260);">시트가 아래로 내려가고 홈이 원래대로</span>
+          <span style="font-size:12.5px;line-height:1.55;font-weight:600;color:oklch(20% 0.01 260);">300ms · ease-in</span>
+          <span style="font-size:12.5px;line-height:1.55;color:oklch(50% 0.01 260);">opacity 200ms</span>
+        </div>
+        <div style="display:grid;grid-template-columns:150px 180px minmax(0, 1fr) 190px 150px;gap:16px;padding:13px 18px;background:oklch(100% 0 0);border-top:1px solid oklch(20% 0.01 260 / 0.08);">
+          <span style="font-size:13px;font-weight:700;color:oklch(20% 0.01 260);">상세로 들어가기 / 뒤로</span>
+          <span style="font-size:12.5px;line-height:1.55;color:oklch(32% 0.01 260);">목록 항목 누름 / ‹ 뒤로</span>
+          <span style="font-size:12.5px;line-height:1.55;color:oklch(32% 0.01 260);">상세 translateX(100%)→0, 목록 translateX(-24%) + opacity .4. 타이틀 바 창 점 ↔ ‹ 교차</span>
+          <span style="font-size:12.5px;line-height:1.55;font-weight:600;color:oklch(20% 0.01 260);">들어가기 360ms / 뒤로 300ms · ease-out</span>
+          <span style="font-size:12.5px;line-height:1.55;color:oklch(50% 0.01 260);">제자리 교차 페이드 150ms</span>
+        </div>
+        <div style="display:grid;grid-template-columns:150px 180px minmax(0, 1fr) 190px 150px;gap:16px;padding:13px 18px;background:oklch(98.8% 0.002 260);border-top:1px solid oklch(20% 0.01 260 / 0.08);">
+          <span style="font-size:13px;font-weight:700;color:oklch(20% 0.01 260);">콘텐츠 등장</span>
+          <span style="font-size:12.5px;line-height:1.55;color:oklch(32% 0.01 260);">창·시트가 열릴 때, 스크롤로 섹션이 15% 보일 때 (한 번만)</span>
+          <span style="font-size:12.5px;line-height:1.55;color:oklch(32% 0.01 260);">opacity 0→1, translateY(12px)→0. 항목마다 50ms 지연, 최대 6개</span>
+          <span style="font-size:12.5px;line-height:1.55;font-weight:600;color:oklch(20% 0.01 260);">480ms · ease-out (시트는 140ms 뒤 시작)</span>
+          <span style="font-size:12.5px;line-height:1.55;color:oklch(50% 0.01 260);">없음 (바로 보임)</span>
+        </div>
+        <div style="display:grid;grid-template-columns:150px 180px minmax(0, 1fr) 190px 150px;gap:16px;padding:13px 18px;background:oklch(100% 0 0);border-top:1px solid oklch(20% 0.01 260 / 0.08);">
+          <span style="font-size:13px;font-weight:700;color:oklch(20% 0.01 260);">Dock 숨김·표시</span>
+          <span style="font-size:12.5px;line-height:1.55;color:oklch(32% 0.01 260);">아래로 스크롤 / 위로 스크롤·하단 hover</span>
+          <span style="font-size:12.5px;line-height:1.55;color:oklch(32% 0.01 260);">translateY(100% + 32px) + opacity, 힌트 막대 opacity</span>
+          <span style="font-size:12.5px;line-height:1.55;font-weight:600;color:oklch(20% 0.01 260);">380ms · ease-out / opacity 280ms</span>
+          <span style="font-size:12.5px;line-height:1.55;color:oklch(50% 0.01 260);">opacity만</span>
+        </div>
+        <div style="display:grid;grid-template-columns:150px 180px minmax(0, 1fr) 190px 150px;gap:16px;padding:13px 18px;background:oklch(98.8% 0.002 260);border-top:1px solid oklch(20% 0.01 260 / 0.08);">
+          <span style="font-size:13px;font-weight:700;color:oklch(20% 0.01 260);">테마 전환</span>
+          <span style="font-size:12.5px;line-height:1.55;color:oklch(32% 0.01 260);">메뉴바 해·달 버튼</span>
+          <span style="font-size:12.5px;line-height:1.55;color:oklch(32% 0.01 260);">바탕·창·글자 색 교차, 버튼 아이콘 rotate(-90deg) scale(.6)→원래</span>
+          <span style="font-size:12.5px;line-height:1.55;font-weight:600;color:oklch(20% 0.01 260);">색 400ms · ease / 아이콘 350ms · ease-out</span>
+          <span style="font-size:12.5px;line-height:1.55;color:oklch(50% 0.01 260);">색 전환만, 아이콘 회전 없음</span>
+        </div>
+        <div style="display:grid;grid-template-columns:150px 180px minmax(0, 1fr) 190px 150px;gap:16px;padding:13px 18px;background:oklch(100% 0 0);border-top:1px solid oklch(20% 0.01 260 / 0.08);">
+          <span style="font-size:13px;font-weight:700;color:oklch(20% 0.01 260);">스크롤 힌트 (데스크톱 홈)</span>
+          <span style="font-size:12.5px;line-height:1.55;color:oklch(32% 0.01 260);">홈 첫 화면</span>
+          <span style="font-size:12.5px;line-height:1.55;color:oklch(32% 0.01 260);">화살표 translateY 0↔8px 반복 (기존 값)</span>
+          <span style="font-size:12.5px;line-height:1.55;font-weight:600;color:oklch(20% 0.01 260);">2.2s · ease-in-out 무한</span>
+          <span style="font-size:12.5px;line-height:1.55;color:oklch(50% 0.01 260);">정지</span>
+        </div>
+    </div>
+  </div>
+
+  <!-- 구현 메모 -->
+  <div style="display:flex;flex-direction:column;gap:14px;">
+    <div style="font-size:15px;font-weight:800;color:oklch(20% 0.01 260);">구현 메모</div>
+    <div style="display:flex;gap:28px;padding:20px 22px;background:oklch(100% 0 0);border:1px solid oklch(20% 0.01 260 / 0.08);border-radius:14px;">
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:6px;">
+        <span style="font-size:13.5px;font-weight:800;color:oklch(20% 0.01 260);">CSS만으로 구현</span>
+        <span style="font-size:12.5px;line-height:1.65;color:oklch(32% 0.01 260);">모든 값은 CSS transition·@keyframes와 custom property 토큰으로 표현했다. 프레임워크를 정하기 전이라도 그대로 옮길 수 있고, 모션 때문에 JS 라이브러리를 더하지 않는다.</span>
+      </div>
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:6px;">
+        <span style="font-size:13.5px;font-weight:800;color:oklch(20% 0.01 260);">transform·opacity만 움직인다</span>
+        <span style="font-size:12.5px;line-height:1.65;color:oklch(32% 0.01 260);">레이아웃(width·top 등)을 바꾸지 않아 브라우저가 합성 단계에서 처리한다(리플로우 없음). 흐림(blur) 값은 애니메이션하지 않는다.</span>
+      </div>
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:6px;">
+        <span style="font-size:13.5px;font-weight:800;color:oklch(20% 0.01 260);">스크롤 등장</span>
+        <span style="font-size:12.5px;line-height:1.65;color:oklch(32% 0.01 260);">IntersectionObserver(threshold 0.15)로 한 번만 클래스를 붙인다. 스크롤 이벤트마다 계산하지 않는다.</span>
+      </div>
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:6px;">
+        <span style="font-size:13.5px;font-weight:800;color:oklch(20% 0.01 260);">동작 줄이기</span>
+        <span style="font-size:12.5px;line-height:1.65;color:oklch(32% 0.01 260);">@media (prefers-reduced-motion: reduce)에서 reduced 규칙을 적용한다. 프로토타입의 motion 칩(system / full / reduced)으로 두 모드를 비교할 수 있다.</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":1232,"height":2600}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

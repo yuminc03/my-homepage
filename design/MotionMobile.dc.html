@@ -1,0 +1,485 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;800;900&display=swap">
+<style>
+  *{box-sizing:border-box;}
+  body,html{margin:0;padding:0;}
+  .site{font-family:'Noto Sans KR',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;}
+  a{color:var(--win-accent);text-decoration:none;transition:color .15s ease;}
+  a:hover{color:var(--win-accent-hover);}
+  /* 테마 토큰: 바탕·유리·메뉴 글자와 창 본문(--win-*)을 함께 전환한다. 앱 화면(iPhone 안쪽)과 코드 에디터·코드 블록은 고정 */
+  .site{--desk:oklch(18% 0.02 290);--glow-a:oklch(58% 0.13 300);--glow-b:oklch(60% 0.1 170);--glow-c:oklch(52% 0.12 300);--glass:oklch(100% 0 0 / 0.10);--glass-line:oklch(100% 0 0 / 0.12);--glass-hi:oklch(100% 0 0 / 0.18);--glass-shadow:oklch(10% 0.022 290 / 0.35);--ink-strong:oklch(97% 0.006 290);--ink:oklch(88% 0.015 290);--ink-muted:oklch(82% 0.015 290);--menu-active:oklch(100% 0 0 / 0.14);--label:oklch(90% 0.012 290);--cue:oklch(76% 0.022 290);--dock-sep:oklch(100% 0 0 / 0.16);--dock-dot:oklch(90% 0.015 290);--dock-shadow:oklch(8% 0.022 290 / 0.5);--win-line:oklch(100% 0 0 / 0.12);--win-shadow:oklch(6% 0.022 290 / 0.55);--icon-shadow:oklch(8% 0.022 290 / 0.45);--win-bg:oklch(23% 0.018 290);--win-bar:oklch(27% 0.02 290);--win-bar-line:oklch(33% 0.02 290);--win-card:oklch(27% 0.019 290);--win-divider:oklch(33% 0.02 290);--win-chip-line:oklch(38% 0.02 290);--win-ink-strong:oklch(95% 0.008 290);--win-ink:oklch(85% 0.012 290);--win-ink-2:oklch(80% 0.012 290);--win-ink-muted:oklch(72% 0.015 290);--win-ink-sub:oklch(66% 0.015 290);--win-title:oklch(78% 0.015 290);--win-icon:oklch(80% 0.015 290);--win-dot:oklch(50% 0.015 290);--win-tag-bg:oklch(33% 0.05 295);--win-tag-ink:oklch(84% 0.09 295);--win-accent:oklch(76% 0.12 295);--win-accent-hover:oklch(84% 0.1 295);--win-solid-bg:oklch(93% 0.01 290);--win-solid-ink:oklch(20% 0.015 290);--win-solid-press:oklch(84% 0.03 295);--win-ctrl-a:oklch(62% 0.08 295);--win-ctrl-b:oklch(52% 0.06 295);--win-ctrl-c:oklch(56% 0.07 170);--win-press:oklch(100% 0 0 / 0.08);--win-hint:oklch(100% 0 0 / 0.3);--win-dock-glass:oklch(26% 0.02 290 / 0.78);--win-dock-line:oklch(100% 0 0 / 0.1);--win-dock-hi:oklch(100% 0 0 / 0.12);--win-dock-shadow:oklch(6% 0.022 290 / 0.5);--win-dock-sep:oklch(100% 0 0 / 0.16);--win-dock-dot:oklch(90% 0.015 290);--win-media-icon:oklch(90% 0.012 290 / 0.75);--win-media-dim:oklch(16% 0.02 290 / 0.6);--win-code-line:oklch(100% 0 0 / 0.08);}
+  .site[data-theme="light"]{--desk:oklch(96% 0.012 290);--glow-a:oklch(86% 0.08 300);--glow-b:oklch(89% 0.07 170);--glow-c:oklch(90% 0.06 300);--glass:oklch(100% 0 0 / 0.55);--glass-line:oklch(25% 0.022 290 / 0.08);--glass-hi:oklch(100% 0 0 / 0.7);--glass-shadow:oklch(40% 0.024 295 / 0.10);--ink-strong:oklch(20% 0.015 290);--ink:oklch(32% 0.015 290);--ink-muted:oklch(42% 0.015 290);--menu-active:oklch(25% 0.022 290 / 0.08);--label:oklch(28% 0.015 290);--cue:oklch(46% 0.022 290);--dock-sep:oklch(25% 0.022 290 / 0.14);--dock-dot:oklch(35% 0.015 290);--dock-shadow:oklch(40% 0.024 295 / 0.16);--win-line:oklch(25% 0.022 290 / 0.08);--win-shadow:oklch(35% 0.024 295 / 0.18);--icon-shadow:oklch(40% 0.024 295 / 0.22);--win-bg:oklch(98% 0.006 290);--win-bar:oklch(94% 0.006 290);--win-bar-line:oklch(89% 0.007 290);--win-card:oklch(96% 0.007 290);--win-divider:oklch(91% 0.007 290);--win-chip-line:oklch(88% 0.007 290);--win-ink-strong:oklch(18% 0.015 290);--win-ink:oklch(30% 0.015 290);--win-ink-2:oklch(36% 0.015 290);--win-ink-muted:oklch(46% 0.015 290);--win-ink-sub:oklch(54% 0.015 290);--win-title:oklch(42% 0.015 290);--win-icon:oklch(40% 0.015 290);--win-dot:oklch(70% 0.015 290);--win-tag-bg:oklch(95% 0.03 295);--win-tag-ink:oklch(46% 0.14 295);--win-accent:oklch(60% 0.15 295);--win-accent-hover:oklch(50% 0.15 295);--win-solid-bg:oklch(20% 0.015 290);--win-solid-ink:oklch(98% 0.006 290);--win-solid-press:oklch(30% 0.03 295);--win-ctrl-a:oklch(72% 0.06 295);--win-ctrl-b:oklch(81% 0.04 295);--win-ctrl-c:oklch(86% 0.06 170);--win-press:oklch(25% 0.022 290 / 0.06);--win-hint:oklch(25% 0.022 290 / 0.22);--win-dock-glass:oklch(98% 0.006 290 / 0.78);--win-dock-line:oklch(25% 0.022 290 / 0.08);--win-dock-hi:oklch(100% 0 0 / 0.7);--win-dock-shadow:oklch(35% 0.024 295 / 0.2);--win-dock-sep:oklch(25% 0.022 290 / 0.14);--win-dock-dot:oklch(35% 0.015 290);--win-media-icon:oklch(35% 0.022 290);--win-media-dim:oklch(100% 0 0 / 0);--win-code-line:oklch(100% 0 0 / 0);}
+  .themebtn{display:flex;align-items:center;justify-content:center;width:44px;height:44px;margin-right:-10px;padding:0;border:0;border-radius:12px;background:transparent;color:var(--ink);cursor:pointer;transition:background-color .15s ease;}
+  .themebtn:active{background:var(--menu-active);}
+  .themebtn:focus-visible{outline:2px solid oklch(60% 0.15 295);outline-offset:-2px;}
+  /* 모션 토큰 (MotionSpec 보드의 값과 같다) */
+  .site{--ease-out:cubic-bezier(.2,.8,.2,1);--ease-in:cubic-bezier(.4,0,1,1);--ease-sheet:cubic-bezier(.32,.72,0,1);--dur-press:120ms;--dur-fast:200ms;--dur-window:320ms;--dur-close:200ms;--dur-sheet:420ms;--dur-sheet-close:300ms;--dur-push:360ms;--dur-pop:300ms;--dur-reveal:480ms;--stagger:50ms;--dur-dock:380ms;--dur-theme:400ms;}
+  @keyframes rise{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
+  @keyframes spinin{from{opacity:0;transform:rotate(-90deg) scale(.6);}to{opacity:1;transform:none;}}
+  .site{transition:background-color var(--dur-theme) ease;}
+  button{font-family:inherit;}
+  .themebtn svg{animation:spinin 350ms var(--ease-out);}
+  .iconbtn{display:flex;align-items:center;justify-content:center;width:44px;height:44px;padding:0;border:0;border-radius:12px;background:transparent;color:var(--win-icon);cursor:pointer;}
+  .iconbtn:active{background:var(--win-press);}
+  .app{display:flex;flex-direction:column;align-items:center;gap:7px;padding:0;border:0;background:transparent;cursor:pointer;}
+  .app .ic{transition:transform var(--dur-fast) var(--ease-out);}
+  .app:active .ic{transform:scale(.92);transition-duration:var(--dur-press);}
+  .row{display:flex;flex-direction:column;gap:8px;width:100%;padding:18px;border-radius:16px;background:var(--win-card);border:1px solid var(--win-divider);text-align:left;cursor:pointer;transition:transform var(--dur-fast) var(--ease-out),border-color var(--dur-fast) ease;}
+  .row:active{transform:scale(.985);border-color:oklch(70% 0.096 295);transition-duration:var(--dur-press);}
+  /* 홈: 창 시트가 올라오면 뒤로 살짝 물러나고 어두워진다 */
+  .home{position:absolute;inset:0;transform-origin:50% 0;transition:transform var(--dur-sheet) var(--ease-sheet);}
+  .home[data-behind="on"]{transform:scale(.94) translateY(6px);}
+  .scrim{position:absolute;inset:0;z-index:10;background:oklch(8% 0.02 290 / 0.45);opacity:0;pointer-events:none;transition:opacity var(--dur-sheet-close) var(--ease-in);}
+  .scrim[data-on="on"]{opacity:1;transition:opacity var(--dur-sheet) var(--ease-sheet);}
+  /* 창 시트: 열 때 420ms(끝이 길게 감속), 닫을 때 300ms 가속 */
+  .sheet{position:absolute;left:0;right:0;top:12px;bottom:0;z-index:12;border-radius:22px 22px 0 0;overflow:hidden;background:var(--win-bg);border:1px solid var(--win-line);border-bottom:0;box-shadow:0 -10px 40px var(--win-shadow);transform:translateY(calc(100% + 40px));transition:transform var(--dur-sheet-close) var(--ease-in),background-color var(--dur-theme) ease;}
+  .sheet[data-open="on"]{transform:none;transition:transform var(--dur-sheet) var(--ease-sheet),background-color var(--dur-theme) ease;}
+  .sheet[data-open="on"] .pane-list .rv{animation:rise var(--dur-reveal) var(--ease-out) both;animation-delay:calc(var(--i) * var(--stagger) + 140ms);}
+  .tb-dots,.tb-back{position:absolute;left:0;top:0;bottom:0;display:flex;align-items:center;transition:opacity var(--dur-fast) ease,transform var(--dur-fast) var(--ease-out);}
+  .tb-back{opacity:0;transform:translateX(8px);pointer-events:none;}
+  .sheet[data-detail="on"] .tb-back{opacity:1;transform:none;pointer-events:auto;}
+  .sheet[data-detail="on"] .tb-dots{opacity:0;}
+  /* 목록 → 상세: 상세가 오른쪽에서 밀려 들어오고(360ms), 목록은 왼쪽으로 조금 밀리며 흐려진다. 뒤로는 300ms */
+  .panes{position:absolute;left:0;right:0;top:52px;bottom:0;overflow:hidden;}
+  .pane{position:absolute;inset:0;overflow-y:auto;scrollbar-width:none;}
+  .pane::-webkit-scrollbar{display:none;}
+  .pane-list{transition:transform var(--dur-pop) var(--ease-out),opacity var(--dur-pop) var(--ease-out);}
+  .panes[data-detail="on"] .pane-list{transform:translateX(-24%);opacity:.4;pointer-events:none;transition-duration:var(--dur-push);}
+  .pane-detail{background:var(--win-bg);transform:translateX(100%);box-shadow:-12px 0 32px oklch(8% 0.02 290 / 0);transition:transform var(--dur-pop) var(--ease-out),box-shadow var(--dur-pop) ease;}
+  .panes[data-detail="on"] .pane-detail{transform:none;box-shadow:-12px 0 32px oklch(8% 0.02 290 / 0.25);transition-duration:var(--dur-push);}
+  .panes[data-detail="on"] .pane-detail .rv{animation:rise var(--dur-reveal) var(--ease-out) both;animation-delay:calc(var(--i) * var(--stagger) + 120ms);}
+  /* Dock: 아래로 스크롤하면 380ms로 빠지고 힌트 막대만 남는다. 홈 = 바탕 유리, 창 위 = 창 색 유리 */
+  .mdock{position:absolute;left:0;right:0;bottom:0;z-index:20;display:flex;justify-content:center;padding-bottom:22px;pointer-events:none;}
+  .mdock .glass{pointer-events:auto;display:flex;align-items:flex-start;gap:10px;padding:8px 10px 6px 10px;border-radius:26px;border:1px solid var(--glass-line);background:var(--glass);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);box-shadow:inset 0 1px 0 var(--glass-hi), 0 14px 36px var(--dock-shadow);transition:transform var(--dur-dock) var(--ease-out),opacity 280ms ease,background-color 300ms ease,border-color 300ms ease;}
+  .mdock[data-surface="win"] .glass{background:var(--win-dock-glass);border-color:var(--win-dock-line);box-shadow:inset 0 1px 0 var(--win-dock-hi), 0 14px 36px var(--win-dock-shadow);}
+  .mdock[data-state="hidden"] .glass{transform:translateY(calc(100% + 32px));opacity:0;pointer-events:none;}
+  .mdock .hint{position:absolute;left:50%;bottom:10px;width:44px;height:5px;margin-left:-22px;border-radius:999px;background:var(--win-hint);opacity:0;transition:opacity 280ms ease;}
+  .mdock[data-state="hidden"] .hint{opacity:1;}
+  .dockbtn{display:flex;flex-direction:column;align-items:center;gap:4px;padding:0;border:0;background:transparent;cursor:pointer;}
+  .dockbtn .ic{transition:transform var(--dur-fast) var(--ease-out);}
+  .dockbtn:active .ic{transform:scale(.92);transition-duration:var(--dur-press);}
+  .dot{width:4px;height:4px;border-radius:50%;background:var(--dock-dot);opacity:0;transform:scale(.3);transition:opacity 240ms var(--ease-out),transform 240ms var(--ease-out),background-color 300ms ease;}
+  .mdock[data-surface="win"] .dot{background:var(--win-dock-dot);}
+  .dockbtn[data-on="on"] .dot{opacity:1;transform:none;}
+  /* 동작 줄이기: 시트·상세는 제자리에서 페이드, 홈은 물러나지 않고, 등장 애니메이션 없음 */
+  .site[data-motion="reduced"] .home{transform:none !important;}
+  .site[data-motion="reduced"] .sheet{transform:none;opacity:0;pointer-events:none;transition:opacity 200ms linear,background-color var(--dur-theme) ease;}
+  .site[data-motion="reduced"] .sheet[data-open="on"]{opacity:1;pointer-events:auto;}
+  .site[data-motion="reduced"] .panes .pane-list{transform:none;transition:opacity 150ms linear;}
+  .site[data-motion="reduced"] .panes[data-detail="on"] .pane-list{opacity:0;}
+  .site[data-motion="reduced"] .pane-detail{transform:none;opacity:0;pointer-events:none;transition:opacity 150ms linear;}
+  .site[data-motion="reduced"] .panes[data-detail="on"] .pane-detail{opacity:1;pointer-events:auto;}
+  .site[data-motion="reduced"] .rv{animation:none !important;}
+  .site[data-motion="reduced"] .mdock .glass{transform:none !important;}
+  .site[data-motion="reduced"] .themebtn svg{animation:none;}
+  /* 사진 자리·썸네일 바탕: 다크에서만 어둡게 덮는다 (시안용 자리 표시. 실제 사진에는 쓰지 않는다) */
+  .media{position:relative;}
+  .media::after{content:"";position:absolute;inset:0;border-radius:inherit;background:var(--win-media-dim);pointer-events:none;}
+  .media > *{z-index:1;}
+</style>
+</helmet>
+
+<div class="site" data-theme="{{theme}}" data-motion="{{motion}}" style="position:relative;width:390px;height:844px;overflow:hidden;background:var(--desk);">
+
+  <div style="position:absolute;top:-160px;left:-140px;width:420px;height:420px;border-radius:50%;background:var(--glow-a);filter:blur(90px);opacity:0.34;"></div>
+  <div style="position:absolute;top:420px;right:-180px;width:380px;height:380px;border-radius:50%;background:var(--glow-b);filter:blur(100px);opacity:0.28;"></div>
+
+  <!-- HOME (홈 화면. 코드 위젯은 모션 확인용이라 뺐다) -->
+  <div class="home" data-behind="{{homeBehind}}">
+    <div style="position:relative;z-index:3;display:flex;align-items:center;justify-content:space-between;height:52px;padding:0 20px;background:var(--glass);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border-bottom:1px solid var(--glass-line);box-shadow:inset 0 1px 0 var(--glass-hi);">
+      <div style="display:flex;align-items:center;gap:9px;">
+        <div style="width:24px;height:24px;border-radius:7px;background:linear-gradient(140deg, oklch(70% 0.13 300), oklch(58% 0.15 285));display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:800;color:oklch(99% 0 0);letter-spacing:-0.02em;">CY</div>
+        <span style="font-size:14px;font-weight:700;color:var(--ink-strong);">Chu Yumin</span>
+      </div>
+      <button type="button" class="themebtn" aria-label="{{themeToggleLabel}}" onClick="{{toggleTheme}}">
+        <sc-if value="{{isDark}}" hint-placeholder-val="{{ true }}">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>
+        </sc-if>
+        <sc-if value="{{isLight}}" hint-placeholder-val="{{ false }}">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+        </sc-if>
+      </button>
+    </div>
+
+    <div style="position:relative;z-index:2;padding:20px 20px 0 20px;display:flex;flex-direction:column;gap:26px;">
+    <!-- ABOUT WIDGET -->
+    <div style="border-radius:24px;background:var(--win-bg);border:1px solid var(--win-line);box-shadow:0 22px 48px var(--win-shadow);padding:18px 22px 20px 22px;display:flex;flex-direction:column;">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:16px;">
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--win-ctrl-a);"></div>
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--win-ctrl-b);"></div>
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--win-ctrl-c);"></div>
+        <span style="margin-left:6px;font-size:12.5px;font-weight:600;color:var(--win-title);">About me</span>
+      </div>
+      <h1 style="margin:0 0 16px 0;font-size:24px;line-height:1.4;font-weight:800;letter-spacing:-0.015em;color:var(--win-ink-strong);">안녕하세요,<br>iOS 개발자 Chu Yumin입니다.</h1>
+      <p style="margin:0 0 18px 0;padding-left:14px;border-left:3px solid var(--win-accent);font-size:14px;line-height:1.7;font-weight:300;color:var(--win-icon);">기회가 주어지면 최선을 다하는 것이 아니라 최선을 다하고 있으면 기회가 주어지는 것이다.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;">
+        <span style="font-size:12px;font-weight:600;padding:5px 11px;border-radius:999px;background:var(--win-tag-bg);color:var(--win-tag-ink);">Swift</span>
+        <span style="font-size:12px;font-weight:600;padding:5px 11px;border-radius:999px;background:var(--win-tag-bg);color:var(--win-tag-ink);">SwiftUI</span>
+        <span style="font-size:12px;font-weight:600;padding:5px 11px;border-radius:999px;background:var(--win-tag-bg);color:var(--win-tag-ink);">UIKit</span>
+        <span style="font-size:12px;font-weight:600;padding:5px 11px;border-radius:999px;background:var(--win-tag-bg);color:var(--win-tag-ink);">Xcode</span>
+      </div>
+      <div style="display:flex;gap:4px;padding-top:6px;border-top:1px solid var(--win-divider);">
+        <a href="#" style="display:flex;align-items:center;min-height:44px;padding:0 10px 0 0;font-size:14px;font-weight:600;">GitHub</a>
+        <a href="#" style="display:flex;align-items:center;min-height:44px;padding:0 10px;font-size:14px;font-weight:600;">Email</a>
+        <a href="#" style="display:flex;align-items:center;min-height:44px;padding:0 10px;font-size:14px;font-weight:600;">LinkedIn</a>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(4, minmax(0, 1fr));gap:12px;">
+      <button type="button" class="app" onClick="{{openProjects}}" aria-label="프로젝트 열기">
+        <div class="ic" style="width:62px;height:62px;border-radius:17px;background:linear-gradient(145deg, oklch(76% 0.11 170), oklch(64% 0.11 185));display:flex;align-items:center;justify-content:center;box-shadow:0 10px 22px var(--icon-shadow);">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="oklch(99% 0 0)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h6l2 2h10v9H3z"/></svg>
+        </div>
+        <span style="font-size:12px;font-weight:500;color:var(--label);">프로젝트</span>
+      </button>
+      <button type="button" class="app" onClick="{{openStudy}}" aria-label="스터디 기록 열기">
+        <div class="ic" style="width:62px;height:62px;border-radius:17px;background:linear-gradient(145deg, oklch(72% 0.12 340), oklch(60% 0.14 320));display:flex;align-items:center;justify-content:center;box-shadow:0 10px 22px var(--icon-shadow);">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="oklch(99% 0 0)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/></svg>
+        </div>
+        <span style="font-size:12px;font-weight:500;color:var(--label);">스터디 기록</span>
+      </button>
+      <button type="button" class="app" onClick="{{openSeminars}}" aria-label="세미나 기록 열기">
+        <div class="ic" style="width:62px;height:62px;border-radius:17px;background:linear-gradient(145deg, oklch(78% 0.1 220), oklch(64% 0.12 255));display:flex;align-items:center;justify-content:center;box-shadow:0 10px 22px var(--icon-shadow);">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="oklch(99% 0 0)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+        </div>
+        <span style="font-size:12px;font-weight:500;color:var(--label);">세미나 기록</span>
+      </button>
+      <button type="button" class="app" onClick="{{noop}}" aria-label="연락처 열기">
+        <div class="ic" style="width:62px;height:62px;border-radius:17px;background:linear-gradient(145deg, oklch(74% 0.1 195), oklch(62% 0.11 215));display:flex;align-items:center;justify-content:center;box-shadow:0 10px 22px var(--icon-shadow);">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="oklch(99% 0 0)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18v12H3z"/><path d="M3 7l9 6 9-6"/></svg>
+        </div>
+        <span style="font-size:12px;font-weight:500;color:var(--label);">연락처</span>
+      </button>
+    </div>
+
+    <!-- RECENT WIDGETS -->
+    <div style="display:grid;grid-template-columns:repeat(2, minmax(0, 1fr));gap:14px;">
+      <div style="height:168px;border-radius:22px;background:var(--win-bg);border:1px solid var(--win-line);box-shadow:0 18px 40px var(--win-shadow);padding:16px;display:flex;flex-direction:column;justify-content:space-between;">
+        <div style="display:flex;align-items:center;gap:7px;">
+          <div style="width:22px;height:22px;border-radius:6px;background:linear-gradient(145deg, oklch(72% 0.12 340), oklch(60% 0.14 320));display:flex;align-items:center;justify-content:center;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="oklch(99% 0 0)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/></svg>
+          </div>
+          <span style="font-size:12px;font-weight:700;color:var(--win-title);">최근 스터디</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <span style="font-size:15px;line-height:1.4;font-weight:700;color:var(--win-ink-strong);">[최근 포스트 제목]</span>
+          <span style="font-size:12px;color:var(--win-ink-sub);">[YYYY.MM.DD]</span>
+        </div>
+      </div>
+      <div style="height:168px;border-radius:22px;background:var(--win-bg);border:1px solid var(--win-line);box-shadow:0 18px 40px var(--win-shadow);padding:16px;display:flex;flex-direction:column;justify-content:space-between;">
+        <div style="display:flex;align-items:center;gap:7px;">
+          <div style="width:22px;height:22px;border-radius:6px;background:linear-gradient(145deg, oklch(78% 0.1 220), oklch(64% 0.12 255));display:flex;align-items:center;justify-content:center;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="oklch(99% 0 0)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+          </div>
+          <span style="font-size:12px;font-weight:700;color:var(--win-title);">최근 세미나</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <span style="font-size:15px;line-height:1.4;font-weight:700;color:var(--win-ink-strong);">[세미나 / 컨퍼런스 이름]</span>
+          <span style="font-size:12px;color:var(--win-ink-sub);">[YYYY.MM] · [장소]</span>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <div class="scrim" data-on="{{homeBehind}}" onClick="{{closeSheet}}"></div>
+
+  <!-- WINDOW SHEET -->
+  <div class="sheet" data-open="{{sheetOpen}}" data-detail="{{detailOn}}" role="dialog" aria-label="{{sheetTitle}}">
+    <div style="position:relative;z-index:5;display:flex;align-items:center;justify-content:center;height:52px;padding:0 6px;background:var(--win-bar);border-bottom:1px solid var(--win-bar-line);">
+      <div style="position:absolute;left:6px;top:0;bottom:0;width:80px;">
+        <div class="tb-dots" style="left:10px;gap:6px;">
+          <div style="width:9px;height:9px;border-radius:50%;background:var(--win-ctrl-a);"></div>
+          <div style="width:9px;height:9px;border-radius:50%;background:var(--win-ctrl-b);"></div>
+          <div style="width:9px;height:9px;border-radius:50%;background:var(--win-ctrl-c);"></div>
+        </div>
+        <div class="tb-back">
+          <button type="button" class="iconbtn" aria-label="목록으로" onClick="{{closeDetail}}" style="color:var(--win-accent);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+          </button>
+        </div>
+      </div>
+      <span style="font-size:14px;font-weight:600;color:var(--win-title);">{{sheetTitle}}</span>
+      <div style="position:absolute;right:6px;top:4px;">
+        <button type="button" class="iconbtn" aria-label="창 닫고 홈으로" onClick="{{closeSheet}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      </div>
+    </div>
+
+    <div class="panes" data-detail="{{detailOn}}">
+      <div class="pane pane-list" onScroll="{{handleScroll}}">
+        <div style="padding:26px 20px 150px 20px;display:flex;flex-direction:column;">
+          <sc-if value="{{isProjects}}" hint-placeholder-val="{{ false }}">
+          <h1 class="rv" style="--i:0;margin:0 0 8px 0;font-size:30px;line-height:1.25;font-weight:900;letter-spacing:-0.02em;color:var(--win-ink-strong);">Projects</h1>
+          <p class="rv" style="--i:1;margin:0 0 22px 0;font-size:15px;font-weight:300;color:var(--win-ink-muted);">직접 만들어온 앱과 프로젝트를 기록합니다.</p>
+          <div style="display:flex;flex-direction:column;gap:28px;">
+            <div class="rv" style="--i:2;display:flex;flex-direction:column;">
+              <div class="media" style="height:200px;border-radius:18px;margin-bottom:14px;background:linear-gradient(150deg, oklch(93% 0.02 295), oklch(87% 0.036 335));overflow:hidden;display:flex;align-items:flex-end;justify-content:center;">
+                <div style="width:120px;height:170px;margin-bottom:-20px;border-radius:24px 24px 0 0;background:oklch(98% 0.006 290);border:5px solid oklch(22% 0.02 290);border-bottom:0;display:flex;flex-direction:column;gap:8px;padding:20px 10px 0 10px;box-shadow:0 16px 32px oklch(20% 0.022 290 / 0.25);">
+                  <div style="height:42px;border-radius:10px;background:linear-gradient(135deg, oklch(64% 0.136 295), oklch(54% 0.12 335));"></div>
+                  <div style="height:7px;width:74%;border-radius:4px;background:oklch(88% 0.012 290);"></div>
+                  <div style="height:26px;border-radius:9px;background:oklch(94% 0.018 290);"></div>
+                </div>
+              </div>
+              <div style="font-size:17px;font-weight:700;color:var(--win-ink-strong);margin-bottom:5px;">[프로젝트 이름]</div>
+              <div style="font-size:14px;line-height:1.6;color:var(--win-ink-muted);">[프로젝트 한 줄 소개를 입력하세요.]</div>
+            </div>
+            <div class="rv" style="--i:3;display:flex;flex-direction:column;">
+              <div class="media" style="height:200px;border-radius:18px;margin-bottom:14px;background:linear-gradient(150deg, oklch(92% 0.024 335), oklch(87% 0.032 295));overflow:hidden;display:flex;align-items:flex-end;justify-content:center;">
+                <div style="width:120px;height:170px;margin-bottom:-20px;border-radius:24px 24px 0 0;background:oklch(98% 0.006 290);border:5px solid oklch(22% 0.02 290);border-bottom:0;display:flex;flex-direction:column;gap:8px;padding:20px 10px 0 10px;box-shadow:0 16px 32px oklch(20% 0.022 290 / 0.25);">
+                  <div style="height:42px;border-radius:10px;background:linear-gradient(135deg, oklch(62% 0.128 335), oklch(52% 0.128 295));"></div>
+                  <div style="height:7px;width:74%;border-radius:4px;background:oklch(88% 0.012 290);"></div>
+                  <div style="height:26px;border-radius:9px;background:oklch(94% 0.018 290);"></div>
+                </div>
+              </div>
+              <div style="font-size:17px;font-weight:700;color:var(--win-ink-strong);margin-bottom:5px;">[프로젝트 이름]</div>
+              <div style="font-size:14px;line-height:1.6;color:var(--win-ink-muted);">[프로젝트 한 줄 소개를 입력하세요.]</div>
+            </div>
+            <div class="rv" style="--i:4;display:flex;flex-direction:column;">
+              <div class="media" style="height:200px;border-radius:18px;margin-bottom:14px;background:linear-gradient(150deg, oklch(93% 0.019 175), oklch(87% 0.032 295));overflow:hidden;display:flex;align-items:flex-end;justify-content:center;">
+                <div style="width:120px;height:170px;margin-bottom:-20px;border-radius:24px 24px 0 0;background:oklch(98% 0.006 290);border:5px solid oklch(22% 0.02 290);border-bottom:0;display:flex;flex-direction:column;gap:8px;padding:20px 10px 0 10px;box-shadow:0 16px 32px oklch(20% 0.022 290 / 0.25);">
+                  <div style="height:42px;border-radius:10px;background:linear-gradient(135deg, oklch(62% 0.112 175), oklch(52% 0.128 295));"></div>
+                  <div style="height:7px;width:74%;border-radius:4px;background:oklch(88% 0.012 290);"></div>
+                  <div style="height:26px;border-radius:9px;background:oklch(94% 0.018 290);"></div>
+                </div>
+              </div>
+              <div style="font-size:17px;font-weight:700;color:var(--win-ink-strong);margin-bottom:5px;">[프로젝트 이름]</div>
+              <div style="font-size:14px;line-height:1.6;color:var(--win-ink-muted);">[프로젝트 한 줄 소개를 입력하세요.]</div>
+            </div>
+          </div>
+          </sc-if>
+          <sc-if value="{{isStudy}}" hint-placeholder-val="{{ true }}">
+          <h1 class="rv" style="--i:0;margin:0 0 8px 0;font-size:30px;line-height:1.25;font-weight:900;letter-spacing:-0.02em;color:var(--win-ink-strong);">Study Log</h1>
+          <p class="rv" style="--i:1;margin:0 0 22px 0;font-size:15px;font-weight:300;color:var(--win-ink-muted);">공부하고 정리한 내용을 기록합니다. 글을 눌러 상세로 들어가 보세요.</p>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <button type="button" class="row rv" style="--i:2;" onClick="{{openDetail}}">
+              <span style="font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--win-tag-bg);color:var(--win-tag-ink);">[카테고리]</span>
+              <span style="font-size:16.5px;line-height:1.45;font-weight:700;color:var(--win-ink-strong);">[포스트 제목을 입력하세요]</span>
+              <span style="font-size:14px;line-height:1.6;color:var(--win-ink-muted);">[포스트 요약 내용이 두 줄 정도 들어갑니다. 무엇을 공부했고 어떤 점이 핵심이었는지 적습니다.]</span>
+              <span style="font-size:12.5px;color:var(--win-ink-sub);">[YYYY.MM.DD] · [N분 소요]</span>
+            </button>
+            <button type="button" class="row rv" style="--i:3;" onClick="{{openDetail}}">
+              <span style="font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--win-tag-bg);color:var(--win-tag-ink);">[카테고리]</span>
+              <span style="font-size:16.5px;line-height:1.45;font-weight:700;color:var(--win-ink-strong);">[포스트 제목을 입력하세요]</span>
+              <span style="font-size:14px;line-height:1.6;color:var(--win-ink-muted);">[포스트 요약 내용이 두 줄 정도 들어갑니다. 무엇을 공부했고 어떤 점이 핵심이었는지 적습니다.]</span>
+              <span style="font-size:12.5px;color:var(--win-ink-sub);">[YYYY.MM.DD] · [N분 소요]</span>
+            </button>
+            <button type="button" class="row rv" style="--i:4;" onClick="{{openDetail}}">
+              <span style="font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--win-tag-bg);color:var(--win-tag-ink);">[카테고리]</span>
+              <span style="font-size:16.5px;line-height:1.45;font-weight:700;color:var(--win-ink-strong);">[포스트 제목을 입력하세요]</span>
+              <span style="font-size:14px;line-height:1.6;color:var(--win-ink-muted);">[포스트 요약 내용이 두 줄 정도 들어갑니다. 무엇을 공부했고 어떤 점이 핵심이었는지 적습니다.]</span>
+              <span style="font-size:12.5px;color:var(--win-ink-sub);">[YYYY.MM.DD] · [N분 소요]</span>
+            </button>
+            <button type="button" class="row rv" style="--i:5;" onClick="{{openDetail}}">
+              <span style="font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--win-tag-bg);color:var(--win-tag-ink);">[카테고리]</span>
+              <span style="font-size:16.5px;line-height:1.45;font-weight:700;color:var(--win-ink-strong);">[포스트 제목을 입력하세요]</span>
+              <span style="font-size:14px;line-height:1.6;color:var(--win-ink-muted);">[포스트 요약 내용이 두 줄 정도 들어갑니다. 무엇을 공부했고 어떤 점이 핵심이었는지 적습니다.]</span>
+              <span style="font-size:12.5px;color:var(--win-ink-sub);">[YYYY.MM.DD] · [N분 소요]</span>
+            </button>
+            <button type="button" class="row rv" style="--i:6;" onClick="{{openDetail}}">
+              <span style="font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--win-tag-bg);color:var(--win-tag-ink);">[카테고리]</span>
+              <span style="font-size:16.5px;line-height:1.45;font-weight:700;color:var(--win-ink-strong);">[포스트 제목을 입력하세요]</span>
+              <span style="font-size:14px;line-height:1.6;color:var(--win-ink-muted);">[포스트 요약 내용이 두 줄 정도 들어갑니다. 무엇을 공부했고 어떤 점이 핵심이었는지 적습니다.]</span>
+              <span style="font-size:12.5px;color:var(--win-ink-sub);">[YYYY.MM.DD] · [N분 소요]</span>
+            </button>
+            <button type="button" class="row rv" style="--i:7;" onClick="{{openDetail}}">
+              <span style="font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--win-tag-bg);color:var(--win-tag-ink);">[카테고리]</span>
+              <span style="font-size:16.5px;line-height:1.45;font-weight:700;color:var(--win-ink-strong);">[포스트 제목을 입력하세요]</span>
+              <span style="font-size:14px;line-height:1.6;color:var(--win-ink-muted);">[포스트 요약 내용이 두 줄 정도 들어갑니다. 무엇을 공부했고 어떤 점이 핵심이었는지 적습니다.]</span>
+              <span style="font-size:12.5px;color:var(--win-ink-sub);">[YYYY.MM.DD] · [N분 소요]</span>
+            </button>
+          </div>
+          </sc-if>
+          <sc-if value="{{isSeminars}}" hint-placeholder-val="{{ false }}">
+          <h1 class="rv" style="--i:0;margin:0 0 8px 0;font-size:30px;line-height:1.25;font-weight:900;letter-spacing:-0.02em;color:var(--win-ink-strong);">Seminars &amp; Events</h1>
+          <p class="rv" style="--i:1;margin:0 0 22px 0;font-size:15px;font-weight:300;color:var(--win-ink-muted);">참석한 세미나와 행사를 사진과 함께 기록합니다.</p>
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <div class="rv" style="--i:2;display:flex;flex-direction:column;border-radius:18px;overflow:hidden;background:var(--win-card);border:1px solid var(--win-divider);">
+              <div class="media" style="height:170px;background:linear-gradient(150deg, oklch(88% 0.024 295), oklch(78% 0.04 335));display:flex;align-items:center;justify-content:center;"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="color:var(--win-media-icon)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></div>
+              <div style="display:flex;flex-direction:column;gap:6px;padding:16px 18px 18px 18px;">
+                <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--win-ink-sub);"><span style="width:7px;height:7px;border-radius:50%;background:var(--win-accent);"></span><span style="font-weight:700;color:var(--win-ink);">[YYYY.MM]</span><span>· [장소]</span></div>
+                <div style="font-size:18px;line-height:1.4;font-weight:800;color:var(--win-ink-strong);">[세미나 / 컨퍼런스 이름]</div>
+              </div>
+            </div>
+            <div class="rv" style="--i:3;display:flex;flex-direction:column;border-radius:18px;overflow:hidden;background:var(--win-card);border:1px solid var(--win-divider);">
+              <div class="media" style="height:170px;background:linear-gradient(150deg, oklch(86% 0.032 295), oklch(76% 0.04 295));display:flex;align-items:center;justify-content:center;"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="color:var(--win-media-icon)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></div>
+              <div style="display:flex;flex-direction:column;gap:6px;padding:16px 18px 18px 18px;">
+                <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--win-ink-sub);"><span style="width:7px;height:7px;border-radius:50%;background:var(--win-accent);"></span><span style="font-weight:700;color:var(--win-ink);">[YYYY.MM]</span><span>· [장소]</span></div>
+                <div style="font-size:18px;line-height:1.4;font-weight:800;color:var(--win-ink-strong);">[세미나 / 컨퍼런스 이름]</div>
+              </div>
+            </div>
+            <div class="rv" style="--i:4;display:flex;flex-direction:column;border-radius:18px;overflow:hidden;background:var(--win-card);border:1px solid var(--win-divider);">
+              <div class="media" style="height:170px;background:linear-gradient(150deg, oklch(87% 0.026 175), oklch(79% 0.036 295));display:flex;align-items:center;justify-content:center;"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="color:var(--win-media-icon)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></div>
+              <div style="display:flex;flex-direction:column;gap:6px;padding:16px 18px 18px 18px;">
+                <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--win-ink-sub);"><span style="width:7px;height:7px;border-radius:50%;background:var(--win-accent);"></span><span style="font-weight:700;color:var(--win-ink);">[YYYY.MM]</span><span>· [장소]</span></div>
+                <div style="font-size:18px;line-height:1.4;font-weight:800;color:var(--win-ink-strong);">[세미나 / 컨퍼런스 이름]</div>
+              </div>
+            </div>
+            <div class="rv" style="--i:5;display:flex;flex-direction:column;border-radius:18px;overflow:hidden;background:var(--win-card);border:1px solid var(--win-divider);">
+              <div class="media" style="height:170px;background:linear-gradient(150deg, oklch(88% 0.03 220), oklch(80% 0.03 175));display:flex;align-items:center;justify-content:center;"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="color:var(--win-media-icon)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></div>
+              <div style="display:flex;flex-direction:column;gap:6px;padding:16px 18px 18px 18px;">
+                <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--win-ink-sub);"><span style="width:7px;height:7px;border-radius:50%;background:var(--win-accent);"></span><span style="font-weight:700;color:var(--win-ink);">[YYYY.MM]</span><span>· [장소]</span></div>
+                <div style="font-size:18px;line-height:1.4;font-weight:800;color:var(--win-ink-strong);">[세미나 / 컨퍼런스 이름]</div>
+              </div>
+            </div>
+          </div>
+          </sc-if>
+        </div>
+      </div>
+      <div class="pane pane-detail">
+        <div style="padding:24px 20px 150px 20px;display:flex;flex-direction:column;">
+          <div class="rv" style="--i:0;display:flex;flex-direction:column;gap:12px;padding-bottom:22px;border-bottom:1px solid var(--win-divider);">
+            <span style="align-self:flex-start;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--win-tag-bg);color:var(--win-tag-ink);">[카테고리]</span>
+            <h1 style="margin:0;font-size:24px;line-height:1.4;font-weight:800;letter-spacing:-0.015em;color:var(--win-ink-strong);">[포스트 제목을 입력하세요]</h1>
+            <span style="font-size:13px;color:var(--win-ink-sub);">[YYYY.MM.DD] · [N분 소요]</span>
+          </div>
+          <div class="rv" style="--i:1;display:flex;align-items:center;justify-content:space-between;height:48px;margin:20px 0 26px 0;padding:0 14px 0 16px;border-radius:12px;background:var(--win-card);border:1px solid var(--win-divider);">
+            <span style="font-size:14px;font-weight:700;color:var(--win-ink);">목차 <span style="font-weight:400;font-size:13px;color:var(--win-ink-sub);">3개 항목</span></span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--win-ink-muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <p class="rv" style="--i:2;margin:0 0 20px 0;font-size:16px;line-height:1.8;color:var(--win-ink);">[도입 문단입니다. 무엇을 공부하게 되었는지, 이 글에서 무엇을 정리하는지 두세 문장으로 적습니다.]</p>
+          <h2 class="rv" style="--i:3;margin:20px 0 12px 0;font-size:20px;line-height:1.4;font-weight:800;color:var(--win-ink-strong);">[소제목 1]</h2>
+          <p class="rv" style="--i:4;margin:0 0 20px 0;font-size:16px;line-height:1.8;color:var(--win-ink);">[핵심 개념을 설명하는 문단입니다. 상세 화면의 등장은 목록보다 짧게, 제목·목차·첫 문단까지만 차례로 나타납니다.]</p>
+          <h2 style="margin:20px 0 12px 0;font-size:20px;line-height:1.4;font-weight:800;color:var(--win-ink-strong);">[소제목 2]</h2>
+          <p style="margin:0 0 20px 0;font-size:16px;line-height:1.8;color:var(--win-ink);">[두 번째 주제를 설명하는 문단입니다. 실제로 적용해 보며 부딪힌 문제와 해결 과정을 적습니다.]</p>
+          <p style="margin:0;font-size:16px;line-height:1.8;color:var(--win-ink);">[배운 점을 짧게 정리하는 마무리 문단입니다.]</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DOCK -->
+  <div class="mdock" data-state="{{dockState}}" data-surface="{{dockSurface}}">
+    <div class="glass">
+      <button type="button" class="dockbtn" data-on="{{dotHome}}" onClick="{{closeSheet}}" aria-label="홈">
+        <div class="ic" style="width:48px;height:48px;border-radius:14px;background:linear-gradient(145deg, oklch(70% 0.13 300), oklch(58% 0.15 285));display:flex;align-items:center;justify-content:center;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="oklch(99% 0 0)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5 12 4l8 6.5V20H4z"/></svg>
+        </div>
+        <div class="dot"></div>
+      </button>
+      <button type="button" class="dockbtn" data-on="{{dotProjects}}" onClick="{{openProjects}}" aria-label="프로젝트">
+        <div class="ic" style="width:48px;height:48px;border-radius:14px;background:linear-gradient(145deg, oklch(76% 0.11 170), oklch(64% 0.11 185));display:flex;align-items:center;justify-content:center;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="oklch(99% 0 0)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h6l2 2h10v9H3z"/></svg>
+        </div>
+        <div class="dot"></div>
+      </button>
+      <button type="button" class="dockbtn" data-on="{{dotStudy}}" onClick="{{openStudy}}" aria-label="스터디 기록">
+        <div class="ic" style="width:48px;height:48px;border-radius:14px;background:linear-gradient(145deg, oklch(72% 0.12 340), oklch(60% 0.14 320));display:flex;align-items:center;justify-content:center;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="oklch(99% 0 0)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/></svg>
+        </div>
+        <div class="dot"></div>
+      </button>
+      <button type="button" class="dockbtn" data-on="{{dotSeminars}}" onClick="{{openSeminars}}" aria-label="세미나 기록">
+        <div class="ic" style="width:48px;height:48px;border-radius:14px;background:linear-gradient(145deg, oklch(78% 0.1 220), oklch(64% 0.12 255));display:flex;align-items:center;justify-content:center;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="oklch(99% 0 0)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+        </div>
+        <div class="dot"></div>
+      </button>
+      <div style="width:1px;height:40px;margin:4px 2px 0 2px;background:var(--dock-sep);"></div>
+      <button type="button" class="dockbtn" data-on="{{never}}" onClick="{{noop}}" aria-label="연락처">
+        <div class="ic" style="width:48px;height:48px;border-radius:14px;background:linear-gradient(145deg, oklch(74% 0.1 195), oklch(62% 0.11 215));display:flex;align-items:center;justify-content:center;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="oklch(99% 0 0)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18v12H3z"/><path d="M3 7l9 6 9-6"/></svg>
+        </div>
+        <div class="dot"></div>
+      </button>
+    </div>
+    <div class="hint"></div>
+  </div>
+
+</div>
+</x-dc>
+<script data-dc-script data-props='{"theme":{"editor":"enum","options":["dark","light"],"default":"dark"},"motion":{"editor":"enum","options":["system","full","reduced"],"default":"system"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    // app: 시트에 보이는 앱(닫는 동안에도 내용이 남도록 유지). open: 시트 열림. detail: 상세 화면
+    this.state = { app: 'study', open: false, detail: false, dockHidden: false, theme: null };
+    this.lastTop = 0;
+    this.resetTimer = null;
+    this.openApp = (name) => () => {
+      clearTimeout(this.resetTimer);
+      this.lastTop = 0;
+      this.setState({ app: name, open: true, detail: false, dockHidden: false });
+    };
+    this.closeSheet = () => {
+      this.setState({ open: false, dockHidden: false });
+      // 시트가 내려간 뒤(300ms) 상세를 목록으로 되돌린다. 닫는 도중에는 화면이 바뀌지 않게
+      clearTimeout(this.resetTimer);
+      this.resetTimer = setTimeout(() => this.setState({ detail: false }), 320);
+    };
+    this.handleScroll = (e) => {
+      const el = e.currentTarget || e.target;
+      const top = el.scrollTop;
+      if (top > this.lastTop + 6 && top > 48) {
+        if (!this.state.dockHidden) this.setState({ dockHidden: true });
+      } else if (top < this.lastTop - 6) {
+        if (this.state.dockHidden) this.setState({ dockHidden: false });
+      }
+      this.lastTop = top;
+    };
+  }
+
+  componentDidUpdate(prevProps) {
+    // 조절 칩을 바꾸면 버튼으로 바꾼 상태를 버리고 칩 값을 따른다
+    if (prevProps.theme !== this.props.theme && this.state.theme !== null) {
+      this.setState({ theme: null });
+    }
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.resetTimer);
+  }
+
+  renderVals() {
+    const theme = this.state.theme ?? this.props.theme ?? 'dark';
+    const isDark = theme === 'dark';
+    // motion 칩: system = 기기의 '동작 줄이기' 설정을 따른다
+    const pref = this.props.motion ?? 'system';
+    const systemReduced = typeof window !== 'undefined' && !!window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const motion = pref === 'system' ? (systemReduced ? 'reduced' : 'full') : pref;
+    const { app, open, detail, dockHidden } = this.state;
+    const on = (v) => (v ? 'on' : 'off');
+    const titles = { projects: 'Projects', study: 'Study Log', seminars: 'Seminars & Events' };
+    return {
+      theme,
+      isDark,
+      isLight: !isDark,
+      motion,
+      themeToggleLabel: isDark ? '라이트 모드로 전환' : '다크 모드로 전환',
+      toggleTheme: () => this.setState({ theme: isDark ? 'light' : 'dark' }),
+      homeBehind: on(open),
+      sheetOpen: on(open),
+      detailOn: on(detail),
+      sheetTitle: titles[app],
+      isProjects: app === 'projects',
+      isStudy: app === 'study',
+      isSeminars: app === 'seminars',
+      // 상세 화면(읽는 중)이거나 아래로 스크롤하면 Dock을 숨긴다
+      dockState: open && (detail || dockHidden) ? 'hidden' : 'shown',
+      dockSurface: open ? 'win' : 'desk',
+      dotHome: on(!open),
+      dotProjects: on(open && app === 'projects'),
+      dotStudy: on(open && app === 'study'),
+      dotSeminars: on(open && app === 'seminars'),
+      never: 'off',
+      openProjects: this.openApp('projects'),
+      openStudy: this.openApp('study'),
+      openSeminars: this.openApp('seminars'),
+      closeSheet: this.closeSheet,
+      openDetail: () => this.setState({ detail: true }),
+      closeDetail: () => this.setState({ detail: false, dockHidden: false }),
+      handleScroll: this.handleScroll,
+      noop: () => {},
+    };
+  }
+}
+</script>
+</body>
+</html>
