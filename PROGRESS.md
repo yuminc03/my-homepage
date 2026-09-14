@@ -2,16 +2,16 @@
 최종 업데이트: 2026-09-14
 
 ## 현재 상태 한 줄 요약
-디자인 시안은 **데스크톱 메타포**로 확정되었고, 목록 4화면(홈·프로젝트·스터디 기록·세미나 기록)과 상세 3화면(프로젝트·스터디 글·행사), **라이트/다크 모드(바탕만 전환)**와 전환 버튼, **Dock 자동 숨김**, **G · 라일락 & 민트 색상**까지 반영해 모두 `develop`에 병합했다. 모바일은 **홈 화면 메타포 7화면**(홈·프로젝트·프로젝트 상세·스터디 기록·스터디 글 상세·세미나 기록·행사 상세)을 완성해 `develop`에 병합했고, **다크 모드에서는 데스크톱·모바일 모두 창 본문도 어둡게** 바꿨다(`--win-*` 토큰). 남은 시안 작업은 iPhone 목업 교체·태블릿·모션이며, 기술 스택은 시안을 마무리한 뒤 정하기로 보류했다. 아직 사이트 코드는 작성하지 않았다.
+디자인 시안은 **데스크톱 메타포**로 확정되었고, 목록 4화면(홈·프로젝트·스터디 기록·세미나 기록)과 상세 3화면(프로젝트·스터디 글·행사), **라이트/다크 모드(바탕만 전환)**와 전환 버튼, **Dock 자동 숨김**, **G · 라일락 & 민트 색상**까지 반영해 모두 `develop`에 병합했다. 모바일은 **홈 화면 메타포 7화면**(홈·프로젝트·프로젝트 상세·스터디 기록·스터디 글 상세·세미나 기록·행사 상세)을 완성해 `develop`에 병합했고, **다크 모드에서는 데스크톱·모바일 모두 창 본문도 어둡게** 바꿨다(`--win-*` 토큰). iPhone 그림은 **iPhone 16 Pro 목업 이미지로 교체**했다(`develop` 병합). 남은 시안 작업은 태블릿·모션이며, 기술 스택은 시안을 마무리한 뒤 정하기로 보류했다. 아직 사이트 코드는 작성하지 않았다.
 
 ## 다음 세션에서 바로 시작하기
 사용자 지시(2026-09-14): "모바일 3화면 확인 완료. 아래 순서대로 다음 세션(아침)부터 진행". 각 단계가 끝나면 커밋 메시지를 제안하고 사용자 확인 후 커밋·병합한다.
 
 ### 0. 시작 전 확인 (매 세션)
-1. `git status`, `git branch --show-current`로 작업 트리가 깨끗한지, 어느 브랜치인지 확인한다. 마지막 상태(2026-09-14)는 `feature/design-mobile`을 `develop`에 병합(`74c8149`), 이어서 `feature/design-dark-windows`에서 데스크톱 창 본문도 다크로 맞춘 뒤(캔버스 v16) `develop`에 병합. 병합한 두 feature 브랜치는 삭제 여부를 사용자에게 확인 중
+1. `git status`, `git branch --show-current`로 작업 트리가 깨끗한지, 어느 브랜치인지 확인한다. 마지막 상태(2026-09-14)는 모바일·다크 창 본문 작업을 `develop`에 병합(`0856a69`)하고 feature 브랜치 2개 삭제. 이어서 2단계(iPhone 목업 교체, 캔버스 v17)를 `feature/design-iphone-mockup`에서 커밋해 `develop`에 병합하고 브랜치 삭제. 목업 원본은 사용자가 삭제했다. **다음은 3단계 태블릿**
 2. `/design` 스킬을 다시 실행해 스킬 경로(`seed-canvas.mjs`, `payload.template.html`)를 확인한다. 경로와 scratchpad 경로는 세션마다 바뀐다
 3. 캔버스를 `Artifact` read로 읽고 `--extract`로 꺼내 `design/` 파일과 비교한다(사용자가 GUI에서 저장했을 수 있음). 다르면 추출본을 기준으로 작업
-4. 목업 이미지가 필요한 단계(2단계)에서는 저장소 루트의 `device_iPhone 16 Pro.png`를 이번 세션 scratchpad에 `iphone-16-pro.png`로 복사해서 쓴다(원본은 커밋 금지)
+4. 재조립에는 목업 이미지 `iphone-16-pro.png`가 필요하다. 원본은 삭제했으므로 3단계에서 캔버스를 `--extract`한 폴더에 나온 `iphone-16-pro.png`를 `--image`로 넣는다
 
 ### 1단계: 남은 모바일 4화면 (브랜치 `feature/design-mobile`에서 이어서) — 작업 완료(2026-09-14), 커밋·병합 대기
 - 실제로 만든 결과와 사양 대비 결정은 "확정된 결정 → 모바일 메타포"의 "추가 4화면" 항목 참고. 아래는 원래 사양 기록
@@ -23,7 +23,8 @@
 - `canvas.json` `page-3`(모바일) 배치: 기존 x 0 / 490 / 980 뒤로 x 1470 / 1960 / 2450 / 2940에 추가(간격 100px). `mobile-rule` 메모(x 1470)는 x 3430으로 옮긴다. 추가한 파일은 재조립 명령에 `--artboard`로 넣는다
 - 끝나면: 재조립·검사 → 캔버스 업데이트 → `PROGRESS.md` 갱신 → 커밋 제안 → 확인 후 커밋 → `develop`에 `--no-ff` 병합 → 브랜치 삭제(사용자 확인 후)
 
-### 2단계: iPhone 목업 이미지 교체 (새 브랜치 `feature/design-iphone-mockup`)
+### 2단계: iPhone 목업 이미지 교체 (새 브랜치 `feature/design-iphone-mockup`) — 완료·`develop` 병합(2026-09-14)
+- 실제 적용 결과는 "확정된 결정 → iPhone 목업 이미지" 항목 참고. 아래는 원래 사양 기록
 - 목업 파일 정보는 "작업 파일"의 `device_iPhone 16 Pro.png` 항목 참고(화면 투명, 좌표·비율 기록됨)
 - 넣는 구조(내용을 아래에 깔고 기기 이미지를 위에 겹친다):
   - 바깥: `position:relative; width:<폭>px; aspect-ratio:450/920;`
@@ -36,7 +37,7 @@
   - `ProjectDetail.dc.html` 스크린샷 띠 4대(210×430) + 주요 기능 2대(200×410)
   - `DirectionG.dc.html`에는 폰이 없으므로 제외
   - 1단계에서 만든 `MobileProjects.dc.html`·`MobileProjectDetail.dc.html`의 폰
-- **주의**: 사용자는 사용이 끝나면 목업 원본을 삭제할 예정이다. 원본이 없으면 이후 캔버스 재조립 때 이미지를 다시 넣을 수 없으므로, 삭제 전에 필요한 재조립을 모두 끝냈는지 사용자에게 확인한다(캔버스에 이미 올라간 사본은 원본 삭제와 무관하게 남는다)
+- **주의**: 사용자는 사용이 끝나면 목업 원본을 삭제할 예정이다. 캔버스 v17부터 이미지가 캔버스 안에 들어 있으므로, 원본을 지운 뒤에도 `seed-canvas.mjs --extract`로 캔버스에서 `iphone-16-pro.png`를 꺼내 재조립 `--image`에 쓸 수 있다
 - 끝나면 1단계와 같은 흐름으로 커밋·병합
 
 ### 3단계: 태블릿(768px) (새 브랜치 `feature/design-tablet`)
@@ -64,7 +65,8 @@
 - 새 작업은 `develop`에서 `feature/*` 브랜치를 만들어 시작한다
   - `feature/design-mobile` — 모바일 홈 화면 메타포 7화면 + 모바일 다크 창 본문 (`74c8149`, 2026-09-14)
   - `feature/design-dark-windows` — 데스크톱 다크 창 본문 (2026-09-14)
-  - 위 두 브랜치는 병합 후 아직 삭제하지 않았다(사용자 확인 대기)
+  - 위 두 브랜치는 병합 후 삭제했다(2026-09-14, 사용자 확인)
+  - `feature/design-iphone-mockup` — iPhone 16 Pro 목업 교체 + 앱 아이콘 그라디언트 색 복원 (2026-09-14, 병합 후 삭제)
 
 ## 확정된 결정
 - 디자인 방향: **데스크톱 OS 메타포**. 상단 유리 메뉴바가 네비게이션, 각 페이지는 창 안에 열리고, 하단에 Dock
@@ -101,6 +103,12 @@
     - 스터디 글 상세(390×1900): 카테고리·제목 24px·날짜·읽는 시간 → **목차 접힘 상자**(높이 48px, 목록 아이콘 + "목차" + "3개 항목" + 아래 화살표, `aria-expanded="false"`) → 본문 16px/1.8, 소제목 20px, 인라인 코드 14px → 코드 블록 13px/22px, 가로 스크롤, 줄 번호는 `sticky`로 고정, 복사는 44px 아이콘 버튼 → 이전/다음 세로
     - 세미나 기록 목록(390×1720): 타임라인 대신 세로 카드 4개(사진 자리 180px → 라일락 점·날짜(굵게)·장소 13px → 행사 이름 18px → 한 줄 소감 14px 두 줄 말줄임). 타임라인의 점을 날짜 앞 작은 점으로 남겨 데스크톱과 연결. Dock 활성 = 세미나
 - **iPhone 목업 이미지 (2026-09-13 결정)**: 직접 그린 iPhone 모양 대신 Apple Developer의 Apple Design Resources에 있는 **iPhone 16 Pro** 목업 이미지를 쓴다(사용자가 준비, 사용 조건은 사용자가 확인)
+  - **적용 (2026-09-14)**: 폰 23대 교체 — 홈 목업 1(너비 206px, `rotate(3deg)` 유지), 데스크톱 프로젝트 카드 6(너비 150px, 카드 아래로 110px 잘림), 데스크톱 프로젝트 상세 스크린샷 띠 4(210px)·주요 기능 2(200px), 모바일 프로젝트 카드 4(128px, 아래로 92px 잘림), 모바일 프로젝트 상세 띠 4·기능 2(170px)
+  - 구조: 바깥 `position:relative; aspect-ratio:450 / 920; filter:drop-shadow(기존 그림자)` > 화면 `position:absolute; left:5.56%; top:2.61%; width:88.89%; height:94.78%; border-radius:13.75% / 6.3%; overflow:hidden`(기존 앱 화면 바탕·내용 유지) + 맨 위 `<img src="iphone-16-pro.png">`(클릭 통과)
+  - 화면 윗부분 여백은 Dynamic Island 아래로 약 10px 틈이 생기게 늘렸다(너비 206 → 34px, 150 → 26px, 128 → 22px, 210 → 34px, 200 → 32px, 170 → 28px)
+  - 그림자는 이미지 모양을 따르도록 `box-shadow` 대신 `filter:drop-shadow`
+  - 목업 이미지는 테마와 무관하게 그대로 쓴다(테두리 색 조정 없음, 사용자 확인)
+  - 같은 작업에서 발견한 버그 수정: 다크 창 토큰 변환 때 앱 아이콘·썸네일 **그라디언트 안의 라일락**까지 `var(--win-accent)`로 바뀌어 다크에서 아이콘 색이 달라지던 것을 고정색으로 되돌렸다. 토큰 변환은 그라디언트 안을 건드리지 않는다
 - **콘텐츠 관리 방식 (2026-09-13 제안, 기술 스택과 함께 확정 예정)**: Firebase 대신 **저장소의 Markdown 파일 + Astro Content Collections**를 추천. 글 하나 = 파일 하나라 git 기록이 곧 활동 기록이 되고, 필드 형식 검사·이미지 최적화·무료 정적 배포가 가능하다. 브라우저에서 글을 쓰고 싶어지면 Keystatic·Decap CMS(git 기반)를 붙이고, 사진이 많아지면 사진만 이미지 서비스로 옮긴다. Firebase는 관리자 화면·인증을 직접 만들어야 하고 검색 노출·비용 면에서 이 사이트에는 과하다
 
 ## 저작권 주의선
@@ -151,7 +159,7 @@ macOS·Xcode의 실제 UI는 복제하지 않는다. Apple 로고, SF Symbols, �
 
 ## 시안 캔버스
 - URL: https://claude.ai/code/artifact/48a3c34c-b882-4f13-8e2f-7e3668bdb7b1
-- v1: 일반 웹페이지 4장 → v2: iOS 정체성 강화(iPhone 목업, 이력서 제거) → v3: 데스크톱 메타포 → v4: 라이트/다크 + Dock 자동 숨김 → v5~v6: 색상 방향 후보 A~G 비교 → v7: G · 라일락 & 민트 적용 → v8: 홈 메뉴바 테마 전환 버튼 → v9: 스터디 글 상세·행사 상세 화면 → v10: 행사 상세 B 글 흐름형 추가 → v11: 행사 상세를 글 흐름형으로 확정 → v12: 프로젝트 상세 화면 → v13: 모바일 홈 화면 메타포 핵심 3화면 → v14: 모바일 추가 4화면(프로젝트 목록·프로젝트 상세·스터디 글 상세·세미나 기록 목록) → v15: 모바일 다크 모드에서 창 본문도 어둡게 → **v16: 데스크톱 다크 모드 창 본문도 어둡게(현재)**
+- v1: 일반 웹페이지 4장 → v2: iOS 정체성 강화(iPhone 목업, 이력서 제거) → v3: 데스크톱 메타포 → v4: 라이트/다크 + Dock 자동 숨김 → v5~v6: 색상 방향 후보 A~G 비교 → v7: G · 라일락 & 민트 적용 → v8: 홈 메뉴바 테마 전환 버튼 → v9: 스터디 글 상세·행사 상세 화면 → v10: 행사 상세 B 글 흐름형 추가 → v11: 행사 상세를 글 흐름형으로 확정 → v12: 프로젝트 상세 화면 → v13: 모바일 홈 화면 메타포 핵심 3화면 → v14: 모바일 추가 4화면(프로젝트 목록·프로젝트 상세·스터디 글 상세·세미나 기록 목록) → v15: 모바일 다크 모드에서 창 본문도 어둡게 → v16: 데스크톱 다크 모드 창 본문도 어둡게 → **v17: iPhone 16 Pro 목업 이미지로 교체 + 앱 아이콘 그라디언트 색 복원(현재)**
 - 페이지 3개: `시안`(데스크톱 목록 4화면 + 상세 3화면 + 규칙 메모) / `색상 방향`(G 팔레트 기준표 1장 + 결정 메모) / `모바일`(7화면 + 모바일 규칙 메모, 현재 캔버스를 열면 이 페이지부터 보임)
 - `모바일` 페이지 배치(x, 간격 100px): 홈 0 / 스터디 기록 490 / 행사 상세 980 / 프로젝트 1470 / 프로젝트 상세 1960 / 스터디 글 상세 2450 / 세미나 기록 2940 / `mobile-rule` 메모 3430
 - 각 화면 위의 조절 칩: `theme`(dark / light). 홈에만 `dockPreview`(auto = 실제 동작 / shown / hidden)
@@ -172,7 +180,7 @@ macOS·Xcode의 실제 UI는 복제하지 않는다. Apple 로고, SF Symbols, �
 - `design/MobileProjectDetail.dc.html` — 모바일 프로젝트 상세 창(390×3300, Dock 숨은 상태). 폰 그림 6대(스크린샷 띠 4 + 주요 기능 2)는 2단계에서 목업 이미지로 교체 대상
 - `design/MobileStudyPost.dc.html` — 모바일 스터디 글 상세 창(390×1900, 목차 접힘 상자, Dock 숨은 상태)
 - `design/MobileSeminars.dc.html` — 모바일 세미나 기록 목록 창(390×1720, Dock 보임·활성 세미나)
-- `device_iPhone 16 Pro.png`(저장소 루트, 아직 git에 추가하지 않음) — Apple Design Resources iPhone 16 Pro 목업. 450×920 RGBA, 50KB. **화면 부분이 투명**하다. 화면 영역 x 25~424(폭 400), y 24~895(높이 872), 가운데 위 y 73까지 Dynamic Island. 비율로는 left 5.56% · top 2.61% · width 88.89% · height 94.78%. 사이트 내용을 이미지 **아래**에 깔고 이미지를 위에 겹친다(화면 모서리 둥글기는 폭의 약 13.75% · 높이의 약 6.3%). 캔버스에는 공백 없는 이름(`iphone-16-pro.png`)으로 복사해 `--image`로 넣는다
+- `device_iPhone 16 Pro.png`(저장소 루트, git에 추가하지 않음, **2026-09-14 사용자가 삭제** — 캔버스 v17 안에 `iphone-16-pro.png`로 들어 있어 `--extract`로 꺼낼 수 있다) — Apple Design Resources iPhone 16 Pro 목업. 450×920 RGBA, 50KB. **화면 부분이 투명**하다. 화면 영역 x 25~424(폭 400), y 24~895(높이 872), 가운데 위 y 73까지 Dynamic Island. 비율로는 left 5.56% · top 2.61% · width 88.89% · height 94.78%. 사이트 내용을 이미지 **아래**에 깔고 이미지를 위에 겹친다(화면 모서리 둥글기는 폭의 약 13.75% · 높이의 약 6.3%). 캔버스에는 공백 없는 이름(`iphone-16-pro.png`)으로 복사해 `--image`로 넣는다
 - 서브 화면 3개의 Dock은 아직 페이지 하단에 놓인 정적 블록이다. 실제 구현에서는 모든 화면에서 홈과 같은 고정 + 자동 숨김 규칙을 쓴다
 - 테마 토큰 CSS는 모든 `.dc.html`에 똑같이 복제되어 있다(캔버스 아트보드끼리는 CSS를 공유할 수 없음). 토큰 값을 바꿀 때는 해당 파일을 모두 함께 수정한다. 화면 파일 14개에는 창 본문 토큰 `--win-*`와 `.media` 규칙이 추가로 들어 있다
 - 창 색을 고정색 → `--win-*` 토큰으로 바꾼 일괄 변환은 scratchpad 스크립트로 했다. 폰 테두리(`background:oklch(28%/30% 0.022 290)`)와 코드 창(`background:oklch(19% 0.018 290)`) 블록 안쪽은 건너뛰었다. 새 화면을 만들 때는 처음부터 `var(--win-*)`로 쓴다
@@ -186,7 +194,7 @@ macOS·Xcode의 실제 UI는 복제하지 않는다. Apple 로고, SF Symbols, �
 
 1. 새 세션이라면 먼저 캔버스를 읽어(`Artifact` read) GUI에서 저장된 변경이 있는지 확인한다. `seed-canvas.mjs --extract <저장된 파일> --to <빈 폴더>`로 꺼내 `design/` 파일과 비교하고, 다르면 추출본을 기준으로 작업한다
 2. `design/*.dc.html` 또는 `canvas.json`을 수정한다
-3. 재조립: `node "<design 스킬 경로>/seed-canvas.mjs" --template "<design 스킬 경로>/payload.template.html" --out chu-yumin-portfolio.html --title "Chu Yumin Portfolio" --artboard Main.dc.html --artboard Projects.dc.html --artboard StudyLog.dc.html --artboard Seminars.dc.html --artboard ProjectDetail.dc.html --artboard StudyPost.dc.html --artboard SeminarDetail.dc.html --artboard DirectionG.dc.html --artboard MobileHome.dc.html --artboard MobileStudyLog.dc.html --artboard MobileSeminarDetail.dc.html --artboard MobileProjects.dc.html --artboard MobileProjectDetail.dc.html --artboard MobileStudyPost.dc.html --artboard MobileSeminars.dc.html --canvas canvas.json`
+3. 재조립: `node "<design 스킬 경로>/seed-canvas.mjs" --template "<design 스킬 경로>/payload.template.html" --out chu-yumin-portfolio.html --title "Chu Yumin Portfolio" --artboard Main.dc.html --artboard Projects.dc.html --artboard StudyLog.dc.html --artboard Seminars.dc.html --artboard ProjectDetail.dc.html --artboard StudyPost.dc.html --artboard SeminarDetail.dc.html --artboard DirectionG.dc.html --artboard MobileHome.dc.html --artboard MobileStudyLog.dc.html --artboard MobileSeminarDetail.dc.html --artboard MobileProjects.dc.html --artboard MobileProjectDetail.dc.html --artboard MobileStudyPost.dc.html --artboard MobileSeminars.dc.html --image <scratchpad>/iphone-16-pro.png --canvas canvas.json` (목업 원본이 없으면 캔버스를 `--extract`해서 나온 `iphone-16-pro.png`를 쓴다)
 4. 검증: 같은 스크립트에 `--check chu-yumin-portfolio.html`
 5. Artifact 재발행. 새 세션에서는 반드시 위 URL을 `url`로 넘긴다(안 넘기면 새 캔버스가 생김). `contract: 0.1.31`, favicon `💻`, `capabilities`는 생략
 
@@ -197,10 +205,10 @@ macOS·Xcode의 실제 UI는 복제하지 않는다. Apple 로고, SF Symbols, �
 - (모바일 핵심 3화면 사용자 확인 완료, 2026-09-14. 이어지는 작업 순서와 사양은 맨 위 "다음 세션에서 바로 시작하기" 참고)
 - [x] 1단계: 남은 모바일 4화면(프로젝트 목록·프로젝트 상세·스터디 글 상세·세미나 기록 목록) — 작업·캔버스 반영 완료(2026-09-14). 커밋 `84d2a0e`, 모바일 다크 창 본문 `437dae4`, `develop` 병합 `74c8149`(2026-09-14)
 - [x] 데스크톱 창 본문도 다크 모드에서 어둡게 맞춤(2026-09-14, `feature/design-dark-windows` → `develop`)
-- [ ] 병합한 `feature/design-mobile`·`feature/design-dark-windows` 브랜치 삭제(사용자 확인 후)
-- [ ] 2단계: 데스크톱·모바일의 직접 그린 iPhone을 iPhone 16 Pro 목업 이미지로 교체
+- [x] 병합한 `feature/design-mobile`·`feature/design-dark-windows` 브랜치 삭제(2026-09-14)
+- [x] 2단계: 데스크톱·모바일의 직접 그린 iPhone을 iPhone 16 Pro 목업 이미지로 교체 — 작업·캔버스 v17 반영(2026-09-14). 커밋·`develop` 병합·브랜치 삭제 완료
 - [ ] 3단계: 태블릿(768px) 시안
-- 목업 이미지 원본(`device_iPhone 16 Pro.png`)은 **git에 커밋하지 않는다**. 사용이 끝나면 사용자가 원본을 삭제한다(2026-09-13 결정). 커밋할 때 이 파일이 스테이징되지 않게 주의한다
+- 목업 이미지 원본(`device_iPhone 16 Pro.png`)은 **git에 커밋하지 않는다**. 사용이 끝나면 사용자가 원본을 삭제한다(2026-09-13 결정). 2026-09-14 교체 완료 후 삭제했다
 - [ ] 기술 스택 확정(보류 중). 추천은 **Astro + Tailwind CSS**(콘텐츠 중심, 이미지 최적화 내장, 필요한 부분만 island). 창 전환 같은 동적 인터랙션이 많아지면 Next.js
 - [ ] 대괄호 placeholder를 실제 내용으로 교체 — 프로젝트 이름·소개·태그, 포스트 제목·요약·날짜, 세미나 이름·장소·소감, 연락처 링크(GitHub/Email/LinkedIn)
 - [ ] `feature/design-theme-dock`, `feature/design-color-direction`을 `develop`에 병합(사용자 확인 후)
