@@ -1,0 +1,15 @@
+---
+// 세미나 기록 목록 창(셸 틀). 행사 타임라인·카드는 페이지 구현 단계에서 추가한다
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import Window from '../../components/Window.astro';
+import PageHeading from '../../components/PageHeading.astro';
+import { getApp } from '../../data/apps';
+
+const app = getApp('seminars');
+---
+
+<SiteLayout active={app.id}>
+	<Window title={app.title}>
+		<PageHeading title={app.title} description={app.description} />
+	</Window>
+</SiteLayout>

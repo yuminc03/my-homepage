@@ -1,0 +1,191 @@
+---
+// 화면 하단에 떠 있는 Dock
+// - 앱 4개(열린 앱 아래 실행 점) | 구분선 | 코드 에디터(데스크톱만) · 연락처
+// - surface: desk = 바탕 위 유리(홈), window = 창 위 유리(목록·상세)
+// - 자동 숨김은 별도 작업(PROGRESS.md 5-3). 지금은 항상 보인다
+import AppIcon from './AppIcon.astro';
+import { APPS, CODE_EDITOR, CONTACT, type AppId } from '../data/apps';
+import { withBase } from '../lib/url';
+
+interface Props {
+	active: AppId;
+	surface?: 'desk' | 'window';
+}
+
+const { active, surface = 'desk' } = Astro.props;
+---
+
+<nav class="dock-zone" aria-label="Dock">
+	<div class="dock" data-surface={surface}>
+		{
+			APPS.map((app) => (
+				<a class="item" href={withBase(app.href)} title={app.label} aria-label={app.label} aria-current={app.id === active ? 'page' : undefined}>
+					<AppIcon app={app} />
+					<span class="dot" aria-hidden="true" />
+				</a>
+			))
+		}
+		<span class="sep" aria-hidden="true"></span>
+		<a class="item desktop-only" href={withBase(CODE_EDITOR.href)} title={CODE_EDITOR.label} aria-label={CODE_EDITOR.label}>
+			<AppIcon app={CODE_EDITOR} />
+			<span class="dot" aria-hidden="true"></span>
+		</a>
+		<a class="item" href={withBase(CONTACT.href)} title={CONTACT.label} aria-label={CONTACT.label}>
+			<AppIcon app={CONTACT} />
+			<span class="dot" aria-hidden="true"></span>
+		</a>
+	</div>
+</nav>
+
+<style>
+	.dock-zone {
+		position: fixed;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		z-index: 60;
+		display: flex;
+		justify-content: center;
+		padding-bottom: calc(22px + env(safe-area-inset-bottom));
+		pointer-events: none;
+	}
+
+	.dock {
+		display: flex;
+		align-items: flex-start;
+		gap: 10px;
+		padding: 8px 10px 6px;
+		border: 1px solid var(--glass-line);
+		border-radius: 26px;
+		background: var(--glass);
+		backdrop-filter: blur(24px) saturate(180%);
+		-webkit-backdrop-filter: blur(24px) saturate(180%);
+		box-shadow:
+			inset 0 1px 0 var(--glass-hi),
+			0 14px 36px var(--dock-shadow);
+		pointer-events: auto;
+	}
+
+	.dock[data-surface='window'] {
+		border-color: var(--win-dock-line);
+		background: var(--win-dock-glass);
+		box-shadow:
+			inset 0 1px 0 var(--win-dock-hi),
+			0 14px 36px var(--win-dock-shadow);
+	}
+
+	.item {
+		--icon-size: 48px;
+		--icon-radius: 14px;
+		--glyph-size: 22px;
+		--glyph-stroke: 1.8;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 4px;
+		border-radius: 14px;
+		transition: transform var(--dur-press) var(--ease-out);
+	}
+
+	.item:active {
+		transform: scale(0.92);
+	}
+
+	.item:focus-visible {
+		outline: 2px solid var(--win-accent);
+		outline-offset: 3px;
+	}
+
+	/* 실행 중 점: 열린 앱 아래에만 보인다 */
+	.dot {
+		width: 4px;
+		height: 4px;
+		border-radius: 50%;
+		background: transparent;
+		transition: background-color 240ms var(--ease-out);
+	}
+
+	.item[aria-current='page'] .dot {
+		background: var(--dock-dot);
+	}
+
+	.dock[data-surface='window'] .item[aria-current='page'] .dot {
+		background: var(--win-dock-dot);
+	}
+
+	.sep {
+		width: 1px;
+		height: 40px;
+		margin: 4px 2px 0;
+		background: var(--dock-sep);
+	}
+
+	.dock[data-surface='window'] .sep {
+		background: var(--win-dock-sep);
+	}
+
+	.desktop-only {
+		display: none;
+	}
+
+	@media (min-width: 744px) {
+		.dock-zone {
+			padding-bottom: calc(28px + env(safe-area-inset-bottom));
+		}
+
+		.dock {
+			gap: 12px;
+			padding: 10px 12px 7px;
+			border-radius: 30px;
+			backdrop-filter: blur(26px) saturate(180%);
+			-webkit-backdrop-filter: blur(26px) saturate(180%);
+		}
+
+		.item {
+			--icon-size: 56px;
+			--icon-radius: 16px;
+			--glyph-size: 26px;
+			gap: 5px;
+		}
+
+		.sep {
+			height: 46px;
+			margin: 5px 2px 0;
+		}
+	}
+
+	@media (min-width: 1180px) {
+		.dock-zone {
+			padding-bottom: 24px;
+		}
+
+		.dock {
+			align-items: flex-end;
+			padding: 10px 14px;
+			border-radius: 24px;
+			backdrop-filter: blur(28px) saturate(180%);
+			-webkit-backdrop-filter: blur(28px) saturate(180%);
+			box-shadow:
+				inset 0 1px 0 var(--glass-hi),
+				0 18px 44px var(--dock-shadow);
+		}
+
+		.item {
+			--icon-size: 52px;
+			--icon-radius: 15px;
+			--glyph-size: 24px;
+			--glyph-stroke: 1.7;
+			gap: 6px;
+		}
+
+		.sep {
+			align-self: center;
+			height: 44px;
+			margin: 0 4px;
+		}
+
+		.desktop-only {
+			display: flex;
+		}
+	}
+</style>

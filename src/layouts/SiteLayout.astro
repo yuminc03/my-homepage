@@ -1,0 +1,121 @@
+---
+// 사이트 공통 셸: 블러 글로우 바탕 · 메뉴바 · 본문(<main>) · Dock
+// - active: 메뉴바 활성 표시와 Dock 실행 점을 붙일 앱
+// - surface: desk = 홈(바탕 위, 모바일·태블릿에도 메뉴바 표시) / window = 창이 열린 화면(목록·상세)
+import BaseLayout from './BaseLayout.astro';
+import MenuBar from '../components/MenuBar.astro';
+import Dock from '../components/Dock.astro';
+import { getApp, type AppId } from '../data/apps';
+
+interface Props {
+	active: AppId;
+	surface?: 'desk' | 'window';
+	title?: string;
+	description?: string;
+}
+
+const { active, surface = 'window', title, description } = Astro.props;
+const app = getApp(active);
+const pageTitle = title ?? (active === 'home' ? app.title : `${app.label} · Chu Yumin`);
+---
+
+<BaseLayout title={pageTitle} description={description ?? app.description}>
+	<div class="glow" aria-hidden="true">
+		<span class="glow-a"></span>
+		<span class="glow-b"></span>
+		<span class="glow-c"></span>
+	</div>
+	<MenuBar active={active} showOnTouch={surface === 'desk'} />
+	<main class="site-main">
+		<slot />
+	</main>
+	<Dock active={active} surface={surface} />
+</BaseLayout>
+
+<style>
+	/* 바탕 블러 글로우: 화면에 고정된 장식 층. 스크롤·클릭에 관여하지 않는다 */
+	.glow {
+		position: fixed;
+		inset: 0;
+		z-index: 0;
+		overflow: hidden;
+		pointer-events: none;
+	}
+
+	.glow span {
+		position: absolute;
+		border-radius: 50%;
+	}
+
+	.glow-a {
+		top: -160px;
+		left: -140px;
+		width: 420px;
+		height: 420px;
+		background: var(--glow-a);
+		filter: blur(90px);
+		opacity: 0.34;
+	}
+
+	.glow-b {
+		top: 420px;
+		right: -180px;
+		width: 380px;
+		height: 380px;
+		background: var(--glow-b);
+		filter: blur(100px);
+		opacity: 0.28;
+	}
+
+	.glow-c {
+		bottom: -120px;
+		left: -80px;
+		width: 340px;
+		height: 340px;
+		background: var(--glow-c);
+		filter: blur(100px);
+		opacity: 0.22;
+	}
+
+	.site-main {
+		position: relative;
+		z-index: 1;
+	}
+
+	@media (min-width: 744px) {
+		.glow-a {
+			top: -200px;
+			left: -160px;
+			width: 560px;
+			height: 560px;
+			filter: blur(120px);
+		}
+	}
+
+	@media (min-width: 1180px) {
+		.glow-a {
+			top: -240px;
+			left: -180px;
+			width: 760px;
+			height: 760px;
+			filter: blur(160px);
+		}
+
+		.glow-b {
+			top: 120px;
+			right: -240px;
+			width: 680px;
+			height: 680px;
+			filter: blur(180px);
+			opacity: 0.3;
+		}
+
+		.glow-c {
+			bottom: -260px;
+			left: 280px;
+			width: 620px;
+			height: 620px;
+			filter: blur(190px);
+		}
+	}
+</style>
