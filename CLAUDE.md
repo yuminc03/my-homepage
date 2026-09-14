@@ -11,12 +11,27 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **새 채팅을 시작하면 먼저 `PROGRESS.md`를 읽는다.** 현재 상태, 지금 할 일, 확정된 결정, 시안 재게시 방법이 모두 정리된 단일 기준 문서다.
 - 디자인 시안 단계입니다. `design/`에 Claude Design 캔버스용 `.dc.html` 시안(데스크톱·모바일·태블릿 각 7화면 + 모션 3장)과 `canvas.json`, 조립 결과물 `chu-yumin-portfolio.html`이 있습니다.
 - 기술 스택은 **Astro + 일반 CSS + TypeScript + Markdown Content Collections**로 확정했습니다(2026-09-14, 근거는 `docs/tech-stack.md`, 요약은 `PROGRESS.md` 5-11).
-- 사이트 소스 코드·패키지 매니페스트·빌드 설정은 아직 없습니다. Astro 프로젝트를 만들면 이 섹션을 실제 명령어(설치, 개발 서버 실행, 빌드, 테스트, 린트 등)로 갱신해야 합니다.
+- Astro 프로젝트를 저장소 루트에 생성했습니다(임시 홈 1장). 배포 주소는 GitHub Pages 하위 경로 `https://yuminc03.github.io/my-homepage/`입니다.
+
+## 명령어
+
+- Node 24를 사용합니다(`.nvmrc`). 셸 기본 Node가 21이라 먼저 `source ~/.nvm/nvm.sh && nvm use`를 실행합니다. Astro 7은 Node 22.12 이상이 필요합니다.
+- 설치: `npm install`
+- 개발 서버: `npm run dev` → `http://localhost:4321/my-homepage/`
+- 빌드: `npm run build` (결과물 `dist/`)
+- 빌드 결과 미리보기: `npm run preview`
+- Astro 7의 `preview` 서버는 백그라운드로 분리되어 계속 떠 있고 한 번에 하나만 실행됩니다. 이미 떠 있으면 다른 포트로 실행해도 "already running"만 출력하고 건너뜁니다. `pkill`로는 잡히지 않으니 `npx astro preview status` / `npx astro preview stop`으로 확인·종료합니다.
+- 테스트·린트는 아직 설정하지 않았습니다.
 
 ## 아키텍처
 
-- 아직 사이트 코드가 없어 설명할 아키텍처가 없습니다. 기술 스택과 구조가 정해지면 이 섹션에 "여러 파일을 함께 봐야 이해되는" 상위 수준 설계를 기록합니다.
-- 시안 파일끼리의 관계: 각 `.dc.html`은 캔버스에서 독립 아트보드라 CSS를 공유할 수 없어, 테마 토큰(`.site` / `.site[data-theme="light"]`, `--win-*`)이 모든 화면 파일에 복제되어 있습니다. 토큰을 바꿀 때는 모든 화면 파일을 함께 고치고, `chu-yumin-portfolio.html`은 직접 편집하지 않고 재조립합니다(`PROGRESS.md` 11장).
+- 스타일 계층: `src/layouts/BaseLayout.astro`가 `src/styles/tokens.css`(색·모션 토큰)와 `src/styles/global.css`(전역 기본)를 한 번 불러오고, 화면별 스타일은 각 컴포넌트의 스코프 `<style>`에서 토큰(`var(--…)`)만 참조합니다. 색 값을 컴포넌트에 직접 쓰지 않습니다(앱 아이콘 그라디언트·코드 에디터·iPhone 앱 화면처럼 테마와 무관한 고정색은 예외).
+- 테마: 색 토큰은 `light-dark(라이트, 다크)` 한 쌍이고, `:root`의 `color-scheme`이 어느 쪽을 쓸지 정합니다. 기본은 시스템 설정, `<html data-theme="dark"|"light">`이면 그 테마로 고정합니다. 테마를 바꾸는 코드는 `data-theme`만 바꿉니다.
+- 콘텐츠: `src/content.config.ts`가 `src/content/` 아래 세 컬렉션(`projects`·`study`·`seminars`)의 스키마를 정의합니다. 사진이 있는 글은 폴더(`slug/index.md(x)`)로 만들고 이미지를 옆에 둡니다. 페이지는 `getCollection()`으로 읽고 `draft: true`를 제외해야 합니다. 세미나 MDX 본문의 `Photo`·`PhotoPair`·`PhotoSide`는 상세 페이지가 `<Content components={{ ... }} />`로 넘겨야 렌더링됩니다. 필드 목록은 `PROGRESS.md` 5-10.
+- `src/content/*/sample-*`는 스키마 검증과 새 글 복사용 예시(`draft: true`)입니다.
+- 페이지 구조가 생기면 이 섹션에 추가합니다.
+- `astro.config.mjs`의 `base: '/my-homepage'` 때문에 내부 링크와 `public/` 에셋 경로는 `import.meta.env.BASE_URL`을 붙여 만들어야 합니다. `/`로 시작하는 절대 경로를 직접 쓰면 배포 후 404가 납니다.
+- 시안 파일끼리의 관계: 각 `.dc.html`은 캔버스에서 독립 아트보드라 CSS를 공유할 수 없어, 테마 토큰(`.site` / `.site[data-theme="light"]`, `--win-*`)이 모든 화면 파일에 복제되어 있습니다. 시안 토큰을 바꿀 때는 모든 화면 파일을 함께 고치고(사이트 구현의 기준은 `src/styles/tokens.css`), `chu-yumin-portfolio.html`은 직접 편집하지 않고 재조립합니다(`PROGRESS.md` 11장).
 
 ## 코딩 가이드라인
 

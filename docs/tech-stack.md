@@ -65,9 +65,11 @@
 
 ### 5-2. 그 밖의 구성
 - 언어: **TypeScript**(Astro 기본). Content Collections 스키마가 글의 필드를 검사하고 타입을 만들어 준다
-- 콘텐츠: `src/content/`의 Markdown(프로젝트·스터디·세미나 컬렉션 3개), 사진은 글 폴더 옆에 두고 `astro:assets`로 최적화
-- 배포: 정적 호스팅(GitHub Pages 또는 Cloudflare Pages). 원격 저장소가 GitHub에 있어 GitHub Actions 자동 배포가 가장 간단하다. 사이트 구현 단계에서 확정
-- 패키지 매니저: npm(추가 도구 설치 없이 시작)
+- 콘텐츠: `src/content/`의 Markdown·MDX(프로젝트·스터디·세미나 컬렉션 3개, 스키마 `src/content.config.ts`), 사진은 글 폴더 옆에 두고 `astro:assets`로 최적화
+- MDX(`@astrojs/mdx`): 세미나 행사 상세의 사진 배치 3종(넓게 1장 / 2장 나란히 / 사진 옆 글)을 본문 원하는 위치에 `<Photo>`·`<PhotoPair>`·`<PhotoSide>`로 쓰기 위해 추가. 순수 Markdown + remark 규칙(숨은 규칙, "사진 옆 글" 표현 불가), frontmatter 구조화(YAML로 글쓰기가 불편)와 비교해 선택
+- 배포: **GitHub Pages 하위 경로** `https://yuminc03.github.io/my-homepage/`. 원격 저장소가 GitHub에 있어 GitHub Actions 자동 배포가 가장 간단하다. 하위 경로라 `base: '/my-homepage'`를 설정하고 내부 링크·에셋에 `import.meta.env.BASE_URL`을 붙인다
+- 패키지 매니저: npm(추가 도구 설치 없이 시작). Node 24를 `.nvmrc`로 고정(Astro 7은 Node 22.12 이상 필요)
+- 테마 토큰: CSS `light-dark(라이트, 다크)` + `color-scheme`. 시안의 다크 블록·라이트 블록 두 벌 대신 토큰 하나에 한 쌍을 둔다. 시스템 설정 기본값은 CSS만으로 적용되고, 사용자 선택은 `data-theme`이 `color-scheme`만 바꿔 고정한다
 
 ## 6. 예상 면접 질문과 답변 요지
 ### Q1. 왜 React나 Next.js가 아니라 Astro인가요?
@@ -89,6 +91,8 @@
 ### Q4. 정적 사이트에서 다크 모드 깜빡임은 어떻게 막았나요?
 - CSS가 그려지기 전에 `<head>`의 작은 인라인 스크립트가 `localStorage` → `prefers-color-scheme` 순서로 테마를 읽어 `data-theme`을 먼저 붙인다
 - 색은 모두 CSS custom property라 속성 하나만 바뀌면 전체가 바뀐다
+- 토큰은 `light-dark(라이트, 다크)` 한 쌍으로 정의했다. `color-scheme: light dark`이면 브라우저가 시스템 설정으로 한쪽을 고르므로, JS가 늦거나 꺼져 있어도 첫 방문은 시스템 테마로 그려진다. 사용자가 고른 값은 `data-theme`으로 `color-scheme`만 덮어쓴다
+- 다크·라이트 두 블록을 따로 두는 방식과 비교하면 같은 토큰 이름을 두 번 관리하지 않아 한쪽만 고치는 실수가 사라진다. iOS Asset Catalog의 Color Set(Any/Dark 한 쌍)과 같은 구조다
 
 ### Q5. SSG·SSR·CSR의 차이와 이 사이트가 SSG인 이유는?
 - SSG: 빌드 때 HTML 생성 → CDN에서 파일만 내려줌. SSR: 요청마다 서버가 HTML 생성. CSR: 브라우저가 JS로 생성
@@ -111,8 +115,11 @@
 | 콘텐츠 | **Markdown + Content Collections**(프로젝트·스터디·세미나 3개 컬렉션) | 확정(2026-09-14) | 글 하나 = 파일 하나, git 기록이 활동 기록, 빌드 시 필드 검사 |
 | 언어 | TypeScript | 확정(Astro 기본) | 스키마에서 타입 자동 생성 |
 | 페이지 전환 | View Transitions(`ClientRouter`) + `transition:persist` | 확정 | 모션 설계(`transform`·`opacity`)를 페이지 이동 사이에 연결 |
-| 배포 | GitHub Pages 또는 Cloudflare Pages | 보류 — 사이트 구현 단계에서 확정 | 둘 다 정적 호스팅 무료 |
-| 패키지 매니저 | npm | 제안 — 프로젝트 생성 시 확정 | 추가 설치 없이 시작 |
+| 배포 | **GitHub Pages 하위 경로**(`yuminc03.github.io/my-homepage`, `base: '/my-homepage'`) | 확정(2026-09-14) | 저장소가 이미 GitHub에 있어 Actions로 자동 배포, 무료. 루트 주소 대신 하위 경로를 사용자가 선택 |
+| 패키지 매니저·런타임 | npm · Node 24(`.nvmrc`) · Astro 7.3.x | 확정(2026-09-14) | 추가 설치 없이 시작. Astro 7은 Node 22.12 이상 필요 |
+| 테마 토큰 구조 | `light-dark()` + `color-scheme`, `data-theme`으로 사용자 선택 고정 | 확정(2026-09-14) | 토큰 이름 한 번만 관리, JS 없이 시스템 테마 기본 적용 |
+| 본문 형식 | Markdown + **MDX**(`@astrojs/mdx`, 세미나 사진 배치 컴포넌트) | 확정(2026-09-14) | 글 흐름을 유지한 채 사진 배치 3종을 원하는 위치에 명시적으로 쓸 수 있음 |
+| 콘텐츠 스키마 | projects·study·seminars, zod v4(`astro/zod`) + `image()` | 확정(2026-09-14) | 시안 화면 항목을 필드로. 틀린 글은 빌드 실패(`Codable` 디코딩 실패와 같은 역할) |
 
 - 비교에서 제외한 후보: Next.js(서버 기능이 필요 없어 복잡도·JS 비용만 증가), Vite + React SPA(링크 미리보기·검색 노출 약함), 순수 HTML/CSS/JS(공통 요소 복제·수동 목록 관리)
 - 다시 검토할 조건: 여러 창을 동시에 띄우고 드래그하는 앱형 UI로 커질 때, 로그인·댓글 같은 서버 기능이 필요해질 때
