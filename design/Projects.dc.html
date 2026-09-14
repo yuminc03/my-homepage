@@ -12,15 +12,19 @@
   *{box-sizing:border-box;}
   body,html{margin:0;padding:0;}
   .site{font-family:'Noto Sans KR',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;}
-  a{color:oklch(60% 0.15 295);text-decoration:none;transition:color .15s ease;}
-  a:hover{color:oklch(50% 0.15 295);}
+  a{color:var(--win-accent);text-decoration:none;transition:color .15s ease;}
+  a:hover{color:var(--win-accent-hover);}
   .menuitem{color:var(--ink-muted);transition:color .15s ease;}
   .menuitem:hover{color:var(--ink-strong);}
-  /* 테마 토큰: 바탕·유리·메뉴 글자만 전환하고 창 본문은 그대로 둔다 */
-  .site{--desk:oklch(18% 0.02 290);--glow-a:oklch(58% 0.13 300);--glow-b:oklch(60% 0.1 170);--glow-c:oklch(52% 0.12 300);--glass:oklch(100% 0 0 / 0.10);--glass-line:oklch(100% 0 0 / 0.12);--glass-hi:oklch(100% 0 0 / 0.18);--glass-shadow:oklch(10% 0.022 290 / 0.35);--ink-strong:oklch(97% 0.006 290);--ink:oklch(88% 0.015 290);--ink-muted:oklch(82% 0.015 290);--menu-active:oklch(100% 0 0 / 0.14);--label:oklch(90% 0.012 290);--cue:oklch(76% 0.022 290);--dock-sep:oklch(100% 0 0 / 0.16);--dock-dot:oklch(90% 0.015 290);--dock-shadow:oklch(8% 0.022 290 / 0.5);--win-line:oklch(100% 0 0 / 0.12);--win-shadow:oklch(6% 0.022 290 / 0.55);--icon-shadow:oklch(8% 0.022 290 / 0.45);}
-  .site[data-theme="light"]{--desk:oklch(96% 0.012 290);--glow-a:oklch(86% 0.08 300);--glow-b:oklch(89% 0.07 170);--glow-c:oklch(90% 0.06 300);--glass:oklch(100% 0 0 / 0.55);--glass-line:oklch(25% 0.022 290 / 0.08);--glass-hi:oklch(100% 0 0 / 0.7);--glass-shadow:oklch(40% 0.024 295 / 0.10);--ink-strong:oklch(20% 0.015 290);--ink:oklch(32% 0.015 290);--ink-muted:oklch(42% 0.015 290);--menu-active:oklch(25% 0.022 290 / 0.08);--label:oklch(28% 0.015 290);--cue:oklch(46% 0.022 290);--dock-sep:oklch(25% 0.022 290 / 0.14);--dock-dot:oklch(35% 0.015 290);--dock-shadow:oklch(40% 0.024 295 / 0.16);--win-line:oklch(25% 0.022 290 / 0.08);--win-shadow:oklch(35% 0.024 295 / 0.18);--icon-shadow:oklch(40% 0.024 295 / 0.22);}
+  /* 테마 토큰: 바탕·유리·메뉴 글자와 창 본문(--win-*)을 함께 전환한다. 앱 화면(iPhone 안쪽)과 코드 에디터·코드 블록은 고정 */
+  .site{--desk:oklch(18% 0.02 290);--glow-a:oklch(58% 0.13 300);--glow-b:oklch(60% 0.1 170);--glow-c:oklch(52% 0.12 300);--glass:oklch(100% 0 0 / 0.10);--glass-line:oklch(100% 0 0 / 0.12);--glass-hi:oklch(100% 0 0 / 0.18);--glass-shadow:oklch(10% 0.022 290 / 0.35);--ink-strong:oklch(97% 0.006 290);--ink:oklch(88% 0.015 290);--ink-muted:oklch(82% 0.015 290);--menu-active:oklch(100% 0 0 / 0.14);--label:oklch(90% 0.012 290);--cue:oklch(76% 0.022 290);--dock-sep:oklch(100% 0 0 / 0.16);--dock-dot:oklch(90% 0.015 290);--dock-shadow:oklch(8% 0.022 290 / 0.5);--win-line:oklch(100% 0 0 / 0.12);--win-shadow:oklch(6% 0.022 290 / 0.55);--icon-shadow:oklch(8% 0.022 290 / 0.45);--win-bg:oklch(23% 0.018 290);--win-bar:oklch(27% 0.02 290);--win-bar-line:oklch(33% 0.02 290);--win-card:oklch(27% 0.019 290);--win-divider:oklch(33% 0.02 290);--win-chip-line:oklch(38% 0.02 290);--win-ink-strong:oklch(95% 0.008 290);--win-ink:oklch(85% 0.012 290);--win-ink-2:oklch(80% 0.012 290);--win-ink-muted:oklch(72% 0.015 290);--win-ink-sub:oklch(66% 0.015 290);--win-title:oklch(78% 0.015 290);--win-icon:oklch(80% 0.015 290);--win-dot:oklch(50% 0.015 290);--win-tag-bg:oklch(33% 0.05 295);--win-tag-ink:oklch(84% 0.09 295);--win-accent:oklch(76% 0.12 295);--win-accent-hover:oklch(84% 0.1 295);--win-solid-bg:oklch(93% 0.01 290);--win-solid-ink:oklch(20% 0.015 290);--win-solid-press:oklch(84% 0.03 295);--win-ctrl-a:oklch(62% 0.08 295);--win-ctrl-b:oklch(52% 0.06 295);--win-ctrl-c:oklch(56% 0.07 170);--win-press:oklch(100% 0 0 / 0.08);--win-hint:oklch(100% 0 0 / 0.3);--win-dock-glass:oklch(26% 0.02 290 / 0.78);--win-dock-line:oklch(100% 0 0 / 0.1);--win-dock-hi:oklch(100% 0 0 / 0.12);--win-dock-shadow:oklch(6% 0.022 290 / 0.5);--win-dock-sep:oklch(100% 0 0 / 0.16);--win-dock-dot:oklch(90% 0.015 290);--win-media-icon:oklch(90% 0.012 290 / 0.75);--win-media-dim:oklch(16% 0.02 290 / 0.6);--win-code-line:oklch(100% 0 0 / 0.08);}
+  .site[data-theme="light"]{--desk:oklch(96% 0.012 290);--glow-a:oklch(86% 0.08 300);--glow-b:oklch(89% 0.07 170);--glow-c:oklch(90% 0.06 300);--glass:oklch(100% 0 0 / 0.55);--glass-line:oklch(25% 0.022 290 / 0.08);--glass-hi:oklch(100% 0 0 / 0.7);--glass-shadow:oklch(40% 0.024 295 / 0.10);--ink-strong:oklch(20% 0.015 290);--ink:oklch(32% 0.015 290);--ink-muted:oklch(42% 0.015 290);--menu-active:oklch(25% 0.022 290 / 0.08);--label:oklch(28% 0.015 290);--cue:oklch(46% 0.022 290);--dock-sep:oklch(25% 0.022 290 / 0.14);--dock-dot:oklch(35% 0.015 290);--dock-shadow:oklch(40% 0.024 295 / 0.16);--win-line:oklch(25% 0.022 290 / 0.08);--win-shadow:oklch(35% 0.024 295 / 0.18);--icon-shadow:oklch(40% 0.024 295 / 0.22);--win-bg:oklch(98% 0.006 290);--win-bar:oklch(94% 0.006 290);--win-bar-line:oklch(89% 0.007 290);--win-card:oklch(96% 0.007 290);--win-divider:oklch(91% 0.007 290);--win-chip-line:oklch(88% 0.007 290);--win-ink-strong:oklch(18% 0.015 290);--win-ink:oklch(30% 0.015 290);--win-ink-2:oklch(36% 0.015 290);--win-ink-muted:oklch(46% 0.015 290);--win-ink-sub:oklch(54% 0.015 290);--win-title:oklch(42% 0.015 290);--win-icon:oklch(40% 0.015 290);--win-dot:oklch(70% 0.015 290);--win-tag-bg:oklch(95% 0.03 295);--win-tag-ink:oklch(46% 0.14 295);--win-accent:oklch(60% 0.15 295);--win-accent-hover:oklch(50% 0.15 295);--win-solid-bg:oklch(20% 0.015 290);--win-solid-ink:oklch(98% 0.006 290);--win-solid-press:oklch(30% 0.03 295);--win-ctrl-a:oklch(72% 0.06 295);--win-ctrl-b:oklch(81% 0.04 295);--win-ctrl-c:oklch(86% 0.06 170);--win-press:oklch(25% 0.022 290 / 0.06);--win-hint:oklch(25% 0.022 290 / 0.22);--win-dock-glass:oklch(98% 0.006 290 / 0.78);--win-dock-line:oklch(25% 0.022 290 / 0.08);--win-dock-hi:oklch(100% 0 0 / 0.7);--win-dock-shadow:oklch(35% 0.024 295 / 0.2);--win-dock-sep:oklch(25% 0.022 290 / 0.14);--win-dock-dot:oklch(35% 0.015 290);--win-media-icon:oklch(35% 0.022 290);--win-media-dim:oklch(100% 0 0 / 0);--win-code-line:oklch(100% 0 0 / 0);}
   .card:hover .thumb{transform:translateY(-4px);}
   .thumb{transition:transform .35s ease;}
+  /* 사진 자리·썸네일 바탕: 다크에서만 어둡게 덮는다 (시안용 자리 표시. 실제 사진에는 쓰지 않는다) */
+  .media{position:relative;}
+  .media::after{content:"";position:absolute;inset:0;border-radius:inherit;background:var(--win-media-dim);pointer-events:none;}
+  .media > *{z-index:1;}
 </style>
 </helmet>
 
@@ -51,31 +55,31 @@
 
   <!-- PROJECTS WINDOW -->
   <div style="position:relative;z-index:2;padding:56px 0 0 0;">
-    <div style="width:1240px;margin:0 auto;border-radius:16px;overflow:hidden;background:oklch(98% 0.006 290);border:1px solid var(--win-line);box-shadow:0 44px 96px var(--win-shadow);">
-      <div style="position:relative;display:flex;align-items:center;justify-content:center;height:44px;background:oklch(94% 0.006 290);border-bottom:1px solid oklch(89% 0.007 290);">
+    <div style="width:1240px;margin:0 auto;border-radius:16px;overflow:hidden;background:var(--win-bg);border:1px solid var(--win-line);box-shadow:0 44px 96px var(--win-shadow);">
+      <div style="position:relative;display:flex;align-items:center;justify-content:center;height:44px;background:var(--win-bar);border-bottom:1px solid var(--win-bar-line);">
         <div style="position:absolute;left:16px;display:flex;gap:8px;">
-          <div style="width:11px;height:11px;border-radius:50%;background:oklch(72% 0.06 295);"></div>
-          <div style="width:11px;height:11px;border-radius:50%;background:oklch(81% 0.04 295);"></div>
-          <div style="width:11px;height:11px;border-radius:50%;background:oklch(86% 0.06 170);"></div>
+          <div style="width:11px;height:11px;border-radius:50%;background:var(--win-ctrl-a);"></div>
+          <div style="width:11px;height:11px;border-radius:50%;background:var(--win-ctrl-b);"></div>
+          <div style="width:11px;height:11px;border-radius:50%;background:var(--win-ctrl-c);"></div>
         </div>
-        <span style="font-size:13px;font-weight:600;color:oklch(42% 0.015 290);">Projects</span>
+        <span style="font-size:13px;font-weight:600;color:var(--win-title);">Projects</span>
       </div>
 
       <div style="padding:48px;">
-        <h1 style="margin:0 0 14px 0;font-size:44px;line-height:1.2;font-weight:900;letter-spacing:-0.02em;color:oklch(18% 0.015 290);">Projects</h1>
-        <p style="margin:0 0 36px 0;font-size:17px;font-weight:300;color:oklch(46% 0.015 290);">직접 만들어온 앱과 프로젝트를 기록합니다.</p>
+        <h1 style="margin:0 0 14px 0;font-size:44px;line-height:1.2;font-weight:900;letter-spacing:-0.02em;color:var(--win-ink-strong);">Projects</h1>
+        <p style="margin:0 0 36px 0;font-size:17px;font-weight:300;color:var(--win-ink-muted);">직접 만들어온 앱과 프로젝트를 기록합니다.</p>
 
         <div style="display:flex;gap:10px;margin-bottom:40px;">
-          <span style="font-size:14px;font-weight:600;padding:9px 20px;border-radius:999px;background:oklch(20% 0.015 290);color:oklch(98% 0.006 290);">전체</span>
-          <span style="font-size:14px;font-weight:500;padding:9px 20px;border-radius:999px;background:oklch(98% 0.006 290);border:1px solid oklch(88% 0.007 290);color:oklch(40% 0.015 290);">iOS</span>
-          <span style="font-size:14px;font-weight:500;padding:9px 20px;border-radius:999px;background:oklch(98% 0.006 290);border:1px solid oklch(88% 0.007 290);color:oklch(40% 0.015 290);">Web</span>
-          <span style="font-size:14px;font-weight:500;padding:9px 20px;border-radius:999px;background:oklch(98% 0.006 290);border:1px solid oklch(88% 0.007 290);color:oklch(40% 0.015 290);">Side Project</span>
+          <span style="font-size:14px;font-weight:600;padding:9px 20px;border-radius:999px;background:var(--win-solid-bg);color:var(--win-solid-ink);">전체</span>
+          <span style="font-size:14px;font-weight:500;padding:9px 20px;border-radius:999px;background:var(--win-bg);border:1px solid var(--win-chip-line);color:var(--win-icon);">iOS</span>
+          <span style="font-size:14px;font-weight:500;padding:9px 20px;border-radius:999px;background:var(--win-bg);border:1px solid var(--win-chip-line);color:var(--win-icon);">Web</span>
+          <span style="font-size:14px;font-weight:500;padding:9px 20px;border-radius:999px;background:var(--win-bg);border:1px solid var(--win-chip-line);color:var(--win-icon);">Side Project</span>
         </div>
 
         <div style="display:grid;grid-template-columns:repeat(3, minmax(0, 1fr));gap:40px 32px;">
 
           <div class="card" style="display:flex;flex-direction:column;">
-            <div class="thumb" style="position:relative;height:250px;border-radius:20px;margin-bottom:20px;background:linear-gradient(150deg, oklch(93% 0.02 295), oklch(87% 0.036 335));overflow:hidden;display:flex;align-items:flex-end;justify-content:center;">
+            <div class="thumb media" style="position:relative;height:250px;border-radius:20px;margin-bottom:20px;background:linear-gradient(150deg, oklch(93% 0.02 295), oklch(87% 0.036 335));overflow:hidden;display:flex;align-items:flex-end;justify-content:center;">
               <div style="width:126px;height:196px;border-radius:26px 26px 0 0;padding:7px 7px 0 7px;background:oklch(28% 0.022 290);box-shadow:0 18px 36px oklch(20% 0.022 290 / 0.28);">
                 <div style="width:100%;height:100%;border-radius:20px 20px 0 0;background:oklch(98% 0.006 290);padding:13px 12px;display:flex;flex-direction:column;gap:9px;">
                   <div style="height:50px;border-radius:12px;background:linear-gradient(135deg, oklch(64% 0.136 295), oklch(54% 0.12 335));"></div>
@@ -84,20 +88,20 @@
                   <div style="height:32px;border-radius:10px;background:oklch(94% 0.018 290);"></div>
                 </div>
               </div>
-              <div style="position:absolute;left:20px;bottom:20px;width:60px;height:60px;border-radius:15px;background:linear-gradient(140deg, oklch(60% 0.15 295), oklch(50% 0.136 335));box-shadow:0 10px 24px oklch(20% 0.022 290 / 0.3);display:flex;align-items:center;justify-content:center;">
+              <div style="position:absolute;left:20px;bottom:20px;width:60px;height:60px;border-radius:15px;background:linear-gradient(140deg, var(--win-accent), oklch(50% 0.136 335));box-shadow:0 10px 24px oklch(20% 0.022 290 / 0.3);display:flex;align-items:center;justify-content:center;">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="oklch(99% 0 0)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6L3 12l5 6M16 6l5 6-5 6"/></svg>
               </div>
             </div>
-            <div style="font-size:18px;font-weight:700;color:oklch(18% 0.015 290);margin-bottom:8px;">[프로젝트 이름]</div>
-            <div style="font-size:14.5px;line-height:1.6;color:oklch(46% 0.015 290);margin-bottom:16px;">[프로젝트 한 줄 소개를 입력하세요.]</div>
+            <div style="font-size:18px;font-weight:700;color:var(--win-ink-strong);margin-bottom:8px;">[프로젝트 이름]</div>
+            <div style="font-size:14.5px;line-height:1.6;color:var(--win-ink-muted);margin-bottom:16px;">[프로젝트 한 줄 소개를 입력하세요.]</div>
             <div style="display:flex;gap:8px;">
-              <span style="font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:999px;background:oklch(95% 0.03 295);color:oklch(46% 0.14 295);">[태그]</span>
-              <span style="font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:999px;background:oklch(95% 0.03 295);color:oklch(46% 0.14 295);">[태그]</span>
+              <span style="font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:999px;background:var(--win-tag-bg);color:var(--win-tag-ink);">[태그]</span>
+              <span style="font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:999px;background:var(--win-tag-bg);color:var(--win-tag-ink);">[태그]</span>
             </div>
           </div>
 
           <div class="card" style="display:flex;flex-direction:column;">
-            <div class="thumb" style="position:relative;height:250px;border-radius:20px;margin-bottom:20px;background:linear-gradient(150deg, oklch(92% 0.024 335), oklch(87% 0.032 295));overflow:hidden;display:flex;align-items:flex-end;justify-content:center;">
+            <div class="thumb media" style="position:relative;height:250px;border-radius:20px;margin-bottom:20px;background:linear-gradient(150deg, oklch(92% 0.024 335), oklch(87% 0.032 295));overflow:hidden;display:flex;align-items:flex-end;justify-content:center;">
               <div style="width:126px;height:196px;border-radius:26px 26px 0 0;padding:7px 7px 0 7px;background:oklch(28% 0.022 290);box-shadow:0 18px 36px oklch(20% 0.022 290 / 0.28);">
                 <div style="width:100%;height:100%;border-radius:20px 20px 0 0;background:oklch(98% 0.006 290);padding:13px 12px;display:flex;flex-direction:column;gap:9px;">
                   <div style="height:34px;border-radius:10px;background:oklch(94% 0.01 335);"></div>
@@ -110,16 +114,16 @@
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="oklch(99% 0 0)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6L3 12l5 6M16 6l5 6-5 6"/></svg>
               </div>
             </div>
-            <div style="font-size:18px;font-weight:700;color:oklch(18% 0.015 290);margin-bottom:8px;">[프로젝트 이름]</div>
-            <div style="font-size:14.5px;line-height:1.6;color:oklch(46% 0.015 290);margin-bottom:16px;">[프로젝트 한 줄 소개를 입력하세요.]</div>
+            <div style="font-size:18px;font-weight:700;color:var(--win-ink-strong);margin-bottom:8px;">[프로젝트 이름]</div>
+            <div style="font-size:14.5px;line-height:1.6;color:var(--win-ink-muted);margin-bottom:16px;">[프로젝트 한 줄 소개를 입력하세요.]</div>
             <div style="display:flex;gap:8px;">
-              <span style="font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:999px;background:oklch(95% 0.03 295);color:oklch(46% 0.14 295);">[태그]</span>
-              <span style="font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:999px;background:oklch(95% 0.03 295);color:oklch(46% 0.14 295);">[태그]</span>
+              <span style="font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:999px;background:var(--win-tag-bg);color:var(--win-tag-ink);">[태그]</span>
+              <span style="font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:999px;background:var(--win-tag-bg);color:var(--win-tag-ink);">[태그]</span>
             </div>
           </div>
 
           <div class="card" style="display:flex;flex-direction:column;">
-            <div class="thumb" style="position:relative;height:250px;border-radius:20px;margin-bottom:20px;background:linear-gradient(150deg, oklch(92% 0.024 295), oklch(87% 0.032 295));overflow:hidden;display:flex;align-items:flex-end;justify-content:center;">
+            <div class="thumb media" style="position:relative;height:250px;border-radius:20px;margin-bottom:20px;background:linear-gradient(150deg, oklch(92% 0.024 295), oklch(87% 0.032 295));overflow:hidden;display:flex;align-items:flex-end;justify-content:center;">
               <div style="width:126px;height:196px;border-radius:26px 26px 0 0;padding:7px 7px 0 7px;background:oklch(28% 0.022 290);box-shadow:0 18px 36px oklch(20% 0.022 290 / 0.28);">
                 <div style="width:100%;height:100%;border-radius:20px 20px 0 0;background:oklch(19% 0.018 290);padding:13px 12px;display:flex;flex-direction:column;gap:9px;">
                   <div style="height:56px;border-radius:12px;background:linear-gradient(135deg, oklch(64% 0.136 295), oklch(52% 0.128 295));"></div>
@@ -132,16 +136,16 @@
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="oklch(99% 0 0)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6L3 12l5 6M16 6l5 6-5 6"/></svg>
               </div>
             </div>
-            <div style="font-size:18px;font-weight:700;color:oklch(18% 0.015 290);margin-bottom:8px;">[프로젝트 이름]</div>
-            <div style="font-size:14.5px;line-height:1.6;color:oklch(46% 0.015 290);margin-bottom:16px;">[프로젝트 한 줄 소개를 입력하세요.]</div>
+            <div style="font-size:18px;font-weight:700;color:var(--win-ink-strong);margin-bottom:8px;">[프로젝트 이름]</div>
+            <div style="font-size:14.5px;line-height:1.6;color:var(--win-ink-muted);margin-bottom:16px;">[프로젝트 한 줄 소개를 입력하세요.]</div>
             <div style="display:flex;gap:8px;">
-              <span style="font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:999px;background:oklch(95% 0.03 295);color:oklch(46% 0.14 295);">[태그]</span>
-              <span style="font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:999px;background:oklch(95% 0.03 295);color:oklch(46% 0.14 295);">[태그]</span>
+              <span style="font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:999px;background:var(--win-tag-bg);color:var(--win-tag-ink);">[태그]</span>
+              <span style="font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:999px;background:var(--win-tag-bg);color:var(--win-tag-ink);">[태그]</span>
             </div>
           </div>
 
           <div class="card" style="display:flex;flex-direction:column;">
-            <div class="thumb" style="position:relative;height:250px;border-radius:20px;margin-bottom:20px;background:linear-gradient(150deg, oklch(93% 0.019 175), oklch(87% 0.032 295));overflow:hidden;display:flex;align-items:flex-end;justify-content:center;">
+            <div class="thumb media" style="position:relative;height:250px;border-radius:20px;margin-bottom:20px;background:linear-gradient(150deg, oklch(93% 0.019 175), oklch(87% 0.032 295));overflow:hidden;display:flex;align-items:flex-end;justify-content:center;">
               <div style="width:126px;height:196px;border-radius:26px 26px 0 0;padding:7px 7px 0 7px;background:oklch(28% 0.022 290);box-shadow:0 18px 36px oklch(20% 0.022 290 / 0.28);">
                 <div style="width:100%;height:100%;border-radius:20px 20px 0 0;background:oklch(98% 0.006 290);padding:13px 12px;display:flex;flex-direction:column;gap:9px;">
                   <div style="height:50px;border-radius:12px;background:linear-gradient(135deg, oklch(62% 0.112 175), oklch(52% 0.128 295));"></div>
@@ -154,16 +158,16 @@
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="oklch(99% 0 0)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6L3 12l5 6M16 6l5 6-5 6"/></svg>
               </div>
             </div>
-            <div style="font-size:18px;font-weight:700;color:oklch(18% 0.015 290);margin-bottom:8px;">[프로젝트 이름]</div>
-            <div style="font-size:14.5px;line-height:1.6;color:oklch(46% 0.015 290);margin-bottom:16px;">[프로젝트 한 줄 소개를 입력하세요.]</div>
+            <div style="font-size:18px;font-weight:700;color:var(--win-ink-strong);margin-bottom:8px;">[프로젝트 이름]</div>
+            <div style="font-size:14.5px;line-height:1.6;color:var(--win-ink-muted);margin-bottom:16px;">[프로젝트 한 줄 소개를 입력하세요.]</div>
             <div style="display:flex;gap:8px;">
-              <span style="font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:999px;background:oklch(95% 0.03 295);color:oklch(46% 0.14 295);">[태그]</span>
-              <span style="font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:999px;background:oklch(95% 0.03 295);color:oklch(46% 0.14 295);">[태그]</span>
+              <span style="font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:999px;background:var(--win-tag-bg);color:var(--win-tag-ink);">[태그]</span>
+              <span style="font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:999px;background:var(--win-tag-bg);color:var(--win-tag-ink);">[태그]</span>
             </div>
           </div>
 
           <div class="card" style="display:flex;flex-direction:column;">
-            <div class="thumb" style="position:relative;height:250px;border-radius:20px;margin-bottom:20px;background:linear-gradient(150deg, oklch(92% 0.024 295), oklch(87% 0.032 295));overflow:hidden;display:flex;align-items:flex-end;justify-content:center;">
+            <div class="thumb media" style="position:relative;height:250px;border-radius:20px;margin-bottom:20px;background:linear-gradient(150deg, oklch(92% 0.024 295), oklch(87% 0.032 295));overflow:hidden;display:flex;align-items:flex-end;justify-content:center;">
               <div style="width:126px;height:196px;border-radius:26px 26px 0 0;padding:7px 7px 0 7px;background:oklch(28% 0.022 290);box-shadow:0 18px 36px oklch(20% 0.022 290 / 0.28);">
                 <div style="width:100%;height:100%;border-radius:20px 20px 0 0;background:oklch(19% 0.018 290);padding:13px 12px;display:flex;flex-direction:column;gap:9px;">
                   <div style="height:34px;border-radius:10px;background:oklch(26% 0.012 295);"></div>
@@ -176,16 +180,16 @@
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="oklch(99% 0 0)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6L3 12l5 6M16 6l5 6-5 6"/></svg>
               </div>
             </div>
-            <div style="font-size:18px;font-weight:700;color:oklch(18% 0.015 290);margin-bottom:8px;">[프로젝트 이름]</div>
-            <div style="font-size:14.5px;line-height:1.6;color:oklch(46% 0.015 290);margin-bottom:16px;">[프로젝트 한 줄 소개를 입력하세요.]</div>
+            <div style="font-size:18px;font-weight:700;color:var(--win-ink-strong);margin-bottom:8px;">[프로젝트 이름]</div>
+            <div style="font-size:14.5px;line-height:1.6;color:var(--win-ink-muted);margin-bottom:16px;">[프로젝트 한 줄 소개를 입력하세요.]</div>
             <div style="display:flex;gap:8px;">
-              <span style="font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:999px;background:oklch(95% 0.03 295);color:oklch(46% 0.14 295);">[태그]</span>
-              <span style="font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:999px;background:oklch(95% 0.03 295);color:oklch(46% 0.14 295);">[태그]</span>
+              <span style="font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:999px;background:var(--win-tag-bg);color:var(--win-tag-ink);">[태그]</span>
+              <span style="font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:999px;background:var(--win-tag-bg);color:var(--win-tag-ink);">[태그]</span>
             </div>
           </div>
 
           <div class="card" style="display:flex;flex-direction:column;">
-            <div class="thumb" style="position:relative;height:250px;border-radius:20px;margin-bottom:20px;background:linear-gradient(150deg, oklch(93% 0.022 290), oklch(88% 0.028 335));overflow:hidden;display:flex;align-items:flex-end;justify-content:center;">
+            <div class="thumb media" style="position:relative;height:250px;border-radius:20px;margin-bottom:20px;background:linear-gradient(150deg, oklch(93% 0.022 290), oklch(88% 0.028 335));overflow:hidden;display:flex;align-items:flex-end;justify-content:center;">
               <div style="width:126px;height:196px;border-radius:26px 26px 0 0;padding:7px 7px 0 7px;background:oklch(28% 0.022 290);box-shadow:0 18px 36px oklch(20% 0.022 290 / 0.28);">
                 <div style="width:100%;height:100%;border-radius:20px 20px 0 0;background:oklch(98% 0.006 290);padding:13px 12px;display:flex;flex-direction:column;gap:9px;">
                   <div style="height:42px;border-radius:12px;background:linear-gradient(135deg, oklch(66% 0.12 295), oklch(54% 0.112 335));"></div>
@@ -198,11 +202,11 @@
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="oklch(99% 0 0)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6L3 12l5 6M16 6l5 6-5 6"/></svg>
               </div>
             </div>
-            <div style="font-size:18px;font-weight:700;color:oklch(18% 0.015 290);margin-bottom:8px;">[프로젝트 이름]</div>
-            <div style="font-size:14.5px;line-height:1.6;color:oklch(46% 0.015 290);margin-bottom:16px;">[프로젝트 한 줄 소개를 입력하세요.]</div>
+            <div style="font-size:18px;font-weight:700;color:var(--win-ink-strong);margin-bottom:8px;">[프로젝트 이름]</div>
+            <div style="font-size:14.5px;line-height:1.6;color:var(--win-ink-muted);margin-bottom:16px;">[프로젝트 한 줄 소개를 입력하세요.]</div>
             <div style="display:flex;gap:8px;">
-              <span style="font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:999px;background:oklch(95% 0.03 295);color:oklch(46% 0.14 295);">[태그]</span>
-              <span style="font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:999px;background:oklch(95% 0.03 295);color:oklch(46% 0.14 295);">[태그]</span>
+              <span style="font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:999px;background:var(--win-tag-bg);color:var(--win-tag-ink);">[태그]</span>
+              <span style="font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:999px;background:var(--win-tag-bg);color:var(--win-tag-ink);">[태그]</span>
             </div>
           </div>
 

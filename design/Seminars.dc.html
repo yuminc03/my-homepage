@@ -12,15 +12,19 @@
   *{box-sizing:border-box;}
   body,html{margin:0;padding:0;}
   .site{font-family:'Noto Sans KR',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;}
-  a{color:oklch(60% 0.15 295);text-decoration:none;transition:color .15s ease;}
-  a:hover{color:oklch(50% 0.15 295);}
+  a{color:var(--win-accent);text-decoration:none;transition:color .15s ease;}
+  a:hover{color:var(--win-accent-hover);}
   .menuitem{color:var(--ink-muted);transition:color .15s ease;}
   .menuitem:hover{color:var(--ink-strong);}
-  /* 테마 토큰: 바탕·유리·메뉴 글자만 전환하고 창 본문은 그대로 둔다 */
-  .site{--desk:oklch(18% 0.02 290);--glow-a:oklch(58% 0.13 300);--glow-b:oklch(60% 0.1 170);--glow-c:oklch(52% 0.12 300);--glass:oklch(100% 0 0 / 0.10);--glass-line:oklch(100% 0 0 / 0.12);--glass-hi:oklch(100% 0 0 / 0.18);--glass-shadow:oklch(10% 0.022 290 / 0.35);--ink-strong:oklch(97% 0.006 290);--ink:oklch(88% 0.015 290);--ink-muted:oklch(82% 0.015 290);--menu-active:oklch(100% 0 0 / 0.14);--label:oklch(90% 0.012 290);--cue:oklch(76% 0.022 290);--dock-sep:oklch(100% 0 0 / 0.16);--dock-dot:oklch(90% 0.015 290);--dock-shadow:oklch(8% 0.022 290 / 0.5);--win-line:oklch(100% 0 0 / 0.12);--win-shadow:oklch(6% 0.022 290 / 0.55);--icon-shadow:oklch(8% 0.022 290 / 0.45);}
-  .site[data-theme="light"]{--desk:oklch(96% 0.012 290);--glow-a:oklch(86% 0.08 300);--glow-b:oklch(89% 0.07 170);--glow-c:oklch(90% 0.06 300);--glass:oklch(100% 0 0 / 0.55);--glass-line:oklch(25% 0.022 290 / 0.08);--glass-hi:oklch(100% 0 0 / 0.7);--glass-shadow:oklch(40% 0.024 295 / 0.10);--ink-strong:oklch(20% 0.015 290);--ink:oklch(32% 0.015 290);--ink-muted:oklch(42% 0.015 290);--menu-active:oklch(25% 0.022 290 / 0.08);--label:oklch(28% 0.015 290);--cue:oklch(46% 0.022 290);--dock-sep:oklch(25% 0.022 290 / 0.14);--dock-dot:oklch(35% 0.015 290);--dock-shadow:oklch(40% 0.024 295 / 0.16);--win-line:oklch(25% 0.022 290 / 0.08);--win-shadow:oklch(35% 0.024 295 / 0.18);--icon-shadow:oklch(40% 0.024 295 / 0.22);}
+  /* 테마 토큰: 바탕·유리·메뉴 글자와 창 본문(--win-*)을 함께 전환한다. 앱 화면(iPhone 안쪽)과 코드 에디터·코드 블록은 고정 */
+  .site{--desk:oklch(18% 0.02 290);--glow-a:oklch(58% 0.13 300);--glow-b:oklch(60% 0.1 170);--glow-c:oklch(52% 0.12 300);--glass:oklch(100% 0 0 / 0.10);--glass-line:oklch(100% 0 0 / 0.12);--glass-hi:oklch(100% 0 0 / 0.18);--glass-shadow:oklch(10% 0.022 290 / 0.35);--ink-strong:oklch(97% 0.006 290);--ink:oklch(88% 0.015 290);--ink-muted:oklch(82% 0.015 290);--menu-active:oklch(100% 0 0 / 0.14);--label:oklch(90% 0.012 290);--cue:oklch(76% 0.022 290);--dock-sep:oklch(100% 0 0 / 0.16);--dock-dot:oklch(90% 0.015 290);--dock-shadow:oklch(8% 0.022 290 / 0.5);--win-line:oklch(100% 0 0 / 0.12);--win-shadow:oklch(6% 0.022 290 / 0.55);--icon-shadow:oklch(8% 0.022 290 / 0.45);--win-bg:oklch(23% 0.018 290);--win-bar:oklch(27% 0.02 290);--win-bar-line:oklch(33% 0.02 290);--win-card:oklch(27% 0.019 290);--win-divider:oklch(33% 0.02 290);--win-chip-line:oklch(38% 0.02 290);--win-ink-strong:oklch(95% 0.008 290);--win-ink:oklch(85% 0.012 290);--win-ink-2:oklch(80% 0.012 290);--win-ink-muted:oklch(72% 0.015 290);--win-ink-sub:oklch(66% 0.015 290);--win-title:oklch(78% 0.015 290);--win-icon:oklch(80% 0.015 290);--win-dot:oklch(50% 0.015 290);--win-tag-bg:oklch(33% 0.05 295);--win-tag-ink:oklch(84% 0.09 295);--win-accent:oklch(76% 0.12 295);--win-accent-hover:oklch(84% 0.1 295);--win-solid-bg:oklch(93% 0.01 290);--win-solid-ink:oklch(20% 0.015 290);--win-solid-press:oklch(84% 0.03 295);--win-ctrl-a:oklch(62% 0.08 295);--win-ctrl-b:oklch(52% 0.06 295);--win-ctrl-c:oklch(56% 0.07 170);--win-press:oklch(100% 0 0 / 0.08);--win-hint:oklch(100% 0 0 / 0.3);--win-dock-glass:oklch(26% 0.02 290 / 0.78);--win-dock-line:oklch(100% 0 0 / 0.1);--win-dock-hi:oklch(100% 0 0 / 0.12);--win-dock-shadow:oklch(6% 0.022 290 / 0.5);--win-dock-sep:oklch(100% 0 0 / 0.16);--win-dock-dot:oklch(90% 0.015 290);--win-media-icon:oklch(90% 0.012 290 / 0.75);--win-media-dim:oklch(16% 0.02 290 / 0.6);--win-code-line:oklch(100% 0 0 / 0.08);}
+  .site[data-theme="light"]{--desk:oklch(96% 0.012 290);--glow-a:oklch(86% 0.08 300);--glow-b:oklch(89% 0.07 170);--glow-c:oklch(90% 0.06 300);--glass:oklch(100% 0 0 / 0.55);--glass-line:oklch(25% 0.022 290 / 0.08);--glass-hi:oklch(100% 0 0 / 0.7);--glass-shadow:oklch(40% 0.024 295 / 0.10);--ink-strong:oklch(20% 0.015 290);--ink:oklch(32% 0.015 290);--ink-muted:oklch(42% 0.015 290);--menu-active:oklch(25% 0.022 290 / 0.08);--label:oklch(28% 0.015 290);--cue:oklch(46% 0.022 290);--dock-sep:oklch(25% 0.022 290 / 0.14);--dock-dot:oklch(35% 0.015 290);--dock-shadow:oklch(40% 0.024 295 / 0.16);--win-line:oklch(25% 0.022 290 / 0.08);--win-shadow:oklch(35% 0.024 295 / 0.18);--icon-shadow:oklch(40% 0.024 295 / 0.22);--win-bg:oklch(98% 0.006 290);--win-bar:oklch(94% 0.006 290);--win-bar-line:oklch(89% 0.007 290);--win-card:oklch(96% 0.007 290);--win-divider:oklch(91% 0.007 290);--win-chip-line:oklch(88% 0.007 290);--win-ink-strong:oklch(18% 0.015 290);--win-ink:oklch(30% 0.015 290);--win-ink-2:oklch(36% 0.015 290);--win-ink-muted:oklch(46% 0.015 290);--win-ink-sub:oklch(54% 0.015 290);--win-title:oklch(42% 0.015 290);--win-icon:oklch(40% 0.015 290);--win-dot:oklch(70% 0.015 290);--win-tag-bg:oklch(95% 0.03 295);--win-tag-ink:oklch(46% 0.14 295);--win-accent:oklch(60% 0.15 295);--win-accent-hover:oklch(50% 0.15 295);--win-solid-bg:oklch(20% 0.015 290);--win-solid-ink:oklch(98% 0.006 290);--win-solid-press:oklch(30% 0.03 295);--win-ctrl-a:oklch(72% 0.06 295);--win-ctrl-b:oklch(81% 0.04 295);--win-ctrl-c:oklch(86% 0.06 170);--win-press:oklch(25% 0.022 290 / 0.06);--win-hint:oklch(25% 0.022 290 / 0.22);--win-dock-glass:oklch(98% 0.006 290 / 0.78);--win-dock-line:oklch(25% 0.022 290 / 0.08);--win-dock-hi:oklch(100% 0 0 / 0.7);--win-dock-shadow:oklch(35% 0.024 295 / 0.2);--win-dock-sep:oklch(25% 0.022 290 / 0.14);--win-dock-dot:oklch(35% 0.015 290);--win-media-icon:oklch(35% 0.022 290);--win-media-dim:oklch(100% 0 0 / 0);--win-code-line:oklch(100% 0 0 / 0);}
   .photo{transition:transform .35s ease;}
   .entry:hover .photo{transform:scale(1.01);}
+  /* 사진 자리·썸네일 바탕: 다크에서만 어둡게 덮는다 (시안용 자리 표시. 실제 사진에는 쓰지 않는다) */
+  .media{position:relative;}
+  .media::after{content:"";position:absolute;inset:0;border-radius:inherit;background:var(--win-media-dim);pointer-events:none;}
+  .media > *{z-index:1;}
 </style>
 </helmet>
 
@@ -52,94 +56,94 @@
 
   <!-- SEMINARS WINDOW -->
   <div style="position:relative;z-index:2;padding:56px 0 0 0;">
-    <div style="width:1240px;margin:0 auto;border-radius:16px;overflow:hidden;background:oklch(98% 0.006 290);border:1px solid var(--win-line);box-shadow:0 44px 96px var(--win-shadow);">
-      <div style="position:relative;display:flex;align-items:center;justify-content:center;height:44px;background:oklch(94% 0.006 290);border-bottom:1px solid oklch(89% 0.007 290);">
+    <div style="width:1240px;margin:0 auto;border-radius:16px;overflow:hidden;background:var(--win-bg);border:1px solid var(--win-line);box-shadow:0 44px 96px var(--win-shadow);">
+      <div style="position:relative;display:flex;align-items:center;justify-content:center;height:44px;background:var(--win-bar);border-bottom:1px solid var(--win-bar-line);">
         <div style="position:absolute;left:16px;display:flex;gap:8px;">
-          <div style="width:11px;height:11px;border-radius:50%;background:oklch(72% 0.06 295);"></div>
-          <div style="width:11px;height:11px;border-radius:50%;background:oklch(81% 0.04 295);"></div>
-          <div style="width:11px;height:11px;border-radius:50%;background:oklch(86% 0.06 170);"></div>
+          <div style="width:11px;height:11px;border-radius:50%;background:var(--win-ctrl-a);"></div>
+          <div style="width:11px;height:11px;border-radius:50%;background:var(--win-ctrl-b);"></div>
+          <div style="width:11px;height:11px;border-radius:50%;background:var(--win-ctrl-c);"></div>
         </div>
-        <span style="font-size:13px;font-weight:600;color:oklch(42% 0.015 290);">Seminars &amp; Events</span>
+        <span style="font-size:13px;font-weight:600;color:var(--win-title);">Seminars &amp; Events</span>
       </div>
 
       <div style="padding:48px;">
-        <h1 style="margin:0 0 14px 0;font-size:44px;line-height:1.2;font-weight:900;letter-spacing:-0.02em;color:oklch(18% 0.015 290);">Seminars &amp; Events</h1>
-        <p style="margin:0 0 44px 0;font-size:17px;font-weight:300;color:oklch(46% 0.015 290);">참석한 세미나와 행사를 사진과 함께 기록합니다.</p>
+        <h1 style="margin:0 0 14px 0;font-size:44px;line-height:1.2;font-weight:900;letter-spacing:-0.02em;color:var(--win-ink-strong);">Seminars &amp; Events</h1>
+        <p style="margin:0 0 44px 0;font-size:17px;font-weight:300;color:var(--win-ink-muted);">참석한 세미나와 행사를 사진과 함께 기록합니다.</p>
 
         <div style="display:flex;flex-direction:column;gap:48px;">
 
           <div class="entry" style="display:grid;grid-template-columns:150px minmax(0, 1fr);gap:40px;">
             <div style="display:flex;flex-direction:column;align-items:flex-end;gap:12px;padding-top:4px;">
-              <span style="font-size:15px;font-weight:700;color:oklch(18% 0.015 290);">[YYYY.MM]</span>
-              <span style="font-size:13px;color:oklch(58% 0.015 290);">[장소]</span>
+              <span style="font-size:15px;font-weight:700;color:var(--win-ink-strong);">[YYYY.MM]</span>
+              <span style="font-size:13px;color:var(--win-ink-sub);">[장소]</span>
             </div>
-            <div style="border-left:1px solid oklch(88% 0.007 290);padding-left:40px;position:relative;">
-              <div style="position:absolute;left:-5px;top:8px;width:9px;height:9px;border-radius:50%;background:oklch(60% 0.15 295);"></div>
-              <div class="photo" style="height:280px;border-radius:20px;margin-bottom:24px;background:linear-gradient(150deg, oklch(88% 0.024 295), oklch(78% 0.04 335));display:flex;align-items:center;justify-content:center;">
-                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="oklch(35% 0.022 290)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+            <div style="border-left:1px solid var(--win-chip-line);padding-left:40px;position:relative;">
+              <div style="position:absolute;left:-5px;top:8px;width:9px;height:9px;border-radius:50%;background:var(--win-accent);"></div>
+              <div class="photo media" style="height:280px;border-radius:20px;margin-bottom:24px;background:linear-gradient(150deg, oklch(88% 0.024 295), oklch(78% 0.04 335));display:flex;align-items:center;justify-content:center;">
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="color:var(--win-media-icon)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
               </div>
-              <div style="font-size:22px;font-weight:800;color:oklch(18% 0.015 290);margin-bottom:10px;">[세미나 / 컨퍼런스 이름]</div>
-              <div style="font-size:15px;line-height:1.7;color:oklch(46% 0.015 290);max-width:800px;">[어떤 세션이 기억에 남았는지, 무엇을 얻었는지 짧게 기록하세요.]</div>
+              <div style="font-size:22px;font-weight:800;color:var(--win-ink-strong);margin-bottom:10px;">[세미나 / 컨퍼런스 이름]</div>
+              <div style="font-size:15px;line-height:1.7;color:var(--win-ink-muted);max-width:800px;">[어떤 세션이 기억에 남았는지, 무엇을 얻었는지 짧게 기록하세요.]</div>
             </div>
           </div>
 
           <div class="entry" style="display:grid;grid-template-columns:150px minmax(0, 1fr);gap:40px;">
             <div style="display:flex;flex-direction:column;align-items:flex-end;gap:12px;padding-top:4px;">
-              <span style="font-size:15px;font-weight:700;color:oklch(18% 0.015 290);">[YYYY.MM]</span>
-              <span style="font-size:13px;color:oklch(58% 0.015 290);">[장소]</span>
+              <span style="font-size:15px;font-weight:700;color:var(--win-ink-strong);">[YYYY.MM]</span>
+              <span style="font-size:13px;color:var(--win-ink-sub);">[장소]</span>
             </div>
-            <div style="border-left:1px solid oklch(88% 0.007 290);padding-left:40px;position:relative;">
-              <div style="position:absolute;left:-5px;top:8px;width:9px;height:9px;border-radius:50%;background:oklch(60% 0.15 295);"></div>
-              <div class="photo" style="height:280px;border-radius:20px;margin-bottom:24px;background:linear-gradient(150deg, oklch(86% 0.032 295), oklch(76% 0.04 295));display:flex;align-items:center;justify-content:center;">
-                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="oklch(35% 0.022 290)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+            <div style="border-left:1px solid var(--win-chip-line);padding-left:40px;position:relative;">
+              <div style="position:absolute;left:-5px;top:8px;width:9px;height:9px;border-radius:50%;background:var(--win-accent);"></div>
+              <div class="photo media" style="height:280px;border-radius:20px;margin-bottom:24px;background:linear-gradient(150deg, oklch(86% 0.032 295), oklch(76% 0.04 295));display:flex;align-items:center;justify-content:center;">
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="color:var(--win-media-icon)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
               </div>
-              <div style="font-size:22px;font-weight:800;color:oklch(18% 0.015 290);margin-bottom:10px;">[세미나 / 컨퍼런스 이름]</div>
-              <div style="font-size:15px;line-height:1.7;color:oklch(46% 0.015 290);max-width:800px;">[어떤 세션이 기억에 남았는지, 무엇을 얻었는지 짧게 기록하세요.]</div>
+              <div style="font-size:22px;font-weight:800;color:var(--win-ink-strong);margin-bottom:10px;">[세미나 / 컨퍼런스 이름]</div>
+              <div style="font-size:15px;line-height:1.7;color:var(--win-ink-muted);max-width:800px;">[어떤 세션이 기억에 남았는지, 무엇을 얻었는지 짧게 기록하세요.]</div>
             </div>
           </div>
 
           <div class="entry" style="display:grid;grid-template-columns:150px minmax(0, 1fr);gap:40px;">
             <div style="display:flex;flex-direction:column;align-items:flex-end;gap:12px;padding-top:4px;">
-              <span style="font-size:15px;font-weight:700;color:oklch(18% 0.015 290);">[YYYY.MM]</span>
-              <span style="font-size:13px;color:oklch(58% 0.015 290);">[장소]</span>
+              <span style="font-size:15px;font-weight:700;color:var(--win-ink-strong);">[YYYY.MM]</span>
+              <span style="font-size:13px;color:var(--win-ink-sub);">[장소]</span>
             </div>
-            <div style="border-left:1px solid oklch(88% 0.007 290);padding-left:40px;position:relative;">
-              <div style="position:absolute;left:-5px;top:8px;width:9px;height:9px;border-radius:50%;background:oklch(60% 0.15 295);"></div>
-              <div class="photo" style="height:280px;border-radius:20px;margin-bottom:24px;background:linear-gradient(150deg, oklch(89% 0.024 335), oklch(80% 0.032 295));display:flex;align-items:center;justify-content:center;">
-                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="oklch(35% 0.022 290)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+            <div style="border-left:1px solid var(--win-chip-line);padding-left:40px;position:relative;">
+              <div style="position:absolute;left:-5px;top:8px;width:9px;height:9px;border-radius:50%;background:var(--win-accent);"></div>
+              <div class="photo media" style="height:280px;border-radius:20px;margin-bottom:24px;background:linear-gradient(150deg, oklch(89% 0.024 335), oklch(80% 0.032 295));display:flex;align-items:center;justify-content:center;">
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="color:var(--win-media-icon)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
               </div>
-              <div style="font-size:22px;font-weight:800;color:oklch(18% 0.015 290);margin-bottom:10px;">[세미나 / 컨퍼런스 이름]</div>
-              <div style="font-size:15px;line-height:1.7;color:oklch(46% 0.015 290);max-width:800px;">[어떤 세션이 기억에 남았는지, 무엇을 얻었는지 짧게 기록하세요.]</div>
+              <div style="font-size:22px;font-weight:800;color:var(--win-ink-strong);margin-bottom:10px;">[세미나 / 컨퍼런스 이름]</div>
+              <div style="font-size:15px;line-height:1.7;color:var(--win-ink-muted);max-width:800px;">[어떤 세션이 기억에 남았는지, 무엇을 얻었는지 짧게 기록하세요.]</div>
             </div>
           </div>
 
           <div class="entry" style="display:grid;grid-template-columns:150px minmax(0, 1fr);gap:40px;">
             <div style="display:flex;flex-direction:column;align-items:flex-end;gap:12px;padding-top:4px;">
-              <span style="font-size:15px;font-weight:700;color:oklch(18% 0.015 290);">[YYYY.MM]</span>
-              <span style="font-size:13px;color:oklch(58% 0.015 290);">[장소]</span>
+              <span style="font-size:15px;font-weight:700;color:var(--win-ink-strong);">[YYYY.MM]</span>
+              <span style="font-size:13px;color:var(--win-ink-sub);">[장소]</span>
             </div>
-            <div style="border-left:1px solid oklch(88% 0.007 290);padding-left:40px;position:relative;">
-              <div style="position:absolute;left:-5px;top:8px;width:9px;height:9px;border-radius:50%;background:oklch(60% 0.15 295);"></div>
-              <div class="photo" style="height:280px;border-radius:20px;margin-bottom:24px;background:linear-gradient(150deg, oklch(87% 0.026 175), oklch(79% 0.036 295));display:flex;align-items:center;justify-content:center;">
-                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="oklch(35% 0.022 290)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+            <div style="border-left:1px solid var(--win-chip-line);padding-left:40px;position:relative;">
+              <div style="position:absolute;left:-5px;top:8px;width:9px;height:9px;border-radius:50%;background:var(--win-accent);"></div>
+              <div class="photo media" style="height:280px;border-radius:20px;margin-bottom:24px;background:linear-gradient(150deg, oklch(87% 0.026 175), oklch(79% 0.036 295));display:flex;align-items:center;justify-content:center;">
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="color:var(--win-media-icon)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
               </div>
-              <div style="font-size:22px;font-weight:800;color:oklch(18% 0.015 290);margin-bottom:10px;">[세미나 / 컨퍼런스 이름]</div>
-              <div style="font-size:15px;line-height:1.7;color:oklch(46% 0.015 290);max-width:800px;">[어떤 세션이 기억에 남았는지, 무엇을 얻었는지 짧게 기록하세요.]</div>
+              <div style="font-size:22px;font-weight:800;color:var(--win-ink-strong);margin-bottom:10px;">[세미나 / 컨퍼런스 이름]</div>
+              <div style="font-size:15px;line-height:1.7;color:var(--win-ink-muted);max-width:800px;">[어떤 세션이 기억에 남았는지, 무엇을 얻었는지 짧게 기록하세요.]</div>
             </div>
           </div>
 
           <div class="entry" style="display:grid;grid-template-columns:150px minmax(0, 1fr);gap:40px;">
             <div style="display:flex;flex-direction:column;align-items:flex-end;gap:12px;padding-top:4px;">
-              <span style="font-size:15px;font-weight:700;color:oklch(18% 0.015 290);">[YYYY.MM]</span>
-              <span style="font-size:13px;color:oklch(58% 0.015 290);">[장소]</span>
+              <span style="font-size:15px;font-weight:700;color:var(--win-ink-strong);">[YYYY.MM]</span>
+              <span style="font-size:13px;color:var(--win-ink-sub);">[장소]</span>
             </div>
-            <div style="border-left:1px solid oklch(88% 0.007 290);padding-left:40px;position:relative;">
-              <div style="position:absolute;left:-5px;top:8px;width:9px;height:9px;border-radius:50%;background:oklch(60% 0.15 295);"></div>
-              <div class="photo" style="height:280px;border-radius:20px;margin-bottom:24px;background:linear-gradient(150deg, oklch(90% 0.02 295), oklch(81% 0.032 295));display:flex;align-items:center;justify-content:center;">
-                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="oklch(35% 0.022 290)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+            <div style="border-left:1px solid var(--win-chip-line);padding-left:40px;position:relative;">
+              <div style="position:absolute;left:-5px;top:8px;width:9px;height:9px;border-radius:50%;background:var(--win-accent);"></div>
+              <div class="photo media" style="height:280px;border-radius:20px;margin-bottom:24px;background:linear-gradient(150deg, oklch(90% 0.02 295), oklch(81% 0.032 295));display:flex;align-items:center;justify-content:center;">
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="color:var(--win-media-icon)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
               </div>
-              <div style="font-size:22px;font-weight:800;color:oklch(18% 0.015 290);margin-bottom:10px;">[세미나 / 컨퍼런스 이름]</div>
-              <div style="font-size:15px;line-height:1.7;color:oklch(46% 0.015 290);max-width:800px;">[어떤 세션이 기억에 남았는지, 무엇을 얻었는지 짧게 기록하세요.]</div>
+              <div style="font-size:22px;font-weight:800;color:var(--win-ink-strong);margin-bottom:10px;">[세미나 / 컨퍼런스 이름]</div>
+              <div style="font-size:15px;line-height:1.7;color:var(--win-ink-muted);max-width:800px;">[어떤 세션이 기억에 남았는지, 무엇을 얻었는지 짧게 기록하세요.]</div>
             </div>
           </div>
 
