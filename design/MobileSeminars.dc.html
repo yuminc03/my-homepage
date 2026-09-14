@@ -1,0 +1,175 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;800;900&display=swap">
+<style>
+  *{box-sizing:border-box;}
+  body,html{margin:0;padding:0;}
+  .site{font-family:'Noto Sans KR',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;}
+  a{color:var(--win-accent);text-decoration:none;transition:color .15s ease;}
+  a:hover{color:var(--win-accent-hover);}
+  /* 테마 토큰: 바탕·유리·메뉴 글자와 창 본문(--win-*)을 함께 전환한다. 앱 화면(iPhone 안쪽)과 코드 블록은 고정 */
+  .site{--desk:oklch(18% 0.02 290);--glow-a:oklch(58% 0.13 300);--glow-b:oklch(60% 0.1 170);--glow-c:oklch(52% 0.12 300);--glass:oklch(100% 0 0 / 0.10);--glass-line:oklch(100% 0 0 / 0.12);--glass-hi:oklch(100% 0 0 / 0.18);--glass-shadow:oklch(10% 0.022 290 / 0.35);--ink-strong:oklch(97% 0.006 290);--ink:oklch(88% 0.015 290);--ink-muted:oklch(82% 0.015 290);--menu-active:oklch(100% 0 0 / 0.14);--label:oklch(90% 0.012 290);--cue:oklch(76% 0.022 290);--dock-sep:oklch(100% 0 0 / 0.16);--dock-dot:oklch(90% 0.015 290);--dock-shadow:oklch(8% 0.022 290 / 0.5);--win-line:oklch(100% 0 0 / 0.12);--win-shadow:oklch(6% 0.022 290 / 0.55);--icon-shadow:oklch(8% 0.022 290 / 0.45);--win-bg:oklch(23% 0.018 290);--win-bar:oklch(27% 0.02 290);--win-bar-line:oklch(33% 0.02 290);--win-card:oklch(27% 0.019 290);--win-divider:oklch(33% 0.02 290);--win-chip-line:oklch(38% 0.02 290);--win-ink-strong:oklch(95% 0.008 290);--win-ink:oklch(85% 0.012 290);--win-ink-2:oklch(80% 0.012 290);--win-ink-muted:oklch(72% 0.015 290);--win-ink-sub:oklch(66% 0.015 290);--win-title:oklch(78% 0.015 290);--win-icon:oklch(80% 0.015 290);--win-dot:oklch(50% 0.015 290);--win-tag-bg:oklch(33% 0.05 295);--win-tag-ink:oklch(84% 0.09 295);--win-accent:oklch(76% 0.12 295);--win-accent-hover:oklch(84% 0.1 295);--win-solid-bg:oklch(93% 0.01 290);--win-solid-ink:oklch(20% 0.015 290);--win-solid-press:oklch(84% 0.03 295);--win-ctrl-a:oklch(62% 0.08 295);--win-ctrl-b:oklch(52% 0.06 295);--win-ctrl-c:oklch(56% 0.07 170);--win-press:oklch(100% 0 0 / 0.08);--win-hint:oklch(100% 0 0 / 0.3);--win-dock-glass:oklch(26% 0.02 290 / 0.78);--win-dock-line:oklch(100% 0 0 / 0.1);--win-dock-hi:oklch(100% 0 0 / 0.12);--win-dock-shadow:oklch(6% 0.022 290 / 0.5);--win-dock-sep:oklch(100% 0 0 / 0.16);--win-dock-dot:oklch(90% 0.015 290);--win-media-icon:oklch(90% 0.012 290 / 0.75);--win-media-dim:oklch(16% 0.02 290 / 0.6);--win-code-line:oklch(100% 0 0 / 0.08);}
+  .site[data-theme="light"]{--desk:oklch(96% 0.012 290);--glow-a:oklch(86% 0.08 300);--glow-b:oklch(89% 0.07 170);--glow-c:oklch(90% 0.06 300);--glass:oklch(100% 0 0 / 0.55);--glass-line:oklch(25% 0.022 290 / 0.08);--glass-hi:oklch(100% 0 0 / 0.7);--glass-shadow:oklch(40% 0.024 295 / 0.10);--ink-strong:oklch(20% 0.015 290);--ink:oklch(32% 0.015 290);--ink-muted:oklch(42% 0.015 290);--menu-active:oklch(25% 0.022 290 / 0.08);--label:oklch(28% 0.015 290);--cue:oklch(46% 0.022 290);--dock-sep:oklch(25% 0.022 290 / 0.14);--dock-dot:oklch(35% 0.015 290);--dock-shadow:oklch(40% 0.024 295 / 0.16);--win-line:oklch(25% 0.022 290 / 0.08);--win-shadow:oklch(35% 0.024 295 / 0.18);--icon-shadow:oklch(40% 0.024 295 / 0.22);--win-bg:oklch(98% 0.006 290);--win-bar:oklch(94% 0.006 290);--win-bar-line:oklch(89% 0.007 290);--win-card:oklch(96% 0.007 290);--win-divider:oklch(91% 0.007 290);--win-chip-line:oklch(88% 0.007 290);--win-ink-strong:oklch(18% 0.015 290);--win-ink:oklch(30% 0.015 290);--win-ink-2:oklch(36% 0.015 290);--win-ink-muted:oklch(46% 0.015 290);--win-ink-sub:oklch(54% 0.015 290);--win-title:oklch(42% 0.015 290);--win-icon:oklch(40% 0.015 290);--win-dot:oklch(70% 0.015 290);--win-tag-bg:oklch(95% 0.03 295);--win-tag-ink:oklch(46% 0.14 295);--win-accent:oklch(60% 0.15 295);--win-accent-hover:oklch(50% 0.15 295);--win-solid-bg:oklch(20% 0.015 290);--win-solid-ink:oklch(98% 0.006 290);--win-solid-press:oklch(30% 0.03 295);--win-ctrl-a:oklch(72% 0.06 295);--win-ctrl-b:oklch(81% 0.04 295);--win-ctrl-c:oklch(86% 0.06 170);--win-press:oklch(25% 0.022 290 / 0.06);--win-hint:oklch(25% 0.022 290 / 0.22);--win-dock-glass:oklch(98% 0.006 290 / 0.78);--win-dock-line:oklch(25% 0.022 290 / 0.08);--win-dock-hi:oklch(100% 0 0 / 0.7);--win-dock-shadow:oklch(35% 0.024 295 / 0.2);--win-dock-sep:oklch(25% 0.022 290 / 0.14);--win-dock-dot:oklch(35% 0.015 290);--win-media-icon:oklch(35% 0.022 290);--win-media-dim:oklch(100% 0 0 / 0);--win-code-line:oklch(100% 0 0 / 0);}
+  .iconbtn{display:flex;align-items:center;justify-content:center;width:44px;height:44px;padding:0;border:0;border-radius:12px;background:transparent;color:var(--win-icon);cursor:pointer;}
+  .iconbtn:active{background:var(--win-press);}
+  .entry{transition:border-color .2s ease,transform .2s ease;}
+  .entry:active{transform:scale(0.985);border-color:oklch(70% 0.096 295);}
+  /* 사진 자리·썸네일 바탕: 다크에서만 어둡게 덮는다 (시안용 자리 표시. 실제 사진에는 쓰지 않는다) */
+  .media{position:relative;}
+  .media::after{content:"";position:absolute;inset:0;border-radius:inherit;background:var(--win-media-dim);pointer-events:none;}
+  .media > *{z-index:1;}
+</style>
+</helmet>
+
+<div class="site" data-theme="{{theme}}" style="position:relative;width:390px;min-height:1720px;overflow:hidden;background:var(--desk);transition:background-color .4s ease;">
+
+  <div style="position:absolute;top:-160px;left:-140px;width:420px;height:420px;border-radius:50%;background:var(--glow-a);filter:blur(90px);opacity:0.34;"></div>
+
+  <!-- WINDOW SHEET -->
+  <div style="position:relative;z-index:2;margin-top:12px;min-height:1708px;border-radius:22px 22px 0 0;overflow:hidden;background:var(--win-bg);border:1px solid var(--win-line);border-bottom:0;box-shadow:0 -10px 40px var(--win-shadow);">
+
+    <!-- title bar: 창 점 · 제목 · 닫기(홈) -->
+    <div style="position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;height:52px;padding:0 6px 0 16px;background:var(--win-bar);border-bottom:1px solid var(--win-bar-line);">
+      <div style="display:flex;align-items:center;gap:6px;width:80px;">
+        <div style="width:9px;height:9px;border-radius:50%;background:var(--win-ctrl-a);"></div>
+        <div style="width:9px;height:9px;border-radius:50%;background:var(--win-ctrl-b);"></div>
+        <div style="width:9px;height:9px;border-radius:50%;background:var(--win-ctrl-c);"></div>
+      </div>
+      <span style="font-size:14px;font-weight:600;color:var(--win-title);">Seminars &amp; Events</span>
+      <div style="display:flex;justify-content:flex-end;width:80px;">
+        <button type="button" class="iconbtn" aria-label="창 닫고 홈으로">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div style="padding:26px 20px 150px 20px;display:flex;flex-direction:column;">
+      <h1 style="margin:0 0 8px 0;font-size:30px;line-height:1.25;font-weight:900;letter-spacing:-0.02em;color:var(--win-ink-strong);">Seminars &amp; Events</h1>
+      <p style="margin:0 0 26px 0;font-size:15px;font-weight:300;color:var(--win-ink-muted);">참석한 세미나와 행사를 사진과 함께 기록합니다.</p>
+
+      <!-- 데스크톱 타임라인을 세로 카드로: 사진 → 날짜·장소 → 이름 → 한 줄 소감 -->
+      <div style="display:flex;flex-direction:column;gap:16px;">
+
+        <div class="entry" style="display:flex;flex-direction:column;border-radius:18px;overflow:hidden;background:var(--win-card);border:1px solid var(--win-divider);">
+          <div class="media" style="height:180px;background:linear-gradient(150deg, oklch(88% 0.024 295), oklch(78% 0.04 335));display:flex;align-items:center;justify-content:center;">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="color:var(--win-media-icon)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;padding:16px 18px 18px 18px;">
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--win-ink-sub);">
+              <span style="width:7px;height:7px;border-radius:50%;background:var(--win-accent);"></span>
+              <span style="font-weight:700;color:var(--win-ink);">[YYYY.MM]</span>
+              <span style="width:3px;height:3px;border-radius:50%;background:var(--win-dot);"></span>
+              <span>[장소]</span>
+            </div>
+            <div style="font-size:18px;line-height:1.4;font-weight:800;color:var(--win-ink-strong);">[세미나 / 컨퍼런스 이름]</div>
+            <div style="font-size:14px;line-height:1.6;color:var(--win-ink-muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">[어떤 세션이 기억에 남았는지, 무엇을 얻었는지 짧게 기록하세요.]</div>
+          </div>
+        </div>
+
+        <div class="entry" style="display:flex;flex-direction:column;border-radius:18px;overflow:hidden;background:var(--win-card);border:1px solid var(--win-divider);">
+          <div class="media" style="height:180px;background:linear-gradient(150deg, oklch(86% 0.032 295), oklch(76% 0.04 295));display:flex;align-items:center;justify-content:center;">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="color:var(--win-media-icon)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;padding:16px 18px 18px 18px;">
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--win-ink-sub);">
+              <span style="width:7px;height:7px;border-radius:50%;background:var(--win-accent);"></span>
+              <span style="font-weight:700;color:var(--win-ink);">[YYYY.MM]</span>
+              <span style="width:3px;height:3px;border-radius:50%;background:var(--win-dot);"></span>
+              <span>[장소]</span>
+            </div>
+            <div style="font-size:18px;line-height:1.4;font-weight:800;color:var(--win-ink-strong);">[세미나 / 컨퍼런스 이름]</div>
+            <div style="font-size:14px;line-height:1.6;color:var(--win-ink-muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">[어떤 세션이 기억에 남았는지, 무엇을 얻었는지 짧게 기록하세요.]</div>
+          </div>
+        </div>
+
+        <div class="entry" style="display:flex;flex-direction:column;border-radius:18px;overflow:hidden;background:var(--win-card);border:1px solid var(--win-divider);">
+          <div class="media" style="height:180px;background:linear-gradient(150deg, oklch(89% 0.024 335), oklch(80% 0.032 295));display:flex;align-items:center;justify-content:center;">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="color:var(--win-media-icon)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;padding:16px 18px 18px 18px;">
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--win-ink-sub);">
+              <span style="width:7px;height:7px;border-radius:50%;background:var(--win-accent);"></span>
+              <span style="font-weight:700;color:var(--win-ink);">[YYYY.MM]</span>
+              <span style="width:3px;height:3px;border-radius:50%;background:var(--win-dot);"></span>
+              <span>[장소]</span>
+            </div>
+            <div style="font-size:18px;line-height:1.4;font-weight:800;color:var(--win-ink-strong);">[세미나 / 컨퍼런스 이름]</div>
+            <div style="font-size:14px;line-height:1.6;color:var(--win-ink-muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">[어떤 세션이 기억에 남았는지, 무엇을 얻었는지 짧게 기록하세요.]</div>
+          </div>
+        </div>
+
+        <div class="entry" style="display:flex;flex-direction:column;border-radius:18px;overflow:hidden;background:var(--win-card);border:1px solid var(--win-divider);">
+          <div class="media" style="height:180px;background:linear-gradient(150deg, oklch(87% 0.026 175), oklch(79% 0.036 295));display:flex;align-items:center;justify-content:center;">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="color:var(--win-media-icon)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;padding:16px 18px 18px 18px;">
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--win-ink-sub);">
+              <span style="width:7px;height:7px;border-radius:50%;background:var(--win-accent);"></span>
+              <span style="font-weight:700;color:var(--win-ink);">[YYYY.MM]</span>
+              <span style="width:3px;height:3px;border-radius:50%;background:var(--win-dot);"></span>
+              <span>[장소]</span>
+            </div>
+            <div style="font-size:18px;line-height:1.4;font-weight:800;color:var(--win-ink-strong);">[세미나 / 컨퍼런스 이름]</div>
+            <div style="font-size:14px;line-height:1.6;color:var(--win-ink-muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">[어떤 세션이 기억에 남았는지, 무엇을 얻었는지 짧게 기록하세요.]</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- DOCK (창 위: 밝은 유리. 뷰포트 하단 고정, 보이는 상태 · 활성 = 세미나) -->
+  <div style="position:absolute;left:0;right:0;bottom:0;z-index:20;display:flex;justify-content:center;padding-bottom:22px;">
+    <div style="display:flex;align-items:flex-start;gap:10px;padding:8px 10px 6px 10px;border-radius:26px;background:var(--win-dock-glass);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border:1px solid var(--win-dock-line);box-shadow:inset 0 1px 0 var(--win-dock-hi), 0 14px 36px var(--win-dock-shadow);">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+        <div style="width:48px;height:48px;border-radius:14px;background:linear-gradient(145deg, oklch(70% 0.13 300), oklch(58% 0.15 285));display:flex;align-items:center;justify-content:center;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="oklch(99% 0 0)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5 12 4l8 6.5V20H4z"/></svg>
+        </div>
+        <div style="width:4px;height:4px;border-radius:50%;background:oklch(100% 0 0 / 0);"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+        <div style="width:48px;height:48px;border-radius:14px;background:linear-gradient(145deg, oklch(76% 0.11 170), oklch(64% 0.11 185));display:flex;align-items:center;justify-content:center;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="oklch(99% 0 0)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h6l2 2h10v9H3z"/></svg>
+        </div>
+        <div style="width:4px;height:4px;border-radius:50%;background:oklch(100% 0 0 / 0);"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+        <div style="width:48px;height:48px;border-radius:14px;background:linear-gradient(145deg, oklch(72% 0.12 340), oklch(60% 0.14 320));display:flex;align-items:center;justify-content:center;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="oklch(99% 0 0)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/></svg>
+        </div>
+        <div style="width:4px;height:4px;border-radius:50%;background:oklch(100% 0 0 / 0);"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+        <div style="width:48px;height:48px;border-radius:14px;background:linear-gradient(145deg, oklch(78% 0.1 220), oklch(64% 0.12 255));display:flex;align-items:center;justify-content:center;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="oklch(99% 0 0)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+        </div>
+        <div style="width:4px;height:4px;border-radius:50%;background:var(--win-dock-dot);"></div>
+      </div>
+      <div style="width:1px;height:40px;margin:4px 2px 0 2px;background:var(--win-dock-sep);"></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+        <div style="width:48px;height:48px;border-radius:14px;background:linear-gradient(145deg, oklch(74% 0.1 195), oklch(62% 0.11 215));display:flex;align-items:center;justify-content:center;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="oklch(99% 0 0)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18v12H3z"/><path d="M3 7l9 6 9-6"/></svg>
+        </div>
+        <div style="width:4px;height:4px;border-radius:50%;background:oklch(100% 0 0 / 0);"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script data-dc-script data-props='{"theme":{"editor":"enum","options":["dark","light"],"default":"dark"},"$preview":{"width":390,"height":1720}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { theme: this.props.theme ?? 'dark' };
+  }
+}
+</script>
+</body>
+</html>
