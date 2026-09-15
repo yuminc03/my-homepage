@@ -3,6 +3,7 @@
 // - 데스크톱(≥1180px): 메뉴바 아래 가운데 떠 있는 창(최대 1240px). 타이틀 바 44px · 창 점 · 제목 · ✕(28px)
 // - 모바일·태블릿: 아래에서 올라와 화면을 채운 시트. 위 12/16px 틈으로 바탕이 비친다. 타이틀 바 52/56px(스크롤해도 고정) · ✕(44px)
 // - ✕는 창을 닫고 홈으로 간다. 창 점은 장식(기능 없음, 신호등 색 쓰지 않음)
+import WindowDots from './WindowDots.astro';
 import { withBase } from '../lib/url';
 
 interface Props {
@@ -15,7 +16,7 @@ const { title } = Astro.props;
 <div class="window-area">
 	<section class="window" aria-label={title}>
 		<header class="titlebar">
-			<span class="dots" aria-hidden="true"><span></span><span></span><span></span></span>
+			<span class="dots"><WindowDots /></span>
 			<span class="title">{title}</span>
 			<a class="close" href={withBase('/')} aria-label="창 닫고 홈으로">
 				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -61,24 +62,11 @@ const { title } = Astro.props;
 		background: var(--win-bar);
 	}
 
+	/* 창 점 크기·간격은 WindowDots가 읽는 변수로 정한다 */
 	.dots {
+		--dot-size: 9px;
+		--dot-gap: 6px;
 		display: flex;
-		gap: 6px;
-	}
-
-	.dots span {
-		width: 9px;
-		height: 9px;
-		border-radius: 50%;
-		background: var(--win-ctrl-a);
-	}
-
-	.dots span:nth-child(2) {
-		background: var(--win-ctrl-b);
-	}
-
-	.dots span:nth-child(3) {
-		background: var(--win-ctrl-c);
 	}
 
 	.title {
@@ -142,12 +130,8 @@ const { title } = Astro.props;
 		}
 
 		.dots {
-			gap: 7px;
-		}
-
-		.dots span {
-			width: 10px;
-			height: 10px;
+			--dot-size: 10px;
+			--dot-gap: 7px;
 		}
 
 		.title {
@@ -187,14 +171,10 @@ const { title } = Astro.props;
 		}
 
 		.dots {
+			--dot-size: 11px;
+			--dot-gap: 8px;
 			position: absolute;
 			left: 16px;
-			gap: 8px;
-		}
-
-		.dots span {
-			width: 11px;
-			height: 11px;
 		}
 
 		.title {

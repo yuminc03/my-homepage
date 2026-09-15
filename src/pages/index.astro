@@ -1,81 +1,402 @@
 ---
-// 셸 확인용 임시 홈. 홈 화면 구현 단계에서 About me·코드 에디터 창·iPhone 목업·최근 기록으로 교체한다
-// - #contact: 연락처 바로가기(Dock·모바일 앱 아이콘)가 도착하는 곳
-// - #code: 코드 에디터 바로가기(데스크톱 Dock)가 도착하는 곳
+// 홈
+// - 데스크톱(≥1180px): 바탕 화면 바로가기 4 · About me 창 · 코드 에디터 창(About 창 위에 겹침)
+// - 모바일·태블릿: About me 위젯 · 앱 아이콘 4(프로젝트·스터디·세미나·연락처) · 코드 위젯
+// - #contact: 연락처 바로가기(Dock·앱 아이콘)가 도착하는 곳 / #code: 코드 에디터 바로가기(데스크톱 Dock)가 도착하는 곳
+// - 다음 커밋에서 추가: iPhone 목업, 최근 기록 창·위젯, 스크롤 힌트
 import SiteLayout from '../layouts/SiteLayout.astro';
+import AppIcon from '../components/AppIcon.astro';
+import HomePanel from '../components/HomePanel.astro';
+import ProfileCode from '../components/ProfileCode.astro';
+import { APPS, CONTACT } from '../data/apps';
+import { PROFILE } from '../data/profile';
+import { withBase } from '../lib/url';
+
+// 모바일·태블릿 앱 아이콘: 홈은 이미 보고 있는 화면이라 빼고 연락처를 넣는다(시안)
+const touchApps = [...APPS.filter((app) => app.id !== 'home'), CONTACT];
 ---
 
 <SiteLayout active="home" surface="desk">
-	<div class="temp-home">
-		<section id="about" class="panel">
-			<p class="label">About me</p>
-			<h1>안녕하세요, iOS 개발자 Chu Yumin입니다.</h1>
-			<p class="quote">기회가 주어지면 최선을 다하는 것이 아니라 최선을 다하고 있으면 기회가 주어지는 것이다.</p>
-			<p id="contact" class="contact">[GitHub] · [Email] · [LinkedIn]</p>
-		</section>
-		<section id="code" class="panel">
-			<p class="label">ProfileView.swift</p>
-			<p class="quote">[코드 에디터 창 자리]</p>
-		</section>
+	<div class="scene">
+		<nav class="shortcuts" aria-label="바로가기">
+			{
+				APPS.map((app) => (
+					<a class="shortcut" href={withBase(app.href)}>
+						<AppIcon app={app} shadow />
+						<span class="label">{app.label}</span>
+					</a>
+				))
+			}
+		</nav>
+
+		<div class="about-slot">
+			<HomePanel title="About me">
+				<h1 class="greeting">
+					{PROFILE.greeting[0]}<br />{PROFILE.greeting[1]}{' '}<span class="keep">{PROFILE.greeting[2]}</span>
+				</h1>
+				<p class="motto">
+					{PROFILE.motto[0]}<br class="wide-break" />{' '}{PROFILE.motto[1]}
+				</p>
+				<div class="meta">
+					<ul class="skills" aria-label="주요 기술">
+						{PROFILE.skills.map((skill) => <li>{skill}</li>)}
+					</ul>
+					<p id="contact" class="contact">
+						{PROFILE.links.map((link) => <a href={link.href}>{link.label}</a>)}
+					</p>
+				</div>
+			</HomePanel>
+		</div>
+
+		<nav class="app-grid" aria-label="앱">
+			{
+				touchApps.map((app) => (
+					<a class="app" href={withBase(app.href)}>
+						<AppIcon app={app} shadow />
+						<span class="label">{app.label}</span>
+					</a>
+				))
+			}
+		</nav>
+
+		<div id="code" class="code-slot">
+			<HomePanel title="ProfileView.swift" tone="code">
+				<ProfileCode />
+			</HomePanel>
+		</div>
 	</div>
 </SiteLayout>
 
 <style>
-	.temp-home {
+	/* ---------- 모바일(기본): 위젯을 위에서 아래로 쌓는다 ---------- */
+	.scene {
 		display: flex;
 		flex-direction: column;
-		gap: 24px;
-		max-width: 800px;
-		margin: 0 auto;
-		padding: 32px 20px 160px;
+		gap: 28px;
+		padding: 20px 20px 140px;
 	}
 
-	.panel {
-		padding: 24px;
-		border: 1px solid var(--win-line);
-		border-radius: 24px;
-		background: var(--win-bg);
-		box-shadow: 0 22px 48px var(--win-shadow);
-		scroll-margin-top: 72px;
+	.shortcuts {
+		display: none;
 	}
 
-	.label {
-		margin: 0 0 12px;
-		color: var(--win-title);
-		font-size: 12.5px;
-		font-weight: 600;
+	/* About me
+	 * - 인사말 크기는 About 칸 폭(cqi)에 맞춘다: (칸 폭 − 좌우 여백) ÷ 둘째 줄 글자 폭 비율(약 13.4)
+	 *   뷰포트가 아니라 실제 칸 폭 기준이라 열 비율이 바뀌어도 둘째 줄이 한 줄에 들어간다
+	 * - 한국어는 기본적으로 음절 사이에서도 줄을 바꾸므로 keep-all로 띄어쓰기에서만 바꾼다 */
+	.about-slot {
+		container-type: inline-size;
 	}
 
-	h1 {
+	.greeting {
 		margin: 0 0 16px;
 		color: var(--win-ink-strong);
-		font-size: 24px;
+		font-size: clamp(19px, calc((100cqi - 46px) / 13.4), 24px);
 		font-weight: 800;
+		line-height: 1.4;
+		letter-spacing: -0.015em;
+		word-break: keep-all;
 	}
 
-	.quote {
-		margin: 0;
-		color: var(--win-ink-muted);
+	.keep {
+		white-space: nowrap;
+	}
+
+	.motto {
+		margin: 0 0 18px;
+		padding-left: 14px;
+		border-left: 3px solid var(--win-accent);
+		color: var(--win-icon);
+		font-size: 14px;
+		font-weight: 300;
+		line-height: 1.7;
+		word-break: keep-all;
+	}
+
+	/* 좁은 화면에서는 문구를 이어서 쓴다 */
+	.wide-break {
+		display: none;
+	}
+
+	.skills {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+		margin: 0 0 16px;
+		padding: 0;
+		list-style: none;
+	}
+
+	.skills li {
+		padding: 5px 11px;
+		border-radius: 999px;
+		background: var(--win-tag-bg);
+		color: var(--win-tag-ink);
+		font-size: 12px;
+		font-weight: 600;
 	}
 
 	.contact {
-		margin: 16px 0 0;
-		padding-top: 12px;
+		display: flex;
+		gap: 4px;
+		margin: 0;
+		padding-top: 6px;
 		border-top: 1px solid var(--win-divider);
-		color: var(--win-accent);
-		font-weight: 600;
 		scroll-margin-top: 120px;
+	}
+
+	/* 누르는 영역 44px */
+	.contact a {
+		display: flex;
+		align-items: center;
+		min-height: 44px;
+		padding: 0 10px;
+		font-size: 14px;
+		font-weight: 600;
+	}
+
+	.contact a:first-child {
+		padding-left: 0;
+	}
+
+	.contact a:focus-visible,
+	.shortcut:focus-visible,
+	.app:focus-visible {
+		outline: 2px solid var(--win-accent);
+		outline-offset: 2px;
+		border-radius: 8px;
 	}
 
 	/* 연락처 바로가기로 도착하면 링크 영역을 잠깐 강조한다 */
 	.contact:target {
 		border-radius: 8px;
-		animation: contact-highlight 1.6s var(--ease-out);
+		animation: target-highlight 1.6s var(--ease-out);
 	}
 
-	@keyframes contact-highlight {
+	@keyframes target-highlight {
 		from {
 			background: var(--win-tag-bg);
+		}
+	}
+
+	/* 앱 아이콘 4칸 */
+	.app-grid {
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 12px;
+	}
+
+	.app {
+		--icon-size: 62px;
+		--icon-radius: 17px;
+		--glyph-size: 28px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 7px;
+		transition: transform var(--dur-press) var(--ease-out);
+	}
+
+	.app:active {
+		transform: scale(0.94);
+	}
+
+	.label,
+	a:hover .label {
+		color: var(--label);
+		font-size: 12px;
+		font-weight: 500;
+		white-space: nowrap;
+	}
+
+	/* 코드 에디터 바로가기로 도착하면 창 테두리를 잠깐 강조한다 */
+	.code-slot {
+		scroll-margin-top: 72px;
+		border-radius: 24px;
+	}
+
+	.code-slot:target {
+		animation: code-highlight 1.6s var(--ease-out);
+	}
+
+	@keyframes code-highlight {
+		from {
+			box-shadow: 0 0 0 3px var(--win-accent);
+		}
+		to {
+			box-shadow: 0 0 0 3px transparent;
+		}
+	}
+
+	/* ---------- 태블릿: 위젯을 넓게, 기술·연락처를 한 줄로 ---------- */
+	@media (min-width: 744px) {
+		.scene {
+			gap: 34px;
+			max-width: 832px;
+			margin: 0 auto;
+			padding: 32px 32px 170px;
+		}
+
+		.greeting {
+			margin-bottom: 20px;
+			font-size: clamp(24px, calc((100cqi - 66px) / 13.4), 30px);
+		}
+
+		.motto {
+			margin-bottom: 22px;
+			padding-left: 16px;
+			font-size: 16px;
+		}
+
+		.wide-break {
+			display: inline;
+		}
+
+		.meta {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 16px;
+			padding-top: 10px;
+			border-top: 1px solid var(--win-divider);
+		}
+
+		.skills {
+			margin: 0;
+		}
+
+		.skills li {
+			padding: 5px 12px;
+			font-size: 12.5px;
+		}
+
+		.contact {
+			gap: 2px;
+			padding-top: 0;
+			border-top: 0;
+		}
+
+		.contact a {
+			font-size: 14.5px;
+		}
+
+		.app-grid {
+			gap: 16px;
+			padding: 0 24px;
+		}
+
+		.app {
+			--icon-size: 72px;
+			--icon-radius: 20px;
+			--glyph-size: 32px;
+			gap: 9px;
+		}
+
+		.label,
+		a:hover .label {
+			font-size: 13px;
+		}
+
+		.code-slot {
+			border-radius: 26px;
+		}
+	}
+
+	/* ---------- 데스크톱: 바탕 화면. 바로가기 | About 창 | 코드 창(About 위에 겹침) ---------- */
+	@media (min-width: 1180px) {
+		.scene {
+			display: grid;
+			grid-template-columns: 84px minmax(0, 552fr) minmax(0, 620fr);
+			align-items: start;
+			column-gap: 40px;
+			width: min(1328px, 100% - 64px);
+			max-width: none;
+			min-height: calc(100dvh - 36px);
+			padding: 40px 0 140px;
+		}
+
+		.shortcuts {
+			display: flex;
+			flex-direction: column;
+			gap: 26px;
+			margin-top: 8px;
+		}
+
+		.shortcut {
+			--icon-size: 60px;
+			--icon-radius: 17px;
+			--glyph-size: 26px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 9px;
+			width: 84px;
+			transition: transform var(--dur-press) var(--ease-out);
+		}
+
+		.shortcut:active {
+			transform: scale(0.94);
+		}
+
+		.app-grid {
+			display: none;
+		}
+
+		.about-slot {
+			position: relative;
+			z-index: 2;
+			margin-top: 34px;
+		}
+
+		.greeting {
+			margin-bottom: 26px;
+			font-size: clamp(26px, calc((100cqi - 82px) / 13.4), 36px);
+			line-height: 1.36;
+		}
+
+		.motto {
+			margin-bottom: 30px;
+			padding-left: 20px;
+			color: var(--win-ink-2);
+			font-size: clamp(17px, calc((100cqi - 105px) / 22), 20px);
+			line-height: 1.65;
+		}
+
+		.meta {
+			display: block;
+			padding-top: 0;
+			border-top: 0;
+		}
+
+		.skills {
+			gap: 8px;
+			margin-bottom: 26px;
+		}
+
+		.skills li {
+			padding: 6px 14px;
+		}
+
+		.contact {
+			gap: 20px;
+			padding-top: 22px;
+			border-top: 1px solid var(--win-divider);
+			scroll-margin-top: 96px;
+		}
+
+		.contact a,
+		.contact a:first-child {
+			min-height: 0;
+			padding: 0;
+			font-size: 13.5px;
+		}
+
+		/* 코드 창은 About 창 오른쪽 끝을 32px 덮는다(열 간격 40px + 겹침 32px) */
+		.code-slot {
+			position: relative;
+			z-index: 3;
+			margin-left: -72px;
+			border-radius: 16px;
 		}
 	}
 </style>

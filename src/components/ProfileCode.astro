@@ -1,0 +1,152 @@
+---
+// ProfileView.swift 코드 에디터 내용: 파일 탭(데스크톱) + 줄 번호 + Swift 구문 색
+// - 색은 테마와 무관한 고정값이다(PROGRESS.md 5-2, 7장 코드 에디터)
+// - 위젯 높이에 맞춰 모바일 8줄 · 태블릿 12줄까지만 보이고, 데스크톱은 14줄 전체를 보인다
+// - 탭은 지금 파일 하나만 둔다. 눌러도 동작하지 않는 두 번째 탭은 만들지 않는다(PROGRESS.md 5-12)
+type Kind = 'kw' | 'type' | 'call' | 'str';
+type Token = string | readonly [Kind, string];
+
+const LINES: readonly (readonly Token[])[] = [
+	[['kw', 'import'], ' ', ['type', 'SwiftUI']],
+	[],
+	[['kw', 'struct'], ' ', ['type', 'ProfileView'], ': ', ['type', 'View'], ' {'],
+	['    ', ['kw', '@State private var'], ' isReady = ', ['kw', 'false']],
+	[],
+	['    ', ['kw', 'var'], ' body: ', ['kw', 'some'], ' ', ['type', 'View'], ' {'],
+	['        ', ['type', 'VStack'], '(spacing: ', ['call', '16'], ') {'],
+	['            ', ['type', 'Avatar'], '(name: ', ['str', '"Chu Yumin"'], ')'],
+	['            ', ['type', 'Text'], '(greeting)'],
+	['                .', ['call', 'font'], '(.title3.bold())'],
+	['        }'],
+	['        .', ['call', 'task'], ' { ', ['kw', 'await'], ' load() }'],
+	['    }'],
+	['}'],
+];
+
+const escapeHtml = (text: string) => text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+// <pre> 안의 공백·줄바꿈을 그대로 두기 위해 템플릿 식 대신 문자열로 만든다
+const sourceHtml = LINES.map((line) =>
+	line.map((token) => (typeof token === 'string' ? escapeHtml(token) : `<span class="${token[0]}">${escapeHtml(token[1])}</span>`)).join(''),
+).join('\n');
+const lineNumbers = LINES.map((_, index) => index + 1).join('\n');
+---
+
+<div class="tabs" aria-hidden="true">
+	<span class="tab">ProfileView.swift</span>
+</div>
+<div class="editor">
+	<div class="viewport">
+		<pre class="code gutter" aria-hidden="true">{lineNumbers}</pre>
+		<pre class="code source"><code set:html={sourceHtml} /></pre>
+	</div>
+</div>
+
+<style>
+	.tabs {
+		display: none;
+	}
+
+	.editor {
+		--line-height: 20px;
+		--visible-lines: 8;
+		padding: 14px 0 16px;
+	}
+
+	/* 보이는 줄 수만큼만 높이를 주고 나머지는 자른다(줄 중간이 잘리지 않게 줄 높이의 배수) */
+	.viewport {
+		display: flex;
+		max-height: calc(var(--visible-lines) * var(--line-height));
+		overflow: hidden;
+	}
+
+	.code {
+		margin: 0;
+		font-size: 12px;
+		line-height: var(--line-height);
+	}
+
+	.gutter {
+		flex-shrink: 0;
+		width: 36px;
+		padding-right: 12px;
+		color: oklch(45% 0.022 290);
+		text-align: right;
+	}
+
+	.source {
+		flex-grow: 1;
+		min-width: 0;
+		color: oklch(88% 0.015 290);
+	}
+
+	/* set:html로 넣은 span에는 스코프 속성이 붙지 않으므로 :global로 색을 준다 */
+	.source :global(.kw) {
+		color: oklch(76% 0.13 300);
+	}
+
+	.source :global(.type) {
+		color: oklch(80% 0.11 170);
+	}
+
+	.source :global(.call) {
+		color: oklch(80% 0.1 220);
+	}
+
+	.source :global(.str) {
+		color: oklch(82% 0.1 80);
+	}
+
+	@media (min-width: 744px) {
+		.editor {
+			--line-height: 22px;
+			--visible-lines: 12;
+			padding: 16px 0 18px;
+		}
+
+		.code {
+			font-size: 13px;
+		}
+
+		.gutter {
+			width: 38px;
+		}
+	}
+
+	@media (min-width: 1180px) {
+		.tabs {
+			display: flex;
+			height: 34px;
+			border-bottom: 1px solid oklch(28% 0.021 290);
+			background: oklch(22% 0.019 290);
+		}
+
+		.tab {
+			display: flex;
+			align-items: center;
+			padding: 0 16px;
+			border-top: 2px solid oklch(60% 0.15 295);
+			border-right: 1px solid oklch(28% 0.021 290);
+			background: oklch(19% 0.018 290);
+			color: oklch(88% 0.015 290);
+			font-size: 12px;
+		}
+
+		.editor {
+			padding: 18px 0 22px;
+		}
+
+		.viewport {
+			max-height: none;
+		}
+
+		.gutter {
+			width: 44px;
+			padding-right: 14px;
+		}
+
+		.source {
+			padding-right: 18px;
+		}
+	}
+</style>
