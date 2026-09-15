@@ -1,0 +1,42 @@
+---
+// 앱 아이콘 타일(둥근 사각형 + 선 아이콘)
+// 크기는 부모가 CSS 변수로 정한다: --icon-size, --icon-radius, --glyph-size, --glyph-stroke
+import type { AppIconSpec } from '../data/apps';
+
+interface Props {
+	app: AppIconSpec;
+	/** 바탕 위에 놓일 때 그림자(바로가기·홈 앱 아이콘). Dock 안에서는 쓰지 않는다 */
+	shadow?: boolean;
+}
+
+const { app, shadow = false } = Astro.props;
+const style = `--icon-bg: ${app.background}; --icon-stroke: ${app.stroke ?? 'oklch(99% 0 0)'};`;
+---
+
+<span class="app-icon" data-shadow={shadow ? '' : undefined} style={style} aria-hidden="true">
+	<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" set:html={app.icon} />
+</span>
+
+<style>
+	.app-icon {
+		display: flex;
+		flex-shrink: 0;
+		align-items: center;
+		justify-content: center;
+		width: var(--icon-size, 60px);
+		height: var(--icon-size, 60px);
+		border-radius: var(--icon-radius, 17px);
+		background: var(--icon-bg);
+		color: var(--icon-stroke);
+	}
+
+	.app-icon[data-shadow] {
+		box-shadow: 0 10px 24px var(--icon-shadow);
+	}
+
+	svg {
+		width: var(--glyph-size, 26px);
+		height: var(--glyph-size, 26px);
+		stroke-width: var(--glyph-stroke, 1.7);
+	}
+</style>

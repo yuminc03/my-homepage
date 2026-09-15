@@ -1,0 +1,15 @@
+---
+// 프로젝트 목록 창(셸 틀). 카드 목록·필터 칩은 페이지 구현 단계에서 추가한다
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import Window from '../../components/Window.astro';
+import PageHeading from '../../components/PageHeading.astro';
+import { getApp } from '../../data/apps';
+
+const app = getApp('projects');
+---
+
+<SiteLayout active={app.id}>
+	<Window title={app.title}>
+		<PageHeading title={app.title} description={app.description} />
+	</Window>
+</SiteLayout>

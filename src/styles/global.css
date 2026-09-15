@@ -22,6 +22,7 @@ body {
 	color: var(--ink);
 	font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 	-webkit-font-smoothing: antialiased;
+	transition: background-color var(--dur-theme) var(--ease-out);
 }
 
 a {

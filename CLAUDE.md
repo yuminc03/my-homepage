@@ -26,10 +26,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## 아키텍처
 
 - 스타일 계층: `src/layouts/BaseLayout.astro`가 `src/styles/tokens.css`(색·모션 토큰)와 `src/styles/global.css`(전역 기본)를 한 번 불러오고, 화면별 스타일은 각 컴포넌트의 스코프 `<style>`에서 토큰(`var(--…)`)만 참조합니다. 색 값을 컴포넌트에 직접 쓰지 않습니다(앱 아이콘 그라디언트·코드 에디터·iPhone 앱 화면처럼 테마와 무관한 고정색은 예외).
-- 테마: 색 토큰은 `light-dark(라이트, 다크)` 한 쌍이고, `:root`의 `color-scheme`이 어느 쪽을 쓸지 정합니다. 기본은 시스템 설정, `<html data-theme="dark"|"light">`이면 그 테마로 고정합니다. 테마를 바꾸는 코드는 `data-theme`만 바꿉니다.
+- 테마: 색 토큰은 `light-dark(라이트, 다크)` 한 쌍이고, `:root`의 `color-scheme`이 어느 쪽을 쓸지 정합니다. 기본은 시스템 설정, `<html data-theme="dark"|"light">`이면 그 테마로 고정합니다. 테마를 바꾸는 코드는 `data-theme`만 바꿉니다. 사용자 선택은 `src/components/ThemeToggle.astro`가 `localStorage('theme')`에 저장하고, `BaseLayout`의 `<head>` 인라인 스크립트가 첫 화면을 그리기 전에 다시 적용합니다(깜빡임 방지). 저장값이 없으면 속성을 붙이지 않아 시스템 설정을 따릅니다.
+- 셸 원칙과 반응형 구간(모바일 `< 744px` · 태블릿 `744–1179px` · 데스크톱 `≥ 1180px`)은 `PROGRESS.md` 5-12. 동작이 없는 버튼·아이콘은 만들지 않습니다.
 - 콘텐츠: `src/content.config.ts`가 `src/content/` 아래 세 컬렉션(`projects`·`study`·`seminars`)의 스키마를 정의합니다. 사진이 있는 글은 폴더(`slug/index.md(x)`)로 만들고 이미지를 옆에 둡니다. 페이지는 `getCollection()`으로 읽고 `draft: true`를 제외해야 합니다. 세미나 MDX 본문의 `Photo`·`PhotoPair`·`PhotoSide`는 상세 페이지가 `<Content components={{ ... }} />`로 넘겨야 렌더링됩니다. 필드 목록은 `PROGRESS.md` 5-10.
 - `src/content/*/sample-*`는 스키마 검증과 새 글 복사용 예시(`draft: true`)입니다.
-- 페이지 구조가 생기면 이 섹션에 추가합니다.
+- 셸: 페이지는 `src/layouts/SiteLayout.astro`(→ `BaseLayout`)로 감쌉니다. `SiteLayout`이 글로우 바탕·`MenuBar`·`<main>`·`Dock`을 그리고, `active`(앱 id)로 메뉴·Dock 활성 표시를, `surface`(`desk` 홈 / `window` 창 화면)로 모바일 메뉴바 표시와 Dock 유리를 정합니다. 목록·상세 화면은 본문을 `Window`로 감쌉니다.
+- 앱(홈·프로젝트·스터디 기록·세미나 기록)의 라벨·창 제목·설명·경로·아이콘은 `src/data/apps.ts`가 단일 기준이고, 메뉴바·Dock·페이지가 모두 여기서 읽습니다. 새 앱이나 바로가기는 이 파일에 추가합니다.
+- 내부 링크는 `src/lib/url.ts`의 `withBase()`로 만듭니다.
+- 페이지별 구조(목록·상세)가 생기면 이 섹션에 추가합니다.
 - `astro.config.mjs`의 `base: '/my-homepage'` 때문에 내부 링크와 `public/` 에셋 경로는 `import.meta.env.BASE_URL`을 붙여 만들어야 합니다. `/`로 시작하는 절대 경로를 직접 쓰면 배포 후 404가 납니다.
 - 시안 파일끼리의 관계: 각 `.dc.html`은 캔버스에서 독립 아트보드라 CSS를 공유할 수 없어, 테마 토큰(`.site` / `.site[data-theme="light"]`, `--win-*`)이 모든 화면 파일에 복제되어 있습니다. 시안 토큰을 바꿀 때는 모든 화면 파일을 함께 고치고(사이트 구현의 기준은 `src/styles/tokens.css`), `chu-yumin-portfolio.html`은 직접 편집하지 않고 재조립합니다(`PROGRESS.md` 11장).
 

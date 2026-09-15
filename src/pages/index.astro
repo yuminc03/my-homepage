@@ -1,32 +1,81 @@
 ---
-// 토큰 적용 확인용 임시 홈. 화면 구현 단계에서 데스크톱 메타포 홈으로 교체한다
-import BaseLayout from '../layouts/BaseLayout.astro';
+// 셸 확인용 임시 홈. 홈 화면 구현 단계에서 About me·코드 에디터 창·iPhone 목업·최근 기록으로 교체한다
+// - #contact: 연락처 바로가기(Dock·모바일 앱 아이콘)가 도착하는 곳
+// - #code: 코드 에디터 바로가기(데스크톱 Dock)가 도착하는 곳
+import SiteLayout from '../layouts/SiteLayout.astro';
 ---
 
-<BaseLayout>
-	<main>
-		<h1>안녕하세요, iOS 개발자 Chu Yumin입니다.</h1>
-		<p>기회가 주어지면 최선을 다하는 것이 아니라 최선을 다하고 있으면 기회가 주어지는 것이다.</p>
-		<a href={import.meta.env.BASE_URL}>홈</a>
-	</main>
-</BaseLayout>
+<SiteLayout active="home" surface="desk">
+	<div class="temp-home">
+		<section id="about" class="panel">
+			<p class="label">About me</p>
+			<h1>안녕하세요, iOS 개발자 Chu Yumin입니다.</h1>
+			<p class="quote">기회가 주어지면 최선을 다하는 것이 아니라 최선을 다하고 있으면 기회가 주어지는 것이다.</p>
+			<p id="contact" class="contact">[GitHub] · [Email] · [LinkedIn]</p>
+		</section>
+		<section id="code" class="panel">
+			<p class="label">ProfileView.swift</p>
+			<p class="quote">[코드 에디터 창 자리]</p>
+		</section>
+	</div>
+</SiteLayout>
 
 <style>
-	main {
+	.temp-home {
+		display: flex;
+		flex-direction: column;
+		gap: 24px;
 		max-width: 800px;
 		margin: 0 auto;
-		padding: 64px 24px;
+		padding: 32px 20px 160px;
+	}
+
+	.panel {
+		padding: 24px;
+		border: 1px solid var(--win-line);
+		border-radius: 24px;
+		background: var(--win-bg);
+		box-shadow: 0 22px 48px var(--win-shadow);
+		scroll-margin-top: 72px;
+	}
+
+	.label {
+		margin: 0 0 12px;
+		color: var(--win-title);
+		font-size: 12.5px;
+		font-weight: 600;
 	}
 
 	h1 {
-		margin: 0 0 12px;
-		color: var(--ink-strong);
+		margin: 0 0 16px;
+		color: var(--win-ink-strong);
 		font-size: 24px;
-		font-weight: 700;
+		font-weight: 800;
 	}
 
-	p {
-		margin: 0 0 24px;
-		color: var(--ink-muted);
+	.quote {
+		margin: 0;
+		color: var(--win-ink-muted);
+	}
+
+	.contact {
+		margin: 16px 0 0;
+		padding-top: 12px;
+		border-top: 1px solid var(--win-divider);
+		color: var(--win-accent);
+		font-weight: 600;
+		scroll-margin-top: 120px;
+	}
+
+	/* 연락처 바로가기로 도착하면 링크 영역을 잠깐 강조한다 */
+	.contact:target {
+		border-radius: 8px;
+		animation: contact-highlight 1.6s var(--ease-out);
+	}
+
+	@keyframes contact-highlight {
+		from {
+			background: var(--win-tag-bg);
+		}
 	}
 </style>
