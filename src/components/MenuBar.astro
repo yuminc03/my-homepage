@@ -1,8 +1,10 @@
 ---
 // 유리 메뉴바
-// - 데스크톱(≥1180px): 모든 화면 상단. 로고·이름 · 메뉴 4개(열린 창 활성 표시) · 테마 버튼
+// - 데스크톱(≥1180px): 모든 화면 상단. 로고·이름 · 메뉴 4개(열린 창 활성 표시) · 테마 버튼 · 시계
 // - 모바일·태블릿: 홈 화면에서만(showOnTouch). 로고·이름 · 테마 버튼(44px). 목록·상세는 창 시트가 화면을 채운다
+//   시계는 기기 상태 표시줄과 겹치므로 두지 않는다
 import ThemeToggle from './ThemeToggle.astro';
+import MenuClock from './MenuClock.astro';
 import { APPS, getApp, type AppId } from '../data/apps';
 import { withBase } from '../lib/url';
 
@@ -34,6 +36,7 @@ const home = getApp('home');
 	<div class="status">
 		<span class="desktop-only">
 			<ThemeToggle />
+			<MenuClock />
 		</span>
 		<span class="touch-only">
 			<ThemeToggle size="touch" />
@@ -178,8 +181,11 @@ const home = getApp('home');
 			font-weight: 600;
 		}
 
+		/* 테마 버튼 · 시계 (시안 간격 16px) */
 		.desktop-only {
 			display: flex;
+			align-items: center;
+			gap: 16px;
 		}
 
 		.touch-only {
