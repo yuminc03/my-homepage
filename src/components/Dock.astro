@@ -2,7 +2,9 @@
 // 화면 하단에 떠 있는 Dock
 // - 앱 4개(열린 앱 아래 실행 점) | 구분선 | 코드 에디터(데스크톱만) · 연락처
 // - surface: desk = 바탕 위 유리(홈), window = 창 위 유리(목록·상세)
-// - 자동 숨김은 별도 작업(PROGRESS.md 5-3). 지금은 항상 보인다
+// - 자동 숨김(PROGRESS.md 5-3): 아래로 스크롤하면 숨고 위로 스크롤하면 나타난다. 숨은 동안 하단 가운데 힌트 막대
+//   - 마우스: 화면 하단 112px 영역에 들어오면 나타나고, 스크롤로 숨었던 상태면 벗어난 뒤 600ms에 다시 숨는다
+//   - 키보드: Dock 안으로 포커스가 들어오면 나타난다
 import AppIcon from './AppIcon.astro';
 import { APPS, CODE_EDITOR, CONTACT, type AppId } from '../data/apps';
 import { withBase } from '../lib/url';
@@ -15,7 +17,7 @@ interface Props {
 const { active, surface = 'desk' } = Astro.props;
 ---
 
-<nav class="dock-zone" aria-label="Dock">
+<nav class="dock-zone" aria-label="Dock" data-state="shown">
 	<div class="dock" data-surface={surface}>
 		{
 			APPS.map((app) => (
@@ -35,7 +37,126 @@ const { active, surface = 'desk' } = Astro.props;
 			<span class="dot" aria-hidden="true"></span>
 		</a>
 	</div>
+	<span class="hint" data-surface={surface} aria-hidden="true"></span>
 </nav>
+
+<script>
+	// Dock 자동 숨김. 상태는 .dock-zone의 data-state="shown|hidden" 하나로 표현하고, 모양·모션은 CSS가 맡는다
+	const SCROLL_THRESHOLD = 6; // 이만큼 쌓여야 방향 전환으로 본다(손 떨림·관성 끝의 1~2px 무시)
+	const TOP_ZONE = 48; // 맨 위 근처에서는 항상 보인다
+	const REVEAL_ZONE = 112; // 데스크톱: 마우스가 화면 하단 이 높이 안에 들어오면 나타난다
+	const HIDE_DELAY = 600; // 불러낸 Dock에서 벗어난 뒤 다시 숨기까지
+
+	const zone = document.querySelector<HTMLElement>('.dock-zone');
+	if (zone) setupAutoHide(zone);
+
+	function setupAutoHide(zone: HTMLElement) {
+		let lastY = clampedScrollY();
+		let scrolledDown = false; // 아래로 스크롤해 숨긴 상태인가(마우스·포커스로 잠깐 불러낸 동안에도 유지)
+		let pointerInZone = false;
+		let keyboardFocus = false;
+		let hideTimer: number | undefined;
+		let frameRequested = false;
+
+		const setShown = (shown: boolean) => {
+			zone.dataset.state = shown ? 'shown' : 'hidden';
+		};
+		const show = () => {
+			clearTimeout(hideTimer);
+			setShown(true);
+		};
+		const hideSoon = () => {
+			clearTimeout(hideTimer);
+			hideTimer = window.setTimeout(() => setShown(false), HIDE_DELAY);
+		};
+		// 마우스나 키보드가 Dock을 붙잡고 있지 않을 때만, 스크롤로 숨긴 상태로 돌아간다
+		const releaseIfScrolledDown = () => {
+			if (scrolledDown && !pointerInZone && !keyboardFocus) hideSoon();
+		};
+
+		// 스크롤: 이벤트마다 계산하지 않고 한 프레임에 한 번만 처리한다
+		const onFrame = () => {
+			frameRequested = false;
+			const y = clampedScrollY();
+
+			if (y <= TOP_ZONE) {
+				lastY = y;
+				scrolledDown = false;
+				show();
+				return;
+			}
+
+			const delta = y - lastY;
+			if (Math.abs(delta) < SCROLL_THRESHOLD) return; // lastY를 두어 느린 스크롤도 누적되게 한다
+			lastY = y;
+
+			if (delta > 0) {
+				scrolledDown = true;
+				if (!pointerInZone && !keyboardFocus) {
+					clearTimeout(hideTimer);
+					setShown(false);
+				}
+			} else {
+				scrolledDown = false;
+				show();
+			}
+		};
+
+		window.addEventListener(
+			'scroll',
+			() => {
+				if (frameRequested) return;
+				frameRequested = true;
+				requestAnimationFrame(onFrame);
+			},
+			{ passive: true },
+		);
+
+		// 마우스: 보이지 않는 영역 요소를 깔면 그 아래 본문 클릭을 막으므로, 포인터 위치(clientY)로만 판단한다
+		// 터치·펜은 hover가 없어 스크롤 규칙만 따른다
+		const setPointerInZone = (inZone: boolean) => {
+			if (inZone === pointerInZone) return;
+			pointerInZone = inZone;
+			if (inZone) show();
+			else releaseIfScrolledDown();
+		};
+
+		document.addEventListener(
+			'pointermove',
+			(event) => {
+				if (event.pointerType !== 'mouse') return;
+				setPointerInZone(event.clientY >= window.innerHeight - REVEAL_ZONE);
+			},
+			{ passive: true },
+		);
+
+		// 마우스가 창 밖으로 나가면(아래 가장자리 포함) 영역을 벗어난 것으로 본다
+		document.documentElement.addEventListener('pointerleave', (event) => {
+			if (event.pointerType === 'mouse') setPointerInZone(false);
+		});
+
+		// 키보드: 숨은 Dock도 Tab으로 들어올 수 있고, 들어오면 나타난다
+		// 마우스 클릭으로 링크에 남은 포커스는 붙잡지 않도록 :focus-visible일 때만 센다
+		zone.addEventListener('focusin', (event) => {
+			if (!(event.target instanceof Element) || !event.target.matches(':focus-visible')) return;
+			keyboardFocus = true;
+			show();
+		});
+
+		zone.addEventListener('focusout', (event) => {
+			if (event.relatedTarget instanceof Node && zone.contains(event.relatedTarget)) return;
+			if (!keyboardFocus) return;
+			keyboardFocus = false;
+			releaseIfScrolledDown();
+		});
+	}
+
+	// iOS 바운스처럼 문서 범위를 넘는 스크롤 값은 방향 판단에 쓰지 않는다
+	function clampedScrollY() {
+		const max = Math.max(document.documentElement.scrollHeight - window.innerHeight, 0);
+		return Math.min(Math.max(window.scrollY, 0), max);
+	}
+</script>
 
 <style>
 	.dock-zone {
@@ -64,6 +185,9 @@ const { active, surface = 'desk' } = Astro.props;
 			inset 0 1px 0 var(--glass-hi),
 			0 14px 36px var(--dock-shadow);
 		pointer-events: auto;
+		transition:
+			transform var(--dur-dock) var(--ease-out),
+			opacity 280ms ease;
 	}
 
 	.dock[data-surface='window'] {
@@ -72,6 +196,35 @@ const { active, surface = 'desk' } = Astro.props;
 		box-shadow:
 			inset 0 1px 0 var(--win-dock-hi),
 			0 14px 36px var(--win-dock-shadow);
+	}
+
+	/* 숨김: 자기 높이 + 아래 여백만큼 화면 밖으로 내려가고, 누를 수 없게 한다(Tab 포커스는 받는다) */
+	.dock-zone[data-state='hidden'] .dock {
+		transform: translateY(calc(100% + 32px));
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	/* 숨은 동안만 보이는 힌트 막대(장식) */
+	.hint {
+		position: absolute;
+		bottom: calc(10px + env(safe-area-inset-bottom));
+		left: 50%;
+		width: 44px;
+		height: 5px;
+		margin-left: -22px;
+		border-radius: 999px;
+		background: var(--dock-sep);
+		opacity: 0;
+		transition: opacity 280ms ease;
+	}
+
+	.hint[data-surface='window'] {
+		background: var(--win-hint);
+	}
+
+	.dock-zone[data-state='hidden'] .hint {
+		opacity: 1;
 	}
 
 	.item {
@@ -141,6 +294,11 @@ const { active, surface = 'desk' } = Astro.props;
 			-webkit-backdrop-filter: blur(26px) saturate(180%);
 		}
 
+		.hint {
+			width: 52px;
+			margin-left: -26px;
+		}
+
 		.item {
 			--icon-size: 56px;
 			--icon-radius: 16px;
@@ -170,6 +328,12 @@ const { active, surface = 'desk' } = Astro.props;
 				0 18px 44px var(--dock-shadow);
 		}
 
+		.hint {
+			width: 44px;
+			height: 4px;
+			margin-left: -22px;
+		}
+
 		.item {
 			--icon-size: 52px;
 			--icon-radius: 15px;
@@ -186,6 +350,17 @@ const { active, surface = 'desk' } = Astro.props;
 
 		.desktop-only {
 			display: flex;
+		}
+	}
+
+	/* 동작 줄이기: 아래로 이동하지 않고 짧게 사라지고 나타난다 */
+	@media (prefers-reduced-motion: reduce) {
+		.dock {
+			transition: opacity var(--dur-fast) ease;
+		}
+
+		.dock-zone[data-state='hidden'] .dock {
+			transform: none;
 		}
 	}
 </style>

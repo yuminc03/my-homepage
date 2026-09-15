@@ -1,7 +1,7 @@
 # 진행 상황
-- 최종 업데이트: 2026-09-14
+- 최종 업데이트: 2026-09-15
 - 이 문서 하나만 읽으면 새 채팅에서 바로 이어서 작업할 수 있도록 정리한 단일 기준 문서다
-- **마지막 세션 종료(2026-09-14 밤)**: `feature/site-shell` 브랜치, 작업 트리 깨끗(공통 셸까지 커밋). 새 채팅은 **2-1 "지금 바로 할 일"의 3-3 Dock 자동 숨김**부터 시작한다
+- **현재 세션(2026-09-15)**: `feature/site-shell` 브랜치. Dock 자동 숨김 구현·검증 완료, **커밋 제안 후 사용자 확인 대기**. 커밋이 끝났으면 **2-1의 3-4 데스크톱 메뉴바 시계**부터 시작한다
 
 ## 1. 한눈에 보기
 - **무엇을 만드나**: iOS 개발자 Chu Yumin의 개인 홈페이지(자기소개·프로젝트·스터디 기록·세미나 기록)
@@ -14,8 +14,8 @@
   - 데스크톱 창 ✕ 닫기 버튼 — 채택(2026-09-14), 데스크톱 창 화면 6장에 반영, `develop` 병합
 - **기술 스택**: Astro + 일반 CSS + TypeScript + Markdown Content Collections 확정(2026-09-14). 비교·약점·면접 질문은 `docs/tech-stack.md`
 - **시안 캔버스**: https://claude.ai/code/artifact/48a3c34c-b882-4f13-8e2f-7e3668bdb7b1 (v22, 페이지 5개 · 아트보드 25장)
-- **Git**: 시안·기술 스택 문서·`.claude/settings.json`(`92083d0`)이 `develop`에 반영되어 있다. `feature/astro-setup`(커밋 4개)을 `develop`에 병합 `004589b` → 브랜치 삭제(2026-09-14). 지금은 `feature/site-shell` 브랜치에서 작업 중(테마 버튼 `872ec4b`, 공통 셸 커밋 완료. 다음은 Dock 자동 숨김). `master`·원격 push는 한 번도 하지 않았다
-- **다음 단계**: Dock 자동 숨김 → 시계 → `develop` 병합. 그 뒤 페이지 구현, 콘텐츠 검색
+- **Git**: 시안·기술 스택 문서·`.claude/settings.json`(`92083d0`)이 `develop`에 반영되어 있다. `feature/astro-setup`(커밋 4개)을 `develop`에 병합 `004589b` → 브랜치 삭제(2026-09-14). 지금은 `feature/site-shell` 브랜치에서 작업 중(테마 버튼 `872ec4b`, 공통 셸 `20d40c8` 커밋 완료. Dock 자동 숨김은 커밋 대기). `master`·원격 push는 한 번도 하지 않았다
+- **다음 단계**: (Dock 자동 숨김 커밋) → 시계 → `develop` 병합. 그 뒤 페이지 구현, 콘텐츠 검색
 
 ## 2. 새 채팅에서 이어서 시작하기
 ### 2-1. 지금 바로 할 일
@@ -29,13 +29,12 @@
 3. `feature/site-shell` 브랜치의 작업을 커밋 단위로 이어간다(각 커밋마다 제안 → 사용자 확인). 결정은 5-12
    1. 테마 전환 버튼 — `src/components/ThemeToggle.astro`, `BaseLayout` `<head>` 인라인 스크립트, body 바탕 전환. 빌드 확인, **커밋 완료**(사용자 확인)
    2. 셸: 앱 목록 데이터(홈·프로젝트·스터디 기록·세미나 기록 + 연락처) → `MenuBar`·`Dock`·`Window`(데스크톱 창 / 모바일·태블릿 시트) 컴포넌트 → `SiteLayout` → 목록 페이지 틀 3개(`/projects/`·`/study/`·`/seminars/`)와 활성 표시 — 작업 완료, 빌드(4페이지)·링크·활성 표시·너비별 스크린샷 확인, 사용자 확인 후 **커밋 완료**
-   3. **Dock 자동 숨김 ← 다음에 할 일**
-      - 규칙(5-3, 시안 `design/Main.dc.html` 스크립트): 처음엔 보임 → 아래로 스크롤하면 숨김 → 위로 스크롤하면 나타남. 데스크톱은 화면 하단 112px 영역에 마우스가 들어오면 나타나고, 스크롤로 숨은 상태에서 불러냈다면 벗어날 때 600ms 뒤 다시 숨김. 숨은 동안 하단 가운데 힌트 막대(44×4px). 모바일·태블릿은 hover가 없어 스크롤 규칙만(`@media (hover: hover)`로 구분)
-      - 모션(5-9): 숨김/나타남 `transform: translateY(calc(100% + 32px))` + opacity, `var(--dur-dock)` 380ms `var(--ease-out)`. `prefers-reduced-motion`이면 이동 없이 짧은 페이드
-      - 구현 계획: `src/components/Dock.astro`에 `<script>` 추가 → `.dock-zone`에 `data-state="shown|hidden"`, 스크롤 방향은 `scrollY` 차이(임계값 약 6px, 맨 위 48px 이내에서는 항상 보임)로 판단하고 `requestAnimationFrame`으로 묶어 처리, 데스크톱 하단 hover 영역은 `pointer-events`가 있는 투명 영역. 숨은 Dock은 `pointer-events: none`, 키보드 포커스가 Dock에 들어오면(`focusin`) 나타나게 한다(접근성)
-      - 상세 화면은 "숨김 상태로 시작"(모바일·태블릿 시안)인데 상세 페이지가 아직 없으므로, `Dock`에 `initial` prop 자리만 두거나 상세 구현 때 추가
-      - 확인: 개발 서버에서 목록 창을 길게 만들어(임시로 본문 높이 늘리기) 스크롤 방향별 동작, 데스크톱 하단 hover, 힌트 막대, 동작 줄이기 설정(macOS 손쉬운 사용 → 디스플레이 → 동작 줄이기)
-   4. 데스크톱 메뉴바 시계
+   3. Dock 자동 숨김 — 작업 완료(2026-09-15), **커밋 제안 후 사용자 확인 대기**. 구현 내용은 5-3
+      - 확인: 빌드(4페이지), headless 동작 검사 16항목 통과(스크롤 방향·6px 누적 임계값·맨 위 48px·마우스 하단 영역 진입/이탈 600ms·영역 안 스크롤·터치 무시·키보드 포커스), 숨김 상태 스크린샷(데스크톱 창·모바일 창·모바일 홈의 힌트 막대)
+      - 검사 방법(다시 할 때): `dist/projects/index.html` 사본에 높이 4000px 블록과 검사 스크립트를 넣고 `--dump-dom --virtual-time-budget`로 실행. **virtual time에서는 화면을 그리지 않아 `scroll` 이벤트와 `requestAnimationFrame`이 오지 않는다** → 사본의 `<head>` 맨 앞에서 rAF를 `setTimeout(16ms)`으로 바꾸고, `scrollTo()` 뒤 `scroll` 이벤트를 직접 보낸다. 마우스는 `new PointerEvent('pointermove', { pointerType: 'mouse', clientY })`
+      - 사용자가 실제 브라우저에서 볼 것: 트랙패드 스크롤 느낌, 하단 hover, 동작 줄이기(macOS 손쉬운 사용 → 디스플레이 → 동작 줄이기). 지금 목록 창은 짧아 스크롤이 생기지 않으므로 페이지 구현 뒤 자연스럽게 확인된다
+      - 상세 화면 "숨김 상태로 시작"(모바일·태블릿 시안)은 상세 페이지 구현 때 `Dock`에 prop으로 추가한다(`data-state` 초기값 + 스크립트의 `scrolledDown` 초기값)
+   4. **데스크톱 메뉴바 시계 ← 다음에 할 일**
       - `MenuBar.astro` 오른쪽(테마 버튼 오른쪽, 시안은 검색 아이콘 자리 없이 테마 버튼 · 시계 순서) `12.5px`/500 `var(--ink)`, 데스크톱(≥1180px)만 표시
       - `<time>`에 현재 시각 `HH:MM`(24시간, 한국어 로케일), 다음 분 경계에 맞춰 `setTimeout` 후 60초마다 갱신. JS가 없거나 실행 전에는 비워 둔다(빌드 시각을 넣으면 틀린 시각이 보이므로)
    5. 끝나면 `develop` `--no-ff` 병합 → 브랜치 삭제
@@ -84,7 +83,8 @@
 | 콘텐츠 스키마 | 프로젝트·스터디·세미나 컬렉션, 예시 글 3개, 검증 | `feature/astro-setup` | 커밋 `f949af1`(2026-09-14) |
 | Astro 기반 병합 | Astro 생성·토큰·MDX·스키마 커밋 4개 | `feature/astro-setup` | `develop` 병합 `004589b` → 브랜치 삭제(2026-09-14) |
 | 테마 전환 버튼 | `ThemeToggle` 컴포넌트, `<head>` 인라인 스크립트로 저장 테마 먼저 적용 | `feature/site-shell` | 커밋 `872ec4b`(2026-09-14) |
-| 공통 셸 | 앱 데이터·`withBase`, `AppIcon`·`MenuBar`·`Dock`·`Window`·`PageHeading`, `SiteLayout`, 목록 틀 3개, 임시 홈(`#contact`·`#code`) | `feature/site-shell` | 사용자 확인 후 커밋(2026-09-14) |
+| 공통 셸 | 앱 데이터·`withBase`, `AppIcon`·`MenuBar`·`Dock`·`Window`·`PageHeading`, `SiteLayout`, 목록 틀 3개, 임시 홈(`#contact`·`#code`) | `feature/site-shell` | 사용자 확인 후 커밋 `20d40c8`(2026-09-14) |
+| Dock 자동 숨김 | 스크롤 방향·마우스 하단 영역·키보드 포커스로 숨김/나타남, 힌트 막대, 동작 줄이기 페이드 | `feature/site-shell` | 검사 16항목 통과, 커밋 대기(2026-09-15) |
 
 ### 남은 일
 - [x] 모션·✕·문서 커밋 → `develop` 병합 → 브랜치 삭제 (2026-09-14, 사용자 확인)
@@ -100,8 +100,8 @@
 - [x] `feature/astro-setup` → `develop` 병합 `004589b` → 브랜치 삭제 (2026-09-14, 사용자 확인)
 - [x] 셸 미정 요소 결정: 연락처 = About me 링크로 이동, 검색 = 실제 콘텐츠 검색으로 구현, Dock 터미널 아이콘 제거, 시계 유지(데스크톱) (2026-09-14, 5-12)
 - [x] 공통 셸(메뉴바·Dock·창·목록 틀) 커밋 (2026-09-14, 사용자 확인)
-- [ ] **Dock 자동 숨김** ← 다음 (2-1의 3-3)
-- [ ] 데스크톱 메뉴바 시계 (2-1의 3-4)
+- [ ] Dock 자동 숨김 커밋 (2026-09-15 구현·검증 완료, 사용자 확인 대기)
+- [ ] **데스크톱 메뉴바 시계** ← 다음 (2-1의 3-4)
 - [ ] `feature/site-shell` → `develop` 병합 → 브랜치 삭제
 - [ ] 홈 화면 구현(데스크톱: 바로가기·About me·코드 에디터 창·iPhone 목업·스크롤 힌트·최근 기록 창 / 모바일·태블릿: 위젯·앱 아이콘 4개). 임시 홈의 `#contact`·`#code` 도착점과 연락처 강조를 실제 창으로 옮긴다
 - [ ] 목록·상세 페이지 구현(프로젝트·스터디·세미나), 상세의 `← 목록` / ‹ 뒤로 링크를 `Window`에 추가
@@ -134,6 +134,12 @@
 - 자동 숨김: 처음엔 보임 → 아래로 스크롤하면 숨김 → 위로 스크롤하거나 마우스가 하단 영역에 들어오면 나타남. 스크롤로 숨은 상태에서 마우스로 불렀다면 벗어날 때 다시 숨김. 숨은 동안 하단 힌트 막대
 - 모바일·태블릿은 hover가 없어 스크롤 규칙만. 목록 창 = 보임, 상세 창 = 숨김(힌트 막대)으로 그렸다
 - 데스크톱 목록·상세 화면의 Dock은 시안에서 정적 블록이다. 구현 시 모든 화면에 홈과 같은 고정 + 자동 숨김 규칙을 쓴다
+- 구현(2026-09-15, `src/components/Dock.astro` `<script>`)
+  - 상태는 `.dock-zone`의 `data-state="shown|hidden"` 하나. 모양·모션은 CSS: 숨김은 `.dock`을 `translateY(calc(100% + 32px))` + opacity 0 + `pointer-events: none`(`var(--dur-dock)` `var(--ease-out)`, opacity 280ms), 힌트 막대 `.hint`가 나타남(모바일 44×5 · 태블릿 52×5 · 데스크톱 44×4px, 홈 `--dock-sep` / 창 화면 `--win-hint`). `prefers-reduced-motion`이면 이동 없이 `var(--dur-fast)` 페이드
+  - 스크롤: `scroll`을 rAF로 한 프레임에 한 번 처리. 문서 범위로 자른 `scrollY`(iOS 바운스 제외)와 마지막 기준값의 차이가 6px 이상일 때만 방향 판단(느린 스크롤도 누적). 맨 위 48px 이내는 항상 보임. 아래로 = 즉시 숨김(마우스·키보드가 붙잡고 있으면 보인 채 "스크롤로 숨긴 상태"만 기록), 위로 = 나타남
+  - 마우스: 시안처럼 투명 영역 요소를 깔면 창 본문 하단 클릭을 막으므로 **요소 없이 `pointermove`의 `clientY >= innerHeight - 112`로 판정**. `pointerType === 'mouse'`만 세서(`@media (hover)` 대신) 터치·펜은 스크롤 규칙만 따르고, 트랙패드 붙은 태블릿 같은 혼합 기기도 맞게 동작. 들어오면 나타남, 스크롤로 숨긴 상태였다면 벗어난 뒤(창 밖으로 나가는 `pointerleave` 포함) 600ms에 다시 숨김
+  - 키보드: 숨은 Dock도 Tab으로 들어올 수 있고 `focusin`이면 나타남. 마우스 클릭으로 링크에 남는 포커스가 Dock을 붙잡지 않도록 `:focus-visible`일 때만 센다. Dock 밖으로 포커스가 나가면 마우스와 같은 규칙으로 다시 숨김
+  - View Transitions(`ClientRouter`)를 넣으면 Dock이 `transition:persist`로 유지되므로 이 스크립트를 다시 실행할 필요는 없지만, 스크롤 기준값(`lastY`)은 페이지 전환 때 초기화해야 한다 → 전환 작업 때 `astro:page-load`에서 처리
 
 ### 5-4. 창과 상세 화면
 - 상세는 같은 창 안에서 열리고 상단 `← 목록 이름` 링크(모바일·태블릿은 타이틀 바 ‹)로 돌아간다. 메뉴바·Dock 활성 표시는 목록과 같게 유지
@@ -333,7 +339,7 @@
 | `src/lib/url.ts` | `withBase(path)`: base(`/my-homepage`)를 붙인 내부 경로. 내부 링크는 모두 이것으로 만든다 |
 | `src/components/AppIcon.astro` | 아이콘 타일. 크기는 부모의 CSS 변수(`--icon-size`·`--icon-radius`·`--glyph-size`·`--glyph-stroke`), `shadow` 옵션 |
 | `src/components/MenuBar.astro` | 유리 메뉴바. 데스크톱 36px(로고·이름·메뉴 4개 `aria-current`·테마 버튼) / 모바일 52px·태블릿 56px(홈에서만, 로고·이름·44px 테마 버튼) |
-| `src/components/Dock.astro` | 하단 고정 Dock. 앱 4개 + 실행 점 · 구분선 · 코드 에디터(데스크톱) · 연락처. `surface` desk/window 유리. 크기 모바일 48 / 태블릿 56 / 데스크톱 52px |
+| `src/components/Dock.astro` | 하단 고정 Dock. 앱 4개 + 실행 점 · 구분선 · 코드 에디터(데스크톱) · 연락처. `surface` desk/window 유리. 크기 모바일 48 / 태블릿 56 / 데스크톱 52px. 자동 숨김 스크립트(`data-state`)·힌트 막대(5-3) |
 | `src/components/Window.astro` | 창. 데스크톱: 최대 1240px 가운데 창(타이틀 바 44px, ✕ 28px) / 모바일·태블릿: 위 12·16px 틈 시트(타이틀 바 52·56px sticky, ✕ 44px). 본문 여백 20·36·48px, 아래는 Dock 자리만큼 비움 |
 | `src/components/PageHeading.astro` | 목록 화면 큰 제목(30·34·44px)과 한 줄 설명 |
 | `src/layouts/BaseLayout.astro` | 모든 페이지 공통 문서 뼈대: `lang="ko"`, 메타(title·description 기본값), Noto Sans KR `<link>`, `tokens.css`·`global.css` import, `<head>` 인라인 스크립트(저장된 테마를 첫 화면 전에 `data-theme`에 적용), `<slot />` |
