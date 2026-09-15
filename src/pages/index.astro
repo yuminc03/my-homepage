@@ -1,12 +1,13 @@
 ---
 // 홈
-// - 데스크톱(≥1180px): 바탕 화면 바로가기 4 · About me 창 · 코드 에디터 창(About 창 위에 겹침)
+// - 데스크톱(≥1180px): 바탕 화면 바로가기 4 · About me 창 · 코드 에디터 창(About 창 위에 겹침) · iPhone 목업(코드 창 오른쪽 아래에 겹침)
 // - 모바일·태블릿: About me 위젯 · 앱 아이콘 4(프로젝트·스터디·세미나·연락처) · 코드 위젯
 // - #contact: 연락처 바로가기(Dock·앱 아이콘)가 도착하는 곳 / #code: 코드 에디터 바로가기(데스크톱 Dock)가 도착하는 곳
-// - 다음 커밋에서 추가: iPhone 목업, 최근 기록 창·위젯, 스크롤 힌트
+// - 다음 커밋에서 추가: 최근 기록 창·위젯, 스크롤 힌트
 import SiteLayout from '../layouts/SiteLayout.astro';
 import AppIcon from '../components/AppIcon.astro';
 import HomePanel from '../components/HomePanel.astro';
+import PhoneMockup from '../components/PhoneMockup.astro';
 import ProfileCode from '../components/ProfileCode.astro';
 import { APPS, CONTACT } from '../data/apps';
 import { PROFILE } from '../data/profile';
@@ -63,6 +64,35 @@ const touchApps = [...APPS.filter((app) => app.id !== 'home'), CONTACT];
 			<HomePanel title="ProfileView.swift" tone="code">
 				<ProfileCode />
 			</HomePanel>
+
+			<!-- iPhone 목업(데스크톱만, 장식): 화면 안은 테마와 무관한 고정색 가짜 앱 화면 -->
+			<div class="phone-slot" aria-hidden="true">
+				<PhoneMockup>
+					<div class="app-screen">
+						<div class="app-body">
+							<span class="avatar"></span>
+							<span class="bar bar-name"></span>
+							<span class="bar bar-sub"></span>
+							<span class="hero"></span>
+							<span class="text-lines">
+								<span class="bar bar-line"></span>
+								<span class="bar bar-line short"></span>
+							</span>
+						</div>
+						<div class="tabbar">
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="tab-on">
+								<path d="M4 10.5 12 4l8 6.5V20H4z"></path>
+							</svg>
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+								<circle cx="11" cy="11" r="6"></circle><path d="M20 20l-4.5-4.5"></path>
+							</svg>
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+								<circle cx="12" cy="8" r="3.5"></circle><path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6"></path>
+							</svg>
+						</div>
+					</div>
+				</PhoneMockup>
+			</div>
 		</div>
 	</div>
 </SiteLayout>
@@ -226,6 +256,97 @@ const touchApps = [...APPS.filter((app) => app.id !== 'home'), CONTACT];
 		to {
 			box-shadow: 0 0 0 3px transparent;
 		}
+	}
+
+	/* iPhone 목업은 데스크톱에서만 보인다 */
+	.phone-slot {
+		display: none;
+	}
+
+	/* 목업 화면 안 가짜 앱 화면(206px 폭 기준, 고정색) */
+	.app-screen {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+	}
+
+	.app-body {
+		display: flex;
+		flex-grow: 1;
+		flex-direction: column;
+		align-items: center;
+		gap: 14px;
+		padding: 34px 14px 0;
+	}
+
+	.avatar {
+		width: 64px;
+		height: 64px;
+		border-radius: 50%;
+		background: linear-gradient(140deg, oklch(70% 0.13 300), oklch(58% 0.15 285));
+	}
+
+	.bar {
+		display: block;
+		border-radius: 4px;
+	}
+
+	.bar-name {
+		width: 104px;
+		height: 12px;
+		border-radius: 6px;
+		background: oklch(32% 0.022 290);
+	}
+
+	.bar-sub {
+		width: 72px;
+		height: 8px;
+		background: oklch(88% 0.012 290);
+	}
+
+	.hero {
+		width: 100%;
+		height: 78px;
+		margin-top: 6px;
+		border-radius: 14px;
+		background: linear-gradient(135deg, oklch(93% 0.024 295), oklch(88% 0.036 335));
+	}
+
+	.text-lines {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		width: 100%;
+	}
+
+	.bar-line {
+		width: 88%;
+		height: 8px;
+		background: oklch(90% 0.009 290);
+	}
+
+	.bar-line.short {
+		width: 64%;
+		background: oklch(92% 0.006 290);
+	}
+
+	.tabbar {
+		display: flex;
+		align-items: center;
+		justify-content: space-around;
+		height: 56px;
+		padding-bottom: 8px;
+		border-top: 1px solid oklch(92% 0.006 290);
+		color: oklch(74% 0.015 290);
+	}
+
+	.tabbar svg {
+		width: 20px;
+		height: 20px;
+	}
+
+	.tabbar .tab-on {
+		color: oklch(60% 0.15 295);
 	}
 
 	/* ---------- 태블릿: 위젯을 넓게, 기술·연락처를 한 줄로 ---------- */
@@ -397,6 +518,18 @@ const touchApps = [...APPS.filter((app) => app.id !== 'home'), CONTACT];
 			z-index: 3;
 			margin-left: -72px;
 			border-radius: 16px;
+		}
+
+		/* iPhone 목업: 코드 창 오른쪽 아래에 걸쳐 앞에 놓는다(시안 기준 코드 창 오른쪽 −14px · 위 278px) */
+		.phone-slot {
+			--phone-width: 206px;
+			position: absolute;
+			top: 278px;
+			right: -14px;
+			z-index: 4;
+			display: block;
+			transform: rotate(3deg);
+			filter: drop-shadow(0 34px 70px var(--win-shadow));
 		}
 	}
 </style>

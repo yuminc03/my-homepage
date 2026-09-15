@@ -1,7 +1,7 @@
 # 진행 상황
 - 최종 업데이트: 2026-09-15
 - 이 문서 하나만 읽으면 새 채팅에서 바로 이어서 작업할 수 있도록 정리한 단일 기준 문서다
-- **현재 세션(2026-09-15)**: 공통 셸을 `develop`에 병합 `0227fa3`·원격 push한 뒤, 페이지 구현 순서를 **홈 → 프로젝트 → 스터디 → 세미나**로 확정. `feature/home-page` 브랜치에서 홈 커밋 1/3(첫 화면) 구현·검증 완료, **커밋 제안 후 사용자 확인 대기**. 커밋이 끝났으면 **2-1의 4-2 iPhone 목업**부터 시작한다
+- **현재 세션(2026-09-15)**: 공통 셸을 `develop`에 병합 `0227fa3`·원격 push한 뒤, 페이지 구현 순서를 **홈 → 프로젝트 → 스터디 → 세미나**로 확정. `feature/home-page` 브랜치에서 홈 커밋 1/3(첫 화면) `9907ebe` 완료. 2/3 iPhone 목업 구현·검증 완료, **커밋 제안 후 사용자 확인 대기**. 커밋이 끝났으면 **2-1의 4-3 최근 기록**부터 시작한다
 
 ## 1. 한눈에 보기
 - **무엇을 만드나**: iOS 개발자 Chu Yumin의 개인 홈페이지(자기소개·프로젝트·스터디 기록·세미나 기록)
@@ -19,7 +19,7 @@
 
 ## 2. 새 채팅에서 이어서 시작하기
 ### 2-1. 지금 바로 할 일
-1. `git status`로 브랜치와 작업 트리를 확인한다. `feature/home-page` 브랜치. 홈 첫 화면 커밋에 `develop` 병합 기록(이 문서·`CLAUDE.md`)도 함께 들어간다
+1. `git status`로 브랜치와 작업 트리를 확인한다. `feature/home-page` 브랜치. 홈 첫 화면 `9907ebe`(`develop` 병합 기록 문서 포함)까지 커밋했다
 2. Node는 **nvm의 24**를 쓴다. 셸 기본값이 21.7.3이라 명령 전에 `source ~/.nvm/nvm.sh && nvm use`(`.nvmrc` = 24)를 먼저 실행한다. Astro 7은 Node 22.12 이상이 필요하다
    - `astro preview`는 백그라운드로 분리되는 단일 서버다. 검증 후 반드시 `npx astro preview stop`으로 끈다(`pkill`로 안 잡히고, 남아 있으면 다음 실행이 "already running"으로 건너뛴다)
    - 화면 확인은 headless Chrome `--screenshot`(시스템 다크는 `--force-dark-mode`)을 쓰되, Chrome이 저장 후 종료되지 않으므로 파일이 생기면 `pkill -f "user-data-dir=..."`로 끈다
@@ -39,15 +39,17 @@
    5. `develop` `--no-ff` 병합 `0227fa3`(병합 후 `develop` 빌드 4페이지 확인) → 브랜치 삭제 → `git push -u origin develop`(2026-09-15, 사용자 요청)
       - 주의: `git merge`는 `-F -`(표준 입력 메시지)를 읽지 못한다(`could not read file '-'`). 여러 줄 메시지는 `-m`을 문단마다 여러 번 넘긴다. `git commit -F -`는 된다
 4. **페이지 구현**(순서 확정 2026-09-15: 홈 → 프로젝트 → 스터디 → 세미나). 지금은 `feature/home-page`, 결정은 5-13. 각 커밋마다 제안 → 사용자 확인
-   1. 첫 화면 — 작업 완료(2026-09-15), **커밋 제안 후 사용자 확인 대기**
+   1. 첫 화면 — 작업 완료, 사용자 확인 후 **커밋 `9907ebe`**(2026-09-15)
       - 만든 것: `src/data/profile.ts`(인사말·문구·기술·연락처), `WindowDots`(창 점, `Window`도 이것을 쓰도록 교체), `HomePanel`(홈 창/위젯), `ProfileCode`(코드 에디터 내용), `src/pages/index.astro`(데스크톱 바로가기·About me·코드 창 / 모바일·태블릿 About 위젯·앱 아이콘·코드 위젯, `#contact`·`#code` 도착 강조)
       - 확인: 빌드(4페이지), 링크(GitHub·Email 실제 주소, 내부 링크 `/my-homepage/`), 스크린샷 데스크톱 1440(다크)·1180(라이트), 모바일 320·390(다크), 태블릿 768(라이트)
       - 알게 된 것: 인사말이 "Yumin입니|다."처럼 음절 중간에서 끊겨 `word-break: keep-all` + 이름 `nowrap` + 칸 폭(`cqi`) 기준 글자 크기로 해결. `<br>`을 CSS로 숨기면 앞뒤 단어가 붙으므로 `{' '}`를 명시한다. `npx astro check`는 `@astrojs/check`가 없어 설치 질문에서 멈춘다(쓰지 않음)
       - 발견한 기존 문제(셸): 320px 폭에서 모바일 Dock(아이콘 5개)이 화면 폭과 거의 같다. 작은 기기 대응은 나중에 따로
-   2. **iPhone 목업 ← 다음에 할 일**
+   2. iPhone 목업 — 작업 완료(2026-09-15), **커밋 제안 후 사용자 확인 대기**
+      - 확인: 빌드(4페이지, 이미지 최적화 PNG 50KB → WebP 1x 4.5KB · 2x 8KB), 스크린샷 데스크톱 1440(다크)·1180(라이트)에서 코드 창 오른쪽 아래 겹침·기울기·그림자, 모바일 390·태블릿 768에서는 숨김
+      - 알게 된 것: `<Image>`가 만든 `img`에도 부른 컴포넌트의 스코프 속성이 붙어 `:global` 없이 스타일된다(빌드 CSS `.phone[data-astro-cid-…]>img[data-astro-cid-…]`로 확인)
       - 이미지: 이전 세션 scratchpad에 추출본이 남아 있었고 `~/Downloads/Type=iPhone 16 Pro.png`와 같은 파일(450×920 RGBA, md5 `cc0f7186…`, 50KB). 이것을 `src/assets/iphone-16-pro.png`로 넣고 `astro:assets` `<Image>`로 쓴다(사용자가 저장소 커밋 허용)
       - 구조·크기는 5-8(홈 206px, `rotate(3deg)`, 코드 창 오른쪽 아래에 겹침: 코드 창 기준 오른쪽 −14px·위 278px). 화면 안 앱 UI는 시안의 고정색 도형(테마 무관). 데스크톱만 표시, 장식이므로 `alt=""`
-   3. 최근 기록 — 콘텐츠 헬퍼(`draft` 제외·날짜 내림차순), 데스크톱 "최근 기록" 창(스터디 3 · 세미나 3, 전체 보기 → 목록), 모바일·태블릿 최근 스터디·세미나 위젯(태블릿은 코드 위젯과 좌우 2단), 스크롤 힌트(데스크톱, `#recent`로 이동하는 링크), **빈 상태 문구**(지금은 예시 글이 모두 draft라 빈 상태가 보인다). 상세 페이지가 없으므로 항목 링크는 목록으로, 상세 구현 때 상세로 바꾼다
+   3. **최근 기록 ← 다음에 할 일** — 콘텐츠 헬퍼(`draft` 제외·날짜 내림차순), 데스크톱 "최근 기록" 창(스터디 3 · 세미나 3, 전체 보기 → 목록), 모바일·태블릿 최근 스터디·세미나 위젯(태블릿은 코드 위젯과 좌우 2단), 스크롤 힌트(데스크톱, `#recent`로 이동하는 링크), **빈 상태 문구**(지금은 예시 글이 모두 draft라 빈 상태가 보인다). 상세 페이지가 없으므로 항목 링크는 목록으로, 상세 구현 때 상세로 바꾼다
    4. 끝나면 `develop` `--no-ff` 병합 → 브랜치 삭제 → push(사용자 확인 후)
 5. 그 뒤: 프로젝트 목록·상세 → 스터디 → 세미나 → 페이지 전환 모션 → 콘텐츠 검색(5-12) → 대괄호 `[ ]` placeholder 실제 콘텐츠 정리
 
@@ -98,7 +100,8 @@
 | Dock 자동 숨김 | 스크롤 방향·마우스 하단 영역·키보드 포커스로 숨김/나타남, 힌트 막대, 동작 줄이기 페이드 | `feature/site-shell` | 검사 16항목 통과, 사용자 확인 후 커밋 `e8eea35`(2026-09-15) |
 | 메뉴바 시계 | 데스크톱 메뉴바 테마 버튼 오른쪽에 현재 시각 `HH:MM`, 분 경계마다 갱신 | `feature/site-shell` | 분 경계 검사 통과, 사용자 확인 후 커밋 `88e86ca`(2026-09-15) |
 | 공통 셸 병합 | 테마 버튼·공통 셸·Dock 자동 숨김·시계·문서 커밋 5개 | `feature/site-shell` | `develop` 병합 `0227fa3` → 브랜치 삭제 → `origin/develop` 첫 push(2026-09-15) |
-| 홈 첫 화면 | 자기소개 데이터, 창 점·홈 창/위젯·코드 에디터 컴포넌트, 데스크톱 바로가기·About·코드 창 / 모바일·태블릿 위젯·앱 아이콘 | `feature/home-page` | 스크린샷 5폭 확인, 커밋 대기(2026-09-15) |
+| 홈 첫 화면 | 자기소개 데이터, 창 점·홈 창/위젯·코드 에디터 컴포넌트, 데스크톱 바로가기·About·코드 창 / 모바일·태블릿 위젯·앱 아이콘 | `feature/home-page` | 스크린샷 5폭 확인, 사용자 확인 후 커밋 `9907ebe`(2026-09-15) |
+| 홈 iPhone 목업 | 목업 이미지 저장소 추가(`astro:assets` WebP), `PhoneMockup` 컴포넌트, 데스크톱 코드 창 오른쪽 아래에 가짜 앱 화면 목업 | `feature/home-page` | 스크린샷 확인, 커밋 대기(2026-09-15) |
 
 ### 남은 일
 - [x] 모션·✕·문서 커밋 → `develop` 병합 → 브랜치 삭제 (2026-09-14, 사용자 확인)
@@ -117,7 +120,7 @@
 - [x] Dock 자동 숨김 커밋 `e8eea35` (2026-09-15, 사용자 확인)
 - [x] 데스크톱 메뉴바 시계 커밋 `88e86ca` (2026-09-15, 사용자 확인)
 - [x] `feature/site-shell` → `develop` 병합 `0227fa3` → 브랜치 삭제 → `develop` 원격 push (2026-09-15, 사용자 요청)
-- [ ] **홈 화면 구현** ← 진행 중(`feature/home-page`, 첫 화면 완료 · iPhone 목업 · 최근 기록 남음)(데스크톱: 바로가기·About me·코드 에디터 창·iPhone 목업·스크롤 힌트·최근 기록 창 / 모바일·태블릿: 위젯·앱 아이콘 4개). 임시 홈의 `#contact`·`#code` 도착점과 연락처 강조를 실제 창으로 옮긴다
+- [ ] **홈 화면 구현** ← 진행 중(`feature/home-page`, 첫 화면 · iPhone 목업 완료, 최근 기록 남음)(데스크톱: 바로가기·About me·코드 에디터 창·iPhone 목업·스크롤 힌트·최근 기록 창 / 모바일·태블릿: 위젯·앱 아이콘 4개). 임시 홈의 `#contact`·`#code` 도착점과 연락처 강조를 실제 창으로 옮긴다
 - [ ] 목록·상세 페이지 구현(프로젝트·스터디·세미나), 상세의 `← 목록` / ‹ 뒤로 링크를 `Window`에 추가
 - [ ] 페이지 전환 모션(View Transitions `ClientRouter`, `transition:persist`로 메뉴바·Dock 유지)
 - [ ] 콘텐츠 검색 기능 — 목록·상세 페이지 구현 뒤 별도 브랜치(방식은 5-12 추천안을 사용자와 확정)
@@ -186,6 +189,7 @@
 - 구조: 바깥 `position:relative; aspect-ratio:450 / 920; filter:drop-shadow(...)` > 화면 `position:absolute; left:5.56%; top:2.61%; width:88.89%; height:94.78%; border-radius:13.75% / 6.3%; overflow:hidden`(앱 화면 내용) + 맨 위 `<img src="iphone-16-pro.png" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;">`
 - 크기: 홈 206px(`rotate(3deg)`), 데스크톱 카드 150px(아래로 잘림), 데스크톱 상세 210/200px, 모바일 카드 128px·상세 170px, 태블릿 카드 150px·상세 190px
 - 테마와 무관하게 그대로 쓴다
+- 사이트용 사본은 **`src/assets/iphone-16-pro.png`로 저장소에 커밋**한다(2026-09-15 사용자 허용, 5-13). 원본과 같은 파일(md5 `cc0f7186…`)이며 빌드 때 WebP로 최적화된다. 컴포넌트는 `src/components/PhoneMockup.astro`
 
 ### 5-9. 모션 (2026-09-14 설계)
 - 원칙
@@ -268,6 +272,7 @@
   - 인사말 크기: `.about-slot`을 `container-type: inline-size`로 두고 `clamp(최소, calc((100cqi − 좌우 여백) / 13.4), 최대)`(모바일 19–24 · 태블릿 24–30 · 데스크톱 26–36px). 한국어는 `word-break: keep-all`
   - 코드 에디터: 줄 배열(토큰 `[종류, 글자]`)을 문자열 HTML로 만들어 `<pre>`에 `set:html`(템플릿 식은 공백이 합쳐질 수 있어서). `set:html` 안의 span에는 스코프 속성이 없어 색은 `:global(.kw)` 등으로 준다. 보이는 줄 수 모바일 8 · 태블릿 12 · 데스크톱 14(`max-height` = 줄 수 × 줄 높이), 파일 탭은 데스크톱만
   - `#contact`(About 연락처 줄)·`#code`(코드 창) 도착 시 1.6초 강조(`:target` 애니메이션)
+  - iPhone 목업(2026-09-15): `PhoneMockup`은 프레임 이미지와 투명한 화면 영역만 맡고 화면 안 내용은 slot으로 받는다(프로젝트 상세에서 실제 스크린샷에 재사용). 폭은 `--phone-width`, 기울기·그림자·위치는 부모. 홈은 `.code-slot` 안에 `position: absolute; top: 278px; right: -14px; rotate(3deg)`로 코드 창 오른쪽 아래에 걸치고 데스크톱에서만 보인다. 이미지는 `src/assets`에 두어 `<Image width={225} densities={[1, 2]}>`로 WebP 225·450px를 만든다. 목업 전체가 장식이라 `aria-hidden`
 
 ## 6. 저작권 주의선
 - macOS·Xcode의 실제 UI를 복제하지 않는다. Apple 로고, SF Symbols, 신호등 색(빨강·노랑·초록) 창 컨트롤, 실제 메뉴 구조를 쓰지 않는다
@@ -367,7 +372,7 @@
 | `.nvmrc` | `24` |
 | `.gitignore` | `dist/`·`.astro/`·`node_modules/`·`.env`·`.DS_Store` 등(Astro 템플릿 그대로) |
 | `.vscode/extensions.json` | Astro VS Code 확장 추천 |
-| `src/pages/index.astro` | 홈(5-13). 데스크톱: 바로가기 4 · About me 창 · 코드 에디터 창(겹침) / 모바일·태블릿: About 위젯 · 앱 아이콘 4 · 코드 위젯. `#contact`·`#code` 도착 강조. iPhone 목업·최근 기록은 다음 커밋 |
+| `src/pages/index.astro` | 홈(5-13). 데스크톱: 바로가기 4 · About me 창 · 코드 에디터 창(겹침) / 모바일·태블릿: About 위젯 · 앱 아이콘 4 · 코드 위젯. `#contact`·`#code` 도착 강조. 데스크톱 iPhone 목업(코드 창 오른쪽 아래). 최근 기록은 다음 커밋 |
 | `src/data/profile.ts` | 자기소개 `PROFILE`: 인사말(3조각)·좋아하는 문구(2줄)·기술 4개·연락처(GitHub·Email) |
 | `src/pages/projects/index.astro` · `study/index.astro` · `seminars/index.astro` | 목록 창 틀: `SiteLayout` + `Window` + `PageHeading`(제목·설명은 `apps.ts`). 목록 내용은 페이지 구현 때 |
 | `src/layouts/SiteLayout.astro` | 공통 셸: 고정 글로우 바탕 3개 · `MenuBar` · `<main>` · `Dock`. props `active`(앱 id), `surface`(`desk` 홈 / `window` 창 화면), `title`·`description` |
@@ -382,6 +387,8 @@
 | `src/components/WindowDots.astro` | 창 점 3개(라일락 2 + 민트 1, 장식). 크기 `--dot-size`·간격 `--dot-gap`, `tone` window(테마 토큰)/code(고정색). `Window`·`HomePanel`이 사용 |
 | `src/components/HomePanel.astro` | 홈 창/위젯. 데스크톱 타이틀 바 44px(✕ 없음) / 모바일·태블릿 위젯. `tone` window/code. 폭·위치는 부모가 감싼 요소에서 |
 | `src/components/ProfileCode.astro` | `ProfileView.swift` 코드 에디터 내용: 파일 탭(데스크톱) · 줄 번호 · Swift 구문 색(고정색). 보이는 줄 8/12/14 |
+| `src/components/PhoneMockup.astro` | iPhone 16 Pro 목업: 프레임 이미지(`<Image>` WebP 1x·2x) + 투명 화면 영역(slot). 폭 `--phone-width`(5-8) |
+| `src/assets/iphone-16-pro.png` | Apple Design Resources iPhone 16 Pro 프레임(450×920 RGBA, 50KB). 사용자 허용으로 커밋(5-8) |
 | `src/layouts/BaseLayout.astro` | 모든 페이지 공통 문서 뼈대: `lang="ko"`, 메타(title·description 기본값), Noto Sans KR `<link>`, `tokens.css`·`global.css` import, `<head>` 인라인 스크립트(저장된 테마를 첫 화면 전에 `data-theme`에 적용), `<slot />` |
 | `src/components/ThemeToggle.astro` | 테마 전환 버튼(해/달 아이콘, `size` desktop/touch). 문서 위임 클릭 → `data-theme`·`localStorage('theme')` 저장, 버튼 이름 갱신, 누른 뒤 아이콘 애니메이션 |
 | `src/styles/tokens.css` | 디자인 토큰. 모션 곡선 3·시간 12, 색 55쌍 `light-dark()`, `color-scheme` 3가지(`:root`·`[data-theme="dark"]`·`[data-theme="light"]`) |
