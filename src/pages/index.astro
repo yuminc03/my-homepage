@@ -1,20 +1,28 @@
 ---
 // 홈
-// - 데스크톱(≥1180px): 바탕 화면 바로가기 4 · About me 창 · 코드 에디터 창(About 창 위에 겹침) · iPhone 목업(코드 창 오른쪽 아래에 겹침)
-// - 모바일·태블릿: About me 위젯 · 앱 아이콘 4(프로젝트·스터디·세미나·연락처) · 코드 위젯
+// - 데스크톱(≥1180px): 첫 화면(바탕 화면 바로가기 4 · About me 창 · 코드 에디터 창(About 창 위에 겹침) · iPhone 목업 · 스크롤 힌트)
+//   → 아래로 스크롤하면 최근 기록 창(#recent)
+// - 모바일·태블릿: About me 위젯 · 앱 아이콘 4(프로젝트·스터디·세미나·연락처) · 코드 위젯 · 최근 기록 위젯 2개
+//   (태블릿은 코드 위젯 | 최근 기록 위젯 2개를 좌우 2단으로 둔다)
 // - #contact: 연락처 바로가기(Dock·앱 아이콘)가 도착하는 곳 / #code: 코드 에디터 바로가기(데스크톱 Dock)가 도착하는 곳
-// - 다음 커밋에서 추가: 최근 기록 창·위젯, 스크롤 힌트
 import SiteLayout from '../layouts/SiteLayout.astro';
 import AppIcon from '../components/AppIcon.astro';
 import HomePanel from '../components/HomePanel.astro';
 import PhoneMockup from '../components/PhoneMockup.astro';
 import ProfileCode from '../components/ProfileCode.astro';
+import RecentWidgets from '../components/RecentWidgets.astro';
+import RecentWindow from '../components/RecentWindow.astro';
 import { APPS, CONTACT } from '../data/apps';
 import { PROFILE } from '../data/profile';
+import { getSeminars, getStudyPosts } from '../lib/content';
 import { withBase } from '../lib/url';
 
 // 모바일·태블릿 앱 아이콘: 홈은 이미 보고 있는 화면이라 빼고 연락처를 넣는다(시안)
 const touchApps = [...APPS.filter((app) => app.id !== 'home'), CONTACT];
+
+// 최근 기록: 데스크톱 창은 3개씩, 모바일·태블릿 위젯은 가장 최근 1개씩
+const posts = await getStudyPosts();
+const seminars = await getSeminars();
 ---
 
 <SiteLayout active="home" surface="desk">
@@ -94,6 +102,22 @@ const touchApps = [...APPS.filter((app) => app.id !== 'home'), CONTACT];
 				</PhoneMockup>
 			</div>
 		</div>
+
+		<div class="widgets-slot">
+			<RecentWidgets post={posts[0]} seminar={seminars[0]} />
+		</div>
+
+		<!-- 스크롤 힌트(데스크톱): 아래 최근 기록 창으로 가는 링크 -->
+		<a class="scroll-cue" href="#recent">
+			<span>스크롤해서 기록 보기</span>
+			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+				<path d="M12 4v16M6 14l6 6 6-6"></path>
+			</svg>
+		</a>
+	</div>
+
+	<div id="recent" class="recent-slot">
+		<RecentWindow posts={posts.slice(0, 3)} seminars={seminars.slice(0, 3)} />
 	</div>
 </SiteLayout>
 
@@ -258,8 +282,11 @@ const touchApps = [...APPS.filter((app) => app.id !== 'home'), CONTACT];
 		}
 	}
 
-	/* iPhone 목업은 데스크톱에서만 보인다 */
-	.phone-slot {
+	/* iPhone 목업·스크롤 힌트·최근 기록 창은 데스크톱에서만 보인다
+	 * (모바일·태블릿은 최근 기록을 위젯으로 보여주므로 창을 쓰지 않는다) */
+	.phone-slot,
+	.scroll-cue,
+	.recent-slot {
 		display: none;
 	}
 
@@ -349,13 +376,27 @@ const touchApps = [...APPS.filter((app) => app.id !== 'home'), CONTACT];
 		color: oklch(60% 0.15 295);
 	}
 
-	/* ---------- 태블릿: 위젯을 넓게, 기술·연락처를 한 줄로 ---------- */
+	/* ---------- 태블릿: 위젯을 넓게, 기술·연락처를 한 줄로, 코드 위젯 | 최근 기록 위젯을 2단으로 ---------- */
 	@media (min-width: 744px) {
 		.scene {
-			gap: 34px;
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			row-gap: 34px;
+			column-gap: 20px;
 			max-width: 832px;
 			margin: 0 auto;
 			padding: 32px 32px 170px;
+		}
+
+		/* About me와 앱 아이콘은 폭 전체, 아래 줄만 2단으로 나눈다 */
+		.about-slot,
+		.app-grid {
+			grid-column: 1 / -1;
+		}
+
+		/* 최근 기록 위젯 2개가 코드 위젯과 같은 높이가 되도록 칸을 채운다 */
+		.widgets-slot {
+			display: grid;
 		}
 
 		.greeting {
@@ -425,7 +466,9 @@ const touchApps = [...APPS.filter((app) => app.id !== 'home'), CONTACT];
 
 	/* ---------- 데스크톱: 바탕 화면. 바로가기 | About 창 | 코드 창(About 위에 겹침) ---------- */
 	@media (min-width: 1180px) {
+		/* 첫 화면: 창이 화면을 한 번 채우고, 그 아래로 최근 기록 창이 이어진다 */
 		.scene {
+			position: relative;
 			display: grid;
 			grid-template-columns: 84px minmax(0, 552fr) minmax(0, 620fr);
 			align-items: start;
@@ -436,8 +479,20 @@ const touchApps = [...APPS.filter((app) => app.id !== 'home'), CONTACT];
 			padding: 40px 0 140px;
 		}
 
+		/* 태블릿에서 준 2단 배치를 지우고 세 칸을 한 줄에 놓는다 */
+		.shortcuts,
+		.about-slot,
+		.code-slot {
+			grid-row: 1;
+		}
+
+		.widgets-slot {
+			display: none;
+		}
+
 		.shortcuts {
 			display: flex;
+			grid-column: 1;
 			flex-direction: column;
 			gap: 26px;
 			margin-top: 8px;
@@ -466,6 +521,7 @@ const touchApps = [...APPS.filter((app) => app.id !== 'home'), CONTACT];
 		.about-slot {
 			position: relative;
 			z-index: 2;
+			grid-column: 2;
 			margin-top: 34px;
 		}
 
@@ -516,6 +572,7 @@ const touchApps = [...APPS.filter((app) => app.id !== 'home'), CONTACT];
 		.code-slot {
 			position: relative;
 			z-index: 3;
+			grid-column: 3;
 			margin-left: -72px;
 			border-radius: 16px;
 		}
@@ -530,6 +587,66 @@ const touchApps = [...APPS.filter((app) => app.id !== 'home'), CONTACT];
 			display: block;
 			transform: rotate(3deg);
 			filter: drop-shadow(0 34px 70px var(--win-shadow));
+		}
+
+		/* 스크롤 힌트: 첫 화면 아래 가운데. Dock 영역(하단 112px) 위에 놓는다 */
+		.scroll-cue {
+			position: absolute;
+			bottom: 122px;
+			left: 50%;
+			z-index: 5;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 8px;
+			color: var(--cue);
+			font-size: 12px;
+			font-weight: 500;
+			transform: translateX(-50%);
+			animation: scrollcue 2.2s ease-in-out infinite;
+		}
+
+		.scroll-cue:hover {
+			color: var(--ink-strong);
+		}
+
+		.scroll-cue:focus-visible {
+			outline: 2px solid var(--win-accent);
+			outline-offset: 6px;
+			border-radius: 8px;
+		}
+
+		.scroll-cue svg {
+			width: 20px;
+			height: 20px;
+		}
+
+		@keyframes scrollcue {
+			0%,
+			100% {
+				opacity: 0.5;
+				transform: translate(-50%, 0);
+			}
+			50% {
+				opacity: 1;
+				transform: translate(-50%, 8px);
+			}
+		}
+
+		/* 최근 기록 창: 첫 화면 아래. 창 폭은 시안 1100px, 아래는 Dock 자리 */
+		.recent-slot {
+			display: block;
+			width: min(1100px, 100% - 64px);
+			margin: 0 auto;
+			padding-bottom: 100px;
+			scroll-margin-top: 56px;
+		}
+	}
+
+	/* 동작 줄이기: 반복 애니메이션을 끈다(PROGRESS.md 5-9) */
+	@media (prefers-reduced-motion: reduce) {
+		.scroll-cue {
+			animation: none;
 		}
 	}
 </style>
