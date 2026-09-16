@@ -1,0 +1,167 @@
+---
+// 홈 화면의 창(데스크톱) / 위젯(모바일·태블릿). 목록·상세 화면의 Window와 달리 홈 화면 자체라 ✕가 없다(PROGRESS.md 5-4)
+// - 데스크톱(≥1180px): 타이틀 바 44px(창 점 왼쪽 · 제목 가운데), 모서리 16px
+// - 모바일·태블릿: 둥근 위젯(22·24 / 26·28px). window 톤은 창 점·제목이 본문 위 한 줄로 붙고, code 톤은 얇은 바가 된다
+// - tone: window = 테마를 따르는 창 / code = 항상 어두운 코드 에디터(PROGRESS.md 5-2)
+// - 폭·위치는 부모가 이 컴포넌트를 감싼 요소에서 정한다
+import WindowDots from './WindowDots.astro';
+
+interface Props {
+	title: string;
+	tone?: 'window' | 'code';
+}
+
+const { title, tone = 'window' } = Astro.props;
+---
+
+<section class="panel" data-tone={tone} aria-label={title}>
+	<header class="bar">
+		<span class="dots"><WindowDots tone={tone} /></span>
+		<span class="title">{title}</span>
+	</header>
+	<div class="body">
+		<slot />
+	</div>
+</section>
+
+<style>
+	.panel {
+		overflow: hidden;
+		border: 1px solid var(--win-line);
+		border-radius: 24px;
+		background: var(--win-bg);
+		box-shadow: 0 22px 48px var(--win-shadow);
+		color: var(--win-ink);
+	}
+
+	.panel[data-tone='window'] {
+		padding: 18px 22px 20px;
+	}
+
+	.panel[data-tone='code'] {
+		background: oklch(19% 0.018 290);
+	}
+
+	.bar {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+	}
+
+	.dots {
+		--dot-size: 8px;
+		--dot-gap: 6px;
+		display: flex;
+	}
+
+	.title {
+		overflow: hidden;
+		font-size: 12.5px;
+		font-weight: 600;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.panel[data-tone='window'] .bar {
+		margin-bottom: 16px;
+	}
+
+	.panel[data-tone='window'] .title {
+		color: var(--win-title);
+	}
+
+	.panel[data-tone='code'] .bar {
+		height: 40px;
+		padding: 0 16px;
+		background: oklch(24% 0.021 290);
+	}
+
+	.panel[data-tone='code'] .title {
+		color: oklch(82% 0.015 290);
+		font-size: 12px;
+		font-weight: 500;
+	}
+
+	@media (min-width: 744px) {
+		.panel {
+			border-radius: 26px;
+			box-shadow: 0 24px 52px var(--win-shadow);
+		}
+
+		.panel[data-tone='window'] {
+			padding: 24px 32px 18px;
+			border-radius: 28px;
+			box-shadow: 0 26px 56px var(--win-shadow);
+		}
+
+		.dots {
+			--dot-size: 9px;
+			--dot-gap: 7px;
+		}
+
+		.panel[data-tone='window'] .bar {
+			margin-bottom: 20px;
+		}
+
+		.panel[data-tone='window'] .title {
+			font-size: 13px;
+		}
+
+		.panel[data-tone='code'] .bar {
+			height: 44px;
+			padding: 0 18px;
+		}
+
+		.panel[data-tone='code'] .title {
+			font-size: 12.5px;
+		}
+	}
+
+	@media (min-width: 1180px) {
+		.panel,
+		.panel[data-tone='window'] {
+			padding: 0;
+			border-radius: 16px;
+			box-shadow: 0 44px 96px var(--win-shadow);
+		}
+
+		.bar,
+		.panel[data-tone='window'] .bar,
+		.panel[data-tone='code'] .bar {
+			position: relative;
+			justify-content: center;
+			height: 44px;
+			margin: 0;
+			padding: 0 44px;
+			border-bottom: 1px solid var(--win-bar-line);
+			background: var(--win-bar);
+		}
+
+		.panel[data-tone='code'] .bar {
+			border-bottom-color: oklch(30% 0.021 290);
+			background: oklch(24% 0.021 290);
+		}
+
+		.dots {
+			--dot-size: 11px;
+			--dot-gap: 8px;
+			position: absolute;
+			left: 16px;
+		}
+
+		.title,
+		.panel[data-tone='window'] .title,
+		.panel[data-tone='code'] .title {
+			font-size: 13px;
+			font-weight: 600;
+		}
+
+		.panel[data-tone='code'] .title {
+			color: oklch(78% 0.015 290);
+		}
+
+		.panel[data-tone='window'] .body {
+			padding: 40px;
+		}
+	}
+</style>

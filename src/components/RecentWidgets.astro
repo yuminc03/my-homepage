@@ -1,0 +1,272 @@
+---
+// 최근 기록 위젯(모바일·태블릿). 가장 최근 스터디 글 1개 · 세미나 1개를 홈 화면 위젯처럼 보여준다
+// - 모바일(design/MobileHome.dc.html 135–161줄): 높이 168px 위젯 2칸을 2열로
+// - 태블릿(design/TabletHome.dc.html 150–180줄): 세로로 쌓고(코드 위젯 옆 열) 세미나는 썸네일이 왼쪽에 붙는 가로 배치
+// - 위젯 전체가 목록으로 가는 링크다. 상세 페이지가 생기면 링크를 상세로 바꾼다(없는 주소로 링크하지 않는다)
+// - 글이 없으면 틀은 두고 빈 상태 문구 + 목록 링크 문구를 보여준다(PROGRESS.md 5-13)
+// - 데스크톱에서는 페이지가 이 컴포넌트를 감싼 칸을 숨긴다(대신 최근 기록 창)
+import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import AppIcon from './AppIcon.astro';
+import { getApp } from '../data/apps';
+import { formatDay, formatMonth } from '../lib/date';
+import { withBase } from '../lib/url';
+
+interface Props {
+	post?: CollectionEntry<'study'>;
+	seminar?: CollectionEntry<'seminars'>;
+}
+
+const { post, seminar } = Astro.props;
+const studyApp = getApp('study');
+const seminarApp = getApp('seminars');
+---
+
+<div class="widgets">
+	<a class="widget" href={withBase(studyApp.href)}>
+		<span class="head">
+			<AppIcon app={studyApp} />
+			<span class="head-label">최근 스터디</span>
+		</span>
+		{
+			post ? (
+				<span class="body">
+					<span class="chip">{post.data.category}</span>
+					<span class="title">{post.data.title}</span>
+					<span class="date">{formatDay(post.data.pubDate)}</span>
+				</span>
+			) : (
+				<span class="body">
+					<span class="empty">아직 남긴 기록이 없습니다.</span>
+					<span class="empty-link">전체 보기 →</span>
+				</span>
+			)
+		}
+	</a>
+
+	<a class="widget seminar" href={withBase(seminarApp.href)}>
+		{
+			/* 썸네일은 태블릿에서만 보인다. 옆에 제목이 있어 사진 설명은 비운다 */
+			seminar && (
+				<span class="thumb">
+					<Image src={seminar.data.cover} alt="" width={168} loading="lazy" decoding="async" />
+				</span>
+			)
+		}
+		<span class="seminar-main">
+			<span class="head">
+				<AppIcon app={seminarApp} />
+				<span class="head-label">최근 세미나</span>
+			</span>
+			{
+				seminar ? (
+					<span class="body">
+						<span class="title">{seminar.data.title}</span>
+						<span class="date">
+							{formatMonth(seminar.data.date)} · {seminar.data.location}
+						</span>
+					</span>
+				) : (
+					<span class="body">
+						<span class="empty">아직 남긴 기록이 없습니다.</span>
+						<span class="empty-link">전체 보기 →</span>
+					</span>
+				)
+			}
+		</span>
+	</a>
+</div>
+
+<style>
+	/* ---------- 모바일: 168px 위젯 2칸 ---------- */
+	.widgets {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 14px;
+	}
+
+	.widget {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		height: 168px;
+		padding: 16px;
+		overflow: hidden;
+		border: 1px solid var(--win-line);
+		border-radius: 22px;
+		background: var(--win-bg);
+		box-shadow: 0 18px 40px var(--win-shadow);
+		transition: transform var(--dur-press) var(--ease-out);
+	}
+
+	.widget:active {
+		transform: scale(0.985);
+	}
+
+	.widget:focus-visible {
+		outline: 2px solid var(--win-accent);
+		outline-offset: 2px;
+	}
+
+	.head {
+		--icon-size: 22px;
+		--icon-radius: 6px;
+		--glyph-size: 12px;
+		--glyph-stroke: 2.2;
+		display: flex;
+		align-items: center;
+		gap: 7px;
+	}
+
+	.head-label {
+		color: var(--win-title);
+		font-size: 12px;
+		font-weight: 700;
+	}
+
+	.body {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 6px;
+		min-width: 0;
+	}
+
+	/* 카테고리 알약은 태블릿 시안에만 있다 */
+	.chip {
+		display: none;
+	}
+
+	.title {
+		display: -webkit-box;
+		overflow: hidden;
+		color: var(--win-ink-strong);
+		font-size: 15px;
+		font-weight: 700;
+		line-height: 1.4;
+		word-break: keep-all;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 3;
+	}
+
+	.date {
+		overflow: hidden;
+		color: var(--win-ink-sub);
+		font-size: 12px;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		max-width: 100%;
+	}
+
+	.empty {
+		color: var(--win-ink-muted);
+		font-size: 13px;
+		line-height: 1.5;
+		word-break: keep-all;
+	}
+
+	.empty-link {
+		color: var(--win-accent);
+		font-size: 12.5px;
+		font-weight: 600;
+	}
+
+	/* 썸네일은 태블릿에서만 */
+	.thumb {
+		display: none;
+	}
+
+	.seminar-main {
+		display: flex;
+		flex-grow: 1;
+		flex-direction: column;
+		justify-content: space-between;
+		gap: 6px;
+		min-width: 0;
+	}
+
+	/* ---------- 태블릿: 코드 위젯 옆 열에 세로로 쌓는다 ---------- */
+	@media (min-width: 744px) {
+		.widgets {
+			display: flex;
+			flex-direction: column;
+			gap: 20px;
+			height: 100%;
+		}
+
+		.widget {
+			flex-grow: 1;
+			height: auto;
+			padding: 20px 22px;
+			gap: 16px;
+			border-radius: 26px;
+			box-shadow: 0 20px 44px var(--win-shadow);
+		}
+
+		/* 세미나 위젯은 썸네일 | 글 가로 배치 */
+		.widget.seminar {
+			flex-direction: row;
+			align-items: center;
+		}
+
+		.thumb {
+			display: block;
+			flex-shrink: 0;
+			overflow: hidden;
+			width: 84px;
+			height: 84px;
+			border-radius: 16px;
+			background: var(--win-card);
+		}
+
+		/* <Image>가 만든 img에도 이 컴포넌트의 스코프 속성이 붙는다(PhoneMockup과 같음) */
+		.thumb img {
+			display: block;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+
+		.seminar-main {
+			justify-content: center;
+		}
+
+		.head {
+			--icon-size: 24px;
+			--icon-radius: 7px;
+			--glyph-size: 13px;
+		}
+
+		.head-label {
+			font-size: 12.5px;
+		}
+
+		.chip {
+			display: inline-flex;
+			padding: 3px 9px;
+			border-radius: 999px;
+			background: var(--win-tag-bg);
+			color: var(--win-tag-ink);
+			font-size: 11.5px;
+			font-weight: 700;
+		}
+
+		.title {
+			font-size: 16px;
+			line-height: 1.45;
+			-webkit-line-clamp: 2;
+		}
+
+		.date {
+			font-size: 12.5px;
+		}
+
+		.empty {
+			font-size: 14px;
+		}
+
+		.empty-link {
+			font-size: 13px;
+		}
+	}
+</style>

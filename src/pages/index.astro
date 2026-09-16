@@ -1,81 +1,652 @@
 ---
-// 셸 확인용 임시 홈. 홈 화면 구현 단계에서 About me·코드 에디터 창·iPhone 목업·최근 기록으로 교체한다
-// - #contact: 연락처 바로가기(Dock·모바일 앱 아이콘)가 도착하는 곳
-// - #code: 코드 에디터 바로가기(데스크톱 Dock)가 도착하는 곳
+// 홈
+// - 데스크톱(≥1180px): 첫 화면(바탕 화면 바로가기 4 · About me 창 · 코드 에디터 창(About 창 위에 겹침) · iPhone 목업 · 스크롤 힌트)
+//   → 아래로 스크롤하면 최근 기록 창(#recent)
+// - 모바일·태블릿: About me 위젯 · 앱 아이콘 4(프로젝트·스터디·세미나·연락처) · 코드 위젯 · 최근 기록 위젯 2개
+//   (태블릿은 코드 위젯 | 최근 기록 위젯 2개를 좌우 2단으로 둔다)
+// - #contact: 연락처 바로가기(Dock·앱 아이콘)가 도착하는 곳 / #code: 코드 에디터 바로가기(데스크톱 Dock)가 도착하는 곳
 import SiteLayout from '../layouts/SiteLayout.astro';
+import AppIcon from '../components/AppIcon.astro';
+import HomePanel from '../components/HomePanel.astro';
+import PhoneMockup from '../components/PhoneMockup.astro';
+import ProfileCode from '../components/ProfileCode.astro';
+import RecentWidgets from '../components/RecentWidgets.astro';
+import RecentWindow from '../components/RecentWindow.astro';
+import { APPS, CONTACT } from '../data/apps';
+import { PROFILE } from '../data/profile';
+import { getSeminars, getStudyPosts } from '../lib/content';
+import { withBase } from '../lib/url';
+
+// 모바일·태블릿 앱 아이콘: 홈은 이미 보고 있는 화면이라 빼고 연락처를 넣는다(시안)
+const touchApps = [...APPS.filter((app) => app.id !== 'home'), CONTACT];
+
+// 최근 기록: 데스크톱 창은 3개씩, 모바일·태블릿 위젯은 가장 최근 1개씩
+const posts = await getStudyPosts();
+const seminars = await getSeminars();
 ---
 
 <SiteLayout active="home" surface="desk">
-	<div class="temp-home">
-		<section id="about" class="panel">
-			<p class="label">About me</p>
-			<h1>안녕하세요, iOS 개발자 Chu Yumin입니다.</h1>
-			<p class="quote">기회가 주어지면 최선을 다하는 것이 아니라 최선을 다하고 있으면 기회가 주어지는 것이다.</p>
-			<p id="contact" class="contact">[GitHub] · [Email] · [LinkedIn]</p>
-		</section>
-		<section id="code" class="panel">
-			<p class="label">ProfileView.swift</p>
-			<p class="quote">[코드 에디터 창 자리]</p>
-		</section>
+	<div class="scene">
+		<nav class="shortcuts" aria-label="바로가기">
+			{
+				APPS.map((app) => (
+					<a class="shortcut" href={withBase(app.href)}>
+						<AppIcon app={app} shadow />
+						<span class="label">{app.label}</span>
+					</a>
+				))
+			}
+		</nav>
+
+		<div class="about-slot">
+			<HomePanel title="About me">
+				<h1 class="greeting">
+					{PROFILE.greeting[0]}<br />{PROFILE.greeting[1]}{' '}<span class="keep">{PROFILE.greeting[2]}</span>
+				</h1>
+				<p class="motto">
+					{PROFILE.motto[0]}<br class="wide-break" />{' '}{PROFILE.motto[1]}
+				</p>
+				<div class="meta">
+					<ul class="skills" aria-label="주요 기술">
+						{PROFILE.skills.map((skill) => <li>{skill}</li>)}
+					</ul>
+					<p id="contact" class="contact">
+						{PROFILE.links.map((link) => <a href={link.href}>{link.label}</a>)}
+					</p>
+				</div>
+			</HomePanel>
+		</div>
+
+		<nav class="app-grid" aria-label="앱">
+			{
+				touchApps.map((app) => (
+					<a class="app" href={withBase(app.href)}>
+						<AppIcon app={app} shadow />
+						<span class="label">{app.label}</span>
+					</a>
+				))
+			}
+		</nav>
+
+		<div id="code" class="code-slot">
+			<HomePanel title="ProfileView.swift" tone="code">
+				<ProfileCode />
+			</HomePanel>
+
+			<!-- iPhone 목업(데스크톱만, 장식): 화면 안은 테마와 무관한 고정색 가짜 앱 화면 -->
+			<div class="phone-slot" aria-hidden="true">
+				<PhoneMockup>
+					<div class="app-screen">
+						<div class="app-body">
+							<span class="avatar"></span>
+							<span class="bar bar-name"></span>
+							<span class="bar bar-sub"></span>
+							<span class="hero"></span>
+							<span class="text-lines">
+								<span class="bar bar-line"></span>
+								<span class="bar bar-line short"></span>
+							</span>
+						</div>
+						<div class="tabbar">
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="tab-on">
+								<path d="M4 10.5 12 4l8 6.5V20H4z"></path>
+							</svg>
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+								<circle cx="11" cy="11" r="6"></circle><path d="M20 20l-4.5-4.5"></path>
+							</svg>
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+								<circle cx="12" cy="8" r="3.5"></circle><path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6"></path>
+							</svg>
+						</div>
+					</div>
+				</PhoneMockup>
+			</div>
+		</div>
+
+		<div class="widgets-slot">
+			<RecentWidgets post={posts[0]} seminar={seminars[0]} />
+		</div>
+
+		<!-- 스크롤 힌트(데스크톱): 아래 최근 기록 창으로 가는 링크 -->
+		<a class="scroll-cue" href="#recent">
+			<span>스크롤해서 기록 보기</span>
+			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+				<path d="M12 4v16M6 14l6 6 6-6"></path>
+			</svg>
+		</a>
+	</div>
+
+	<div id="recent" class="recent-slot">
+		<RecentWindow posts={posts.slice(0, 3)} seminars={seminars.slice(0, 3)} />
 	</div>
 </SiteLayout>
 
 <style>
-	.temp-home {
+	/* ---------- 모바일(기본): 위젯을 위에서 아래로 쌓는다 ---------- */
+	.scene {
 		display: flex;
 		flex-direction: column;
-		gap: 24px;
-		max-width: 800px;
-		margin: 0 auto;
-		padding: 32px 20px 160px;
+		gap: 28px;
+		padding: 20px 20px 140px;
 	}
 
-	.panel {
-		padding: 24px;
-		border: 1px solid var(--win-line);
-		border-radius: 24px;
-		background: var(--win-bg);
-		box-shadow: 0 22px 48px var(--win-shadow);
-		scroll-margin-top: 72px;
+	.shortcuts {
+		display: none;
 	}
 
-	.label {
-		margin: 0 0 12px;
-		color: var(--win-title);
-		font-size: 12.5px;
-		font-weight: 600;
+	/* About me
+	 * - 인사말 크기는 About 칸 폭(cqi)에 맞춘다: (칸 폭 − 좌우 여백) ÷ 둘째 줄 글자 폭 비율(약 13.4)
+	 *   뷰포트가 아니라 실제 칸 폭 기준이라 열 비율이 바뀌어도 둘째 줄이 한 줄에 들어간다
+	 * - 한국어는 기본적으로 음절 사이에서도 줄을 바꾸므로 keep-all로 띄어쓰기에서만 바꾼다 */
+	.about-slot {
+		container-type: inline-size;
 	}
 
-	h1 {
+	.greeting {
 		margin: 0 0 16px;
 		color: var(--win-ink-strong);
-		font-size: 24px;
+		font-size: clamp(19px, calc((100cqi - 46px) / 13.4), 24px);
 		font-weight: 800;
+		line-height: 1.4;
+		letter-spacing: -0.015em;
+		word-break: keep-all;
 	}
 
-	.quote {
-		margin: 0;
-		color: var(--win-ink-muted);
+	.keep {
+		white-space: nowrap;
+	}
+
+	.motto {
+		margin: 0 0 18px;
+		padding-left: 14px;
+		border-left: 3px solid var(--win-accent);
+		color: var(--win-icon);
+		font-size: 14px;
+		font-weight: 300;
+		line-height: 1.7;
+		word-break: keep-all;
+	}
+
+	/* 좁은 화면에서는 문구를 이어서 쓴다 */
+	.wide-break {
+		display: none;
+	}
+
+	.skills {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+		margin: 0 0 16px;
+		padding: 0;
+		list-style: none;
+	}
+
+	.skills li {
+		padding: 5px 11px;
+		border-radius: 999px;
+		background: var(--win-tag-bg);
+		color: var(--win-tag-ink);
+		font-size: 12px;
+		font-weight: 600;
 	}
 
 	.contact {
-		margin: 16px 0 0;
-		padding-top: 12px;
+		display: flex;
+		gap: 4px;
+		margin: 0;
+		padding-top: 6px;
 		border-top: 1px solid var(--win-divider);
-		color: var(--win-accent);
-		font-weight: 600;
 		scroll-margin-top: 120px;
+	}
+
+	/* 누르는 영역 44px */
+	.contact a {
+		display: flex;
+		align-items: center;
+		min-height: 44px;
+		padding: 0 10px;
+		font-size: 14px;
+		font-weight: 600;
+	}
+
+	.contact a:first-child {
+		padding-left: 0;
+	}
+
+	.contact a:focus-visible,
+	.shortcut:focus-visible,
+	.app:focus-visible {
+		outline: 2px solid var(--win-accent);
+		outline-offset: 2px;
+		border-radius: 8px;
 	}
 
 	/* 연락처 바로가기로 도착하면 링크 영역을 잠깐 강조한다 */
 	.contact:target {
 		border-radius: 8px;
-		animation: contact-highlight 1.6s var(--ease-out);
+		animation: target-highlight 1.6s var(--ease-out);
 	}
 
-	@keyframes contact-highlight {
+	@keyframes target-highlight {
 		from {
 			background: var(--win-tag-bg);
+		}
+	}
+
+	/* 앱 아이콘 4칸 */
+	.app-grid {
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 12px;
+	}
+
+	.app {
+		--icon-size: 62px;
+		--icon-radius: 17px;
+		--glyph-size: 28px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 7px;
+		transition: transform var(--dur-press) var(--ease-out);
+	}
+
+	.app:active {
+		transform: scale(0.94);
+	}
+
+	.label,
+	a:hover .label {
+		color: var(--label);
+		font-size: 12px;
+		font-weight: 500;
+		white-space: nowrap;
+	}
+
+	/* 코드 에디터 바로가기로 도착하면 창 테두리를 잠깐 강조한다 */
+	.code-slot {
+		scroll-margin-top: 72px;
+		border-radius: 24px;
+	}
+
+	.code-slot:target {
+		animation: code-highlight 1.6s var(--ease-out);
+	}
+
+	@keyframes code-highlight {
+		from {
+			box-shadow: 0 0 0 3px var(--win-accent);
+		}
+		to {
+			box-shadow: 0 0 0 3px transparent;
+		}
+	}
+
+	/* iPhone 목업·스크롤 힌트·최근 기록 창은 데스크톱에서만 보인다
+	 * (모바일·태블릿은 최근 기록을 위젯으로 보여주므로 창을 쓰지 않는다) */
+	.phone-slot,
+	.scroll-cue,
+	.recent-slot {
+		display: none;
+	}
+
+	/* 목업 화면 안 가짜 앱 화면(206px 폭 기준, 고정색) */
+	.app-screen {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+	}
+
+	.app-body {
+		display: flex;
+		flex-grow: 1;
+		flex-direction: column;
+		align-items: center;
+		gap: 14px;
+		padding: 34px 14px 0;
+	}
+
+	.avatar {
+		width: 64px;
+		height: 64px;
+		border-radius: 50%;
+		background: linear-gradient(140deg, oklch(70% 0.13 300), oklch(58% 0.15 285));
+	}
+
+	.bar {
+		display: block;
+		border-radius: 4px;
+	}
+
+	.bar-name {
+		width: 104px;
+		height: 12px;
+		border-radius: 6px;
+		background: oklch(32% 0.022 290);
+	}
+
+	.bar-sub {
+		width: 72px;
+		height: 8px;
+		background: oklch(88% 0.012 290);
+	}
+
+	.hero {
+		width: 100%;
+		height: 78px;
+		margin-top: 6px;
+		border-radius: 14px;
+		background: linear-gradient(135deg, oklch(93% 0.024 295), oklch(88% 0.036 335));
+	}
+
+	.text-lines {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		width: 100%;
+	}
+
+	.bar-line {
+		width: 88%;
+		height: 8px;
+		background: oklch(90% 0.009 290);
+	}
+
+	.bar-line.short {
+		width: 64%;
+		background: oklch(92% 0.006 290);
+	}
+
+	.tabbar {
+		display: flex;
+		align-items: center;
+		justify-content: space-around;
+		height: 56px;
+		padding-bottom: 8px;
+		border-top: 1px solid oklch(92% 0.006 290);
+		color: oklch(74% 0.015 290);
+	}
+
+	.tabbar svg {
+		width: 20px;
+		height: 20px;
+	}
+
+	.tabbar .tab-on {
+		color: oklch(60% 0.15 295);
+	}
+
+	/* ---------- 태블릿: 위젯을 넓게, 기술·연락처를 한 줄로, 코드 위젯 | 최근 기록 위젯을 2단으로 ---------- */
+	@media (min-width: 744px) {
+		.scene {
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			row-gap: 34px;
+			column-gap: 20px;
+			max-width: 832px;
+			margin: 0 auto;
+			padding: 32px 32px 170px;
+		}
+
+		/* About me와 앱 아이콘은 폭 전체, 아래 줄만 2단으로 나눈다 */
+		.about-slot,
+		.app-grid {
+			grid-column: 1 / -1;
+		}
+
+		/* 최근 기록 위젯 2개가 코드 위젯과 같은 높이가 되도록 칸을 채운다 */
+		.widgets-slot {
+			display: grid;
+		}
+
+		.greeting {
+			margin-bottom: 20px;
+			font-size: clamp(24px, calc((100cqi - 66px) / 13.4), 30px);
+		}
+
+		.motto {
+			margin-bottom: 22px;
+			padding-left: 16px;
+			font-size: 16px;
+		}
+
+		.wide-break {
+			display: inline;
+		}
+
+		.meta {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 16px;
+			padding-top: 10px;
+			border-top: 1px solid var(--win-divider);
+		}
+
+		.skills {
+			margin: 0;
+		}
+
+		.skills li {
+			padding: 5px 12px;
+			font-size: 12.5px;
+		}
+
+		.contact {
+			gap: 2px;
+			padding-top: 0;
+			border-top: 0;
+		}
+
+		.contact a {
+			font-size: 14.5px;
+		}
+
+		.app-grid {
+			gap: 16px;
+			padding: 0 24px;
+		}
+
+		.app {
+			--icon-size: 72px;
+			--icon-radius: 20px;
+			--glyph-size: 32px;
+			gap: 9px;
+		}
+
+		.label,
+		a:hover .label {
+			font-size: 13px;
+		}
+
+		.code-slot {
+			border-radius: 26px;
+		}
+	}
+
+	/* ---------- 데스크톱: 바탕 화면. 바로가기 | About 창 | 코드 창(About 위에 겹침) ---------- */
+	@media (min-width: 1180px) {
+		/* 첫 화면: 창이 화면을 한 번 채우고, 그 아래로 최근 기록 창이 이어진다 */
+		.scene {
+			position: relative;
+			display: grid;
+			grid-template-columns: 84px minmax(0, 552fr) minmax(0, 620fr);
+			align-items: start;
+			column-gap: 40px;
+			width: min(1328px, 100% - 64px);
+			max-width: none;
+			min-height: calc(100dvh - 36px);
+			padding: 40px 0 140px;
+		}
+
+		/* 태블릿에서 준 2단 배치를 지우고 세 칸을 한 줄에 놓는다 */
+		.shortcuts,
+		.about-slot,
+		.code-slot {
+			grid-row: 1;
+		}
+
+		.widgets-slot {
+			display: none;
+		}
+
+		.shortcuts {
+			display: flex;
+			grid-column: 1;
+			flex-direction: column;
+			gap: 26px;
+			margin-top: 8px;
+		}
+
+		.shortcut {
+			--icon-size: 60px;
+			--icon-radius: 17px;
+			--glyph-size: 26px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 9px;
+			width: 84px;
+			transition: transform var(--dur-press) var(--ease-out);
+		}
+
+		.shortcut:active {
+			transform: scale(0.94);
+		}
+
+		.app-grid {
+			display: none;
+		}
+
+		.about-slot {
+			position: relative;
+			z-index: 2;
+			grid-column: 2;
+			margin-top: 34px;
+		}
+
+		.greeting {
+			margin-bottom: 26px;
+			font-size: clamp(26px, calc((100cqi - 82px) / 13.4), 36px);
+			line-height: 1.36;
+		}
+
+		.motto {
+			margin-bottom: 30px;
+			padding-left: 20px;
+			color: var(--win-ink-2);
+			font-size: clamp(17px, calc((100cqi - 105px) / 22), 20px);
+			line-height: 1.65;
+		}
+
+		.meta {
+			display: block;
+			padding-top: 0;
+			border-top: 0;
+		}
+
+		.skills {
+			gap: 8px;
+			margin-bottom: 26px;
+		}
+
+		.skills li {
+			padding: 6px 14px;
+		}
+
+		.contact {
+			gap: 20px;
+			padding-top: 22px;
+			border-top: 1px solid var(--win-divider);
+			scroll-margin-top: 96px;
+		}
+
+		.contact a,
+		.contact a:first-child {
+			min-height: 0;
+			padding: 0;
+			font-size: 13.5px;
+		}
+
+		/* 코드 창은 About 창 오른쪽 끝을 32px 덮는다(열 간격 40px + 겹침 32px) */
+		.code-slot {
+			position: relative;
+			z-index: 3;
+			grid-column: 3;
+			margin-left: -72px;
+			border-radius: 16px;
+		}
+
+		/* iPhone 목업: 코드 창 오른쪽 아래에 걸쳐 앞에 놓는다(시안 기준 코드 창 오른쪽 −14px · 위 278px) */
+		.phone-slot {
+			--phone-width: 206px;
+			position: absolute;
+			top: 278px;
+			right: -14px;
+			z-index: 4;
+			display: block;
+			transform: rotate(3deg);
+			filter: drop-shadow(0 34px 70px var(--win-shadow));
+		}
+
+		/* 스크롤 힌트: 첫 화면 아래 가운데. Dock 영역(하단 112px) 위에 놓는다 */
+		.scroll-cue {
+			position: absolute;
+			bottom: 122px;
+			left: 50%;
+			z-index: 5;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 8px;
+			color: var(--cue);
+			font-size: 12px;
+			font-weight: 500;
+			transform: translateX(-50%);
+			animation: scrollcue 2.2s ease-in-out infinite;
+		}
+
+		.scroll-cue:hover {
+			color: var(--ink-strong);
+		}
+
+		.scroll-cue:focus-visible {
+			outline: 2px solid var(--win-accent);
+			outline-offset: 6px;
+			border-radius: 8px;
+		}
+
+		.scroll-cue svg {
+			width: 20px;
+			height: 20px;
+		}
+
+		@keyframes scrollcue {
+			0%,
+			100% {
+				opacity: 0.5;
+				transform: translate(-50%, 0);
+			}
+			50% {
+				opacity: 1;
+				transform: translate(-50%, 8px);
+			}
+		}
+
+		/* 최근 기록 창: 첫 화면 아래. 창 폭은 시안 1100px, 아래는 Dock 자리 */
+		.recent-slot {
+			display: block;
+			width: min(1100px, 100% - 64px);
+			margin: 0 auto;
+			padding-bottom: 100px;
+			scroll-margin-top: 56px;
+		}
+	}
+
+	/* 동작 줄이기: 반복 애니메이션을 끈다(PROGRESS.md 5-9) */
+	@media (prefers-reduced-motion: reduce) {
+		.scroll-cue {
+			animation: none;
 		}
 	}
 </style>
