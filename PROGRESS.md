@@ -1,11 +1,11 @@
 # 진행 상황
 - 최종 업데이트: 2026-09-16
 - 이 문서 하나만 읽으면 새 채팅에서 바로 이어서 작업할 수 있도록 정리한 단일 기준 문서다
-- **마지막 세션 종료(2026-09-16)**: `feature/home-page` 브랜치. 홈 커밋 3개를 모두 구현했다(첫 화면 `9907ebe`, iPhone 목업 `6da0b04`, 최근 기록은 커밋 대기). 새 채팅은 **2-1의 3 "홈 커밋·병합"** 부터 시작한다
+- **마지막 세션 종료(2026-09-16)**: **홈 화면 완료**. `feature/home-page`를 `develop`에 병합(`8c7568f`)하고 브랜치 삭제 + `origin/develop` push까지 마쳤다. 지금 브랜치는 `develop`(작업 트리 깨끗). 새 채팅은 **2-1의 3 "프로젝트 목록·상세"** 부터 시작한다
 
 ## 1. 한눈에 보기
 - **무엇을 만드나**: iOS 개발자 Chu Yumin의 개인 홈페이지(자기소개·프로젝트·스터디 기록·세미나 기록)
-- **지금 단계**: 디자인 시안 완료, 기술 스택 확정(Astro + 일반 CSS), **Astro 프로젝트 생성**(임시 홈 1장, 빌드 확인), **전역 토큰 CSS 이식**(`src/styles/tokens.css`), **콘텐츠 컬렉션 스키마**(프로젝트·스터디·세미나, MDX) , **공통 셸**(테마 버튼·메뉴바·Dock 자동 숨김·창·시계, 목록 틀 3개) — 여기까지 `develop` 병합·원격 push. **홈 페이지**(첫 화면·iPhone 목업·최근 기록)는 `feature/home-page`에서 구현을 마쳤고 최근 기록 커밋과 `develop` 병합만 남았다
+- **지금 단계**: 디자인 시안 완료, 기술 스택 확정(Astro + 일반 CSS), **Astro 프로젝트 생성**(임시 홈 1장, 빌드 확인), **전역 토큰 CSS 이식**(`src/styles/tokens.css`), **콘텐츠 컬렉션 스키마**(프로젝트·스터디·세미나, MDX) , **공통 셸**(테마 버튼·메뉴바·Dock 자동 숨김·창·시계, 목록 틀 3개), **홈 페이지**(첫 화면·iPhone 목업·최근 기록) — 여기까지 모두 `develop` 병합·원격 push 완료. 다음은 프로젝트 목록·상세다
 - **시안 진행도**
   - 데스크톱 7화면(홈·목록 3·상세 3) — 완료
   - 모바일 7화면(홈 화면 메타포) — 완료
@@ -14,19 +14,26 @@
   - 데스크톱 창 ✕ 닫기 버튼 — 채택(2026-09-14), 데스크톱 창 화면 6장에 반영, `develop` 병합
 - **기술 스택**: Astro + 일반 CSS + TypeScript + Markdown Content Collections 확정(2026-09-14). 비교·약점·면접 질문은 `docs/tech-stack.md`
 - **시안 캔버스**: https://claude.ai/code/artifact/48a3c34c-b882-4f13-8e2f-7e3668bdb7b1 (v22, 페이지 5개 · 아트보드 25장)
-- **Git**: 시안·기술 스택 문서·`.claude/settings.json`(`92083d0`)이 `develop`에 반영되어 있다. `feature/astro-setup`(커밋 4개)을 `develop`에 병합 `004589b` → 브랜치 삭제(2026-09-14). `feature/site-shell`(테마 버튼 `872ec4b`, 공통 셸 `20d40c8`, Dock 자동 숨김 `e8eea35`, 시계 `88e86ca`, 문서 `cfe9270`)을 `develop`에 병합 `0227fa3` → 브랜치 삭제(2026-09-15). **원격**: `origin/develop` = `0227fa3`(2026-09-15 처음 push, 추적 설정), `origin/master` = `8bf0e7b`(로컬 `master`와 같음, 이번에 건드리지 않음). `develop` → `master` 병합은 아직 하지 않았다
+- **Git**: 시안·기술 스택 문서·`.claude/settings.json`(`92083d0`)이 `develop`에 반영되어 있다. `feature/astro-setup`(커밋 4개)을 `develop`에 병합 `004589b` → 브랜치 삭제(2026-09-14). `feature/site-shell`(테마 버튼 `872ec4b`, 공통 셸 `20d40c8`, Dock 자동 숨김 `e8eea35`, 시계 `88e86ca`, 문서 `cfe9270`)을 `develop`에 병합 `0227fa3` → 브랜치 삭제(2026-09-15). `feature/home-page`(첫 화면 `9907ebe`, iPhone 목업 `6da0b04`, 문서 `f6741d5`, 최근 기록 `062e860`, 문서 `1f8cbb8`)를 `develop`에 병합 `8c7568f` → 브랜치 삭제 → push(2026-09-16). **원격**: `origin/develop` = `8c7568f`(2026-09-16), `origin/master` = `8bf0e7b`(로컬 `master`와 같음, 아직 건드리지 않았다). `develop` → `master` 병합은 아직 하지 않았다
 - **다음 단계**: 홈 완료(첫 화면 → iPhone 목업 → 최근 기록) → 프로젝트 목록·상세 → 스터디 목록·글 → 세미나 목록·행사 상세(2026-09-15 사용자 확정) → 페이지 전환 모션 → 콘텐츠 검색. 화면마다 `develop`에서 `feature/*` 브랜치를 새로 만든다
 
 ## 2. 새 채팅에서 이어서 시작하기
 ### 2-1. 지금 바로 할 일
 1. `git status`로 브랜치와 작업 트리를 확인한다
-   - 기대 상태: `feature/home-page` 브랜치, 마지막 커밋 `6da0b04`(iPhone 목업). 최근 기록 구현 파일(`src/lib/content.ts`·`src/lib/date.ts`·`src/components/RecentWidgets.astro`·`src/components/RecentWindow.astro`·`src/pages/index.astro`)과 문서가 커밋 대기 상태일 수 있다
-   - 원격: `origin/develop` = `0227fa3`, `origin/master` = `8bf0e7b`. `feature/home-page`는 push하지 않았다
+   - 기대 상태: `develop` 브랜치, 마지막 커밋 `8c7568f`(홈 병합), 작업 트리 깨끗, `origin/develop`과 같음
+   - 원격: `origin/develop` = `8c7568f`, `origin/master` = `8bf0e7b`
 2. Node는 **nvm의 24**를 쓴다. 셸 기본값이 21.7.3이라 명령 전에 `source ~/.nvm/nvm.sh && nvm use`(`.nvmrc` = 24)를 먼저 실행한다. 검증 방법은 2-2
-3. **홈 커밋·병합 ← 지금 할 일**
-   - 최근 기록(홈 커밋 3/3)은 구현·검증을 마쳤다(5-13, 검증 결과는 2-3). 커밋이 남아 있으면 `feat`(코드) → `docs`(문서) 순서로 나눠 커밋한다
-   - 홈 완료 → `develop` `--no-ff` 병합 → `feature/home-page` 삭제 → push(모두 사용자 확인 후)
-4. 그 뒤 순서(2026-09-15 확정): 프로젝트 목록·상세 → 스터디 목록·글 → 세미나 목록·행사 상세 → 페이지 전환 모션 → 콘텐츠 검색(5-12) → 대괄호 `[ ]` placeholder 실제 콘텐츠 정리. 화면마다 `develop`에서 `feature/*` 새 브랜치
+3. **프로젝트 목록·상세 ← 지금 할 일** (`develop`에서 `feature/project-pages` 브랜치를 새로 만든다. 끝나면 커밋 제안 → 사용자 확인)
+   - 시안: 데스크톱 `design/Projects.dc.html` 60–228줄(창) / `design/ProjectDetail.dc.html`, 모바일 `design/MobileProjects.dc.html` 59줄~(필터 칩 가로 스크롤)·67줄~(카드 1열) / `design/MobileProjectDetail.dc.html`, 태블릿 `design/TabletProjects.dc.html` 57줄~(칩 한 줄)·65줄~(카드 2열) / `design/TabletProjectDetail.dc.html`
+   - 지금 있는 것: `src/pages/projects/index.astro`는 `SiteLayout` + `Window` + `PageHeading`만 있는 틀이다. 여기에 필터 칩과 카드 목록을 넣는다
+   - 만들 순서(커밋도 이 단위로 나눈다)
+     1. `src/lib/content.ts`에 `getProjects()` 추가(`draft` 제외 + 최신 순. 정렬 기준은 `startDate` 내림차순, 진행 중(`endDate` 없음)을 위로 둘지 사용자와 정한다)
+     2. 목록 카드 + 필터 칩. 분류는 `PROJECT_CATEGORIES`(`iOS`/`Web`/`Side Project`, 한 프로젝트에 여러 개)를 쓰고, 칩은 **글에 실제로 쓰인 분류만** 모아 만든다. JS 없이 되는 방식(칩을 `?category=` 링크 또는 `:has()`/`details` 방식)인지, 작은 클라이언트 스크립트를 쓸지 먼저 정한다
+     3. 상세 페이지 `src/pages/projects/[...slug].astro`: 앱 아이콘 88px·이름·한 줄 소개·태그 → 링크 버튼 → 요약(기간·역할·기술·플랫폼) → 스크린샷 띠 → 본문(`## 소개` / `## 기술적으로 고민한 점` / `## 배운 점`) → 주요 기능(`PhoneMockup` 재사용, 폰·설명 좌우 번갈아) → 이전/다음
+     4. 홈 최근 기록·목록의 링크를 상세로 바꾸는 것은 **스터디·세미나 상세까지 만든 뒤** 한 번에 한다(지금은 목록으로 간다)
+   - 함께 정할 것: `Window`에 `← 목록`(데스크톱)·`‹`(모바일·태블릿 타이틀 바) 링크 추가, 상세 화면은 **Dock 숨김 상태로 시작**(`Dock`에 prop 추가, 2-3의 셸 메모)
+   - 확인: 빌드, 예시 프로젝트(`sample-project`, 지금 `draft: true`)를 임시로 공개해 스크린샷 5폭(320·390·768·1180·1440) 라이트/다크, 빈 상태도 확인 후 되돌리기
+4. 그 뒤 순서(2026-09-15 확정): 스터디 목록·글 → 세미나 목록·행사 상세 → 페이지 전환 모션 → 콘텐츠 검색(5-12) → 대괄호 `[ ]` placeholder 실제 콘텐츠 정리 → GitHub Actions 배포. 화면마다 `develop`에서 `feature/*` 새 브랜치
 
 ### 2-2. 검증 방법 (다시 쓰는 요령)
 - **빌드**: `npm run build`(결과 `dist/`). `npx astro check`는 `@astrojs/check`가 없어 설치 질문에서 멈추므로 쓰지 않는다(쓰려면 사용자 확인 후 설치)
@@ -44,12 +51,13 @@
 - 공통 셸(`feature/site-shell` → `develop` 병합 `0227fa3`, 2026-09-15 원격 첫 push): 테마 버튼 `872ec4b` · 메뉴바·Dock·창·목록 틀 `20d40c8` · Dock 자동 숨김 `e8eea35`(5-3, 동작 검사 16항목) · 데스크톱 시계 `88e86ca`(5-12, 분 경계 검사) · 문서 `cfe9270`
   - 실제 브라우저에서 아직 볼 것: Dock 트랙패드 스크롤 느낌·하단 hover·동작 줄이기(목록 창이 짧아 페이지 구현 뒤 확인)
   - 상세 화면 "Dock 숨김 상태로 시작"(모바일·태블릿 시안)은 상세 페이지 구현 때 `Dock`에 prop 추가(`data-state` 초기값 + 스크립트 `scrolledDown` 초기값)
-- 홈(`feature/home-page`, 5-13)
+- 홈(`feature/home-page` → `develop` 병합 `8c7568f` → 브랜치 삭제 → push, 2026-09-16. 결정은 5-13)
   - 첫 화면 `9907ebe`: `profile.ts`·`WindowDots`·`HomePanel`·`ProfileCode`·홈 페이지. 인사말 음절 중간 줄바꿈을 `keep-all` + `cqi` 글자 크기로 해결
   - iPhone 목업 `6da0b04`: `src/assets/iphone-16-pro.png`(사용자 허용 커밋) + `PhoneMockup`(slot, 프로젝트 상세에서 재사용). WebP 1x 4.5KB · 2x 8KB
-  - 최근 기록(2026-09-16, 커밋 대기): `lib/content.ts`·`lib/date.ts`·`RecentWidgets`·`RecentWindow` 추가, 홈 페이지에 창·위젯·스크롤 힌트 연결
-    - 검증: 빌드 통과, 빈 상태·채워진 상태 스크린샷 5폭(320·390·768·1180·1440, 라이트/다크), 동작 검사 4폭 모두 PASS(스크롤 힌트 링크·폭별 표시 규칙·창이 첫 화면 아래에 있음·`#recent` 이동)
+  - 최근 기록 `062e860` + 문서 `1f8cbb8`: `lib/content.ts`·`lib/date.ts`·`RecentWidgets`·`RecentWindow` 추가, 홈 페이지에 창·위젯·스크롤 힌트 연결
+    - 검증: 빌드 통과, 빈 상태·채워진 상태 스크린샷 5폭(320·390·768·1180·1440, 라이트/다크), 동작 검사 4폭 모두 PASS(스크롤 힌트 링크·폭별 표시 규칙·창이 첫 화면 아래에 있음·`#recent` 이동). 사용자가 실제 브라우저에서 스크롤 동작까지 확인함
     - 채워진 상태는 예시 글을 임시로 복제해 4개씩 공개하고 확인한 뒤 지웠다(최신 순 정렬·최대 3개 제한까지 확인). 저장소에는 예시 3개가 `draft: true`로 그대로 남아 있다
+    - 병합 뒤 `develop`에서 빌드를 다시 확인했다
 - 알려진 문제: 320px 폭에서 모바일 Dock(아이콘 5개)이 화면 폭과 거의 같다(작은 기기 대응은 나중에)
 
 ### 2-4. 세션 시작 체크리스트 (매번)
@@ -101,7 +109,8 @@
 | 공통 셸 병합 | 테마 버튼·공통 셸·Dock 자동 숨김·시계·문서 커밋 5개 | `feature/site-shell` | `develop` 병합 `0227fa3` → 브랜치 삭제 → `origin/develop` 첫 push(2026-09-15) |
 | 홈 첫 화면 | 자기소개 데이터, 창 점·홈 창/위젯·코드 에디터 컴포넌트, 데스크톱 바로가기·About·코드 창 / 모바일·태블릿 위젯·앱 아이콘 | `feature/home-page` | 스크린샷 5폭 확인, 사용자 확인 후 커밋 `9907ebe`(2026-09-15) |
 | 홈 iPhone 목업 | 목업 이미지 저장소 추가(`astro:assets` WebP), `PhoneMockup` 컴포넌트, 데스크톱 코드 창 오른쪽 아래에 가짜 앱 화면 목업 | `feature/home-page` | 스크린샷 확인, 사용자 확인 후 커밋 `6da0b04`(2026-09-15) |
-| 홈 최근 기록 | 콘텐츠 헬퍼(`draft` 제외·최신 순)·날짜 형식, 데스크톱 최근 기록 창(스터디·세미나 3개씩)·스크롤 힌트, 모바일·태블릿 최근 위젯 2개, 태블릿 코드 \| 위젯 2단 | `feature/home-page` | 빌드·스크린샷 5폭·동작 검사 통과, 커밋 대기(2026-09-16) |
+| 홈 최근 기록 | 콘텐츠 헬퍼(`draft` 제외·최신 순)·날짜 형식, 데스크톱 최근 기록 창(스터디·세미나 3개씩)·스크롤 힌트, 모바일·태블릿 최근 위젯 2개, 태블릿 코드 \| 위젯 2단 | `feature/home-page` | 빌드·스크린샷 5폭·동작 검사 통과, 사용자 확인 후 커밋 `062e860` + 문서 `1f8cbb8`(2026-09-16) |
+| 홈 병합 | 홈 커밋 5개(첫 화면·목업·최근 기록·문서 2) | `feature/home-page` | `develop` 병합 `8c7568f` → 브랜치 삭제 → `origin/develop` push(2026-09-16, 사용자 요청) |
 
 ### 남은 일
 - [x] 모션·✕·문서 커밋 → `develop` 병합 → 브랜치 삭제 (2026-09-14, 사용자 확인)
@@ -120,8 +129,9 @@
 - [x] Dock 자동 숨김 커밋 `e8eea35` (2026-09-15, 사용자 확인)
 - [x] 데스크톱 메뉴바 시계 커밋 `88e86ca` (2026-09-15, 사용자 확인)
 - [x] `feature/site-shell` → `develop` 병합 `0227fa3` → 브랜치 삭제 → `develop` 원격 push (2026-09-15, 사용자 요청)
-- [x] **홈 화면 구현**(데스크톱: 바로가기·About me·코드 에디터 창·iPhone 목업·스크롤 힌트·최근 기록 창 / 모바일·태블릿: 위젯·앱 아이콘 4개·최근 기록 위젯) — 첫 화면 `9907ebe` · iPhone 목업 `6da0b04` · 최근 기록 커밋 대기(2026-09-16)
-- [ ] 홈 최근 기록 커밋 → `develop` `--no-ff` 병합 → `feature/home-page` 삭제 → push (사용자 확인 후) ← 2-1의 3
+- [x] **홈 화면 구현**(데스크톱: 바로가기·About me·코드 에디터 창·iPhone 목업·스크롤 힌트·최근 기록 창 / 모바일·태블릿: 위젯·앱 아이콘 4개·최근 기록 위젯) — 첫 화면 `9907ebe` · iPhone 목업 `6da0b04` · 최근 기록 `062e860`(2026-09-16)
+- [x] `feature/home-page` → `develop` 병합 `8c7568f` → 브랜치 삭제 → push (2026-09-16, 사용자 요청)
+- [ ] **프로젝트 목록·상세 구현** ← 지금 할 일(2-1의 3, `feature/project-pages`)
 - [ ] 목록·상세 페이지를 만들 때 홈 최근 기록의 카드·위젯 링크를 목록에서 **상세로** 바꾼다(지금은 상세가 없어 목록으로 보낸다)
 - [ ] 목록·상세 페이지 구현(프로젝트·스터디·세미나), 상세의 `← 목록` / ‹ 뒤로 링크를 `Window`에 추가
 - [ ] 페이지 전환 모션(View Transitions `ClientRouter`, `transition:persist`로 메뉴바·Dock 유지)
@@ -433,9 +443,9 @@
 - 인터랙션은 `onClick="{{handler}}"`, 조건 표시는 `<sc-if value="{{bool}}">`, 상태 스타일은 `data-*="{{값}}"` + CSS 선택자로 만든다(`class`에 값 끼워 넣기는 쓰지 않았다)
 
 ## 12. 브랜치·커밋 기록
-- 로컬 브랜치: `master`, `develop`(현재). 원격(`origin`, `https://github.com/yuminc03/my-homepage.git`): `master` `8bf0e7b`(로컬과 같음), `develop` `0227fa3`(2026-09-15 첫 push, `origin/develop` 추적). `develop` → `master` 병합은 아직 하지 않았다
+- 로컬 브랜치: `master`, `develop`(현재). 원격(`origin`, `https://github.com/yuminc03/my-homepage.git`): `master` `8bf0e7b`(로컬과 같음), `develop` `8c7568f`(2026-09-16 push, `origin/develop` 추적). `develop` → `master` 병합은 아직 하지 않았다
 - `develop` 직접 커밋: `92083d0` `.claude/settings.json` 권한 추가(2026-09-14)
-- 병합 후 삭제한 브랜치(순서대로): `feature/design-theme-dock`, `feature/design-color-direction`(`fab45e5`), `feature/design-theme-toggle`(`e610858`), `feature/design-detail-screens`(`bfcf341`), `feature/design-project-detail`(`0c7d2c9`), `feature/design-mobile`(`74c8149`), `feature/design-dark-windows`, `feature/design-iphone-mockup`(`eceb50a`), `feature/design-tablet`(`2d280cd`), `bugfix/profileview-code-widget`(`aa62f64`), `feature/design-tablet-rest`(`c1e2f5c`), `feature/design-motion`(모션 설계 · 데스크톱 창 ✕ 버튼 · 인수인계 문서, 2026-09-14), `feature/tech-stack`(기술 스택 결정 문서, 2026-09-14), `feature/astro-setup`(Astro 생성·토큰·MDX·스키마, 병합 `004589b`, 2026-09-14), `feature/site-shell`(테마 버튼·공통 셸·Dock 자동 숨김·시계, 병합 `0227fa3`, 2026-09-15)
+- 병합 후 삭제한 브랜치(순서대로): `feature/design-theme-dock`, `feature/design-color-direction`(`fab45e5`), `feature/design-theme-toggle`(`e610858`), `feature/design-detail-screens`(`bfcf341`), `feature/design-project-detail`(`0c7d2c9`), `feature/design-mobile`(`74c8149`), `feature/design-dark-windows`, `feature/design-iphone-mockup`(`eceb50a`), `feature/design-tablet`(`2d280cd`), `bugfix/profileview-code-widget`(`aa62f64`), `feature/design-tablet-rest`(`c1e2f5c`), `feature/design-motion`(모션 설계 · 데스크톱 창 ✕ 버튼 · 인수인계 문서, 2026-09-14), `feature/tech-stack`(기술 스택 결정 문서, 2026-09-14), `feature/astro-setup`(Astro 생성·토큰·MDX·스키마, 병합 `004589b`, 2026-09-14), `feature/site-shell`(테마 버튼·공통 셸·Dock 자동 숨김·시계, 병합 `0227fa3`, 2026-09-15), `feature/home-page`(홈 첫 화면·iPhone 목업·최근 기록, 커밋 5개, 병합 `8c7568f`, 2026-09-16)
 - 참고로 남겨 둔 비교안 커밋: 색상 A~F `de7d440`, 행사 상세 사진 묶음형 A `1769266`
 
 ## 13. 문서 관리 규칙
