@@ -1,11 +1,11 @@
 # 진행 상황
-- 최종 업데이트: 2026-09-15
+- 최종 업데이트: 2026-09-16
 - 이 문서 하나만 읽으면 새 채팅에서 바로 이어서 작업할 수 있도록 정리한 단일 기준 문서다
-- **마지막 세션 종료(2026-09-15)**: `feature/home-page` 브랜치. 홈 커밋 3개 중 2개 완료(첫 화면 `9907ebe`, iPhone 목업 `6da0b04`). 새 채팅은 **2-1의 3 "홈 최근 기록"** 부터 시작한다. 세션 끝에 이 문서만 다시 정리했으므로 `git status`에 `PROGRESS.md`가 남아 있으면 최근 기록 커밋에 함께 넣는다
+- **마지막 세션 종료(2026-09-16)**: `feature/home-page` 브랜치. 홈 커밋 3개를 모두 구현했다(첫 화면 `9907ebe`, iPhone 목업 `6da0b04`, 최근 기록은 커밋 대기). 새 채팅은 **2-1의 3 "홈 커밋·병합"** 부터 시작한다
 
 ## 1. 한눈에 보기
 - **무엇을 만드나**: iOS 개발자 Chu Yumin의 개인 홈페이지(자기소개·프로젝트·스터디 기록·세미나 기록)
-- **지금 단계**: 디자인 시안 완료, 기술 스택 확정(Astro + 일반 CSS), **Astro 프로젝트 생성**(임시 홈 1장, 빌드 확인), **전역 토큰 CSS 이식**(`src/styles/tokens.css`), **콘텐츠 컬렉션 스키마**(프로젝트·스터디·세미나, MDX) , **공통 셸**(테마 버튼·메뉴바·Dock 자동 숨김·창·시계, 목록 틀 3개) — 여기까지 `develop` 병합·원격 push. 지금은 **홈 페이지** 구현 중(`feature/home-page`)
+- **지금 단계**: 디자인 시안 완료, 기술 스택 확정(Astro + 일반 CSS), **Astro 프로젝트 생성**(임시 홈 1장, 빌드 확인), **전역 토큰 CSS 이식**(`src/styles/tokens.css`), **콘텐츠 컬렉션 스키마**(프로젝트·스터디·세미나, MDX) , **공통 셸**(테마 버튼·메뉴바·Dock 자동 숨김·창·시계, 목록 틀 3개) — 여기까지 `develop` 병합·원격 push. **홈 페이지**(첫 화면·iPhone 목업·최근 기록)는 `feature/home-page`에서 구현을 마쳤고 최근 기록 커밋과 `develop` 병합만 남았다
 - **시안 진행도**
   - 데스크톱 7화면(홈·목록 3·상세 3) — 완료
   - 모바일 7화면(홈 화면 메타포) — 완료
@@ -15,37 +15,17 @@
 - **기술 스택**: Astro + 일반 CSS + TypeScript + Markdown Content Collections 확정(2026-09-14). 비교·약점·면접 질문은 `docs/tech-stack.md`
 - **시안 캔버스**: https://claude.ai/code/artifact/48a3c34c-b882-4f13-8e2f-7e3668bdb7b1 (v22, 페이지 5개 · 아트보드 25장)
 - **Git**: 시안·기술 스택 문서·`.claude/settings.json`(`92083d0`)이 `develop`에 반영되어 있다. `feature/astro-setup`(커밋 4개)을 `develop`에 병합 `004589b` → 브랜치 삭제(2026-09-14). `feature/site-shell`(테마 버튼 `872ec4b`, 공통 셸 `20d40c8`, Dock 자동 숨김 `e8eea35`, 시계 `88e86ca`, 문서 `cfe9270`)을 `develop`에 병합 `0227fa3` → 브랜치 삭제(2026-09-15). **원격**: `origin/develop` = `0227fa3`(2026-09-15 처음 push, 추적 설정), `origin/master` = `8bf0e7b`(로컬 `master`와 같음, 이번에 건드리지 않음). `develop` → `master` 병합은 아직 하지 않았다
-- **다음 단계**: 홈(첫 화면 → iPhone 목업 → 최근 기록) → 프로젝트 목록·상세 → 스터디 목록·글 → 세미나 목록·행사 상세(2026-09-15 사용자 확정) → 페이지 전환 모션 → 콘텐츠 검색. 화면마다 `develop`에서 `feature/*` 브랜치를 새로 만든다
+- **다음 단계**: 홈 완료(첫 화면 → iPhone 목업 → 최근 기록) → 프로젝트 목록·상세 → 스터디 목록·글 → 세미나 목록·행사 상세(2026-09-15 사용자 확정) → 페이지 전환 모션 → 콘텐츠 검색. 화면마다 `develop`에서 `feature/*` 브랜치를 새로 만든다
 
 ## 2. 새 채팅에서 이어서 시작하기
 ### 2-1. 지금 바로 할 일
 1. `git status`로 브랜치와 작업 트리를 확인한다
-   - 기대 상태: `feature/home-page` 브랜치, 마지막 커밋 `6da0b04`(iPhone 목업). 커밋하지 않은 파일은 세션 끝에 정리한 `PROGRESS.md`뿐일 수 있다
+   - 기대 상태: `feature/home-page` 브랜치, 마지막 커밋 `6da0b04`(iPhone 목업). 최근 기록 구현 파일(`src/lib/content.ts`·`src/lib/date.ts`·`src/components/RecentWidgets.astro`·`src/components/RecentWindow.astro`·`src/pages/index.astro`)과 문서가 커밋 대기 상태일 수 있다
    - 원격: `origin/develop` = `0227fa3`, `origin/master` = `8bf0e7b`. `feature/home-page`는 push하지 않았다
 2. Node는 **nvm의 24**를 쓴다. 셸 기본값이 21.7.3이라 명령 전에 `source ~/.nvm/nvm.sh && nvm use`(`.nvmrc` = 24)를 먼저 실행한다. 검증 방법은 2-2
-3. **홈 최근 기록 ← 지금 할 일** (홈 커밋 3/3, 결정은 5-13. 끝나면 커밋 제안 → 사용자 확인)
-   - 만들 것
-     - 콘텐츠 헬퍼(예: `src/lib/content.ts`): `getCollection()`에서 `draft: true` 제외 + 날짜 내림차순(스터디 `pubDate`, 세미나 `date`). 목록 페이지에서도 재사용한다
-     - 날짜 표시: 스터디 `YYYY.MM.DD`, 세미나 `YYYY.MM` · 장소
-     - **빈 상태 문구**(사용자 선택): 창·위젯 틀은 두고 짧은 문구 + 목록 링크. 지금은 예시 글 3개가 모두 `draft`라 빈 상태가 보이는 것이 정상
-     - 항목 링크: 상세 페이지가 아직 없으므로 목록(`/study/`·`/seminars/`)으로. 상세 구현 때 상세로 바꾼다(없는 주소로 링크하지 않는다)
-     - 세미나 썸네일은 `cover` 이미지를 `<Image>`로(시안의 파스텔 바탕·`.media::after` 막은 자리 표시용이라 실제 사진에는 쓰지 않는다, 5-2)
-   - 데스크톱(≥1180px, 시안 `design/Main.dc.html` 262–344줄)
-     - 첫 화면 무대(`.scene`) 아래 "최근 기록" 창: 폭 `min(1100px, 100% - 좌우 여백)` 가운데, 아래 여백 100px + Dock 자리. `HomePanel` 재사용(타이틀 바 44px). 본문 padding 40px, 2열 grid gap 44px, `id="recent"`
-     - 열 머리: `h2` 20px/800 `--win-ink-strong` + 오른쪽 "전체 보기 →" 13.5px/600 링크, 아래 22px
-     - 스터디 카드(최대 3, gap 12): padding 18px 20px, 모서리 14px, `--win-card` 바탕 · `--win-divider` 테두리, 윗줄 카테고리 알약(11.5px/700, padding 4px 10px, `--win-tag-bg`/`--win-tag-ink`) + 날짜(12.5px `--win-ink-sub`, gap 12), 아래 제목 15px/600 `--win-ink-strong`(gap 8)
-     - 세미나 카드(최대 3): padding 14px 16px, gap 16, 썸네일 64×64 모서리 12px + 제목 15px/600 · `YYYY.MM · 장소` 12.5px(gap 6)
-     - 스크롤 힌트: 무대 하단에서 122px 위 가운데, "스크롤해서 기록 보기" 12px/500 `--cue` + 아래 화살표 SVG 20px(`M12 4v16M6 14l6 6 6-6`, stroke 1.8), gap 8. 애니메이션 `scrollcue` 2.2s ease-in-out 무한(translateY 0→8px, opacity .5→1). **`#recent`로 가는 링크**로 만든다(동작 없는 요소 금지). `prefers-reduced-motion`이면 반복 애니메이션 끔
-   - 모바일(<744px, `design/MobileHome.dc.html` 135–161줄): 코드 위젯 아래 2열 grid gap 14
-     - 위젯: 높이 168px, 모서리 22px, padding 16px, `--win-bg` · `--win-line` 테두리 · 그림자 `0 18px 40px var(--win-shadow)`, 위아래 `space-between`
-     - 머리: 22px 아이콘 타일(모서리 6px, 글리프 12px stroke 2.2, 앱 그라디언트 — `AppIcon`에 CSS 변수로) + "최근 스터디"/"최근 세미나" 12px/700 `--win-title`(gap 7)
-     - 본문: 제목 15px/1.4/700 + 날짜(스터디 `YYYY.MM.DD` / 세미나 `YYYY.MM · 장소`) 12px `--win-ink-sub`(gap 6)
-   - 태블릿(744–1179px, `design/TabletHome.dc.html` 113–182줄): **코드 위젯 | 최근 위젯 2개 세로**를 좌우 2단(grid gap 20). 지금 태블릿 코드 위젯은 폭 전체이므로 2단 묶음으로 바꾼다
-     - 위젯 공통: `flex-grow: 1`, 모서리 26px, padding 20px 22px, 그림자 `0 20px 44px`, 누름 `scale(.985)`
-     - 스터디: 머리(아이콘 24px 모서리 7px 글리프 13px + 라벨 12.5px) · 카테고리 알약(11.5px, padding 3px 9px) · 제목 16px/1.45/700 · 날짜 12.5px
-     - 세미나: 가로 배치 — 썸네일 84×84 모서리 16px + (머리 · 제목 16px · `YYYY.MM · 장소` 12.5px)
-   - 확인: 빌드, 빈 상태(지금 상태) 스크린샷 5폭, **예시 글 하나를 임시로 `draft: false`로 바꿔** 채워진 상태도 찍고 되돌리기, `#recent` 링크 이동
-   - 커밋 뒤: 홈 완료 → `develop` `--no-ff` 병합 → `feature/home-page` 삭제 → push(사용자 확인 후)
+3. **홈 커밋·병합 ← 지금 할 일**
+   - 최근 기록(홈 커밋 3/3)은 구현·검증을 마쳤다(5-13, 검증 결과는 2-3). 커밋이 남아 있으면 `feat`(코드) → `docs`(문서) 순서로 나눠 커밋한다
+   - 홈 완료 → `develop` `--no-ff` 병합 → `feature/home-page` 삭제 → push(모두 사용자 확인 후)
 4. 그 뒤 순서(2026-09-15 확정): 프로젝트 목록·상세 → 스터디 목록·글 → 세미나 목록·행사 상세 → 페이지 전환 모션 → 콘텐츠 검색(5-12) → 대괄호 `[ ]` placeholder 실제 콘텐츠 정리. 화면마다 `develop`에서 `feature/*` 새 브랜치
 
 ### 2-2. 검증 방법 (다시 쓰는 요령)
@@ -55,7 +35,8 @@
   - Chrome은 저장 후 종료되지 않는다 → 파일이 생기면 `pkill -f "user-data-dir=<폴더>"`. 동시에 여러 장 찍을 때는 `--user-data-dir`을 각각 다르게
   - **모바일·태블릿 폭은 `--window-size=390,...`로 찍지 않는다**(창 최소 폭 때문에 넓게 그려짐). 320·390·768px `<iframe>`을 나란히 넣은 하네스 HTML을 넓은 창으로 찍는다. iframe 높이가 짧으면 고정 Dock이 내용 위에 겹쳐 보이는데 정상이다
   - 데스크톱은 1440(시안)·1180(최소 폭) 두 폭을 본다
-- **동작 검사**(`--dump-dom --virtual-time-budget=<ms>`): 사본에 검사 스크립트를 넣고 결과를 `<pre id="log">`에 써서 DOM으로 읽는다. virtual time에서는 화면을 그리지 않아 **`scroll` 이벤트와 `requestAnimationFrame`이 오지 않는다** → `<head>` 맨 앞에서 rAF를 `setTimeout(16ms)`으로 바꾸고 `scrollTo()` 뒤 `scroll` 이벤트를 직접 보낸다. 마우스는 `new PointerEvent('pointermove', { pointerType: 'mouse', clientY })`, 시각은 `Date`를 감싼 가짜 클래스
+- **화면 아래쪽(첫 화면 밖) 찍기**: virtual time에서는 스크롤한 뒤 화면이 제대로 그려지지 않아 `#recent` 같은 아래쪽 내용을 스크롤해 찍을 수 없다 → 사본에 `<style>.scene{display:none!important}</style>`를 넣어 아래 블록을 화면 맨 위에서 본다(`!important`가 없으면 Astro 스코프 스타일(`[data-astro-cid-*]`)이 더 강해 먹히지 않는다). 폭·여백은 감싼 칸이 정하므로 배치는 그대로다
+- **동작 검사**(`--dump-dom --virtual-time-budget=<ms>`): 사본에 검사 스크립트를 넣고 결과를 `<pre id="log">`에 써서 DOM으로 읽는다. `--dump-dom`도 Chrome이 스스로 끝나지 않을 때가 있으니 결과를 파일로 받고 일정 시간 뒤 종료시킨다(스크린샷과 같은 방식). virtual time에서는 화면을 그리지 않아 **`scroll` 이벤트와 `requestAnimationFrame`이 오지 않는다** → `<head>` 맨 앞에서 rAF를 `setTimeout(16ms)`으로 바꾸고 `scrollTo()` 뒤 `scroll` 이벤트를 직접 보낸다. 마우스는 `new PointerEvent('pointermove', { pointerType: 'mouse', clientY })`, 시각은 `Date`를 감싼 가짜 클래스
 - **`astro preview`** 는 백그라운드로 분리되는 단일 서버다. 쓰면 반드시 `npx astro preview stop`으로 끈다(`pkill`로 안 잡힘)
 - **git**: `git commit -F -`(heredoc)는 되지만 `git merge -F -`는 `could not read file '-'`로 실패한다 → 병합 메시지는 `-m`을 문단마다 여러 번
 
@@ -66,6 +47,9 @@
 - 홈(`feature/home-page`, 5-13)
   - 첫 화면 `9907ebe`: `profile.ts`·`WindowDots`·`HomePanel`·`ProfileCode`·홈 페이지. 인사말 음절 중간 줄바꿈을 `keep-all` + `cqi` 글자 크기로 해결
   - iPhone 목업 `6da0b04`: `src/assets/iphone-16-pro.png`(사용자 허용 커밋) + `PhoneMockup`(slot, 프로젝트 상세에서 재사용). WebP 1x 4.5KB · 2x 8KB
+  - 최근 기록(2026-09-16, 커밋 대기): `lib/content.ts`·`lib/date.ts`·`RecentWidgets`·`RecentWindow` 추가, 홈 페이지에 창·위젯·스크롤 힌트 연결
+    - 검증: 빌드 통과, 빈 상태·채워진 상태 스크린샷 5폭(320·390·768·1180·1440, 라이트/다크), 동작 검사 4폭 모두 PASS(스크롤 힌트 링크·폭별 표시 규칙·창이 첫 화면 아래에 있음·`#recent` 이동)
+    - 채워진 상태는 예시 글을 임시로 복제해 4개씩 공개하고 확인한 뒤 지웠다(최신 순 정렬·최대 3개 제한까지 확인). 저장소에는 예시 3개가 `draft: true`로 그대로 남아 있다
 - 알려진 문제: 320px 폭에서 모바일 Dock(아이콘 5개)이 화면 폭과 거의 같다(작은 기기 대응은 나중에)
 
 ### 2-4. 세션 시작 체크리스트 (매번)
@@ -117,6 +101,7 @@
 | 공통 셸 병합 | 테마 버튼·공통 셸·Dock 자동 숨김·시계·문서 커밋 5개 | `feature/site-shell` | `develop` 병합 `0227fa3` → 브랜치 삭제 → `origin/develop` 첫 push(2026-09-15) |
 | 홈 첫 화면 | 자기소개 데이터, 창 점·홈 창/위젯·코드 에디터 컴포넌트, 데스크톱 바로가기·About·코드 창 / 모바일·태블릿 위젯·앱 아이콘 | `feature/home-page` | 스크린샷 5폭 확인, 사용자 확인 후 커밋 `9907ebe`(2026-09-15) |
 | 홈 iPhone 목업 | 목업 이미지 저장소 추가(`astro:assets` WebP), `PhoneMockup` 컴포넌트, 데스크톱 코드 창 오른쪽 아래에 가짜 앱 화면 목업 | `feature/home-page` | 스크린샷 확인, 사용자 확인 후 커밋 `6da0b04`(2026-09-15) |
+| 홈 최근 기록 | 콘텐츠 헬퍼(`draft` 제외·최신 순)·날짜 형식, 데스크톱 최근 기록 창(스터디·세미나 3개씩)·스크롤 힌트, 모바일·태블릿 최근 위젯 2개, 태블릿 코드 \| 위젯 2단 | `feature/home-page` | 빌드·스크린샷 5폭·동작 검사 통과, 커밋 대기(2026-09-16) |
 
 ### 남은 일
 - [x] 모션·✕·문서 커밋 → `develop` 병합 → 브랜치 삭제 (2026-09-14, 사용자 확인)
@@ -135,11 +120,14 @@
 - [x] Dock 자동 숨김 커밋 `e8eea35` (2026-09-15, 사용자 확인)
 - [x] 데스크톱 메뉴바 시계 커밋 `88e86ca` (2026-09-15, 사용자 확인)
 - [x] `feature/site-shell` → `develop` 병합 `0227fa3` → 브랜치 삭제 → `develop` 원격 push (2026-09-15, 사용자 요청)
-- [ ] **홈 화면 구현** ← 진행 중(`feature/home-page`, 첫 화면 `9907ebe` · iPhone 목업 `6da0b04` 완료, 최근 기록 남음 → 2-1의 3)(데스크톱: 바로가기·About me·코드 에디터 창·iPhone 목업·스크롤 힌트·최근 기록 창 / 모바일·태블릿: 위젯·앱 아이콘 4개). 임시 홈의 `#contact`·`#code` 도착점과 연락처 강조를 실제 창으로 옮긴다
+- [x] **홈 화면 구현**(데스크톱: 바로가기·About me·코드 에디터 창·iPhone 목업·스크롤 힌트·최근 기록 창 / 모바일·태블릿: 위젯·앱 아이콘 4개·최근 기록 위젯) — 첫 화면 `9907ebe` · iPhone 목업 `6da0b04` · 최근 기록 커밋 대기(2026-09-16)
+- [ ] 홈 최근 기록 커밋 → `develop` `--no-ff` 병합 → `feature/home-page` 삭제 → push (사용자 확인 후) ← 2-1의 3
+- [ ] 목록·상세 페이지를 만들 때 홈 최근 기록의 카드·위젯 링크를 목록에서 **상세로** 바꾼다(지금은 상세가 없어 목록으로 보낸다)
 - [ ] 목록·상세 페이지 구현(프로젝트·스터디·세미나), 상세의 `← 목록` / ‹ 뒤로 링크를 `Window`에 추가
 - [ ] 페이지 전환 모션(View Transitions `ClientRouter`, `transition:persist`로 메뉴바·Dock 유지)
 - [ ] 콘텐츠 검색 기능 — 목록·상세 페이지 구현 뒤 별도 브랜치(방식은 5-12 추천안을 사용자와 확정)
-- [ ] 화면 구현 때 함께: `draft` 제외 헬퍼, 스터디 읽는 시간 계산, 세미나 MDX 컴포넌트 `Photo`·`PhotoPair`·`PhotoSide`(상세 페이지에서 `<Content components={{ ... }} />`로 넘김), 목록 정렬(날짜 내림차순)
+- [x] `draft` 제외 헬퍼·목록 정렬(날짜 내림차순)·날짜 표기 — `src/lib/content.ts`·`src/lib/date.ts`(2026-09-16, 홈 최근 기록과 함께). 목록 페이지도 이 헬퍼만 쓴다
+- [ ] 화면 구현 때 함께: 스터디 읽는 시간 계산, 세미나 MDX 컴포넌트 `Photo`·`PhotoPair`·`PhotoSide`(상세 페이지에서 `<Content components={{ ... }} />`로 넘김), 프로젝트 목록용 헬퍼(`src/lib/content.ts`에 추가)
 - [ ] 실제 글을 쓰면 예시 글 3개(`sample-*`)와 임시 이미지 삭제
 - [ ] GitHub Actions로 GitHub Pages 자동 배포 설정(원격 push가 필요하므로 사용자 확인 후)
 - [ ] 대괄호 `[ ]` placeholder를 실제 내용으로 교체 — 프로젝트 이름·소개·태그, 포스트 제목·요약·날짜, 세미나 이름·장소·소감, 연락처 링크(GitHub/Email/LinkedIn)
@@ -287,6 +275,13 @@
   - 인사말 크기: `.about-slot`을 `container-type: inline-size`로 두고 `clamp(최소, calc((100cqi − 좌우 여백) / 13.4), 최대)`(모바일 19–24 · 태블릿 24–30 · 데스크톱 26–36px). 한국어는 `word-break: keep-all`
   - 코드 에디터: 줄 배열(토큰 `[종류, 글자]`)을 문자열 HTML로 만들어 `<pre>`에 `set:html`(템플릿 식은 공백이 합쳐질 수 있어서). `set:html` 안의 span에는 스코프 속성이 없어 색은 `:global(.kw)` 등으로 준다. 보이는 줄 수 모바일 8 · 태블릿 12 · 데스크톱 14(`max-height` = 줄 수 × 줄 높이), 파일 탭은 데스크톱만
   - `#contact`(About 연락처 줄)·`#code`(코드 창) 도착 시 1.6초 강조(`:target` 애니메이션)
+  - 최근 기록(2026-09-16)
+    - 콘텐츠는 `src/lib/content.ts`(`getStudyPosts()`·`getSeminars()`: `draft` 제외 + 최신 순)와 `src/lib/date.ts`(`formatDay` `YYYY.MM.DD` · `formatMonth` `YYYY.MM`)만 쓴다. 프런트매터 날짜는 **UTC 자정**으로 읽히므로 UTC 기준으로 꺼낸다(지역 시간대에 따라 하루 밀리는 것 방지)
+    - 화면이 서로 달라 **컴포넌트를 둘로 나눴다**: 데스크톱 창 `RecentWindow`(스터디·세미나 3개씩, `HomePanel` 재사용) / 모바일·태블릿 위젯 `RecentWidgets`(각 1개). 페이지가 감싼 칸(`.recent-slot`·`.widgets-slot`)에서 폭·위치·표시 여부를 정한다(바로가기 `nav`와 앱 아이콘 `nav`를 폭으로 바꿔 끼우는 기존 방식과 같다)
+    - 카드·위젯 전체가 링크다. 상세 페이지가 없어 목록(`/study/`·`/seminars/`)으로 보내고, 상세를 만들면 상세로 바꾼다
+    - 빈 상태: 창은 점선 상자 + 문구(목록 링크는 열 머리의 "전체 보기 →"), 위젯은 문구 + "전체 보기 →"(위젯 자체가 링크). 320px에서 줄이 접히지 않도록 짧은 문구를 쓴다
+    - 태블릿 배치: `.scene`을 2열 그리드로 바꿔 About·앱 아이콘은 두 칸을 다 쓰고(`grid-column: 1 / -1`) 아랫줄만 코드 위젯 | 최근 위젯으로 나눈다. 데스크톱에서는 세 칸을 한 줄에 놓도록 `grid-row: 1` + 칸 번호를 다시 지정한다
+    - 스크롤 힌트는 `#recent`로 가는 링크이고 `scrollcue` 2.2s 무한 애니메이션을 쓴다. `prefers-reduced-motion`이면 애니메이션만 끈다
   - iPhone 목업(2026-09-15): `PhoneMockup`은 프레임 이미지와 투명한 화면 영역만 맡고 화면 안 내용은 slot으로 받는다(프로젝트 상세에서 실제 스크린샷에 재사용). 폭은 `--phone-width`, 기울기·그림자·위치는 부모. 홈은 `.code-slot` 안에 `position: absolute; top: 278px; right: -14px; rotate(3deg)`로 코드 창 오른쪽 아래에 걸치고 데스크톱에서만 보인다. 이미지는 `src/assets`에 두어 `<Image width={225} densities={[1, 2]}>`로 WebP 225·450px를 만든다. 목업 전체가 장식이라 `aria-hidden`
 
 ## 6. 저작권 주의선
@@ -387,8 +382,12 @@
 | `.nvmrc` | `24` |
 | `.gitignore` | `dist/`·`.astro/`·`node_modules/`·`.env`·`.DS_Store` 등(Astro 템플릿 그대로) |
 | `.vscode/extensions.json` | Astro VS Code 확장 추천 |
-| `src/pages/index.astro` | 홈(5-13). 데스크톱: 바로가기 4 · About me 창 · 코드 에디터 창(겹침) / 모바일·태블릿: About 위젯 · 앱 아이콘 4 · 코드 위젯. `#contact`·`#code` 도착 강조. 데스크톱 iPhone 목업(코드 창 오른쪽 아래). 최근 기록은 다음 커밋 |
+| `src/pages/index.astro` | 홈(5-13). 데스크톱: 바로가기 4 · About me 창 · 코드 에디터 창(겹침) · iPhone 목업 · 스크롤 힌트 · 최근 기록 창(`#recent`) / 모바일·태블릿: About 위젯 · 앱 아이콘 4 · 코드 위젯 · 최근 기록 위젯(태블릿은 코드 \| 위젯 2단). `#contact`·`#code` 도착 강조 |
 | `src/data/profile.ts` | 자기소개 `PROFILE`: 인사말(3조각)·좋아하는 문구(2줄)·기술 4개·연락처(GitHub·Email) |
+| `src/lib/content.ts` | 컬렉션 읽기 헬퍼 `getStudyPosts()`·`getSeminars()`: `draft: true` 제외 + 날짜 내림차순. 화면은 이 함수만 쓴다 |
+| `src/lib/date.ts` | 날짜 표기 `formatDay`(`YYYY.MM.DD`)·`formatMonth`(`YYYY.MM`). 프런트매터 날짜를 UTC 기준으로 꺼낸다 |
+| `src/components/RecentWindow.astro` | 데스크톱 최근 기록 창: `HomePanel` 안에 스터디·세미나 2열(각 최대 3개, 카드 전체가 목록 링크), 빈 상태 점선 상자 |
+| `src/components/RecentWidgets.astro` | 모바일·태블릿 최근 기록 위젯 2개(각 최신 1개). 모바일 2열 168px, 태블릿 세로 2개(세미나는 썸네일 84px 가로 배치) |
 | `src/pages/projects/index.astro` · `study/index.astro` · `seminars/index.astro` | 목록 창 틀: `SiteLayout` + `Window` + `PageHeading`(제목·설명은 `apps.ts`). 목록 내용은 페이지 구현 때 |
 | `src/layouts/SiteLayout.astro` | 공통 셸: 고정 글로우 바탕 3개 · `MenuBar` · `<main>` · `Dock`. props `active`(앱 id), `surface`(`desk` 홈 / `window` 창 화면), `title`·`description` |
 | `src/data/apps.ts` | 앱 목록 `APPS`(홈·프로젝트·스터디 기록·세미나 기록: 라벨·창 제목·설명·경로·아이콘 바탕·SVG), `CONTACT`(`/#contact`), `CODE_EDITOR`(`/#code`, 데스크톱 Dock 전용), `getApp()` |
