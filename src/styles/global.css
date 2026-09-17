@@ -40,6 +40,11 @@ img {
 	height: auto;
 }
 
+/* hidden 속성은 브라우저 기본값이 display: none이라 컴포넌트의 display 지정에 진다. 목록 필터가 hidden으로 숨기므로 항상 이기게 한다 */
+[hidden] {
+	display: none !important;
+}
+
 /* 코드 에디터·코드 블록 공통 글꼴 (색은 테마와 무관한 고정값이라 각 컴포넌트에서 지정) */
 .code {
 	font-family: ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace;
