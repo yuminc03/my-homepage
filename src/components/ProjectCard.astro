@@ -7,6 +7,7 @@
 import type { CollectionEntry } from 'astro:content';
 import { Image } from 'astro:assets';
 import PhoneMockup from './PhoneMockup.astro';
+import TagList from './TagList.astro';
 
 interface Props {
 	project: CollectionEntry<'projects'>;
@@ -31,15 +32,7 @@ const Tag = href ? 'a' : 'article';
 	</div>
 	<h2 class="name">{title}</h2>
 	<p class="summary">{summary}</p>
-	{
-		tags.length > 0 && (
-			<div class="tags">
-				{tags.map((tag) => (
-					<span class="tag">{tag}</span>
-				))}
-			</div>
-		)
-	}
+	<TagList tags={tags} />
 </Tag>
 
 <style>
@@ -145,21 +138,6 @@ const Tag = href ? 'a' : 'article';
 		word-break: keep-all;
 	}
 
-	.tags {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 6px;
-	}
-
-	.tag {
-		padding: 4px 11px;
-		border-radius: 999px;
-		background: var(--win-tag-bg);
-		color: var(--win-tag-ink);
-		font-size: 12px;
-		font-weight: 600;
-	}
-
 	@media (min-width: 744px) {
 		.thumb {
 			height: 240px;
@@ -190,11 +168,6 @@ const Tag = href ? 'a' : 'article';
 			margin-bottom: 14px;
 			font-size: 15px;
 		}
-
-		.tag {
-			padding: 5px 12px;
-			font-size: 12.5px;
-		}
 	}
 
 	@media (min-width: 1180px) {
@@ -223,10 +196,6 @@ const Tag = href ? 'a' : 'article';
 		.summary {
 			margin-bottom: 16px;
 			font-size: 14.5px;
-		}
-
-		.tags {
-			gap: 8px;
 		}
 
 		/* 데스크톱은 마우스가 있어 누름 대신 썸네일이 살짝 떠오른다 */
