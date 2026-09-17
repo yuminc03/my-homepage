@@ -1,0 +1,209 @@
+---
+// 프로젝트 상세 "주요 기능": FEATURE 01, 02… 폰 화면 + 이름·설명
+// - 모바일: 카드 바탕 위 폰 → 설명 아래로 쌓기 / 태블릿·데스크톱: 폰·설명을 좌우로 번갈아(짝수 번째는 폰이 오른쪽)
+// - DOM 순서는 항상 폰 → 설명이고, 좌우 바꿈은 그리드 칸 지정으로만 한다(읽는 순서가 모든 폭에서 같다)
+// - 데이터는 프런트매터 features. 본문 Markdown 사이에 끼워 넣는 일은 ProjectArticle이 맡는다
+import { Image } from 'astro:assets';
+import PhoneMockup from './PhoneMockup.astro';
+
+interface Props {
+	features: {
+		title: string;
+		description: string;
+		image: ImageMetadata;
+	}[];
+}
+
+const { features } = Astro.props;
+const pad = (value: number) => String(value).padStart(2, '0');
+---
+
+<section class="features">
+	<h2>주요 기능</h2>
+	<ol class="list">
+		{
+			features.map((feature, index) => (
+				<li class="feature">
+					<div class="phone">
+						<PhoneMockup>
+							<Image src={feature.image} alt={`${feature.title} 화면`} width={180} densities={[1, 2]} loading="lazy" decoding="async" />
+						</PhoneMockup>
+					</div>
+					<div class="text">
+						<span class="label">FEATURE {pad(index + 1)}</span>
+						<h3>{feature.title}</h3>
+						<p>{feature.description}</p>
+					</div>
+				</li>
+			))
+		}
+	</ol>
+</section>
+
+<style>
+	h2 {
+		margin: 0 0 20px;
+		color: var(--win-ink-strong);
+		font-size: 20px;
+		font-weight: 800;
+		line-height: 1.4;
+		word-break: keep-all;
+	}
+
+	.list {
+		display: flex;
+		flex-direction: column;
+		gap: 40px;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.feature {
+		display: flex;
+		flex-direction: column;
+		gap: 18px;
+	}
+
+	.phone {
+		--phone-width: 170px;
+		display: flex;
+		justify-content: center;
+		padding: 24px 0;
+		border-radius: 18px;
+		background: var(--win-card);
+	}
+
+	.phone > :global(*) {
+		filter: drop-shadow(0 18px 36px oklch(20% 0.022 290 / 0.22));
+	}
+
+	.text {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	.label {
+		color: var(--win-accent);
+		font-size: 12px;
+		font-weight: 800;
+	}
+
+	h3 {
+		margin: 0;
+		color: var(--win-ink-strong);
+		font-size: 18px;
+		font-weight: 800;
+		line-height: 1.4;
+		word-break: keep-all;
+	}
+
+	p {
+		margin: 0;
+		color: var(--win-ink);
+		font-size: 16px;
+		line-height: 1.8;
+		word-break: keep-all;
+	}
+
+	@media (min-width: 744px) {
+		h2 {
+			margin-bottom: 26px;
+			font-size: 22px;
+		}
+
+		.list {
+			gap: 44px;
+		}
+
+		.feature {
+			display: grid;
+			grid-template-columns: 210px minmax(0, 1fr);
+			align-items: center;
+			gap: 36px;
+		}
+
+		.feature:nth-child(even) {
+			grid-template-columns: minmax(0, 1fr) 210px;
+		}
+
+		.feature:nth-child(even) .phone {
+			grid-column: 2;
+			grid-row: 1;
+		}
+
+		.feature:nth-child(even) .text {
+			grid-column: 1;
+			grid-row: 1;
+		}
+
+		.phone {
+			--phone-width: 190px;
+			padding: 0;
+			background: none;
+		}
+
+		.text {
+			gap: 10px;
+		}
+
+		.label {
+			font-size: 12.5px;
+		}
+
+		h3 {
+			font-size: 19px;
+		}
+	}
+
+	@media (min-width: 1180px) {
+		h2 {
+			margin-bottom: 28px;
+			font-size: 24px;
+		}
+
+		.list {
+			gap: 40px;
+		}
+
+		.feature {
+			grid-template-columns: 220px minmax(0, 1fr);
+			gap: 48px;
+		}
+
+		.feature:nth-child(even) {
+			grid-template-columns: minmax(0, 1fr) 220px;
+		}
+
+		.phone {
+			--phone-width: 200px;
+			justify-content: flex-start;
+		}
+
+		.feature:nth-child(even) .phone {
+			justify-content: flex-end;
+		}
+
+		.phone > :global(*) {
+			filter: drop-shadow(0 20px 40px oklch(20% 0.022 290 / 0.22));
+		}
+
+		.text {
+			gap: 12px;
+		}
+
+		.label {
+			font-size: 13px;
+		}
+
+		h3 {
+			font-size: 20px;
+		}
+
+		p {
+			font-size: 17px;
+			line-height: 1.85;
+		}
+	}
+</style>
