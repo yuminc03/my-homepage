@@ -11,7 +11,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **새 채팅을 시작하면 먼저 `PROGRESS.md`를 읽는다.** 현재 상태, 지금 할 일, 확정된 결정, 시안 재게시 방법이 모두 정리된 단일 기준 문서다.
 - 디자인 시안 단계입니다. `design/`에 Claude Design 캔버스용 `.dc.html` 시안(데스크톱·모바일·태블릿 각 7화면 + 모션 3장)과 `canvas.json`, 조립 결과물 `chu-yumin-portfolio.html`이 있습니다.
 - 기술 스택은 **Astro + 일반 CSS + TypeScript + Markdown Content Collections**로 확정했습니다(2026-09-14, 근거는 `docs/tech-stack.md`, 요약은 `PROGRESS.md` 5-11).
-- Astro 프로젝트를 저장소 루트에 생성했습니다. 공통 셸(메뉴바·Dock 자동 숨김·창·테마 버튼·시계)과 목록 페이지 틀 3개까지 `develop`에 병합·원격 push했고(2026-09-15), 홈(첫 화면·iPhone 목업·최근 기록)까지 구현해 `develop`에 병합·push했습니다(2026-09-16, 병합 `8c7568f`). 다음은 프로젝트 → 스터디 → 세미나 목록·상세입니다. 배포 주소는 GitHub Pages 하위 경로 `https://yuminc03.github.io/my-homepage/`입니다.
+- Astro 프로젝트를 저장소 루트에 생성했습니다. 공통 셸(메뉴바·Dock 자동 숨김·창·테마 버튼·시계)과 목록 페이지 틀 3개까지 `develop`에 병합·원격 push했고(2026-09-15), 홈(첫 화면·iPhone 목업·최근 기록)까지 구현해 `develop`에 병합·push했습니다(2026-09-16, 병합 `8c7568f`). 프로젝트 목록·상세는 `feature/project-pages`에 커밋·원격 push했고 `develop` 병합 전입니다(2026-09-17). 다음은 스터디 → 세미나 목록·상세입니다. 배포 주소는 GitHub Pages 하위 경로 `https://yuminc03.github.io/my-homepage/`입니다.
 
 ## 명령어
 
@@ -34,7 +34,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - 앱(홈·프로젝트·스터디 기록·세미나 기록)의 라벨·창 제목·설명·경로·아이콘은 `src/data/apps.ts`가 단일 기준이고, 메뉴바·Dock·페이지가 모두 여기서 읽습니다. 새 앱이나 바로가기는 이 파일에 추가합니다.
 - 내부 링크는 `src/lib/url.ts`의 `withBase()`로 만듭니다.
 - 홈(`src/pages/index.astro`): 자기소개 문구·기술·연락처는 `src/data/profile.ts`가 단일 기준입니다. 홈의 창/위젯은 `HomePanel`(목록·상세의 `Window`와 달리 ✕ 없음), 창 점은 `WindowDots`를 함께 씁니다. Astro는 부모의 스코프 스타일이 자식 컴포넌트 루트에 닿지 않으므로, 컴포넌트의 폭·위치는 페이지가 감싼 요소에서 정합니다. 최근 기록은 화면 형태가 달라 데스크톱 창(`RecentWindow`)과 모바일·태블릿 위젯(`RecentWidgets`)을 따로 두고, 페이지가 감싼 칸(`.recent-slot`·`.widgets-slot`)에서 폭으로 바꿔 끼웁니다. 카드·위젯 링크는 상세 페이지가 생기면 목록에서 상세로 바꿉니다.
-- 페이지별 구조(목록·상세)가 생기면 이 섹션에 추가합니다.
+- 목록 필터: `FilterChips`가 칩과 스크립트를 가진다. 페이지는 칩과 항목을 `[data-filter]`로 감싸고 항목에 `data-filter-item`·`data-categories="A|B"`를 붙인다. 숨김은 `hidden` 속성이고 `global.css`의 `[hidden]` 규칙이 컴포넌트 `display`보다 우선한다.
+- 상세 화면 공통: `Window`의 `back` prop(모바일·태블릿 타이틀 바 ‹), `SiteLayout`의 `dockHidden`(Dock 숨김 시작), 맨 아래 `Pager`(이전/다음, 목록 순서 기준). 데스크톱 `‹ 목록` 링크는 페이지가 본문 위에 둔다.
+- 프로젝트: 목록 `src/pages/projects/index.astro`(카드 `ProjectCard`), 상세 `src/pages/projects/[slug].astro`(주소는 `projectHref()`). 상세 본문은 `ProjectArticle`이 `Astro.slots.render()`로 Markdown과 `ProjectFeatures`를 HTML로 만든 뒤 `src/lib/sections.ts`로 `##` 섹션·`###` 카드로 묶고 첫 섹션 뒤에 주요 기능을 넣는다(Astro 7 기본 Markdown 처리기 Sätteri의 플러그인 API를 쓰지 않음). Markdown 요소 스타일은 `.prose :global(:is(.doc-lead, .doc-section) ...)`로 한정한다. 결정 근거는 `PROGRESS.md` 5-14.
+- `PhoneMockup` slot에 `img`를 넘기면 화면을 꽉 채운다(카드·스크린샷 띠·주요 기능 공용). 태그는 `TagList`를 쓴다.
+- 커밋은 빌드되는 가장 작은 단위로 나눈다(공용 컴포넌트마다 하나, `refactor` 분리, 커밋 직전 빌드).
 - `astro.config.mjs`의 `base: '/my-homepage'` 때문에 내부 링크와 `public/` 에셋 경로는 `import.meta.env.BASE_URL`을 붙여 만들어야 합니다. `/`로 시작하는 절대 경로를 직접 쓰면 배포 후 404가 납니다.
 - 시안 파일끼리의 관계: 각 `.dc.html`은 캔버스에서 독립 아트보드라 CSS를 공유할 수 없어, 테마 토큰(`.site` / `.site[data-theme="light"]`, `--win-*`)이 모든 화면 파일에 복제되어 있습니다. 시안 토큰을 바꿀 때는 모든 화면 파일을 함께 고치고(사이트 구현의 기준은 `src/styles/tokens.css`), `chu-yumin-portfolio.html`은 직접 편집하지 않고 재조립합니다(`PROGRESS.md` 11장).
 
