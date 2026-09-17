@@ -25,7 +25,7 @@ const Tag = href ? 'a' : 'article';
 	<div class="thumb">
 		<div class="phone-slot">
 			<PhoneMockup>
-				{screen && <Image class="screen-image" src={screen} alt="" width={134} densities={[1, 2]} loading="lazy" decoding="async" />}
+				{screen && <Image src={screen} alt="" width={134} densities={[1, 2]} loading="lazy" decoding="async" />}
 			</PhoneMockup>
 		</div>
 		<Image class="icon" src={icon} alt="" width={60} densities={[1, 2]} loading="lazy" decoding="async" />
@@ -98,15 +98,6 @@ const Tag = href ? 'a' : 'article';
 		flex-shrink: 0;
 		margin-bottom: -92px;
 		filter: drop-shadow(0 16px 32px oklch(20% 0.022 290 / 0.28));
-	}
-
-	/* PhoneMockup의 slot으로 넘긴 img라 이 컴포넌트의 스코프 속성이 붙는다 */
-	.screen-image {
-		display: block;
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		object-position: top;
 	}
 
 	.icon {
