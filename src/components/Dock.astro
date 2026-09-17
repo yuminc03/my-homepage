@@ -5,6 +5,8 @@
 // - 자동 숨김(PROGRESS.md 5-3): 아래로 스크롤하면 숨고 위로 스크롤하면 나타난다. 숨은 동안 하단 가운데 힌트 막대
 //   - 마우스: 화면 하단 112px 영역에 들어오면 나타나고, 스크롤로 숨었던 상태면 벗어난 뒤 600ms에 다시 숨는다
 //   - 키보드: Dock 안으로 포커스가 들어오면 나타난다
+// - startHidden: 상세 화면처럼 본문을 읽는 화면은 숨긴 채로 시작한다(힌트 막대만). 위로 스크롤하거나 마우스·키보드로 부르면 나타난다
+//   맨 위 근처에서도 저절로 나타나지 않게 해, 읽기 시작하며 조금 스크롤할 때 Dock이 튀어나오지 않는다
 import AppIcon from './AppIcon.astro';
 import { APPS, CODE_EDITOR, CONTACT, type AppId } from '../data/apps';
 import { withBase } from '../lib/url';
@@ -12,12 +14,13 @@ import { withBase } from '../lib/url';
 interface Props {
 	active: AppId;
 	surface?: 'desk' | 'window';
+	startHidden?: boolean;
 }
 
-const { active, surface = 'desk' } = Astro.props;
+const { active, surface = 'desk', startHidden = false } = Astro.props;
 ---
 
-<nav class="dock-zone" aria-label="Dock" data-state="shown">
+<nav class="dock-zone" aria-label="Dock" data-state={startHidden ? 'hidden' : 'shown'} data-start-hidden={startHidden ? '' : undefined}>
 	<div class="dock" data-surface={surface}>
 		{
 			APPS.map((app) => (
@@ -51,8 +54,10 @@ const { active, surface = 'desk' } = Astro.props;
 	if (zone) setupAutoHide(zone);
 
 	function setupAutoHide(zone: HTMLElement) {
+		const startHidden = zone.hasAttribute('data-start-hidden');
 		let lastY = clampedScrollY();
-		let scrolledDown = false; // 아래로 스크롤해 숨긴 상태인가(마우스·포커스로 잠깐 불러낸 동안에도 유지)
+		let scrolledDown = startHidden; // 아래로 스크롤해 숨긴 상태인가(마우스·포커스로 잠깐 불러낸 동안에도 유지). 숨긴 채 시작하면 처음부터 이 상태
+		let revealedByScroll = !startHidden; // 한 번이라도 위로 스크롤해 나타났는가. 그전에는 맨 위 근처 규칙을 쓰지 않는다
 		let pointerInZone = false;
 		let keyboardFocus = false;
 		let hideTimer: number | undefined;
@@ -79,7 +84,7 @@ const { active, surface = 'desk' } = Astro.props;
 			frameRequested = false;
 			const y = clampedScrollY();
 
-			if (y <= TOP_ZONE) {
+			if (y <= TOP_ZONE && revealedByScroll) {
 				lastY = y;
 				scrolledDown = false;
 				show();
@@ -98,6 +103,7 @@ const { active, surface = 'desk' } = Astro.props;
 				}
 			} else {
 				scrolledDown = false;
+				revealedByScroll = true;
 				show();
 			}
 		};
