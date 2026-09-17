@@ -9,7 +9,7 @@ import FilterChips from '../../components/FilterChips.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
 import { PROJECT_CATEGORIES } from '../../content.config';
 import { getApp } from '../../data/apps';
-import { getProjects } from '../../lib/content';
+import { getProjects, projectHref } from '../../lib/content';
 
 const app = getApp('projects');
 const projects = await getProjects();
@@ -28,7 +28,7 @@ const categories = PROJECT_CATEGORIES.filter((category) =>
 					<ul class="grid">
 						{projects.map((project, index) => (
 							<li data-filter-item data-categories={project.data.categories.join('|')}>
-								<ProjectCard project={project} tone={index} />
+								<ProjectCard project={project} tone={index} href={projectHref(project)} />
 							</li>
 						))}
 					</ul>
