@@ -1,0 +1,136 @@
+---
+// 프로젝트 상세 스크린샷 띠: 그라디언트 바탕 위에 iPhone 목업을 가로로 늘어놓는다
+// - 모바일·태블릿: 창 폭 끝까지 넓히고 가로 스크롤(마지막 폰이 화면 밖으로 넘쳐 스크롤을 암시). 바탕은 스크롤되지 않는 바깥 상자에 둔다
+// - 데스크톱: 본문 폭 안의 둥근 띠, 가운데 정렬. 양 끝을 뺀 가운데 폰들을 20px 올려 리듬을 준다. 넘치면 가로 스크롤
+// - 창 본문 좌우 여백(Window: 모바일 20px · 태블릿 36px)만큼 음수 margin으로 넓힌다. Window 여백을 바꾸면 여기도 바꾼다
+// - 바탕 그라디언트는 ProjectCard와 같은 고정색, 다크에서만 --win-media-dim으로 덮는다
+import { Image } from 'astro:assets';
+import PhoneMockup from './PhoneMockup.astro';
+
+interface Props {
+	screenshots: ImageMetadata[];
+	/** 스크롤 영역 이름에 쓴다 */
+	title: string;
+}
+
+const { screenshots, title } = Astro.props;
+---
+
+<div class="band">
+	<ul class="shots" tabindex="0" aria-label={`${title} 스크린샷`}>
+		{
+			screenshots.map((screenshot, index) => (
+				<li class="shot">
+					<PhoneMockup>
+						<Image src={screenshot} alt={`스크린샷 ${index + 1}`} width={190} densities={[1, 2]} loading="lazy" decoding="async" />
+					</PhoneMockup>
+				</li>
+			))
+		}
+	</ul>
+</div>
+
+<style>
+	.band {
+		position: relative;
+		display: flex;
+		height: 420px;
+		margin: 0 -20px 40px;
+		background: linear-gradient(150deg, oklch(93% 0.02 295), oklch(87% 0.036 335));
+	}
+
+	.band::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+		background: var(--win-media-dim);
+		pointer-events: none;
+	}
+
+	.shots {
+		position: relative;
+		z-index: 1;
+		display: flex;
+		flex-grow: 1;
+		align-items: center;
+		gap: 16px;
+		min-width: 0;
+		margin: 0;
+		padding: 0 20px;
+		overflow-x: auto;
+		list-style: none;
+		scrollbar-width: none;
+	}
+
+	.shots::-webkit-scrollbar {
+		display: none;
+	}
+
+	/* 스크롤 끝에서도 오른쪽 여백이 남도록 여백 − 간격만큼 빈 칸을 둔다(스크롤 영역의 끝 padding은 브라우저마다 무시되기도 한다) */
+	.shots::after {
+		content: '';
+		flex: 0 0 4px;
+		height: 1px;
+	}
+
+	.shots:focus-visible {
+		outline: 2px solid var(--win-accent);
+		outline-offset: -4px;
+	}
+
+	.shot {
+		--phone-width: 170px;
+		flex-shrink: 0;
+		filter: drop-shadow(0 20px 40px oklch(20% 0.022 290 / 0.28));
+	}
+
+	@media (min-width: 744px) {
+		.band {
+			height: 480px;
+			margin: 0 -36px 52px;
+		}
+
+		.shots {
+			gap: 24px;
+			padding: 0 48px;
+		}
+
+		.shots::after {
+			flex-basis: 24px;
+		}
+
+		.shot {
+			--phone-width: 190px;
+			filter: drop-shadow(0 22px 44px oklch(20% 0.022 290 / 0.28));
+		}
+	}
+
+	@media (min-width: 1180px) {
+		.band {
+			height: 540px;
+			margin: 0 0 56px;
+			border-radius: 20px;
+		}
+
+		/* safe center: 폰이 넘치면 왼쪽 끝이 잘리지 않도록 시작 정렬로 바뀐다 */
+		.shots {
+			justify-content: safe center;
+			gap: 36px;
+			padding: 0 36px;
+		}
+
+		.shots::after {
+			content: none;
+		}
+
+		.shot {
+			--phone-width: 210px;
+			filter: drop-shadow(0 24px 48px oklch(20% 0.022 290 / 0.28));
+		}
+
+		.shot:not(:first-child, :last-child) {
+			transform: translateY(-20px);
+		}
+	}
+</style>
