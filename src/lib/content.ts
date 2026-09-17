@@ -3,6 +3,12 @@
 // - 정렬은 항상 최신 글이 먼저(스터디 pubDate, 세미나 date). 홈의 최근 기록과 목록 페이지가 같은 순서를 쓴다
 // - 프로젝트만 예외로 진행 중(endDate 없음)을 먼저 두고, 그 안에서 startDate 최신 순(2026-09-17 결정)
 import { getCollection, type CollectionEntry } from 'astro:content';
+import { getApp } from '../data/apps';
+import { withBase } from './url';
+
+/** 프로젝트 상세 주소(/my-homepage/projects/<폴더 이름>/) */
+export const projectHref = (project: CollectionEntry<'projects'>): string =>
+	withBase(`${getApp('projects').href}${project.id}/`);
 
 /** 공개된 프로젝트, 진행 중 먼저 → 시작일 최신 순 */
 export async function getProjects(): Promise<CollectionEntry<'projects'>[]> {
