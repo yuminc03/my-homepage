@@ -1,7 +1,7 @@
 # 진행 상황
 - 최종 업데이트: 2026-09-18
 - 이 문서 하나만 읽으면 새 채팅에서 바로 이어서 작업할 수 있도록 정리한 단일 기준 문서다
-- **마지막 세션 종료(2026-09-18)**: **프로젝트 목록·상세 완료 → 브라우저 확인 통과 → `develop` 병합·push까지 끝났다**. 미확정이던 결정 2건(데스크톱도 상세에서 Dock 숨김 시작 · 이전/다음 = 목록 순서)을 **확정**했다. 병합 커밋 `53f528e`, 문서 커밋 `e32bb16`까지 `origin/develop`에 push 완료, `feature/project-pages`는 로컬·원격 모두 삭제. **새 채팅은 2-1의 1(상태 확인) → 2-6 "스터디 목록·글"** 부터 시작한다. 지금 브랜치는 `develop`이고 작업 트리는 깨끗하다
+- **마지막 세션 종료(2026-09-18)**: **프로젝트 목록·상세 완료 → 브라우저 확인 통과 → `develop` 병합·push까지 끝났다**. 미확정이던 결정 2건(데스크톱도 상세에서 Dock 숨김 시작 · 이전/다음 = 목록 순서)을 **확정**했다. 병합 커밋 `53f528e`와 뒤이은 문서 커밋까지 `origin/develop`에 push 완료, `feature/project-pages`는 로컬·원격 모두 삭제. **새 채팅은 2-1의 1(상태 확인) → 2-6 "스터디 목록·글"** 부터 시작한다. 지금 브랜치는 `develop`이고 작업 트리는 깨끗하다
 
 ## 1. 한눈에 보기
 - **무엇을 만드나**: iOS 개발자 Chu Yumin의 개인 홈페이지(자기소개·프로젝트·스터디 기록·세미나 기록)
@@ -14,13 +14,13 @@
   - 데스크톱 창 ✕ 닫기 버튼 — 채택(2026-09-14), 데스크톱 창 화면 6장에 반영, `develop` 병합
 - **기술 스택**: Astro + 일반 CSS + TypeScript + Markdown Content Collections 확정(2026-09-14). 비교·약점·면접 질문은 `docs/tech-stack.md`
 - **시안 캔버스**: https://claude.ai/code/artifact/48a3c34c-b882-4f13-8e2f-7e3668bdb7b1 (v22, 페이지 5개 · 아트보드 25장)
-- **Git**: 시안·기술 스택 문서·`.claude/settings.json`(`92083d0`)이 `develop`에 반영되어 있다. `feature/astro-setup`(커밋 4개)을 `develop`에 병합 `004589b` → 브랜치 삭제(2026-09-14). `feature/site-shell`(테마 버튼 `872ec4b`, 공통 셸 `20d40c8`, Dock 자동 숨김 `e8eea35`, 시계 `88e86ca`, 문서 `cfe9270`)을 `develop`에 병합 `0227fa3` → 브랜치 삭제(2026-09-15). `feature/home-page`(첫 화면 `9907ebe`, iPhone 목업 `6da0b04`, 문서 `f6741d5`, 최근 기록 `062e860`, 문서 `1f8cbb8`)를 `develop`에 병합 `8c7568f` → 브랜치 삭제 → push(2026-09-16), 뒤이어 문서 `a725134` push. `feature/project-pages`(기능 12 + 문서 3, 커밋 목록은 12장)를 `develop`에 병합 `53f528e` → 로컬·원격 브랜치 삭제 → push(2026-09-18). **원격**: `origin/develop` = `e32bb16`(2026-09-18), `origin/master` = `8bf0e7b`(로컬 `master`와 같음, 아직 건드리지 않았다). `develop` → `master` 병합은 아직 하지 않았다
+- **Git**: 시안·기술 스택 문서·`.claude/settings.json`(`92083d0`)이 `develop`에 반영되어 있다. `feature/astro-setup`(커밋 4개)을 `develop`에 병합 `004589b` → 브랜치 삭제(2026-09-14). `feature/site-shell`(테마 버튼 `872ec4b`, 공통 셸 `20d40c8`, Dock 자동 숨김 `e8eea35`, 시계 `88e86ca`, 문서 `cfe9270`)을 `develop`에 병합 `0227fa3` → 브랜치 삭제(2026-09-15). `feature/home-page`(첫 화면 `9907ebe`, iPhone 목업 `6da0b04`, 문서 `f6741d5`, 최근 기록 `062e860`, 문서 `1f8cbb8`)를 `develop`에 병합 `8c7568f` → 브랜치 삭제 → push(2026-09-16), 뒤이어 문서 `a725134` push. `feature/project-pages`(기능 12 + 문서 3, 커밋 목록은 12장)를 `develop`에 병합 `53f528e` → 로컬·원격 브랜치 삭제 → push(2026-09-18). **원격**: `origin/develop` = 로컬 `develop`과 같음(2026-09-18 push), `origin/master` = `8bf0e7b`(로컬 `master`와 같음, 아직 건드리지 않았다). `develop` → `master` 병합은 아직 하지 않았다
 - **다음 단계**: 홈 완료 → 프로젝트 목록·상세 완료(병합·push 완료) → **스터디 목록·글**(계획 2-6) → 세미나 목록·행사 상세(2026-09-15 사용자 확정) → 홈 최근 기록 링크를 상세로 → 페이지 전환 모션 → 콘텐츠 검색 → placeholder 정리 → 배포 → **마지막: 개발 과정 설명 세션**(2026-09-17 요청). 화면마다 `develop`에서 `feature/*` 브랜치를 새로 만든다
 
 ## 2. 새 채팅에서 이어서 시작하기
 ### 2-1. 지금 바로 할 일
 1. `git status`로 브랜치와 작업 트리를 확인한다
-   - 기대 상태: **`develop` 브랜치**, 마지막 커밋은 `e32bb16` docs(그 앞이 병합 `53f528e`), 작업 트리 깨끗, `origin/develop`과 같음
+   - 기대 상태: **`develop` 브랜치**, 마지막 커밋은 문서(`docs:`) 커밋이고 그 앞에 병합 `53f528e`가 있다. 작업 트리 깨끗, `origin/develop`과 같음
    - 원격: `origin/develop` = 로컬과 같음, `origin/master` = `8bf0e7b`(아직 건드리지 않았다). 기능 브랜치는 남아 있지 않다
 2. Node는 **nvm의 24**를 쓴다. 셸 기본값이 21.7.3이라 명령 전에 `source ~/.nvm/nvm.sh && nvm use`(`.nvmrc` = 24)를 먼저 실행한다. 검증 방법은 2-2
 3. **다음 작업은 스터디 목록·글이다 → 2-6을 그대로 따라간다.** 시작할 때 `git switch -c feature/study-pages`(`develop`에서)
@@ -563,7 +563,7 @@
 - 인터랙션은 `onClick="{{handler}}"`, 조건 표시는 `<sc-if value="{{bool}}">`, 상태 스타일은 `data-*="{{값}}"` + CSS 선택자로 만든다(`class`에 값 끼워 넣기는 쓰지 않았다)
 
 ## 12. 브랜치·커밋 기록
-- 로컬 브랜치: `master`, `develop`(현재). 원격(`origin`, `https://github.com/yuminc03/my-homepage.git`): `master` `8bf0e7b`(로컬과 같음), `develop` `e32bb16`(2026-09-18 push, `origin/develop` 추적). 기능 브랜치는 남아 있지 않다. `develop` → `master` 병합은 아직 하지 않았다
+- 로컬 브랜치: `master`, `develop`(현재). 원격(`origin`, `https://github.com/yuminc03/my-homepage.git`): `master` `8bf0e7b`(로컬과 같음), `develop`(2026-09-18 push, `origin/develop` 추적, 로컬과 같음 — 마지막은 문서 커밋). 기능 브랜치는 남아 있지 않다. `develop` → `master` 병합은 아직 하지 않았다
 - `feature/project-pages`(2026-09-17~18, `develop` `a725134`에서 분기, **`develop` 병합 `53f528e`로 완료, 로컬·원격 삭제**), 오래된 순
   - `5c0c5f4` feat: 프로젝트 목록용 getProjects 헬퍼 추가
   - `119243c` docs: 사이트 완성 뒤 마지막 단계로 개발 과정 설명 세션 추가
