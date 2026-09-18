@@ -11,7 +11,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **새 채팅을 시작하면 먼저 `PROGRESS.md`를 읽는다.** 현재 상태, 지금 할 일, 확정된 결정, 시안 재게시 방법이 모두 정리된 단일 기준 문서다.
 - 디자인 시안 단계입니다. `design/`에 Claude Design 캔버스용 `.dc.html` 시안(데스크톱·모바일·태블릿 각 7화면 + 모션 3장)과 `canvas.json`, 조립 결과물 `chu-yumin-portfolio.html`이 있습니다.
 - 기술 스택은 **Astro + 일반 CSS + TypeScript + Markdown Content Collections**로 확정했습니다(2026-09-14, 근거는 `docs/tech-stack.md`, 요약은 `PROGRESS.md` 5-11).
-- Astro 프로젝트를 저장소 루트에 생성했습니다. 공통 셸(메뉴바·Dock 자동 숨김·창·테마 버튼·시계)과 목록 페이지 틀 3개까지 `develop`에 병합·원격 push했고(2026-09-15), 홈(첫 화면·iPhone 목업·최근 기록)까지 구현해 `develop`에 병합·push했습니다(2026-09-16, 병합 `8c7568f`). 프로젝트 목록·상세는 `feature/project-pages`에 커밋·원격 push했고 `develop` 병합 전입니다(2026-09-17). 다음은 스터디 → 세미나 목록·상세입니다. 배포 주소는 GitHub Pages 하위 경로 `https://yuminc03.github.io/my-homepage/`입니다.
+- Astro 프로젝트를 저장소 루트에 생성했습니다. 공통 셸(메뉴바·Dock 자동 숨김·창·테마 버튼·시계)과 목록 페이지 틀 3개까지 `develop`에 병합·원격 push했고(2026-09-15), 홈(첫 화면·iPhone 목업·최근 기록)까지 구현해 `develop`에 병합·push했습니다(2026-09-16, 병합 `8c7568f`). 프로젝트 목록·상세는 브라우저 확인까지 마치고 `develop`에 병합·push했습니다(2026-09-18, 병합 `53f528e`). 다음은 스터디 목록·글이고, 작업 계획은 `PROGRESS.md` 2-6에 정리해 두었습니다. 그 뒤는 세미나 목록·상세입니다. 배포 주소는 GitHub Pages 하위 경로 `https://yuminc03.github.io/my-homepage/`입니다.
 
 ## 명령어
 
