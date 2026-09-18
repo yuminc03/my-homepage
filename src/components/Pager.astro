@@ -1,0 +1,174 @@
+---
+// 상세 화면 맨 아래 이전/다음 링크. 프로젝트 상세가 먼저 쓰고 스터디 글·행사 상세도 같은 컴포넌트를 쓴다
+// - 이전·다음은 목록에 보이는 순서 기준(목록에서 바로 위 카드 = 이전, 바로 아래 카드 = 다음)
+// - 모바일: 세로로 쌓기 / 태블릿·데스크톱: 2칸. 이전이 없으면 빈 칸을 두어 다음이 늘 오른쪽에 온다
+interface PagerLink {
+	href: string;
+	title: string;
+}
+
+interface Props {
+	prev?: PagerLink;
+	next?: PagerLink;
+	prevLabel: string;
+	nextLabel: string;
+}
+
+const { prev, next, prevLabel, nextLabel } = Astro.props;
+---
+
+{
+	(prev || next) && (
+		<nav class="pager" aria-label={`${prevLabel} · ${nextLabel}`}>
+			{prev ? (
+				<a class="item" href={prev.href} rel="prev">
+					<span class="label">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M15 5l-7 7 7 7" />
+						</svg>
+						{prevLabel}
+					</span>
+					<span class="title">{prev.title}</span>
+				</a>
+			) : (
+				<span class="placeholder" aria-hidden="true" />
+			)}
+			{next && (
+				<a class="item next" href={next.href} rel="next">
+					<span class="label">
+						{nextLabel}
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M9 5l7 7-7 7" />
+						</svg>
+					</span>
+					<span class="title">{next.title}</span>
+				</a>
+			)}
+		</nav>
+	)
+}
+
+<style>
+	.pager {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		margin-top: 40px;
+		padding-top: 32px;
+		border-top: 1px solid var(--win-divider);
+	}
+
+	.placeholder {
+		display: none;
+	}
+
+	.item {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+		min-width: 0;
+		padding: 16px 18px;
+		border: 1px solid var(--win-divider);
+		border-radius: 14px;
+		background: var(--win-card);
+		transition:
+			transform var(--dur-press) var(--ease-out),
+			border-color var(--dur-fast) var(--ease-out);
+	}
+
+	.item.next {
+		align-items: flex-end;
+		text-align: right;
+	}
+
+	.item:active {
+		transform: scale(0.985);
+	}
+
+	.item:focus-visible {
+		outline: 2px solid var(--win-accent);
+		outline-offset: 2px;
+	}
+
+	.label {
+		display: flex;
+		align-items: center;
+		gap: 5px;
+		color: var(--win-accent);
+		font-size: 12.5px;
+		font-weight: 600;
+	}
+
+	.label svg {
+		width: 13px;
+		height: 13px;
+	}
+
+	.title {
+		color: var(--win-ink-strong);
+		font-size: 15px;
+		font-weight: 700;
+		line-height: 1.45;
+		word-break: keep-all;
+	}
+
+	@media (min-width: 744px) {
+		.pager {
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 14px;
+			margin-top: 48px;
+			padding-top: 36px;
+		}
+
+		.placeholder {
+			display: block;
+		}
+
+		.item {
+			gap: 7px;
+			padding: 18px 20px;
+			border-radius: 16px;
+		}
+
+		.label {
+			font-size: 13px;
+		}
+
+		.title {
+			font-size: 15.5px;
+		}
+	}
+
+	@media (min-width: 1180px) {
+		.pager {
+			gap: 20px;
+			margin-top: 56px;
+			padding-top: 40px;
+		}
+
+		.item {
+			gap: 8px;
+			padding: 22px 26px;
+		}
+
+		.item:hover {
+			border-color: var(--win-accent);
+		}
+
+		.label svg {
+			width: 14px;
+			height: 14px;
+		}
+
+		.title {
+			font-size: 16px;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.item {
+			transition: none;
+		}
+	}
+</style>

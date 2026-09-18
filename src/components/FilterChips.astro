@@ -1,0 +1,156 @@
+---
+// 목록 필터 칩: 전체 + 분류 칩. 누르면 같은 필터 영역의 항목 중 분류가 맞지 않는 것을 hidden으로 숨긴다
+// - 프로젝트 목록이 먼저 쓰고, 스터디 목록도 같은 컴포넌트를 쓴다
+// - 페이지는 칩과 항목을 [data-filter]로 함께 감싸고, 각 항목에 data-filter-item과 data-categories="iOS|Side Project"(| 구분)를 붙인다
+// - 선택은 ?category=로 주소에 남겨(replaceState) 새로고침·뒤로 가기에도 유지한다
+// - 스크립트가 없으면 칩은 전체만 선택된 채 남고 목록은 모두 보인다
+// - 칩 모양은 폭마다 다르다: 모바일 가로 스크롤 / 태블릿·데스크톱 줄바꿈
+interface Props {
+	categories: readonly string[];
+	label: string;
+}
+
+const { categories, label } = Astro.props;
+---
+
+<div class="chips" role="group" aria-label={label}>
+	<button type="button" class="chip" data-filter-chip="" aria-pressed="true">전체</button>
+	{
+		categories.map((category) => (
+			<button type="button" class="chip" data-filter-chip={category} aria-pressed="false">
+				{category}
+			</button>
+		))
+	}
+</div>
+<p class="status" data-filter-status aria-live="polite"></p>
+
+<script>
+	function initFilter(root: HTMLElement) {
+		const chips = [...root.querySelectorAll<HTMLButtonElement>('[data-filter-chip]')];
+		const items = [...root.querySelectorAll<HTMLElement>('[data-filter-item]')];
+		const status = root.querySelector<HTMLElement>('[data-filter-status]');
+		const values = new Set(chips.map((chip) => chip.dataset.filterChip));
+
+		const apply = (value: string, fromUser: boolean) => {
+			for (const chip of chips) {
+				chip.setAttribute('aria-pressed', String(chip.dataset.filterChip === value));
+			}
+
+			let shown = 0;
+			for (const item of items) {
+				const match = value === '' || (item.dataset.categories ?? '').split('|').includes(value);
+				item.hidden = !match;
+				if (match) shown += 1;
+			}
+
+			// 처음 불러올 때는 읽어 주지 않고, 사용자가 칩을 눌렀을 때만 결과 개수를 알린다
+			if (!fromUser) return;
+			if (status) status.textContent = `${shown}개 표시`;
+
+			const url = new URL(location.href);
+			if (value) url.searchParams.set('category', value);
+			else url.searchParams.delete('category');
+			history.replaceState(history.state, '', url);
+		};
+
+		for (const chip of chips) {
+			chip.addEventListener('click', () => apply(chip.dataset.filterChip ?? '', true));
+		}
+
+		const initial = new URLSearchParams(location.search).get('category');
+		if (initial && values.has(initial)) apply(initial, false);
+	}
+
+	document.querySelectorAll<HTMLElement>('[data-filter]').forEach(initFilter);
+</script>
+
+<style>
+	.chips {
+		display: flex;
+		gap: 8px;
+		margin: 0 -20px 26px;
+		padding: 0 20px;
+		overflow-x: auto;
+		scrollbar-width: none;
+	}
+
+	.chips::-webkit-scrollbar {
+		display: none;
+	}
+
+	.chip {
+		display: flex;
+		flex-shrink: 0;
+		align-items: center;
+		height: 36px;
+		padding: 0 16px;
+		border: 1px solid var(--win-chip-line);
+		border-radius: 999px;
+		background: var(--win-bg);
+		color: var(--win-icon);
+		font: inherit;
+		font-size: 13.5px;
+		font-weight: 500;
+		white-space: nowrap;
+		cursor: pointer;
+		transition:
+			background-color var(--dur-fast) var(--ease-out),
+			border-color var(--dur-fast) var(--ease-out),
+			color var(--dur-fast) var(--ease-out);
+	}
+
+	.chip[aria-pressed='true'] {
+		border-color: var(--win-solid-bg);
+		background: var(--win-solid-bg);
+		color: var(--win-solid-ink);
+		font-weight: 600;
+	}
+
+	.chip:focus-visible {
+		outline: 2px solid var(--win-accent);
+		outline-offset: 2px;
+	}
+
+	/* 스크린 리더에만 읽히는 결과 개수 */
+	.status {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		margin: -1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
+	}
+
+	@media (min-width: 744px) {
+		.chips {
+			flex-wrap: wrap;
+			margin: 0 0 32px;
+			padding: 0;
+			overflow: visible;
+		}
+
+		.chip {
+			height: 40px;
+			padding: 0 18px;
+			font-size: 14px;
+		}
+	}
+
+	@media (min-width: 1180px) {
+		.chips {
+			gap: 10px;
+			margin-bottom: 40px;
+		}
+
+		.chip {
+			padding: 0 20px;
+		}
+
+		.chip[aria-pressed='false']:hover {
+			border-color: var(--win-accent);
+			color: var(--win-ink-strong);
+		}
+	}
+</style>

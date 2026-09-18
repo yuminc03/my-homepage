@@ -1,11 +1,11 @@
 # 진행 상황
-- 최종 업데이트: 2026-09-16
+- 최종 업데이트: 2026-09-18
 - 이 문서 하나만 읽으면 새 채팅에서 바로 이어서 작업할 수 있도록 정리한 단일 기준 문서다
-- **마지막 세션 종료(2026-09-16)**: **홈 화면 완료**. `feature/home-page`를 `develop`에 병합(`8c7568f`)하고 브랜치 삭제 + `origin/develop` push까지 마쳤다. 지금 브랜치는 `develop`(작업 트리 깨끗). 새 채팅은 **2-1의 3 "프로젝트 목록·상세"** 부터 시작한다
+- **마지막 세션 종료(2026-09-18)**: **프로젝트 목록·상세 완료 + 사용자 브라우저 확인 통과**(임시 데이터 5건으로 목록·상세·Dock·테마·5폭 확인, 문제 없음). 미확정이던 결정 2건(데스크톱도 상세에서 Dock 숨김 시작 · 이전/다음 = 목록 순서)을 **확정**했다. `feature/project-pages`에 기능 커밋 12개 + 문서 커밋 3개. 새 채팅은 **2-1의 3 "병합"(사용자 확인 후) → 4 "스터디 목록·글"** 부터 시작한다
 
 ## 1. 한눈에 보기
 - **무엇을 만드나**: iOS 개발자 Chu Yumin의 개인 홈페이지(자기소개·프로젝트·스터디 기록·세미나 기록)
-- **지금 단계**: 디자인 시안 완료, 기술 스택 확정(Astro + 일반 CSS), **Astro 프로젝트 생성**(임시 홈 1장, 빌드 확인), **전역 토큰 CSS 이식**(`src/styles/tokens.css`), **콘텐츠 컬렉션 스키마**(프로젝트·스터디·세미나, MDX) , **공통 셸**(테마 버튼·메뉴바·Dock 자동 숨김·창·시계, 목록 틀 3개), **홈 페이지**(첫 화면·iPhone 목업·최근 기록) — 여기까지 모두 `develop` 병합·원격 push 완료. 다음은 프로젝트 목록·상세다
+- **지금 단계**: 디자인 시안 완료, 기술 스택 확정(Astro + 일반 CSS), **Astro 프로젝트 생성**(임시 홈 1장, 빌드 확인), **전역 토큰 CSS 이식**(`src/styles/tokens.css`), **콘텐츠 컬렉션 스키마**(프로젝트·스터디·세미나, MDX) , **공통 셸**(테마 버튼·메뉴바·Dock 자동 숨김·창·시계, 목록 틀 3개), **홈 페이지**(첫 화면·iPhone 목업·최근 기록) — 여기까지 모두 `develop` 병합·원격 push 완료. **프로젝트 목록·상세**(필터 칩·카드·상세 페이지) — `feature/project-pages`에 커밋·원격 push, `develop` 병합 대기. 다음은 스터디 목록·글이다
 - **시안 진행도**
   - 데스크톱 7화면(홈·목록 3·상세 3) — 완료
   - 모바일 7화면(홈 화면 메타포) — 완료
@@ -14,26 +14,31 @@
   - 데스크톱 창 ✕ 닫기 버튼 — 채택(2026-09-14), 데스크톱 창 화면 6장에 반영, `develop` 병합
 - **기술 스택**: Astro + 일반 CSS + TypeScript + Markdown Content Collections 확정(2026-09-14). 비교·약점·면접 질문은 `docs/tech-stack.md`
 - **시안 캔버스**: https://claude.ai/code/artifact/48a3c34c-b882-4f13-8e2f-7e3668bdb7b1 (v22, 페이지 5개 · 아트보드 25장)
-- **Git**: 시안·기술 스택 문서·`.claude/settings.json`(`92083d0`)이 `develop`에 반영되어 있다. `feature/astro-setup`(커밋 4개)을 `develop`에 병합 `004589b` → 브랜치 삭제(2026-09-14). `feature/site-shell`(테마 버튼 `872ec4b`, 공통 셸 `20d40c8`, Dock 자동 숨김 `e8eea35`, 시계 `88e86ca`, 문서 `cfe9270`)을 `develop`에 병합 `0227fa3` → 브랜치 삭제(2026-09-15). `feature/home-page`(첫 화면 `9907ebe`, iPhone 목업 `6da0b04`, 문서 `f6741d5`, 최근 기록 `062e860`, 문서 `1f8cbb8`)를 `develop`에 병합 `8c7568f` → 브랜치 삭제 → push(2026-09-16). **원격**: `origin/develop` = `8c7568f`(2026-09-16), `origin/master` = `8bf0e7b`(로컬 `master`와 같음, 아직 건드리지 않았다). `develop` → `master` 병합은 아직 하지 않았다
-- **다음 단계**: 홈 완료(첫 화면 → iPhone 목업 → 최근 기록) → 프로젝트 목록·상세 → 스터디 목록·글 → 세미나 목록·행사 상세(2026-09-15 사용자 확정) → 페이지 전환 모션 → 콘텐츠 검색. 화면마다 `develop`에서 `feature/*` 브랜치를 새로 만든다
+- **Git**: 시안·기술 스택 문서·`.claude/settings.json`(`92083d0`)이 `develop`에 반영되어 있다. `feature/astro-setup`(커밋 4개)을 `develop`에 병합 `004589b` → 브랜치 삭제(2026-09-14). `feature/site-shell`(테마 버튼 `872ec4b`, 공통 셸 `20d40c8`, Dock 자동 숨김 `e8eea35`, 시계 `88e86ca`, 문서 `cfe9270`)을 `develop`에 병합 `0227fa3` → 브랜치 삭제(2026-09-15). `feature/home-page`(첫 화면 `9907ebe`, iPhone 목업 `6da0b04`, 문서 `f6741d5`, 최근 기록 `062e860`, 문서 `1f8cbb8`)를 `develop`에 병합 `8c7568f` → 브랜치 삭제 → push(2026-09-16), 뒤이어 문서 `a725134` push. `feature/project-pages`(2026-09-17, 커밋 목록은 12장) → **원격 push, 병합 전**. **원격**: `origin/develop` = `a725134`(2026-09-16), `origin/feature/project-pages`(2026-09-17), `origin/master` = `8bf0e7b`(로컬 `master`와 같음, 아직 건드리지 않았다). `develop` → `master` 병합은 아직 하지 않았다
+- **다음 단계**: 홈 완료 → 프로젝트 목록·상세 완료(병합 대기) → **스터디 목록·글** → 세미나 목록·행사 상세(2026-09-15 사용자 확정) → 홈 최근 기록 링크를 상세로 → 페이지 전환 모션 → 콘텐츠 검색 → placeholder 정리 → 배포 → **마지막: 개발 과정 설명 세션**(2026-09-17 요청). 화면마다 `develop`에서 `feature/*` 브랜치를 새로 만든다
 
 ## 2. 새 채팅에서 이어서 시작하기
 ### 2-1. 지금 바로 할 일
 1. `git status`로 브랜치와 작업 트리를 확인한다
-   - 기대 상태: `develop` 브랜치, 마지막 커밋 `8c7568f`(홈 병합), 작업 트리 깨끗, `origin/develop`과 같음
-   - 원격: `origin/develop` = `8c7568f`, `origin/master` = `8bf0e7b`
+   - 기대 상태: `feature/project-pages` 브랜치, 마지막 커밋은 문서 커밋 `docs: 프로젝트 목록·상세 구현 기록과 다음 작업(스터디) 정리`, 작업 트리 깨끗, `origin/feature/project-pages`와 같음
+   - 원격: `origin/develop` = `a725134`, `origin/master` = `8bf0e7b`, `origin/feature/project-pages` = 로컬과 같음
 2. Node는 **nvm의 24**를 쓴다. 셸 기본값이 21.7.3이라 명령 전에 `source ~/.nvm/nvm.sh && nvm use`(`.nvmrc` = 24)를 먼저 실행한다. 검증 방법은 2-2
-3. **프로젝트 목록·상세 ← 지금 할 일** (`develop`에서 `feature/project-pages` 브랜치를 새로 만든다. 끝나면 커밋 제안 → 사용자 확인)
-   - 시안: 데스크톱 `design/Projects.dc.html` 60–228줄(창) / `design/ProjectDetail.dc.html`, 모바일 `design/MobileProjects.dc.html` 59줄~(필터 칩 가로 스크롤)·67줄~(카드 1열) / `design/MobileProjectDetail.dc.html`, 태블릿 `design/TabletProjects.dc.html` 57줄~(칩 한 줄)·65줄~(카드 2열) / `design/TabletProjectDetail.dc.html`
-   - 지금 있는 것: `src/pages/projects/index.astro`는 `SiteLayout` + `Window` + `PageHeading`만 있는 틀이다. 여기에 필터 칩과 카드 목록을 넣는다
-   - 만들 순서(커밋도 이 단위로 나눈다)
-     1. `src/lib/content.ts`에 `getProjects()` 추가(`draft` 제외 + 최신 순. 정렬 기준은 `startDate` 내림차순, 진행 중(`endDate` 없음)을 위로 둘지 사용자와 정한다)
-     2. 목록 카드 + 필터 칩. 분류는 `PROJECT_CATEGORIES`(`iOS`/`Web`/`Side Project`, 한 프로젝트에 여러 개)를 쓰고, 칩은 **글에 실제로 쓰인 분류만** 모아 만든다. JS 없이 되는 방식(칩을 `?category=` 링크 또는 `:has()`/`details` 방식)인지, 작은 클라이언트 스크립트를 쓸지 먼저 정한다
-     3. 상세 페이지 `src/pages/projects/[...slug].astro`: 앱 아이콘 88px·이름·한 줄 소개·태그 → 링크 버튼 → 요약(기간·역할·기술·플랫폼) → 스크린샷 띠 → 본문(`## 소개` / `## 기술적으로 고민한 점` / `## 배운 점`) → 주요 기능(`PhoneMockup` 재사용, 폰·설명 좌우 번갈아) → 이전/다음
-     4. 홈 최근 기록·목록의 링크를 상세로 바꾸는 것은 **스터디·세미나 상세까지 만든 뒤** 한 번에 한다(지금은 목록으로 간다)
-   - 함께 정할 것: `Window`에 `← 목록`(데스크톱)·`‹`(모바일·태블릿 타이틀 바) 링크 추가, 상세 화면은 **Dock 숨김 상태로 시작**(`Dock`에 prop 추가, 2-3의 셸 메모)
-   - 확인: 빌드, 예시 프로젝트(`sample-project`, 지금 `draft: true`)를 임시로 공개해 스크린샷 5폭(320·390·768·1180·1440) 라이트/다크, 빈 상태도 확인 후 되돌리기
-4. 그 뒤 순서(2026-09-15 확정): 스터디 목록·글 → 세미나 목록·행사 상세 → 페이지 전환 모션 → 콘텐츠 검색(5-12) → 대괄호 `[ ]` placeholder 실제 콘텐츠 정리 → GitHub Actions 배포. 화면마다 `develop`에서 `feature/*` 새 브랜치
+3. **`feature/project-pages` → `develop` 병합 ← 지금 할 일(사용자 확인 후)**
+   - 사용자에게 병합 여부를 먼저 묻는다. 확인되면 `develop`으로 이동 → `git merge --no-ff feature/project-pages -m "merge: feature/project-pages → develop" -m "<요약 문단>"`(`-F -`는 안 됨, 2-2) → 병합 뒤 빌드 확인 → 로컬 브랜치 삭제 → `develop` push. 원격 `feature/project-pages` 삭제(`git push origin --delete feature/project-pages`)도 사용자에게 물어본다
+   - **브라우저 확인은 2026-09-18에 끝났다**(아래 2-3). 다시 볼 일이 생기면 임시 데이터 만드는 방법은 2-2의 "채워진 상태 확인"
+   - 미확정이던 결정 2건은 이 확인으로 **확정**했다(5-14): 데스크톱도 상세에서 Dock 숨김 시작, 이전/다음 = 목록 순서
+4. **스터디 목록·글** (`develop`에서 `feature/study-pages` 새 브랜치)
+   - 시안: 데스크톱 `design/StudyLog.dc.html`(목록) / `design/StudyPost.dc.html`(글, 오른쪽 목차 240px), 모바일 `MobileStudyLog`·`MobileStudyPost`(목차는 제목 아래 접히는 상자, 코드 13px 가로 스크롤·줄 번호 sticky), 태블릿 `TabletStudyLog`(카드 1열)·`TabletStudyPost`(읽기 폭 672px, 목차 접히는 상자, 코드 14px/23px). 시작 전에 세 폭 시안을 모두 읽는다(5-4·5-6·5-7)
+   - 지금 있는 것(재사용): `getStudyPosts()`·`formatDay()`, `PageHeading`, `FilterChips`(스터디 카테고리는 1개라 `data-categories`에 그 값만 넣으면 된다), `Pager`(`prevLabel="이전 글"`), `Window`의 `back`, `SiteLayout`의 `dockHidden`, 목록 틀 `src/pages/study/index.astro`
+   - 새로 정할 것
+     - 읽는 시간 계산(본문 글자 수 기준, 한국어 분당 글자 수를 정해 `src/lib/`에 함수로)
+     - 목차: `render()`의 `headings`(depth 2·3)로 만든다
+     - **본문 스타일 공유**: 프로젝트 상세의 Markdown 스타일은 `ProjectArticle.astro` 안에 `.prose :global(...)`로 들어 있다. 스터디 글도 같은 문단·목록·코드 스타일이 필요하므로 공용으로 뺄지(예: `src/styles/prose.css` 또는 `Prose` 컴포넌트) 먼저 결정한다. `###` 카드 묶기(`lib/sections.ts`)는 프로젝트 전용이라 스터디에는 쓰지 않는다
+     - 코드 블록: 줄 번호·가로 스크롤·폭별 글자 크기(시안). Astro 기본 구문 강조 결과(`pre.astro-code`, 인라인 색)를 확인하고 정한다
+   - 커밋은 **빌드되는 최소 단위**로 나눈다(2-5): 헬퍼 → 공용 컴포넌트마다 하나 → 목록 → 글 페이지 → 목록 카드 연결 순서. 각 커밋 직전에 빌드
+   - 확인: 예시 글 `src/content/study/sample-post.md`(`draft: true`)를 임시 공개하고 복사본을 몇 개 더 만들어(카테고리·날짜 다르게) 정렬·필터·이전/다음·빈 상태·5폭 라이트/다크를 확인한 뒤 모두 되돌린다
+5. 그 뒤 순서: 세미나 목록·행사 상세 → **홈 최근 기록 카드·위젯 링크를 목록에서 상세로 바꾸기**(스터디·세미나 상세가 생긴 뒤 한 번에) → 페이지 전환 모션 → 콘텐츠 검색(5-12) → 대괄호 `[ ]` placeholder 실제 콘텐츠 정리 → GitHub Actions 배포 → **마지막 단계: 개발 과정 설명 세션**(2026-09-17 사용자 요청). 화면마다 `develop`에서 `feature/*` 새 브랜치
+   - 마지막 단계 내용: 사이트가 완성되면 사용자에게 개발 과정 전체를 설명한다. 쓰인 문법(Astro 컴포넌트·프런트매터·스코프 스타일·`light-dark()`·Content Collections·TypeScript 등), 핵심 기능별 구현 원리(테마·Dock 자동 숨김·필터·콘텐츠 헬퍼 등), 면접에서 나올 만한 질문과 답을 다룬다. 기술 선택 근거는 `docs/tech-stack.md`와 연결한다. 구현하면서 설명할 거리(원리·대안·트레이드오프)는 5장 결정 기록에 계속 남긴다
 
 ### 2-2. 검증 방법 (다시 쓰는 요령)
 - **빌드**: `npm run build`(결과 `dist/`). `npx astro check`는 `@astrojs/check`가 없어 설치 질문에서 멈추므로 쓰지 않는다(쓰려면 사용자 확인 후 설치)
@@ -46,18 +51,21 @@
 - **동작 검사**(`--dump-dom --virtual-time-budget=<ms>`): 사본에 검사 스크립트를 넣고 결과를 `<pre id="log">`에 써서 DOM으로 읽는다. `--dump-dom`도 Chrome이 스스로 끝나지 않을 때가 있으니 결과를 파일로 받고 일정 시간 뒤 종료시킨다(스크린샷과 같은 방식). virtual time에서는 화면을 그리지 않아 **`scroll` 이벤트와 `requestAnimationFrame`이 오지 않는다** → `<head>` 맨 앞에서 rAF를 `setTimeout(16ms)`으로 바꾸고 `scrollTo()` 뒤 `scroll` 이벤트를 직접 보낸다. 마우스는 `new PointerEvent('pointermove', { pointerType: 'mouse', clientY })`, 시각은 `Date`를 감싼 가짜 클래스
 - **`astro preview`** 는 백그라운드로 분리되는 단일 서버다. 쓰면 반드시 `npx astro preview stop`으로 끈다(`pkill`로 안 잡힘)
 - **git**: `git commit -F -`(heredoc)는 되지만 `git merge -F -`는 `could not read file '-'`로 실패한다 → 병합 메시지는 `-m`을 문단마다 여러 번
+- **채워진 상태 확인(2026-09-17 방식)**: 예시 글의 `draft`를 `false`로 바꾸고, 예시 폴더를 `tmp-a`·`tmp-b`처럼 복사해 `sed`로 제목·분류·날짜·링크·스크린샷 유무를 바꿔 여러 경우를 만든다. 빌드 결과 HTML을 파이썬 정규식으로 읽어 순서·링크를 확인하고 스크린샷을 찍은 뒤, `tmp-*` 폴더를 지우고 `draft: true`로 되돌린다(`git status`로 콘텐츠 폴더 변경이 없는지 확인)
+- **긴 상세 페이지 스크린샷**: 데스크톱은 `--window-size=1440,3700`처럼 세로로 길게, 모바일·태블릿은 iframe 높이 3900px 하네스로 찍고 `sips -Z 2000`으로 줄여서 본다
+- **Dock 동작 검사(상세)**: 사본 `<head>` 맨 앞에서 rAF를 `setTimeout(16ms)`으로 바꾸고 `</body>` 앞에 높이 4000px 빈 칸 + 검사 스크립트를 넣는다. `scrollTo(0, y)` 뒤 `scroll` 이벤트를 직접 보내 `data-state`를 확인(상세: 시작 hidden → y 30에서도 hidden → 위로 올리면 shown / 목록: 시작 shown)
+- **커밋 나누기**: 작업을 한꺼번에 한 뒤 나눌 때는 최종 파일을 scratchpad에 복사해 두고 작업 트리를 되돌린 다음, 커밋 단위마다 파일을 다시 복사(한 파일에 두 변경이 섞였으면 중간 상태를 스크립트로 만든다) → 빌드 → 커밋. 끝나면 `cmp`로 최종 파일과 같은지 확인
 
 ### 2-3. 최근 세션에서 끝낸 일 (요약, 자세한 결정은 5장)
-- 공통 셸(`feature/site-shell` → `develop` 병합 `0227fa3`, 2026-09-15 원격 첫 push): 테마 버튼 `872ec4b` · 메뉴바·Dock·창·목록 틀 `20d40c8` · Dock 자동 숨김 `e8eea35`(5-3, 동작 검사 16항목) · 데스크톱 시계 `88e86ca`(5-12, 분 경계 검사) · 문서 `cfe9270`
-  - 실제 브라우저에서 아직 볼 것: Dock 트랙패드 스크롤 느낌·하단 hover·동작 줄이기(목록 창이 짧아 페이지 구현 뒤 확인)
-  - 상세 화면 "Dock 숨김 상태로 시작"(모바일·태블릿 시안)은 상세 페이지 구현 때 `Dock`에 prop 추가(`data-state` 초기값 + 스크립트 `scrolledDown` 초기값)
-- 홈(`feature/home-page` → `develop` 병합 `8c7568f` → 브랜치 삭제 → push, 2026-09-16. 결정은 5-13)
-  - 첫 화면 `9907ebe`: `profile.ts`·`WindowDots`·`HomePanel`·`ProfileCode`·홈 페이지. 인사말 음절 중간 줄바꿈을 `keep-all` + `cqi` 글자 크기로 해결
-  - iPhone 목업 `6da0b04`: `src/assets/iphone-16-pro.png`(사용자 허용 커밋) + `PhoneMockup`(slot, 프로젝트 상세에서 재사용). WebP 1x 4.5KB · 2x 8KB
-  - 최근 기록 `062e860` + 문서 `1f8cbb8`: `lib/content.ts`·`lib/date.ts`·`RecentWidgets`·`RecentWindow` 추가, 홈 페이지에 창·위젯·스크롤 힌트 연결
-    - 검증: 빌드 통과, 빈 상태·채워진 상태 스크린샷 5폭(320·390·768·1180·1440, 라이트/다크), 동작 검사 4폭 모두 PASS(스크롤 힌트 링크·폭별 표시 규칙·창이 첫 화면 아래에 있음·`#recent` 이동). 사용자가 실제 브라우저에서 스크롤 동작까지 확인함
-    - 채워진 상태는 예시 글을 임시로 복제해 4개씩 공개하고 확인한 뒤 지웠다(최신 순 정렬·최대 3개 제한까지 확인). 저장소에는 예시 3개가 `draft: true`로 그대로 남아 있다
-    - 병합 뒤 `develop`에서 빌드를 다시 확인했다
+- 프로젝트 목록·상세(`feature/project-pages`, 2026-09-17, 결정은 5-14, 커밋 목록은 12장)
+  - 목록: `getProjects()`(진행 중 먼저 → 시작일 최신 순) · `FilterChips`(작은 스크립트, `?category=`) · `ProjectCard`(그라디언트 바탕 + iPhone 목업 + 앱 아이콘) · 카드가 상세로 연결
+  - 상세: `projects/[slug].astro` + `Window` `back` · `Dock` `startHidden` · `TagList` · `Pager` · `ScreenshotBand` · `ProjectFeatures` · `ProjectArticle`(`lib/sections.ts`로 본문을 섹션·카드로 묶고 소개 뒤에 주요 기능 삽입)
+  - 검증: 빌드(각 커밋 직전마다), 임시 글로 정렬·필터 동작 6항목·분류 1개일 때 칩 생략·빈 상태, 목록·상세 스크린샷 5폭 라이트/다크, Dock 숨김 시작 검사 12항목 모두 통과. 스크린샷에서 찾은 문제(320px 링크 버튼 넘침, 다크 코드 블록 경계) 수정
+  - 사용자 요청으로 커밋을 **빌드되는 최소 단위**(컴포넌트마다 하나, 리팩터링 분리)로 다시 나눔. 사이트 완성 뒤 마지막 단계로 **개발 과정 설명 세션**을 하기로 함(2-1의 5)
+  - **사용자 브라우저 확인 통과(2026-09-18)**: 임시 데이터 5건(진행 중 2·완료 3, 분류 iOS/Web/Side Project, 링크 2개·1개·없음, 스크린샷 있음·없음, 기능 3·2·1·0개)을 만들어 목록(필터 클릭·`?category=` 유지·뒤로 가기·hover·3+2 줄바꿈), 상세(링크 버튼 줄바꿈·스크린샷 띠 없는 경우·기능 0개인 경우·이전/다음·필터 유지), Dock 숨김 시작·불러내기, 테마 전환, 5폭을 모두 확인. **문제 없음**. 확인 뒤 임시 데이터는 삭제하고 `sample-project`는 `draft: true`로 복구
+- 홈(`feature/home-page` → `develop` 병합 `8c7568f`, 2026-09-16, 결정은 5-13): 첫 화면 `9907ebe` · iPhone 목업 `6da0b04` · 최근 기록 `062e860`
+- 공통 셸(`feature/site-shell` → `develop` 병합 `0227fa3`, 2026-09-15): 테마 버튼 · 메뉴바·Dock·창 · Dock 자동 숨김 · 시계
+  - 실제 브라우저에서 아직 볼 것: Dock 트랙패드 스크롤 느낌·하단 hover·동작 줄이기
 - 알려진 문제: 320px 폭에서 모바일 Dock(아이콘 5개)이 화면 폭과 거의 같다(작은 기기 대응은 나중에)
 
 ### 2-4. 세션 시작 체크리스트 (매번)
@@ -71,6 +79,8 @@
 - Git Flow: `develop`에서 `feature/*`(버그는 `bugfix/*`) 브랜치를 만들고, 끝나면 `develop`에 `--no-ff` 병합 후 브랜치 삭제
 - 작업이 끝나면 Conventional Commits 메시지를 **제안만** 하고, 사용자가 확인한 뒤 커밋한다. 사용자 확인 없이 다음 작업으로 넘어가지 않는다
 - 커밋은 최소 단위로 나누고 메시지에 변경 내용과 이유를 구체적으로 쓴다
+  - **빌드되는 가장 작은 단위**(2026-09-17 사용자 재요청): 공용 컴포넌트는 하나씩, 동작을 바꾸지 않는 정리는 `refactor`로 따로, 페이지 → 링크 연결 순서(중간 커밋에 404 링크가 생기지 않게). 커밋 직전마다 `npm run build`
+  - 한 단계에서 커밋 여러 개가 나오면 목록을 한꺼번에 제안하고, 사용자 확인 뒤 순서대로 커밋한다
 - 작업이 끝나면 이 문서를 최신으로 갱신하고, 작업한 파일·영역을 구체적으로 설명한다
 - 마크다운: 글머리 기호는 `-`, 헤더 바로 다음 줄에 본문(빈 줄 없음)
 - 기술 스택을 정할 때는 선택 이유와 React·Next.js 등 대안 대비 장단점, 예상 면접 질문까지 정리한다
@@ -111,6 +121,11 @@
 | 홈 iPhone 목업 | 목업 이미지 저장소 추가(`astro:assets` WebP), `PhoneMockup` 컴포넌트, 데스크톱 코드 창 오른쪽 아래에 가짜 앱 화면 목업 | `feature/home-page` | 스크린샷 확인, 사용자 확인 후 커밋 `6da0b04`(2026-09-15) |
 | 홈 최근 기록 | 콘텐츠 헬퍼(`draft` 제외·최신 순)·날짜 형식, 데스크톱 최근 기록 창(스터디·세미나 3개씩)·스크롤 힌트, 모바일·태블릿 최근 위젯 2개, 태블릿 코드 \| 위젯 2단 | `feature/home-page` | 빌드·스크린샷 5폭·동작 검사 통과, 사용자 확인 후 커밋 `062e860` + 문서 `1f8cbb8`(2026-09-16) |
 | 홈 병합 | 홈 커밋 5개(첫 화면·목업·최근 기록·문서 2) | `feature/home-page` | `develop` 병합 `8c7568f` → 브랜치 삭제 → `origin/develop` push(2026-09-16, 사용자 요청) |
+| 프로젝트 헬퍼 | `getProjects()`: draft 제외, 진행 중 먼저 → 시작일 최신 순 | `feature/project-pages` | 커밋 `5c0c5f4`(2026-09-17) |
+| 마지막 단계 추가 | 사이트 완성 뒤 개발 과정 설명 세션을 계획에 추가 | `feature/project-pages` | 문서 커밋 `119243c`(2026-09-17) |
+| 프로젝트 목록 | `FilterChips`·`ProjectCard`·목록 페이지 1/2/3열·빈 상태, 전역 `[hidden]` 규칙 | `feature/project-pages` | 동작 검사 6항목·스크린샷 5폭 통과, 커밋 `aa35332`(2026-09-17) |
+| 프로젝트 상세 | 창 ‹ 링크 · Dock 숨김 시작 · TagList·목업 스타일 정리 · Pager·ScreenshotBand·ProjectFeatures·ProjectArticle · 상세 페이지 · 카드 연결 | `feature/project-pages` | 스크린샷 5폭·Dock 검사 12항목 통과, 빌드 최소 단위 커밋 10개 `b855458`…`a83696f`(2026-09-17) |
+| 프로젝트 push | 문서 갱신 후 기능 브랜치 원격 push | `feature/project-pages` | `origin/feature/project-pages`(2026-09-17, 사용자 요청). `develop` 병합 대기 |
 
 ### 남은 일
 - [x] 모션·✕·문서 커밋 → `develop` 병합 → 브랜치 삭제 (2026-09-14, 사용자 확인)
@@ -131,18 +146,23 @@
 - [x] `feature/site-shell` → `develop` 병합 `0227fa3` → 브랜치 삭제 → `develop` 원격 push (2026-09-15, 사용자 요청)
 - [x] **홈 화면 구현**(데스크톱: 바로가기·About me·코드 에디터 창·iPhone 목업·스크롤 힌트·최근 기록 창 / 모바일·태블릿: 위젯·앱 아이콘 4개·최근 기록 위젯) — 첫 화면 `9907ebe` · iPhone 목업 `6da0b04` · 최근 기록 `062e860`(2026-09-16)
 - [x] `feature/home-page` → `develop` 병합 `8c7568f` → 브랜치 삭제 → push (2026-09-16, 사용자 요청)
-- [ ] **프로젝트 목록·상세 구현** ← 지금 할 일(2-1의 3, `feature/project-pages`)
+- [x] **프로젝트 목록·상세 구현**(`feature/project-pages`, 2026-09-17, 원격 push)
+- [x] 프로젝트 목록·상세 브라우저 확인(2026-09-18, 문제 없음) — 미확정 결정 2건 확정(5-14)
+- [ ] `feature/project-pages` → `develop` 병합 ← 지금 할 일(사용자 확인 후, 2-1의 3)
+- [ ] **스터디 목록·글 구현**(2-1의 4, `feature/study-pages`)
 - [ ] 목록·상세 페이지를 만들 때 홈 최근 기록의 카드·위젯 링크를 목록에서 **상세로** 바꾼다(지금은 상세가 없어 목록으로 보낸다)
-- [ ] 목록·상세 페이지 구현(프로젝트·스터디·세미나), 상세의 `← 목록` / ‹ 뒤로 링크를 `Window`에 추가
+- [ ] 목록·상세 페이지 구현(프로젝트 완료 · 스터디 · 세미나). 상세의 ‹ 뒤로 링크(`Window` `back`)·Dock 숨김 시작(`dockHidden`)·이전/다음(`Pager`)은 2026-09-17에 만들어 두었다
 - [ ] 페이지 전환 모션(View Transitions `ClientRouter`, `transition:persist`로 메뉴바·Dock 유지)
 - [ ] 콘텐츠 검색 기능 — 목록·상세 페이지 구현 뒤 별도 브랜치(방식은 5-12 추천안을 사용자와 확정)
 - [x] `draft` 제외 헬퍼·목록 정렬(날짜 내림차순)·날짜 표기 — `src/lib/content.ts`·`src/lib/date.ts`(2026-09-16, 홈 최근 기록과 함께). 목록 페이지도 이 헬퍼만 쓴다
-- [ ] 화면 구현 때 함께: 스터디 읽는 시간 계산, 세미나 MDX 컴포넌트 `Photo`·`PhotoPair`·`PhotoSide`(상세 페이지에서 `<Content components={{ ... }} />`로 넘김), 프로젝트 목록용 헬퍼(`src/lib/content.ts`에 추가)
+- [ ] 화면 구현 때 함께: 스터디 읽는 시간 계산·목차, 세미나 MDX 컴포넌트 `Photo`·`PhotoPair`·`PhotoSide`(상세 페이지에서 `<Content components={{ ... }} />`로 넘김). 프로젝트 목록용 헬퍼는 완료(`getProjects`·`projectHref`)
+- [ ] 본문(Markdown) 스타일 공용화 검토: 지금은 `ProjectArticle.astro` 안에만 있다(스터디 글 구현 때 결정)
 - [ ] 실제 글을 쓰면 예시 글 3개(`sample-*`)와 임시 이미지 삭제
 - [ ] GitHub Actions로 GitHub Pages 자동 배포 설정(원격 push가 필요하므로 사용자 확인 후)
 - [ ] 대괄호 `[ ]` placeholder를 실제 내용으로 교체 — 프로젝트 이름·소개·태그, 포스트 제목·요약·날짜, 세미나 이름·장소·소감, 연락처 링크(GitHub/Email/LinkedIn)
 - [ ] 사이트 구현
 - [ ] `develop` → `master` 병합·원격 push (사용자 확인 후)
+- [ ] **마지막 단계: 개발 과정 설명 세션** — 사이트 완성 뒤 문법·핵심 기능·면접 예상 질문을 사용자에게 설명(2026-09-17 요청, 2-1의 5)
 - 선택 과제: `DirectionG.dc.html` 색 기준표의 미니 화면은 "창 본문은 항상 밝게" 시절 모습이다. 다시 쓸 일이 생기면 갱신
 
 ## 5. 확정된 결정
@@ -294,6 +314,38 @@
     - 스크롤 힌트는 `#recent`로 가는 링크이고 `scrollcue` 2.2s 무한 애니메이션을 쓴다. `prefers-reduced-motion`이면 애니메이션만 끈다
   - iPhone 목업(2026-09-15): `PhoneMockup`은 프레임 이미지와 투명한 화면 영역만 맡고 화면 안 내용은 slot으로 받는다(프로젝트 상세에서 실제 스크린샷에 재사용). 폭은 `--phone-width`, 기울기·그림자·위치는 부모. 홈은 `.code-slot` 안에 `position: absolute; top: 278px; right: -14px; rotate(3deg)`로 코드 창 오른쪽 아래에 걸치고 데스크톱에서만 보인다. 이미지는 `src/assets`에 두어 `<Image width={225} densities={[1, 2]}>`로 WebP 225·450px를 만든다. 목업 전체가 장식이라 `aria-hidden`
 
+### 5-14. 프로젝트 목록·상세 구현 (2026-09-17 결정)
+- **정렬**: 진행 중(`endDate` 없음)을 위로, 그 안에서 `startDate` 최신 순(사용자 선택). `getProjects()`에서 `Number(!b.endDate) - Number(!a.endDate) || 시작일 차이`
+- **필터 방식**: 작은 클라이언트 스크립트(사용자 선택). 대안이던 `?category=` 페이지 링크는 정적 배포에서 분류마다 페이지를 만들어야 하고, `:has()` + radio는 JS가 없지만 칩 접근성 처리가 번거로웠다
+  - `FilterChips.astro`: `<button aria-pressed>` 칩(전체 + 글에 실제로 쓰인 분류만, `PROJECT_CATEGORIES` 순서). 분류가 하나뿐이면 칩을 그리지 않는다
+  - 규약: 페이지가 칩과 항목을 `[data-filter]`로 감싸고 항목에 `data-filter-item` + `data-categories="iOS|Side Project"`(`|` 구분, 분류 이름에 공백이 있어서). 맞지 않는 항목은 `hidden`
+  - 선택은 `history.replaceState`로 `?category=`에 남겨 새로고침·상세에서 돌아오기에도 유지(방문 기록은 쌓지 않음). 사용자가 누를 때만 `aria-live`로 "N개 표시"
+  - 전역 `[hidden] { display: none !important; }`(`global.css`): `hidden`의 숨김은 브라우저 기본 스타일이라 컴포넌트의 `display: flex`에 진다
+  - 스크립트 없이도 전체 목록은 보인다. View Transitions를 넣으면 이 스크립트는 `astro:page-load`에서 다시 실행해야 한다
+- **목록 카드**(`ProjectCard.astro`): 썸네일 = 고정색 그라디언트(`tone` 0–3, 목록 순서로 돌아가며, 다크에서만 `--win-media-dim` 덮개) + 아래로 넘치는 `PhoneMockup`(첫 스크린샷 → 없으면 첫 기능 이미지 → 없으면 빈 화면) + 왼쪽 아래 앱 아이콘. 이름·소개·`TagList`. `href`가 있을 때만 `<a>`(없으면 `<article>`), 누름 scale(.985) · 데스크톱 hover 썸네일 -4px
+  - 열 수·간격은 페이지의 `<ul class="grid">`가 정한다(모바일 1열 30px · 태블릿 2열 40/24 · 데스크톱 3열 40/32)
+- **상세 페이지**(`src/pages/projects/[slug].astro`)
+  - 주소는 콘텐츠 폴더 이름(`project.id`, `projectHref()`). 컬렉션 glob이 `*/index.md`라 id에 `/`가 없어 `[...slug]` 대신 `[slug]`
+  - `getStaticPaths`에서 이전/다음을 props로 넘긴다. **이전 = 목록에서 바로 위 카드, 다음 = 바로 아래 카드**(2026-09-18 브라우저 확인으로 확정)
+  - 읽기 폭: 모바일 창 여백 그대로 · 태블릿 `.column` 좌우 12px 추가(창 36 + 12 = 시안 48) · 데스크톱 `max-width: 800px` 가운데. 스크린샷 띠만 더 넓다
+  - 머리: 아이콘 72/88/88px · 이름 24/30/36px · 소개 · 태그 → 링크 버튼(첫 링크가 진한 버튼: App Store가 있으면 App Store, GitHub만 있으면 GitHub. 새 창 + 스크린 리더용 "(새 창)") → 요약 `<dl>`(모바일·태블릿 2×2, 데스크톱 4칸, 칸 선은 칸의 왼쪽·아래 테두리). 기간은 `YYYY.MM – YYYY.MM` 또는 `– 진행 중`
+  - 링크 버튼: 모바일은 칸을 똑같이 나누는 그리드(링크 하나면 한 칸 전체), **359px 이하에서는 한 줄에 하나씩**("App Store에서 보기"가 반 칸에 들어가지 않음), 태블릿·데스크톱은 글자 길이만큼
+  - 뒤로: 데스크톱은 본문 맨 위 `‹ Projects` 링크, 모바일·태블릿은 `Window`의 `back` prop으로 타이틀 바 창 점 자리에 `‹`(44px, 액센트 색, 이름 "프로젝트 목록으로")
+  - **Dock은 모든 폭에서 숨긴 채 시작**(`SiteLayout dockHidden` → `Dock startHidden`). 시안은 모바일·태블릿만 숨김이지만, 폭마다 초기 상태를 다르게 하면 첫 화면에서 깜빡일 수 있어 통일(2026-09-18 브라우저 확인으로 확정). 숨긴 채 시작하면 위로 스크롤해 한 번 나타나기 전까지는 "맨 위 48px면 항상 보임" 규칙을 끈다(읽기 시작하며 조금 스크롤할 때 튀어나오지 않게)
+- **본문과 주요 기능 끼워 넣기**(`ProjectArticle.astro` + `src/lib/sections.ts`)
+  - 시안 순서는 소개 → 주요 기능 → 기술적으로 고민한 점 → 배운 점인데 주요 기능은 프런트매터 데이터라 Markdown에 없다
+  - Astro 7의 기본 Markdown 처리기는 **Sätteri**(`@astrojs/markdown-satteri`, unified/rehype가 아닌 자체 방문자 기반 플러그인 API)라 플러그인 대신 **`Astro.slots.render()`로 본문·features slot을 HTML 문자열로 만든 뒤 `(?=<h2[\s>])` 위치에서 나눈다**. `##` = `<section class="doc-section">`, 그 안의 `###` = `<div class="doc-card">`(묶음 `.doc-cards`), 첫 `##` 앞 내용 = `.doc-lead`. 첫 섹션 뒤에 주요 기능 HTML을 넣고 `set:html`
+  - 안전한 이유: Markdown 제목은 본문 맨 바깥 단계에 나오고 코드 블록 속 `<h2`는 `&lt;h2`로 바뀐다. 제한: 인용문·목록 안 제목(`> ## 제목`)은 쓰지 않는다
+  - 스타일은 `.prose :global(...)`로 주되 **`:is(.doc-lead, .doc-section)` 안으로 한정**(끼워 넣은 주요 기능의 자체 스타일을 덮지 않게). 섹션 간격은 `.prose`의 flex `gap` 40/48/56px. 문단 사이는 `> :not(h2) + *`에 1em(제목 바로 다음 요소는 제목 margin만), 카드가 제목 바로 아래면 `h2 + .doc-cards`에 4/6/8px 추가(시안 12→16 등). 코드 블록은 구문 강조 테마 색 + `--win-divider` 테두리(다크에서 경계가 안 보여서)
+  - 명시도 주의: `.prose[cid] :is(...) :is(p, li)`와 `.doc-card :is(p, li)`가 같은 명시도라 **나중에 오는 규칙이 이긴다** → 미디어 쿼리마다 카드 규칙을 뒤에 두고 `line-height`도 다시 쓴다
+- **공용 컴포넌트**
+  - `TagList`: 카드·상세 공용 태그(`ul/li`, 12/12.5px, 데스크톱 간격 8px)
+  - `PhoneMockup`: slot으로 받은 `img`를 `.screen > :global(img)`로 꽉 채우고 위 기준으로 자른다(slot 내용에는 부모 컴포넌트의 스코프 속성이 붙어 일반 선택자가 닿지 않음). 카드·스크린샷 띠·주요 기능이 함께 씀
+  - `ScreenshotBand`: 모바일·태블릿은 창 본문 여백만큼 음수 margin(-20/-36px)으로 화면 끝까지, 바탕은 스크롤되지 않는 바깥 상자, 끝 여백은 `::after` 빈 칸(여백 − 간격), 폰 170/190px. 데스크톱은 둥근 띠 540px, `justify-content: safe center`, 양 끝 제외 폰 -20px, 폰 210px. 스크롤 목록에 `tabindex="0"`·이름. `Window` 본문 여백을 바꾸면 여기도 바꾼다
+  - `ProjectFeatures`: DOM은 항상 폰 → 설명, 태블릿·데스크톱 짝수 번째는 그리드 칸 지정으로만 좌우를 바꾼다(읽는 순서 유지). 모바일은 카드 바탕 위 폰 170px
+  - `Pager`: `prev`/`next`(`href`·`title`)와 라벨을 받는다. 모바일 세로, 태블릿·데스크톱 2칸(이전이 없으면 빈 칸). `rel="prev|next"`. 스터디 글·행사 상세에서 재사용
+- **커밋 단위**(사용자 요청): 빌드되는 가장 작은 단위. 공용 컴포넌트마다 하나, `refactor` 분리, 상세 페이지 → 목록 카드 연결 순서(2-5)
+
 ## 6. 저작권 주의선
 - macOS·Xcode의 실제 UI를 복제하지 않는다. Apple 로고, SF Symbols, 신호등 색(빨강·노랑·초록) 창 컨트롤, 실제 메뉴 구조를 쓰지 않는다
 - 자체 팔레트와 직접 그린 SVG 아이콘을 쓴다. 창 컨트롤 점은 라일락 2개 + 민트 1개(장식이며 기능 없음). 닫기는 별도 ✕ 버튼으로 둔다
@@ -394,29 +446,39 @@
 | `.vscode/extensions.json` | Astro VS Code 확장 추천 |
 | `src/pages/index.astro` | 홈(5-13). 데스크톱: 바로가기 4 · About me 창 · 코드 에디터 창(겹침) · iPhone 목업 · 스크롤 힌트 · 최근 기록 창(`#recent`) / 모바일·태블릿: About 위젯 · 앱 아이콘 4 · 코드 위젯 · 최근 기록 위젯(태블릿은 코드 \| 위젯 2단). `#contact`·`#code` 도착 강조 |
 | `src/data/profile.ts` | 자기소개 `PROFILE`: 인사말(3조각)·좋아하는 문구(2줄)·기술 4개·연락처(GitHub·Email) |
-| `src/lib/content.ts` | 컬렉션 읽기 헬퍼 `getStudyPosts()`·`getSeminars()`: `draft: true` 제외 + 날짜 내림차순. 화면은 이 함수만 쓴다 |
+| `src/lib/content.ts` | 컬렉션 읽기 헬퍼 `getProjects()`(진행 중 먼저 → 시작일 최신 순)·`getStudyPosts()`·`getSeminars()`: `draft: true` 제외 + 날짜 내림차순. `projectHref()` 상세 주소. 화면은 이 함수만 쓴다 |
+| `src/lib/sections.ts` | 렌더링된 Markdown HTML을 `##` 섹션(`.doc-section`)·`###` 카드(`.doc-card`)·머리말(`lead`)로 나누는 `splitSections()`(5-14) |
+| `src/pages/projects/[slug].astro` | 프로젝트 상세: 뒤로 링크·머리·태그·링크 버튼·요약 `<dl>` → `ScreenshotBand` → `ProjectArticle`(+`ProjectFeatures` slot) → `Pager`. Dock 숨김 시작(5-14) |
+| `src/components/FilterChips.astro` | 목록 필터 칩 + 스크립트(`[data-filter]`·`data-filter-item`·`data-categories` 규약, `?category=`, `aria-live`). 모바일 가로 스크롤 / 태블릿·데스크톱 줄바꿈 |
+| `src/components/ProjectCard.astro` | 프로젝트 목록 카드(그라디언트 썸네일·목업·아이콘·이름·소개·`TagList`). `tone`, `href` 있으면 링크 |
+| `src/components/TagList.astro` | 태그 알약 목록(카드·상세 공용) |
+| `src/components/ProjectArticle.astro` | 상세 본문: slot HTML을 섹션·카드로 묶고 소개 뒤에 features slot 삽입, `.prose` Markdown 스타일 |
+| `src/components/ProjectFeatures.astro` | 주요 기능 FEATURE 01…: 모바일 폰 위·설명 아래 / 태블릿·데스크톱 좌우 번갈아 |
+| `src/components/ScreenshotBand.astro` | 스크린샷 띠: 모바일·태블릿 화면 끝까지 가로 스크롤 / 데스크톱 둥근 띠 가운데 |
+| `src/components/Pager.astro` | 상세 이전/다음 링크(라벨 prop, 스터디·세미나 재사용) |
 | `src/lib/date.ts` | 날짜 표기 `formatDay`(`YYYY.MM.DD`)·`formatMonth`(`YYYY.MM`). 프런트매터 날짜를 UTC 기준으로 꺼낸다 |
 | `src/components/RecentWindow.astro` | 데스크톱 최근 기록 창: `HomePanel` 안에 스터디·세미나 2열(각 최대 3개, 카드 전체가 목록 링크), 빈 상태 점선 상자 |
 | `src/components/RecentWidgets.astro` | 모바일·태블릿 최근 기록 위젯 2개(각 최신 1개). 모바일 2열 168px, 태블릿 세로 2개(세미나는 썸네일 84px 가로 배치) |
-| `src/pages/projects/index.astro` · `study/index.astro` · `seminars/index.astro` | 목록 창 틀: `SiteLayout` + `Window` + `PageHeading`(제목·설명은 `apps.ts`). 목록 내용은 페이지 구현 때 |
-| `src/layouts/SiteLayout.astro` | 공통 셸: 고정 글로우 바탕 3개 · `MenuBar` · `<main>` · `Dock`. props `active`(앱 id), `surface`(`desk` 홈 / `window` 창 화면), `title`·`description` |
+| `src/pages/projects/index.astro` | 프로젝트 목록: `PageHeading` → `FilterChips`(분류 2개 이상일 때) → 카드 그리드 1/2/3열(카드는 상세 링크), 빈 상태 문구 |
+| `src/pages/study/index.astro` · `seminars/index.astro` | 목록 창 틀: `SiteLayout` + `Window` + `PageHeading`(제목·설명은 `apps.ts`). 목록 내용은 페이지 구현 때 |
+| `src/layouts/SiteLayout.astro` | 공통 셸: 고정 글로우 바탕 3개 · `MenuBar` · `<main>` · `Dock`. props `active`(앱 id), `surface`(`desk` 홈 / `window` 창 화면), `title`·`description`, `dockHidden`(상세) |
 | `src/data/apps.ts` | 앱 목록 `APPS`(홈·프로젝트·스터디 기록·세미나 기록: 라벨·창 제목·설명·경로·아이콘 바탕·SVG), `CONTACT`(`/#contact`), `CODE_EDITOR`(`/#code`, 데스크톱 Dock 전용), `getApp()` |
 | `src/lib/url.ts` | `withBase(path)`: base(`/my-homepage`)를 붙인 내부 경로. 내부 링크는 모두 이것으로 만든다 |
 | `src/components/AppIcon.astro` | 아이콘 타일. 크기는 부모의 CSS 변수(`--icon-size`·`--icon-radius`·`--glyph-size`·`--glyph-stroke`), `shadow` 옵션 |
 | `src/components/MenuBar.astro` | 유리 메뉴바. 데스크톱 36px(로고·이름·메뉴 4개 `aria-current`·테마 버튼·시계) / 모바일 52px·태블릿 56px(홈에서만, 로고·이름·44px 테마 버튼) |
 | `src/components/MenuClock.astro` | 데스크톱 메뉴바 시계. 기기 현지 시각 `HH:MM`, 분 경계마다 `setTimeout`으로 갱신, JS 전에는 빈 자리(폭 고정)(5-12) |
-| `src/components/Dock.astro` | 하단 고정 Dock. 앱 4개 + 실행 점 · 구분선 · 코드 에디터(데스크톱) · 연락처. `surface` desk/window 유리. 크기 모바일 48 / 태블릿 56 / 데스크톱 52px. 자동 숨김 스크립트(`data-state`)·힌트 막대(5-3) |
-| `src/components/Window.astro` | 창. 데스크톱: 최대 1240px 가운데 창(타이틀 바 44px, ✕ 28px) / 모바일·태블릿: 위 12·16px 틈 시트(타이틀 바 52·56px sticky, ✕ 44px). 본문 여백 20·36·48px, 아래는 Dock 자리만큼 비움 |
+| `src/components/Dock.astro` | 하단 고정 Dock. 앱 4개 + 실행 점 · 구분선 · 코드 에디터(데스크톱) · 연락처. `surface` desk/window 유리. 크기 모바일 48 / 태블릿 56 / 데스크톱 52px. 자동 숨김 스크립트(`data-state`)·힌트 막대(5-3). `startHidden`이면 숨긴 채 시작(5-14) |
+| `src/components/Window.astro` | 창. 데스크톱: 최대 1240px 가운데 창(타이틀 바 44px, ✕ 28px) / 모바일·태블릿: 위 12·16px 틈 시트(타이틀 바 52·56px sticky, ✕ 44px). 본문 여백 20·36·48px, 아래는 Dock 자리만큼 비움. `back`(href·label)이면 모바일·태블릿 타이틀 바 창 점 자리에 ‹ 링크 |
 | `src/components/PageHeading.astro` | 목록 화면 큰 제목(30·34·44px)과 한 줄 설명 |
 | `src/components/WindowDots.astro` | 창 점 3개(라일락 2 + 민트 1, 장식). 크기 `--dot-size`·간격 `--dot-gap`, `tone` window(테마 토큰)/code(고정색). `Window`·`HomePanel`이 사용 |
 | `src/components/HomePanel.astro` | 홈 창/위젯. 데스크톱 타이틀 바 44px(✕ 없음) / 모바일·태블릿 위젯. `tone` window/code. 폭·위치는 부모가 감싼 요소에서 |
 | `src/components/ProfileCode.astro` | `ProfileView.swift` 코드 에디터 내용: 파일 탭(데스크톱) · 줄 번호 · Swift 구문 색(고정색). 보이는 줄 8/12/14 |
-| `src/components/PhoneMockup.astro` | iPhone 16 Pro 목업: 프레임 이미지(`<Image>` WebP 1x·2x) + 투명 화면 영역(slot). 폭 `--phone-width`(5-8) |
+| `src/components/PhoneMockup.astro` | iPhone 16 Pro 목업: 프레임 이미지(`<Image>` WebP 1x·2x) + 투명 화면 영역(slot, 넘긴 `img`는 꽉 채워 위 기준으로 자름). 폭 `--phone-width`(5-8) |
 | `src/assets/iphone-16-pro.png` | Apple Design Resources iPhone 16 Pro 프레임(450×920 RGBA, 50KB). 사용자 허용으로 커밋(5-8) |
 | `src/layouts/BaseLayout.astro` | 모든 페이지 공통 문서 뼈대: `lang="ko"`, 메타(title·description 기본값), Noto Sans KR `<link>`, `tokens.css`·`global.css` import, `<head>` 인라인 스크립트(저장된 테마를 첫 화면 전에 `data-theme`에 적용), `<slot />` |
 | `src/components/ThemeToggle.astro` | 테마 전환 버튼(해/달 아이콘, `size` desktop/touch). 문서 위임 클릭 → `data-theme`·`localStorage('theme')` 저장, 버튼 이름 갱신, 누른 뒤 아이콘 애니메이션 |
 | `src/styles/tokens.css` | 디자인 토큰. 모션 곡선 3·시간 12, 색 55쌍 `light-dark()`, `color-scheme` 3가지(`:root`·`[data-theme="dark"]`·`[data-theme="light"]`) |
-| `src/styles/global.css` | 전역 기본: box-sizing, body 바탕 `--desk`·글자 `--ink`·글꼴, 링크 `--win-accent`(hover 전환은 모션 토큰), `img` 반응형, `.code` 고정폭 글꼴 |
+| `src/styles/global.css` | 전역 기본: box-sizing, body 바탕 `--desk`·글자 `--ink`·글꼴, 링크 `--win-accent`(hover 전환은 모션 토큰), `img` 반응형, `[hidden]` 항상 숨김(필터용), `.code` 고정폭 글꼴 |
 - 템플릿에서 가져오지 않은 것: `README.md`·`AGENTS.md`(기존 README·`CLAUDE.md` 사용), `.vscode/launch.json`, 기본 Astro 파비콘(나중에 자체 아이콘으로 추가)
 
 ### 10-3. 그 밖의 파일
@@ -443,7 +505,22 @@
 - 인터랙션은 `onClick="{{handler}}"`, 조건 표시는 `<sc-if value="{{bool}}">`, 상태 스타일은 `data-*="{{값}}"` + CSS 선택자로 만든다(`class`에 값 끼워 넣기는 쓰지 않았다)
 
 ## 12. 브랜치·커밋 기록
-- 로컬 브랜치: `master`, `develop`(현재). 원격(`origin`, `https://github.com/yuminc03/my-homepage.git`): `master` `8bf0e7b`(로컬과 같음), `develop` `8c7568f`(2026-09-16 push, `origin/develop` 추적). `develop` → `master` 병합은 아직 하지 않았다
+- 로컬 브랜치: `master`, `develop`, `feature/project-pages`(현재). 원격(`origin`, `https://github.com/yuminc03/my-homepage.git`): `master` `8bf0e7b`(로컬과 같음), `develop` `a725134`(2026-09-16 push, `origin/develop` 추적), `feature/project-pages`(2026-09-17 push, 추적 설정). `develop` → `master` 병합은 아직 하지 않았다
+- `feature/project-pages`(2026-09-17, `develop` `a725134`에서 분기, **병합 전**), 오래된 순
+  - `5c0c5f4` feat: 프로젝트 목록용 getProjects 헬퍼 추가
+  - `119243c` docs: 사이트 완성 뒤 마지막 단계로 개발 과정 설명 세션 추가
+  - `aa35332` feat: 프로젝트 목록 필터 칩과 카드 구현
+  - `b855458` feat: 창 타이틀 바에 목록으로 돌아가는 ‹ 링크 옵션 추가
+  - `e7da41e` feat: Dock을 숨긴 채 시작하는 옵션 추가
+  - `8b0dd87` refactor: 태그 목록을 TagList 컴포넌트로 분리
+  - `e8e3a1c` refactor: 스크린샷 채우기 스타일을 PhoneMockup으로 옮김
+  - `e6252b5` feat: 상세 화면 이전/다음 링크 Pager 컴포넌트 추가
+  - `04803ad` feat: 프로젝트 상세 스크린샷 띠 컴포넌트 추가
+  - `fd2df89` feat: 프로젝트 상세 주요 기능 컴포넌트 추가
+  - `a70d531` feat: 프로젝트 본문을 섹션·카드로 묶고 주요 기능을 끼우는 ProjectArticle 추가
+  - `60a35cf` feat: 프로젝트 상세 페이지 구현
+  - `a83696f` feat: 프로젝트 목록 카드를 상세 페이지로 연결
+  - (이 문서 갱신) docs: 프로젝트 목록·상세 구현 기록과 다음 작업(스터디) 정리
 - `develop` 직접 커밋: `92083d0` `.claude/settings.json` 권한 추가(2026-09-14)
 - 병합 후 삭제한 브랜치(순서대로): `feature/design-theme-dock`, `feature/design-color-direction`(`fab45e5`), `feature/design-theme-toggle`(`e610858`), `feature/design-detail-screens`(`bfcf341`), `feature/design-project-detail`(`0c7d2c9`), `feature/design-mobile`(`74c8149`), `feature/design-dark-windows`, `feature/design-iphone-mockup`(`eceb50a`), `feature/design-tablet`(`2d280cd`), `bugfix/profileview-code-widget`(`aa62f64`), `feature/design-tablet-rest`(`c1e2f5c`), `feature/design-motion`(모션 설계 · 데스크톱 창 ✕ 버튼 · 인수인계 문서, 2026-09-14), `feature/tech-stack`(기술 스택 결정 문서, 2026-09-14), `feature/astro-setup`(Astro 생성·토큰·MDX·스키마, 병합 `004589b`, 2026-09-14), `feature/site-shell`(테마 버튼·공통 셸·Dock 자동 숨김·시계, 병합 `0227fa3`, 2026-09-15), `feature/home-page`(홈 첫 화면·iPhone 목업·최근 기록, 커밋 5개, 병합 `8c7568f`, 2026-09-16)
 - 참고로 남겨 둔 비교안 커밋: 색상 A~F `de7d440`, 행사 상세 사진 묶음형 A `1769266`
@@ -451,4 +528,4 @@
 ## 13. 문서 관리 규칙
 - 이 문서가 현재 상태의 단일 기준이다. 작업이 끝날 때마다 1장(한눈에 보기)·2-1(지금 할 일)·4장(진행 기록)을 먼저 갱신한다
 - 결정이 확정되면 5장에 옮기고, 끝난 할 일은 4장 표로 옮긴다
-- 사용자 취향·기준처럼 대화 밖에서도 유지할 내용은 Claude 메모리에도 저장되어 있다(디자인 취향, 기술 스택 결정 기준, 디자인 방향)
+- 사용자 취향·기준처럼 대화 밖에서도 유지할 내용은 Claude 메모리에도 저장되어 있다(디자인 취향, 기술 스택 결정 기준, 디자인 방향, 마지막 단계 개발 과정 설명 세션)

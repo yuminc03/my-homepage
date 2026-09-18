@@ -3,20 +3,36 @@
 // - 데스크톱(≥1180px): 메뉴바 아래 가운데 떠 있는 창(최대 1240px). 타이틀 바 44px · 창 점 · 제목 · ✕(28px)
 // - 모바일·태블릿: 아래에서 올라와 화면을 채운 시트. 위 12/16px 틈으로 바탕이 비친다. 타이틀 바 52/56px(스크롤해도 고정) · ✕(44px)
 // - ✕는 창을 닫고 홈으로 간다. 창 점은 장식(기능 없음, 신호등 색 쓰지 않음)
+// - back이 있으면(상세 화면) 모바일·태블릿 타이틀 바 왼쪽의 창 점 자리에 ‹ 목록 링크를 둔다
+//   데스크톱은 창 점을 그대로 두고, 목록 링크는 페이지가 본문 읽기 폭 맨 위에 둔다(시안)
 import WindowDots from './WindowDots.astro';
 import { withBase } from '../lib/url';
 
 interface Props {
 	title: string;
+	back?: {
+		href: string;
+		/** 스크린 리더용 링크 이름(예: 프로젝트 목록으로) */
+		label: string;
+	};
 }
 
-const { title } = Astro.props;
+const { title, back } = Astro.props;
 ---
 
 <div class="window-area">
 	<section class="window" aria-label={title}>
-		<header class="titlebar">
+		<header class:list={['titlebar', { 'has-back': back }]}>
 			<span class="dots"><WindowDots /></span>
+			{
+				back && (
+					<a class="back" href={back.href} aria-label={back.label}>
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M15 5l-7 7 7 7" />
+						</svg>
+					</a>
+				)
+			}
 			<span class="title">{title}</span>
 			<a class="close" href={withBase('/')} aria-label="창 닫고 홈으로">
 				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -67,6 +83,41 @@ const { title } = Astro.props;
 		--dot-size: 9px;
 		--dot-gap: 6px;
 		display: flex;
+	}
+
+	/* 뒤로: 창 점 자리(첫 칸)에 44px 누름 영역. 창 점은 숨긴다 */
+	.titlebar.has-back {
+		padding-left: 6px;
+	}
+
+	.titlebar.has-back .dots {
+		display: none;
+	}
+
+	.back,
+	.back:hover {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 44px;
+		height: 44px;
+		border-radius: 12px;
+		color: var(--win-accent);
+		transition: background-color var(--dur-fast) var(--ease-out);
+	}
+
+	.back svg {
+		width: 20px;
+		height: 20px;
+	}
+
+	.back:active {
+		background: var(--win-press);
+	}
+
+	.back:focus-visible {
+		outline: 2px solid var(--win-accent);
+		outline-offset: -2px;
 	}
 
 	.title {
@@ -134,6 +185,15 @@ const { title } = Astro.props;
 			--dot-gap: 7px;
 		}
 
+		.titlebar.has-back {
+			padding-left: 10px;
+		}
+
+		.back svg {
+			width: 22px;
+			height: 22px;
+		}
+
 		.title {
 			font-size: 15px;
 		}
@@ -170,11 +230,23 @@ const { title } = Astro.props;
 			padding: 0 44px;
 		}
 
-		.dots {
+		.dots,
+		.titlebar.has-back .dots {
 			--dot-size: 11px;
 			--dot-gap: 8px;
+			display: flex;
 			position: absolute;
 			left: 16px;
+		}
+
+		/* 데스크톱은 목록 링크를 본문에 두므로 타이틀 바에서는 뺀다 */
+		.titlebar.has-back {
+			padding-left: 44px;
+		}
+
+		.back,
+		.back:hover {
+			display: none;
 		}
 
 		.title {

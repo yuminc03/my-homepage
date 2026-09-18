@@ -2,6 +2,7 @@
 // 사이트 공통 셸: 블러 글로우 바탕 · 메뉴바 · 본문(<main>) · Dock
 // - active: 메뉴바 활성 표시와 Dock 실행 점을 붙일 앱
 // - surface: desk = 홈(바탕 위, 모바일·태블릿에도 메뉴바 표시) / window = 창이 열린 화면(목록·상세)
+// - dockHidden: Dock을 숨긴 채 시작한다(상세 화면)
 import BaseLayout from './BaseLayout.astro';
 import MenuBar from '../components/MenuBar.astro';
 import Dock from '../components/Dock.astro';
@@ -12,9 +13,10 @@ interface Props {
 	surface?: 'desk' | 'window';
 	title?: string;
 	description?: string;
+	dockHidden?: boolean;
 }
 
-const { active, surface = 'window', title, description } = Astro.props;
+const { active, surface = 'window', title, description, dockHidden = false } = Astro.props;
 const app = getApp(active);
 const pageTitle = title ?? (active === 'home' ? app.title : `${app.label} · Chu Yumin`);
 ---
@@ -29,7 +31,7 @@ const pageTitle = title ?? (active === 'home' ? app.title : `${app.label} · Chu
 	<main class="site-main">
 		<slot />
 	</main>
-	<Dock active={active} surface={surface} />
+	<Dock active={active} surface={surface} startHidden={dockHidden} />
 </BaseLayout>
 
 <style>

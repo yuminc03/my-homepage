@@ -1,0 +1,204 @@
+---
+// 프로젝트 목록 카드: 썸네일(그라디언트 바탕 · 아래에서 올라온 iPhone 목업 · 앱 아이콘) → 이름 → 한 줄 소개 → 태그
+// - 시안: design/Projects.dc.html(3열) · TabletProjects(2열) · MobileProjects(1열). 열 수와 간격은 페이지가 정한다
+// - 폰 화면은 첫 스크린샷, 없으면 첫 주요 기능 이미지, 둘 다 없으면 빈 화면. 옆에 이름이 있어 이미지 alt는 비운다
+// - 바탕 그라디언트는 앱 아이콘처럼 테마와 무관한 고정색이고, tone(0–3)으로 카드마다 색을 바꾼다. 다크에서는 바탕만 --win-media-dim으로 덮는다
+// - href가 있으면 카드 전체가 링크(상세 페이지), 없으면 링크 없는 article로 그린다(동작 없는 링크를 만들지 않는다)
+import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import PhoneMockup from './PhoneMockup.astro';
+import TagList from './TagList.astro';
+
+interface Props {
+	project: CollectionEntry<'projects'>;
+	tone?: number;
+	href?: string;
+}
+
+const { project, tone = 0, href } = Astro.props;
+const { title, summary, tags, icon, screenshots, features } = project.data;
+const screen = screenshots[0] ?? features[0]?.image;
+const Tag = href ? 'a' : 'article';
+---
+
+<Tag class="card" href={href} data-tone={tone % 4}>
+	<div class="thumb">
+		<div class="phone-slot">
+			<PhoneMockup>
+				{screen && <Image src={screen} alt="" width={134} densities={[1, 2]} loading="lazy" decoding="async" />}
+			</PhoneMockup>
+		</div>
+		<Image class="icon" src={icon} alt="" width={60} densities={[1, 2]} loading="lazy" decoding="async" />
+	</div>
+	<h2 class="name">{title}</h2>
+	<p class="summary">{summary}</p>
+	<TagList tags={tags} />
+</Tag>
+
+<style>
+	.card {
+		display: flex;
+		flex-direction: column;
+		color: inherit;
+	}
+
+	a.card {
+		transition: transform var(--dur-press) var(--ease-out);
+	}
+
+	a.card:active {
+		transform: scale(0.985);
+	}
+
+	a.card:focus-visible {
+		outline: 2px solid var(--win-accent);
+		outline-offset: 4px;
+		border-radius: 20px;
+	}
+
+	.thumb {
+		position: relative;
+		display: flex;
+		align-items: flex-end;
+		justify-content: center;
+		overflow: hidden;
+		height: 200px;
+		margin-bottom: 16px;
+		border-radius: 18px;
+		background: linear-gradient(150deg, oklch(93% 0.02 295), oklch(87% 0.036 335));
+		transition: transform var(--dur-window) var(--ease-out);
+	}
+
+	.card[data-tone='1'] .thumb {
+		background: linear-gradient(150deg, oklch(92% 0.024 335), oklch(87% 0.032 295));
+	}
+
+	.card[data-tone='2'] .thumb {
+		background: linear-gradient(150deg, oklch(92% 0.024 295), oklch(87% 0.032 295));
+	}
+
+	.card[data-tone='3'] .thumb {
+		background: linear-gradient(150deg, oklch(93% 0.019 175), oklch(87% 0.032 295));
+	}
+
+	/* 다크에서 밝은 그라디언트 바탕만 어둡게 덮는다. 폰·아이콘은 z-index로 덮개 위에 둔다 */
+	.thumb::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: var(--win-media-dim);
+		pointer-events: none;
+	}
+
+	/* 폰은 아래로 넘쳐 윗부분만 보인다(음수 margin-bottom + overflow: hidden) */
+	.phone-slot {
+		--phone-width: 128px;
+		position: relative;
+		z-index: 1;
+		flex-shrink: 0;
+		margin-bottom: -92px;
+		filter: drop-shadow(0 16px 32px oklch(20% 0.022 290 / 0.28));
+	}
+
+	.icon {
+		position: absolute;
+		bottom: 16px;
+		left: 16px;
+		z-index: 1;
+		width: 52px;
+		height: 52px;
+		border-radius: 13px;
+		box-shadow: 0 8px 20px oklch(20% 0.022 290 / 0.3);
+		object-fit: cover;
+	}
+
+	.name {
+		margin: 0 0 6px;
+		color: var(--win-ink-strong);
+		font-size: 17px;
+		font-weight: 700;
+		line-height: 1.4;
+		word-break: keep-all;
+	}
+
+	.summary {
+		margin: 0 0 12px;
+		color: var(--win-ink-muted);
+		font-size: 14px;
+		line-height: 1.6;
+		word-break: keep-all;
+	}
+
+	@media (min-width: 744px) {
+		.thumb {
+			height: 240px;
+			margin-bottom: 18px;
+			border-radius: 20px;
+		}
+
+		.phone-slot {
+			--phone-width: 150px;
+			margin-bottom: -100px;
+			filter: drop-shadow(0 18px 36px oklch(20% 0.022 290 / 0.28));
+		}
+
+		.icon {
+			bottom: 18px;
+			left: 18px;
+			width: 56px;
+			height: 56px;
+			border-radius: 14px;
+			box-shadow: 0 10px 22px oklch(20% 0.022 290 / 0.3);
+		}
+
+		.name {
+			font-size: 18px;
+		}
+
+		.summary {
+			margin-bottom: 14px;
+			font-size: 15px;
+		}
+	}
+
+	@media (min-width: 1180px) {
+		.thumb {
+			height: 250px;
+			margin-bottom: 20px;
+		}
+
+		.phone-slot {
+			margin-bottom: -110px;
+		}
+
+		.icon {
+			bottom: 20px;
+			left: 20px;
+			width: 60px;
+			height: 60px;
+			border-radius: 15px;
+			box-shadow: 0 10px 24px oklch(20% 0.022 290 / 0.3);
+		}
+
+		.name {
+			margin-bottom: 8px;
+		}
+
+		.summary {
+			margin-bottom: 16px;
+			font-size: 14.5px;
+		}
+
+		/* 데스크톱은 마우스가 있어 누름 대신 썸네일이 살짝 떠오른다 */
+		a.card:hover .thumb {
+			transform: translateY(-4px);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		a.card,
+		.thumb {
+			transition: none;
+		}
+	}
+</style>
