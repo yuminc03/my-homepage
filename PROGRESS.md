@@ -1,7 +1,7 @@
 # 진행 상황
-- 최종 업데이트: 2026-09-17
+- 최종 업데이트: 2026-09-18
 - 이 문서 하나만 읽으면 새 채팅에서 바로 이어서 작업할 수 있도록 정리한 단일 기준 문서다
-- **마지막 세션 종료(2026-09-17)**: **프로젝트 목록·상세 완료**. `feature/project-pages`에 기능 커밋 12개 + 문서 커밋 2개를 올리고 **원격에 push**했다(`origin/feature/project-pages`). **`develop` 병합은 아직 안 했다**. 새 채팅은 **2-1의 3 "병합"(사용자 확인 후) → 4 "스터디 목록·글"** 부터 시작한다
+- **마지막 세션 종료(2026-09-18)**: **프로젝트 목록·상세 완료 + 사용자 브라우저 확인 통과**(임시 데이터 5건으로 목록·상세·Dock·테마·5폭 확인, 문제 없음). 미확정이던 결정 2건(데스크톱도 상세에서 Dock 숨김 시작 · 이전/다음 = 목록 순서)을 **확정**했다. `feature/project-pages`에 기능 커밋 12개 + 문서 커밋 3개. 새 채팅은 **2-1의 3 "병합"(사용자 확인 후) → 4 "스터디 목록·글"** 부터 시작한다
 
 ## 1. 한눈에 보기
 - **무엇을 만드나**: iOS 개발자 Chu Yumin의 개인 홈페이지(자기소개·프로젝트·스터디 기록·세미나 기록)
@@ -25,8 +25,8 @@
 2. Node는 **nvm의 24**를 쓴다. 셸 기본값이 21.7.3이라 명령 전에 `source ~/.nvm/nvm.sh && nvm use`(`.nvmrc` = 24)를 먼저 실행한다. 검증 방법은 2-2
 3. **`feature/project-pages` → `develop` 병합 ← 지금 할 일(사용자 확인 후)**
    - 사용자에게 병합 여부를 먼저 묻는다. 확인되면 `develop`으로 이동 → `git merge --no-ff feature/project-pages -m "merge: feature/project-pages → develop" -m "<요약 문단>"`(`-F -`는 안 됨, 2-2) → 병합 뒤 빌드 확인 → 로컬 브랜치 삭제 → `develop` push. 원격 `feature/project-pages` 삭제(`git push origin --delete feature/project-pages`)도 사용자에게 물어본다
-   - 병합 전에 사용자가 실제 브라우저에서 보고 싶어 하면: 예시 글 `src/content/projects/sample-project/index.md`의 `draft`를 잠시 `false`로 바꾸고 `npm run dev` → `http://localhost:4321/my-homepage/projects/`. 확인 뒤 되돌린다
-   - 사용자에게 아직 명시적으로 확인받지 않은 결정(5-14에 "확인 필요"로 표시): 데스크톱도 상세에서 Dock 숨김 시작, 이전/다음 = 목록 순서
+   - **브라우저 확인은 2026-09-18에 끝났다**(아래 2-3). 다시 볼 일이 생기면 임시 데이터 만드는 방법은 2-2의 "채워진 상태 확인"
+   - 미확정이던 결정 2건은 이 확인으로 **확정**했다(5-14): 데스크톱도 상세에서 Dock 숨김 시작, 이전/다음 = 목록 순서
 4. **스터디 목록·글** (`develop`에서 `feature/study-pages` 새 브랜치)
    - 시안: 데스크톱 `design/StudyLog.dc.html`(목록) / `design/StudyPost.dc.html`(글, 오른쪽 목차 240px), 모바일 `MobileStudyLog`·`MobileStudyPost`(목차는 제목 아래 접히는 상자, 코드 13px 가로 스크롤·줄 번호 sticky), 태블릿 `TabletStudyLog`(카드 1열)·`TabletStudyPost`(읽기 폭 672px, 목차 접히는 상자, 코드 14px/23px). 시작 전에 세 폭 시안을 모두 읽는다(5-4·5-6·5-7)
    - 지금 있는 것(재사용): `getStudyPosts()`·`formatDay()`, `PageHeading`, `FilterChips`(스터디 카테고리는 1개라 `data-categories`에 그 값만 넣으면 된다), `Pager`(`prevLabel="이전 글"`), `Window`의 `back`, `SiteLayout`의 `dockHidden`, 목록 틀 `src/pages/study/index.astro`
@@ -62,7 +62,7 @@
   - 상세: `projects/[slug].astro` + `Window` `back` · `Dock` `startHidden` · `TagList` · `Pager` · `ScreenshotBand` · `ProjectFeatures` · `ProjectArticle`(`lib/sections.ts`로 본문을 섹션·카드로 묶고 소개 뒤에 주요 기능 삽입)
   - 검증: 빌드(각 커밋 직전마다), 임시 글로 정렬·필터 동작 6항목·분류 1개일 때 칩 생략·빈 상태, 목록·상세 스크린샷 5폭 라이트/다크, Dock 숨김 시작 검사 12항목 모두 통과. 스크린샷에서 찾은 문제(320px 링크 버튼 넘침, 다크 코드 블록 경계) 수정
   - 사용자 요청으로 커밋을 **빌드되는 최소 단위**(컴포넌트마다 하나, 리팩터링 분리)로 다시 나눔. 사이트 완성 뒤 마지막 단계로 **개발 과정 설명 세션**을 하기로 함(2-1의 5)
-  - 아직 실제 브라우저에서 사용자가 보지 않았다(필터 클릭·카드 hover·스크린샷 띠 가로 스크롤·Dock 불러내기)
+  - **사용자 브라우저 확인 통과(2026-09-18)**: 임시 데이터 5건(진행 중 2·완료 3, 분류 iOS/Web/Side Project, 링크 2개·1개·없음, 스크린샷 있음·없음, 기능 3·2·1·0개)을 만들어 목록(필터 클릭·`?category=` 유지·뒤로 가기·hover·3+2 줄바꿈), 상세(링크 버튼 줄바꿈·스크린샷 띠 없는 경우·기능 0개인 경우·이전/다음·필터 유지), Dock 숨김 시작·불러내기, 테마 전환, 5폭을 모두 확인. **문제 없음**. 확인 뒤 임시 데이터는 삭제하고 `sample-project`는 `draft: true`로 복구
 - 홈(`feature/home-page` → `develop` 병합 `8c7568f`, 2026-09-16, 결정은 5-13): 첫 화면 `9907ebe` · iPhone 목업 `6da0b04` · 최근 기록 `062e860`
 - 공통 셸(`feature/site-shell` → `develop` 병합 `0227fa3`, 2026-09-15): 테마 버튼 · 메뉴바·Dock·창 · Dock 자동 숨김 · 시계
   - 실제 브라우저에서 아직 볼 것: Dock 트랙패드 스크롤 느낌·하단 hover·동작 줄이기
@@ -147,6 +147,7 @@
 - [x] **홈 화면 구현**(데스크톱: 바로가기·About me·코드 에디터 창·iPhone 목업·스크롤 힌트·최근 기록 창 / 모바일·태블릿: 위젯·앱 아이콘 4개·최근 기록 위젯) — 첫 화면 `9907ebe` · iPhone 목업 `6da0b04` · 최근 기록 `062e860`(2026-09-16)
 - [x] `feature/home-page` → `develop` 병합 `8c7568f` → 브랜치 삭제 → push (2026-09-16, 사용자 요청)
 - [x] **프로젝트 목록·상세 구현**(`feature/project-pages`, 2026-09-17, 원격 push)
+- [x] 프로젝트 목록·상세 브라우저 확인(2026-09-18, 문제 없음) — 미확정 결정 2건 확정(5-14)
 - [ ] `feature/project-pages` → `develop` 병합 ← 지금 할 일(사용자 확인 후, 2-1의 3)
 - [ ] **스터디 목록·글 구현**(2-1의 4, `feature/study-pages`)
 - [ ] 목록·상세 페이지를 만들 때 홈 최근 기록의 카드·위젯 링크를 목록에서 **상세로** 바꾼다(지금은 상세가 없어 목록으로 보낸다)
@@ -325,12 +326,12 @@
   - 열 수·간격은 페이지의 `<ul class="grid">`가 정한다(모바일 1열 30px · 태블릿 2열 40/24 · 데스크톱 3열 40/32)
 - **상세 페이지**(`src/pages/projects/[slug].astro`)
   - 주소는 콘텐츠 폴더 이름(`project.id`, `projectHref()`). 컬렉션 glob이 `*/index.md`라 id에 `/`가 없어 `[...slug]` 대신 `[slug]`
-  - `getStaticPaths`에서 이전/다음을 props로 넘긴다. **이전 = 목록에서 바로 위 카드, 다음 = 바로 아래 카드**(확인 필요: 사용자에게 제안했고 이의는 없었음)
+  - `getStaticPaths`에서 이전/다음을 props로 넘긴다. **이전 = 목록에서 바로 위 카드, 다음 = 바로 아래 카드**(2026-09-18 브라우저 확인으로 확정)
   - 읽기 폭: 모바일 창 여백 그대로 · 태블릿 `.column` 좌우 12px 추가(창 36 + 12 = 시안 48) · 데스크톱 `max-width: 800px` 가운데. 스크린샷 띠만 더 넓다
   - 머리: 아이콘 72/88/88px · 이름 24/30/36px · 소개 · 태그 → 링크 버튼(첫 링크가 진한 버튼: App Store가 있으면 App Store, GitHub만 있으면 GitHub. 새 창 + 스크린 리더용 "(새 창)") → 요약 `<dl>`(모바일·태블릿 2×2, 데스크톱 4칸, 칸 선은 칸의 왼쪽·아래 테두리). 기간은 `YYYY.MM – YYYY.MM` 또는 `– 진행 중`
   - 링크 버튼: 모바일은 칸을 똑같이 나누는 그리드(링크 하나면 한 칸 전체), **359px 이하에서는 한 줄에 하나씩**("App Store에서 보기"가 반 칸에 들어가지 않음), 태블릿·데스크톱은 글자 길이만큼
   - 뒤로: 데스크톱은 본문 맨 위 `‹ Projects` 링크, 모바일·태블릿은 `Window`의 `back` prop으로 타이틀 바 창 점 자리에 `‹`(44px, 액센트 색, 이름 "프로젝트 목록으로")
-  - **Dock은 모든 폭에서 숨긴 채 시작**(`SiteLayout dockHidden` → `Dock startHidden`). 시안은 모바일·태블릿만 숨김이지만, 폭마다 초기 상태를 다르게 하면 첫 화면에서 깜빡일 수 있어 통일(확인 필요). 숨긴 채 시작하면 위로 스크롤해 한 번 나타나기 전까지는 "맨 위 48px면 항상 보임" 규칙을 끈다(읽기 시작하며 조금 스크롤할 때 튀어나오지 않게)
+  - **Dock은 모든 폭에서 숨긴 채 시작**(`SiteLayout dockHidden` → `Dock startHidden`). 시안은 모바일·태블릿만 숨김이지만, 폭마다 초기 상태를 다르게 하면 첫 화면에서 깜빡일 수 있어 통일(2026-09-18 브라우저 확인으로 확정). 숨긴 채 시작하면 위로 스크롤해 한 번 나타나기 전까지는 "맨 위 48px면 항상 보임" 규칙을 끈다(읽기 시작하며 조금 스크롤할 때 튀어나오지 않게)
 - **본문과 주요 기능 끼워 넣기**(`ProjectArticle.astro` + `src/lib/sections.ts`)
   - 시안 순서는 소개 → 주요 기능 → 기술적으로 고민한 점 → 배운 점인데 주요 기능은 프런트매터 데이터라 Markdown에 없다
   - Astro 7의 기본 Markdown 처리기는 **Sätteri**(`@astrojs/markdown-satteri`, unified/rehype가 아닌 자체 방문자 기반 플러그인 API)라 플러그인 대신 **`Astro.slots.render()`로 본문·features slot을 HTML 문자열로 만든 뒤 `(?=<h2[\s>])` 위치에서 나눈다**. `##` = `<section class="doc-section">`, 그 안의 `###` = `<div class="doc-card">`(묶음 `.doc-cards`), 첫 `##` 앞 내용 = `.doc-lead`. 첫 섹션 뒤에 주요 기능 HTML을 넣고 `set:html`
