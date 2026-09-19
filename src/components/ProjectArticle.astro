@@ -2,14 +2,17 @@
 // 프로젝트 상세 본문: Markdown(## 소개 / ## 기술적으로 고민한 점 / ## 배운 점) 사이에 주요 기능을 끼워 넣는다
 // - 시안 순서: 소개 → 주요 기능 → 기술적으로 고민한 점 → 배운 점. 주요 기능은 프런트매터 데이터라 본문 Markdown에 없다
 // - 기본 slot(<Content />)과 features slot을 HTML 문자열로 렌더링한 뒤, 본문을 ## 단위로 나눠 첫 섹션 뒤에 주요 기능을 넣는다(src/lib/sections.ts)
-// - Markdown이 만든 요소에는 스코프 속성이 없어 스타일은 .prose 아래 :global로 준다. 끼워 넣은 주요 기능(자기 스타일이 있음)에 닿지 않게 .doc-lead·.doc-section 안으로 한정한다
+// - Markdown 요소의 공통 스타일(문단·목록·인용·인라인 코드·코드 블록)은 스터디 글과 함께 쓰는 src/styles/prose.css에 있다.
+//   여기 남은 것은 프로젝트 전용인 섹션 제목(## → h2)과 카드(### → .doc-card)뿐이다
+// - 공통 스타일은 .prose-body 안으로 한정된다. 끼워 넣은 주요 기능(자기 스타일이 있음)은 그 밖에 있어 닿지 않는다
 import { splitSections } from '../lib/sections';
+import '../styles/prose.css';
 
 const body = await Astro.slots.render('default');
 const features = Astro.slots.has('features') ? await Astro.slots.render('features') : '';
 const { lead, sections } = splitSections(body);
 const [first = '', ...rest] = sections;
-const html = [lead && `<div class="doc-lead">${lead}</div>`, first, features, ...rest].join('');
+const html = [lead && `<div class="doc-lead prose-body">${lead}</div>`, first, features, ...rest].join('');
 ---
 
 <div class="prose" set:html={html} />
@@ -28,70 +31,6 @@ const html = [lead && `<div class="doc-lead">${lead}</div>`, first, features, ..
 		font-weight: 800;
 		line-height: 1.4;
 		word-break: keep-all;
-	}
-
-	.prose :global(:is(.doc-lead, .doc-section) :is(p, li)) {
-		margin: 0;
-		color: var(--win-ink);
-		font-size: 16px;
-		line-height: 1.8;
-		word-break: keep-all;
-	}
-
-	.prose :global(:is(.doc-lead, .doc-section) :is(ul, ol)) {
-		margin: 0;
-		padding-left: 1.3em;
-	}
-
-	.prose :global(:is(.doc-lead, .doc-section) li + li) {
-		margin-top: 0.4em;
-	}
-
-	/* 문단 사이 1em. 제목 바로 다음 요소는 제목의 margin-bottom만 쓴다
-	   위의 margin: 0(p·li)·margin: 0(ul·ol)과 명시도가 같아, 뒤에 두어야 간격이 살아난다 */
-	.prose :global(:is(.doc-lead, .doc-section) > :not(h2) + *) {
-		margin-top: 1em;
-	}
-
-	.prose :global(:is(.doc-lead, .doc-section) strong) {
-		color: var(--win-ink-strong);
-		font-weight: 700;
-	}
-
-	.prose :global(:is(.doc-lead, .doc-section) a) {
-		text-decoration: underline;
-		text-underline-offset: 3px;
-	}
-
-	.prose :global(:is(.doc-lead, .doc-section) img) {
-		display: block;
-		border-radius: 14px;
-	}
-
-	.prose :global(:is(.doc-lead, .doc-section) :not(pre) > code) {
-		padding: 2px 6px;
-		border-radius: 6px;
-		background: var(--win-tag-bg);
-		color: var(--win-tag-ink);
-		font-family: ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace;
-		font-size: 0.88em;
-	}
-
-	/* 코드 블록 색은 구문 강조 테마가 정한다(테마와 무관한 고정색) */
-	.prose :global(:is(.doc-lead, .doc-section) pre) {
-		overflow-x: auto;
-		padding: 16px 18px;
-		border: 1px solid var(--win-divider);
-		border-radius: 12px;
-		font-family: ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace;
-		font-size: 13px;
-		line-height: 22px;
-	}
-
-	.prose :global(:is(.doc-lead, .doc-section) blockquote) {
-		margin: 0;
-		padding-left: 16px;
-		border-left: 3px solid var(--win-chip-line);
 	}
 
 	/* ### 카드: "기술적으로 고민한 점"의 문제 하나 = 카드 하나 */
@@ -141,10 +80,6 @@ const html = [lead && `<div class="doc-lead">${lead}</div>`, first, features, ..
 			font-size: 22px;
 		}
 
-		.prose :global(:is(.doc-lead, .doc-section) :is(p, li)) {
-			font-size: 17px;
-		}
-
 		.prose :global(.doc-cards) {
 			gap: 12px;
 		}
@@ -176,10 +111,6 @@ const html = [lead && `<div class="doc-lead">${lead}</div>`, first, features, ..
 		.prose :global(.doc-section > h2) {
 			margin-bottom: 16px;
 			font-size: 24px;
-		}
-
-		.prose :global(:is(.doc-lead, .doc-section) :is(p, li)) {
-			line-height: 1.85;
 		}
 
 		.prose :global(.doc-section > h2 + .doc-cards) {

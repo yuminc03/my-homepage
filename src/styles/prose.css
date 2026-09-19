@@ -1,0 +1,84 @@
+/* Markdown이 만든 본문 요소의 공통 스타일: 프로젝트 상세(ProjectArticle)와 스터디 글이 함께 쓴다
+   - Markdown 요소에는 Astro의 스코프 속성(data-astro-cid-*)이 붙지 않아 컴포넌트 <style>에서는 :global()로만 닿는다.
+     두 화면이 같은 규칙을 복제하지 않도록 여기로 모으고, 쓰는 화면에서 import 한다(쓰지 않는 페이지 번들에는 실리지 않는다)
+   - 적용 범위는 .prose-body 안으로 한정한다: 프로젝트는 sections.ts가 만드는 .doc-lead·.doc-section, 스터디 글은 본문 <article>
+   - 명시도를 (0,1,1)로 낮게 유지한다. 화면별 규칙(예: 프로젝트 카드 .doc-card …)은 (0,2,1) 이상이라
+     순서와 상관없이 화면 쪽이 이긴다(전에는 명시도가 같아 뒤에 오는 규칙이 이겼다 — PROGRESS.md 5-14)
+   - 제목(h2·h3)은 화면마다 여백이 달라(프로젝트는 섹션 머리, 스터디는 글 흐름) 여기에 두지 않는다
+   - 화면마다 다른 값은 커스텀 속성으로 연다: --prose-gap(문단 사이 간격, 기본 1em) */
+
+.prose-body :is(p, li) {
+	margin: 0;
+	color: var(--win-ink);
+	font-size: 16px;
+	line-height: 1.8;
+	word-break: keep-all;
+}
+
+.prose-body :is(ul, ol) {
+	margin: 0;
+	padding-left: 1.3em;
+}
+
+.prose-body li + li {
+	margin-top: 0.4em;
+}
+
+.prose-body strong {
+	color: var(--win-ink-strong);
+	font-weight: 700;
+}
+
+.prose-body a {
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+.prose-body img {
+	display: block;
+	border-radius: 14px;
+}
+
+.prose-body :not(pre) > code {
+	padding: 2px 6px;
+	border-radius: 6px;
+	background: var(--win-tag-bg);
+	color: var(--win-tag-ink);
+	font-family: ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace;
+	font-size: 0.88em;
+}
+
+/* 코드 블록 색은 구문 강조 테마가 정한다(테마와 무관한 고정색) */
+.prose-body pre {
+	overflow-x: auto;
+	padding: 16px 18px;
+	border: 1px solid var(--win-divider);
+	border-radius: 12px;
+	font-family: ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace;
+	font-size: 13px;
+	line-height: 22px;
+}
+
+.prose-body blockquote {
+	margin: 0;
+	padding-left: 16px;
+	border-left: 3px solid var(--win-chip-line);
+}
+
+/* 문단 사이 간격. 위의 margin: 0 규칙들과 명시도가 같아 반드시 뒤에 와야 간격이 살아난다.
+   제목 바로 다음 요소는 제목의 margin-bottom만 쓴다 */
+.prose-body > :not(h2) + * {
+	margin-top: var(--prose-gap, 1em);
+}
+
+@media (min-width: 744px) {
+	.prose-body :is(p, li) {
+		font-size: 17px;
+	}
+}
+
+@media (min-width: 1180px) {
+	.prose-body :is(p, li) {
+		line-height: 1.85;
+	}
+}

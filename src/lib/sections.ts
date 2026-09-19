@@ -29,6 +29,7 @@ export function splitSections(html: string): DocSections {
 	const { lead, parts } = splitBefore(html, 'h2');
 	return {
 		lead: lead.trim(),
-		sections: parts.map((part) => `<section class="doc-section">${wrapCards(part)}</section>`),
+		// prose-body: Markdown 요소 공통 스타일(src/styles/prose.css)을 받는 표시
+		sections: parts.map((part) => `<section class="doc-section prose-body">${wrapCards(part)}</section>`),
 	};
 }
