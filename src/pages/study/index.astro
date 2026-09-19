@@ -9,7 +9,7 @@ import PageHeading from '../../components/PageHeading.astro';
 import FilterChips from '../../components/FilterChips.astro';
 import StudyCard from '../../components/StudyCard.astro';
 import { getApp } from '../../data/apps';
-import { getStudyPosts } from '../../lib/content';
+import { getStudyPosts, studyHref } from '../../lib/content';
 
 const app = getApp('study');
 const posts = await getStudyPosts();
@@ -26,7 +26,7 @@ const categories = [...new Set(posts.map((post) => post.data.category))].sort((a
 					<ul class="list">
 						{posts.map((post) => (
 							<li data-filter-item data-categories={post.data.category}>
-								<StudyCard post={post} />
+								<StudyCard post={post} href={studyHref(post)} />
 							</li>
 						))}
 					</ul>
