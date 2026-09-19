@@ -21,11 +21,6 @@ const html = [lead && `<div class="doc-lead">${lead}</div>`, first, features, ..
 		gap: 40px;
 	}
 
-	/* 문단 사이 1em. 제목 바로 다음 요소는 제목의 margin-bottom만 쓴다 */
-	.prose :global(:is(.doc-lead, .doc-section) > :not(h2) + *) {
-		margin-top: 1em;
-	}
-
 	.prose :global(.doc-section > h2) {
 		margin: 0 0 12px;
 		color: var(--win-ink-strong);
@@ -50,6 +45,12 @@ const html = [lead && `<div class="doc-lead">${lead}</div>`, first, features, ..
 
 	.prose :global(:is(.doc-lead, .doc-section) li + li) {
 		margin-top: 0.4em;
+	}
+
+	/* 문단 사이 1em. 제목 바로 다음 요소는 제목의 margin-bottom만 쓴다
+	   위의 margin: 0(p·li)·margin: 0(ul·ol)과 명시도가 같아, 뒤에 두어야 간격이 살아난다 */
+	.prose :global(:is(.doc-lead, .doc-section) > :not(h2) + *) {
+		margin-top: 1em;
 	}
 
 	.prose :global(:is(.doc-lead, .doc-section) strong) {
