@@ -1,0 +1,266 @@
+---
+// 스터디 글 창(PROGRESS.md 5-4, 2-6)
+// - 순서: (데스크톱) ‹ Study Log → 카테고리·제목·날짜·읽는 시간 → 본문 | 목차 → 이전/다음
+// - 시안: design/StudyPost.dc.html · TabletStudyPost · MobileStudyPost
+// - 읽기 폭: 모바일 창 여백 그대로 · 태블릿 좌우 12px 추가(창 36 + 12 = 시안 48) · 데스크톱 본문 760px + 목차 240px
+// - 주소는 파일 이름(post.id). 스터디 컬렉션 glob이 **라 하위 폴더를 쓰면 id에 /가 들어갈 수 있어 [...slug]로 받는다
+// - 목차는 폭마다 모양이 다르지만 DOM은 한 벌이다(Toc.astro). 모바일·태블릿은 제목 아래, 데스크톱은 본문 오른쪽
+// - 모바일·태블릿 시안처럼 Dock은 숨긴 채 시작한다(프로젝트 상세와 같게 모든 폭에서 — 5-14)
+import { render, type CollectionEntry } from 'astro:content';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import Window from '../../components/Window.astro';
+import Toc from '../../components/Toc.astro';
+import Pager from '../../components/Pager.astro';
+import CodeCopy from '../../components/CodeCopy.astro';
+import { getApp } from '../../data/apps';
+import { getStudyPosts, studyHref } from '../../lib/content';
+import { formatDay } from '../../lib/date';
+import { readingTime } from '../../lib/readingTime';
+import { withBase } from '../../lib/url';
+import '../../styles/prose.css';
+
+type Post = CollectionEntry<'study'>;
+
+interface Props {
+	post: Post;
+	prev?: Post;
+	next?: Post;
+}
+
+export async function getStaticPaths() {
+	const posts = await getStudyPosts();
+	return posts.map((post, index) => ({
+		params: { slug: post.id },
+		props: { post, prev: posts[index - 1], next: posts[index + 1] },
+	}));
+}
+
+const { post, prev, next } = Astro.props;
+const { data } = post;
+const { Content, headings } = await render(post);
+const app = getApp('study');
+const listHref = withBase(app.href);
+
+const pagerLink = (entry?: Post) => entry && { href: studyHref(entry), title: entry.data.title };
+---
+
+<SiteLayout active={app.id} title={`${data.title} · ${app.label} · Chu Yumin`} description={data.summary} dockHidden>
+	<Window title={app.title} back={{ href: listHref, label: `${app.label} 목록으로` }}>
+		<div class="column">
+			<a class="back" href={listHref}>
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<path d="M15 5l-7 7 7 7" />
+				</svg>
+				<span>{app.title}</span>
+			</a>
+
+			<header class="head">
+				<span class="tag">{data.category}</span>
+				<h1>{data.title}</h1>
+				<div class="meta">
+					<time datetime={data.pubDate.toISOString().slice(0, 10)}>{formatDay(data.pubDate)}</time>
+					<span class="dot" aria-hidden="true"></span>
+					<span>{readingTime(post.body)}</span>
+				</div>
+			</header>
+
+			<div class="body">
+				{/* 모바일·태블릿에서는 제목 바로 아래, 데스크톱에서는 오른쪽 칸(아래 grid) */}
+				<div class="toc-slot">
+					<Toc headings={headings} />
+				</div>
+
+				<article class="prose-body post-body">
+					<Content />
+				</article>
+			</div>
+
+			<Pager prev={pagerLink(prev)} next={pagerLink(next)} prevLabel="이전 글" nextLabel="다음 글" />
+		</div>
+
+		{/* 본문에 코드 블록이 있으면 복사 버튼을 살린다 */}
+		<CodeCopy />
+	</Window>
+</SiteLayout>
+
+<style>
+	.back {
+		display: none;
+	}
+
+	.head {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		padding-bottom: 24px;
+		border-bottom: 1px solid var(--win-divider);
+	}
+
+	.tag {
+		align-self: flex-start;
+		padding: 4px 10px;
+		border-radius: 999px;
+		background: var(--win-tag-bg);
+		color: var(--win-tag-ink);
+		font-size: 11.5px;
+		font-weight: 700;
+	}
+
+	h1 {
+		margin: 0;
+		color: var(--win-ink-strong);
+		font-size: 24px;
+		font-weight: 800;
+		line-height: 1.4;
+		letter-spacing: -0.015em;
+		word-break: keep-all;
+	}
+
+	.meta {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		color: var(--win-ink-sub);
+		font-size: 13px;
+	}
+
+	.dot {
+		width: 3px;
+		height: 3px;
+		border-radius: 50%;
+		background: var(--win-dot);
+	}
+
+	.body {
+		display: flex;
+		flex-direction: column;
+	}
+
+	/* 문단 사이 간격(시안 20/22/24px). prose.css의 기본값 1em보다 조금 넓다 */
+	.post-body {
+		--prose-gap: 1.25em;
+		display: flex;
+		flex-direction: column;
+	}
+
+	/* Markdown이 만든 제목: 공통 스타일(prose.css)은 화면마다 여백이 달라 제목을 다루지 않는다 */
+	.post-body :global(:is(h2, h3)) {
+		color: var(--win-ink-strong);
+		font-weight: 800;
+		line-height: 1.4;
+		word-break: keep-all;
+		scroll-margin-top: 80px;
+	}
+
+	.post-body :global(h2) {
+		margin: 20px 0 12px;
+		font-size: 20px;
+	}
+
+	.post-body :global(h3) {
+		margin: 18px 0 10px;
+		font-size: 17px;
+		font-weight: 700;
+	}
+
+	@media (min-width: 744px) {
+		.column {
+			padding: 0 12px;
+		}
+
+		.head {
+			gap: 14px;
+			padding-bottom: 28px;
+		}
+
+		.tag {
+			padding: 4px 11px;
+			font-size: 12px;
+		}
+
+		h1 {
+			font-size: 30px;
+			line-height: 1.35;
+		}
+
+		.meta {
+			font-size: 14px;
+		}
+
+		.post-body :global(h2) {
+			margin: 28px 0 14px;
+			font-size: 22px;
+		}
+
+		.post-body :global(h3) {
+			margin: 22px 0 12px;
+			font-size: 18px;
+		}
+	}
+
+	@media (min-width: 1180px) {
+		.column {
+			padding: 0;
+		}
+
+		.back,
+		.back:hover {
+			display: inline-flex;
+			align-items: center;
+			gap: 6px;
+			margin-bottom: 32px;
+			font-size: 14px;
+			font-weight: 600;
+		}
+
+		.back svg {
+			width: 16px;
+			height: 16px;
+		}
+
+		.back:focus-visible {
+			border-radius: 4px;
+			outline: 2px solid var(--win-accent);
+			outline-offset: 3px;
+		}
+
+		.head {
+			padding-bottom: 36px;
+		}
+
+		h1 {
+			font-size: 36px;
+		}
+
+		.meta {
+			gap: 10px;
+		}
+
+		/* 본문 | 목차 2단 */
+		.body {
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) 240px;
+			gap: 72px;
+			padding-top: 40px;
+		}
+
+		.toc-slot {
+			grid-area: 1 / 2;
+		}
+
+		.post-body {
+			grid-area: 1 / 1;
+			max-width: 760px;
+		}
+
+		.post-body :global(h2) {
+			margin: 24px 0 16px;
+			font-size: 24px;
+		}
+
+		.post-body :global(h3) {
+			margin: 24px 0 12px;
+			font-size: 18.5px;
+		}
+	}
+</style>
