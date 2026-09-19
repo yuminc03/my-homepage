@@ -3,6 +3,8 @@ import { defineConfig } from 'astro/config';
 
 import mdx from '@astrojs/mdx';
 
+import { CODE_THEME, codeBlock } from './src/lib/codeBlock';
+
 // https://astro.build/config
 export default defineConfig({
   // GitHub Pages 프로젝트 사이트: https://yuminc03.github.io/my-homepage/
@@ -12,4 +14,12 @@ export default defineConfig({
   base: '/my-homepage',
 
   integrations: [mdx()],
+
+  markdown: {
+    // 코드 블록: 시안 색 테마 + 파일 이름 머리줄·복사 버튼을 붙이는 transformer (src/lib/codeBlock.ts)
+    shikiConfig: {
+      theme: CODE_THEME,
+      transformers: [codeBlock()],
+    },
+  },
 });

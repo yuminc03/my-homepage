@@ -15,6 +15,7 @@ import ScreenshotBand from '../../components/ScreenshotBand.astro';
 import ProjectArticle from '../../components/ProjectArticle.astro';
 import ProjectFeatures from '../../components/ProjectFeatures.astro';
 import Pager from '../../components/Pager.astro';
+import CodeCopy from '../../components/CodeCopy.astro';
 import { getApp } from '../../data/apps';
 import { getProjects, projectHref } from '../../lib/content';
 import { formatMonth } from '../../lib/date';
@@ -62,7 +63,7 @@ const pagerLink = (entry?: Project) => entry && { href: projectHref(entry), titl
 <SiteLayout active={app.id} title={`${data.title} · ${app.label} · Chu Yumin`} description={data.summary} dockHidden>
 	<Window title={app.title} back={{ href: listHref, label: `${app.label} 목록으로` }}>
 		<div class="column">
-			<a class="back" href={listHref}>
+			<a class="back" href={listHref} data-back-link>
 				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 					<path d="M15 5l-7 7 7 7" />
 				</svg>
@@ -120,6 +121,9 @@ const pagerLink = (entry?: Project) => entry && { href: projectHref(entry), titl
 
 			<Pager prev={pagerLink(prev)} next={pagerLink(next)} prevLabel="이전 프로젝트" nextLabel="다음 프로젝트" />
 		</div>
+
+		{/* 본문에 코드 블록이 있으면 복사 버튼을 살린다 */}
+		<CodeCopy />
 	</Window>
 </SiteLayout>
 

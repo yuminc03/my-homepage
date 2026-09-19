@@ -19,6 +19,10 @@ export async function getProjects(): Promise<CollectionEntry<'projects'>[]> {
 	});
 }
 
+/** 스터디 글 주소(/my-homepage/study/<파일 이름>/). 컬렉션 glob이 **라 하위 폴더를 쓰면 id에 /가 들어갈 수 있다 */
+export const studyHref = (post: CollectionEntry<'study'>): string =>
+	withBase(`${getApp('study').href}${post.id}/`);
+
 /** 공개된 스터디 글, 최신 순 */
 export async function getStudyPosts(): Promise<CollectionEntry<'study'>[]> {
 	const posts = await getCollection('study', ({ data }) => !data.draft);

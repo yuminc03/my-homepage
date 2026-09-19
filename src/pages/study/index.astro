@@ -1,15 +1,74 @@
 ---
-// 스터디 기록 목록 창(셸 틀). 포스트 카드·카테고리 칩은 페이지 구현 단계에서 추가한다
+// 스터디 기록 목록 창: 제목 → 필터 칩 → 글 카드(모든 폭에서 1열)
+// - 칩은 공개된 글에 실제로 쓰인 카테고리만 모아 가나다 순으로 만든다(2026-09-19 결정, PROGRESS.md 5-15).
+//   프로젝트는 PROJECT_CATEGORIES 상수 순서지만, 스터디 category는 자유 문자열이라 기준 순서가 없다
+// - 카테고리가 하나뿐이면 거를 것이 없어 칩을 두지 않는다(프로젝트 목록과 같은 규칙)
 import SiteLayout from '../../layouts/SiteLayout.astro';
 import Window from '../../components/Window.astro';
 import PageHeading from '../../components/PageHeading.astro';
+import FilterChips from '../../components/FilterChips.astro';
+import StudyCard from '../../components/StudyCard.astro';
 import { getApp } from '../../data/apps';
+import { getStudyPosts, studyHref } from '../../lib/content';
 
 const app = getApp('study');
+const posts = await getStudyPosts();
+const categories = [...new Set(posts.map((post) => post.data.category))].sort((a, b) => a.localeCompare(b, 'ko'));
 ---
 
 <SiteLayout active={app.id}>
 	<Window title={app.title}>
 		<PageHeading title={app.title} description={app.description} />
+		{
+			posts.length > 0 ? (
+				<div data-filter>
+					{categories.length > 1 && <FilterChips categories={categories} label="스터디 분류" />}
+					<ul class="list">
+						{posts.map((post) => (
+							<li data-filter-item data-categories={post.data.category}>
+								<StudyCard post={post} href={studyHref(post)} />
+							</li>
+						))}
+					</ul>
+				</div>
+			) : (
+				<p class="empty">아직 공개한 스터디 글이 없습니다. 글을 추가하면 여기에 카드로 보입니다.</p>
+			)
+		}
 	</Window>
 </SiteLayout>
+
+<style>
+	/* 글 중심이라 모든 폭에서 1열이다(2열이면 제목·요약이 짧게 잘린다 — PROGRESS.md 5-7) */
+	.list {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.empty {
+		margin: 0;
+		padding: 18px 20px;
+		border: 1px dashed var(--win-divider);
+		border-radius: 14px;
+		color: var(--win-ink-muted);
+		font-size: 14px;
+		line-height: 1.6;
+		word-break: keep-all;
+	}
+
+	@media (min-width: 744px) {
+		.list {
+			gap: 14px;
+		}
+	}
+
+	@media (min-width: 1180px) {
+		.list {
+			gap: 20px;
+		}
+	}
+</style>
