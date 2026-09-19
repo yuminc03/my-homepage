@@ -215,7 +215,7 @@
 - [x] `feature/study-pages` → `develop` 병합 `4351c43` → 브랜치 삭제 → push (2026-09-20, 사용자 요청)
 - [ ] **세미나 목록·행사 상세 구현** ← 다음 할 일. 계획은 **2-6**, 브랜치 `feature/seminar-pages`
 - [ ] 목록·상세 페이지를 만들 때 홈 최근 기록의 카드·위젯 링크를 목록에서 **상세로** 바꾼다(지금은 상세가 없어 목록으로 보낸다)
-- [ ] 목록·상세 페이지 구현(프로젝트·스터디 완료 · 세미나 남음). 상세의 ‹ 뒤로 링크(`Window` `back`)·Dock 숨김 시작(`dockHidden`)·이전/다음(`Pager`)은 2026-09-17에 만들어 두었다
+- [ ] 실기기 확인(배포 직전에 묶어서): Dock 트랙패드 스크롤 느낌·하단 hover·"동작 줄이기" / 320px 폭에서 모바일 Dock이 화면 폭과 거의 같은 문제
 - [ ] 페이지 전환 모션(View Transitions `ClientRouter`, `transition:persist`로 메뉴바·Dock 유지)
 - [ ] 콘텐츠 검색 기능 — 목록·상세 페이지 구현 뒤 별도 브랜치(방식은 5-12 추천안을 사용자와 확정)
 - [x] `draft` 제외 헬퍼·목록 정렬(날짜 내림차순)·날짜 표기 — `src/lib/content.ts`·`src/lib/date.ts`(2026-09-16, 홈 최근 기록과 함께). 목록 페이지도 이 헬퍼만 쓴다
@@ -226,7 +226,6 @@
 - [ ] 실제 글을 쓰면 예시 글 3개(`sample-*`)와 임시 이미지 삭제
 - [ ] GitHub Actions로 GitHub Pages 자동 배포 설정(원격 push가 필요하므로 사용자 확인 후)
 - [ ] 대괄호 `[ ]` placeholder를 실제 내용으로 교체 — 프로젝트 이름·소개·태그, 포스트 제목·요약·날짜, 세미나 이름·장소·소감, 연락처 링크(GitHub/Email/LinkedIn)
-- [ ] 사이트 구현
 - [ ] `develop` → `master` 병합·원격 push (사용자 확인 후)
 - [ ] **마지막 단계: 개발 과정 설명 세션** — 사이트 완성 뒤 문법·핵심 기능·면접 예상 질문을 사용자에게 설명(2026-09-17 요청, 2-1의 5)
 - 선택 과제: `DirectionG.dc.html` 색 기준표의 미니 화면은 "창 본문은 항상 밝게" 시절 모습이다. 다시 쓸 일이 생기면 갱신
@@ -541,7 +540,7 @@
 | 파일 | 내용 |
 | --- | --- |
 | `package.json` · `package-lock.json` | 이름 `my-homepage`, 의존성 `astro` ^7.3.2 · `@astrojs/mdx` ^8.0.1 · `@astrojs/markdown-satteri` ^0.4.1(MDX가 요구), 스크립트 `dev`·`build`·`preview`, `engines.node >=22.12.0` |
-| `astro.config.mjs` | `site: 'https://yuminc03.github.io'`, `base: '/my-homepage'`, `integrations: [mdx()]` |
+| `astro.config.mjs` | `site: 'https://yuminc03.github.io'`, `base: '/my-homepage'`, `integrations: [mdx()]`, `markdown.shikiConfig`(코드 블록 테마 + transformer, 5-15) |
 | `src/content.config.ts` | 콘텐츠 컬렉션 `projects`·`study`·`seminars` 스키마(5-10), `PROJECT_CATEGORIES` 내보내기, 폴더형/파일형 id 생성 |
 | `src/content/projects/sample-project/` | 예시 프로젝트 `index.md`(`draft: true`) + 단색 임시 이미지 5장(아이콘·스크린샷 2·기능 2) |
 | `src/content/study/sample-post.md` | 예시 스터디 글(`draft: true`, 인라인 코드·Swift 코드 블록) |
@@ -552,13 +551,13 @@
 | `.vscode/extensions.json` | Astro VS Code 확장 추천 |
 | `src/pages/index.astro` | 홈(5-13). 데스크톱: 바로가기 4 · About me 창 · 코드 에디터 창(겹침) · iPhone 목업 · 스크롤 힌트 · 최근 기록 창(`#recent`) / 모바일·태블릿: About 위젯 · 앱 아이콘 4 · 코드 위젯 · 최근 기록 위젯(태블릿은 코드 \| 위젯 2단). `#contact`·`#code` 도착 강조 |
 | `src/data/profile.ts` | 자기소개 `PROFILE`: 인사말(3조각)·좋아하는 문구(2줄)·기술 4개·연락처(GitHub·Email) |
-| `src/lib/content.ts` | 컬렉션 읽기 헬퍼 `getProjects()`(진행 중 먼저 → 시작일 최신 순)·`getStudyPosts()`·`getSeminars()`: `draft: true` 제외 + 날짜 내림차순. `projectHref()` 상세 주소. 화면은 이 함수만 쓴다 |
+| `src/lib/content.ts` | 컬렉션 읽기 헬퍼 `getProjects()`(진행 중 먼저 → 시작일 최신 순)·`getStudyPosts()`·`getSeminars()`: `draft: true` 제외 + 날짜 내림차순. 주소 헬퍼 `projectHref()`·`studyHref()`. 화면은 이 함수만 쓴다 |
 | `src/lib/sections.ts` | 렌더링된 Markdown HTML을 `##` 섹션(`.doc-section`)·`###` 카드(`.doc-card`)·머리말(`lead`)로 나누는 `splitSections()`(5-14) |
 | `src/pages/projects/[slug].astro` | 프로젝트 상세: 뒤로 링크·머리·태그·링크 버튼·요약 `<dl>` → `ScreenshotBand` → `ProjectArticle`(+`ProjectFeatures` slot) → `Pager`. Dock 숨김 시작(5-14) |
-| `src/components/FilterChips.astro` | 목록 필터 칩 + 스크립트(`[data-filter]`·`data-filter-item`·`data-categories` 규약, `?category=`, `aria-live`). 모바일 가로 스크롤 / 태블릿·데스크톱 줄바꿈 |
+| `src/components/FilterChips.astro` | 목록 필터 칩 + 스크립트(`[data-filter]`·`data-filter-item`·`data-categories` 규약, `?category=`, `aria-live`). 고른 분류를 `sessionStorage`에 남겨 상세의 ‹ 링크가 돌아올 수 있게 한다(5-15). 모바일 가로 스크롤 / 태블릿·데스크톱 줄바꿈 |
 | `src/components/ProjectCard.astro` | 프로젝트 목록 카드(그라디언트 썸네일·목업·아이콘·이름·소개·`TagList`). `tone`, `href` 있으면 링크 |
 | `src/components/TagList.astro` | 태그 알약 목록(카드·상세 공용) |
-| `src/components/ProjectArticle.astro` | 상세 본문: slot HTML을 섹션·카드로 묶고 소개 뒤에 features slot 삽입, `.prose` Markdown 스타일 |
+| `src/components/ProjectArticle.astro` | 상세 본문: slot HTML을 섹션·카드로 묶고 소개 뒤에 features slot 삽입. 공통 Markdown 스타일은 `prose.css`, 여기에는 섹션 제목·`###` 카드만(5-15) |
 | `src/components/ProjectFeatures.astro` | 주요 기능 FEATURE 01…: 모바일 폰 위·설명 아래 / 태블릿·데스크톱 좌우 번갈아 |
 | `src/components/ScreenshotBand.astro` | 스크린샷 띠: 모바일·태블릿 화면 끝까지 가로 스크롤 / 데스크톱 둥근 띠 가운데 |
 | `src/components/Pager.astro` | 상세 이전/다음 링크(라벨 prop, 스터디·세미나 재사용) |
@@ -566,7 +565,16 @@
 | `src/components/RecentWindow.astro` | 데스크톱 최근 기록 창: `HomePanel` 안에 스터디·세미나 2열(각 최대 3개, 카드 전체가 목록 링크), 빈 상태 점선 상자 |
 | `src/components/RecentWidgets.astro` | 모바일·태블릿 최근 기록 위젯 2개(각 최신 1개). 모바일 2열 168px, 태블릿 세로 2개(세미나는 썸네일 84px 가로 배치) |
 | `src/pages/projects/index.astro` | 프로젝트 목록: `PageHeading` → `FilterChips`(분류 2개 이상일 때) → 카드 그리드 1/2/3열(카드는 상세 링크), 빈 상태 문구 |
-| `src/pages/study/index.astro` · `seminars/index.astro` | 목록 창 틀: `SiteLayout` + `Window` + `PageHeading`(제목·설명은 `apps.ts`). 목록 내용은 페이지 구현 때 |
+| `src/pages/study/index.astro` | 스터디 목록: `PageHeading` → `FilterChips`(카테고리 2개 이상일 때, 가나다 순) → 행 카드 1열(글 링크), 빈 상태 문구 |
+| `src/pages/study/[...slug].astro` | 스터디 글: 뒤로 링크·머리(카테고리·제목·날짜·읽는 시간) → 본문 \| 목차(데스크톱 2단) → `Pager`. Dock 숨김 시작. glob이 `**`라 rest 파라미터(5-15) |
+| `src/pages/seminars/index.astro` | 목록 창 틀: `SiteLayout` + `Window` + `PageHeading`(제목·설명은 `apps.ts`). 목록 내용은 페이지 구현 때(계획 2-6) |
+| `src/components/StudyCard.astro` | 스터디 목록 행 카드(모든 폭 1열): 카테고리 태그·제목·요약(좁은 폭 2줄 말줄임)·날짜·읽는 시간. `href` 있으면 링크 |
+| `src/components/Toc.astro` | 스터디 글 목차. DOM 한 벌로 모바일·태블릿 접히는 상자 / 데스크톱 sticky 레일, 현재 항목은 스크롤할 때 위치를 다시 재서 표시. `##`만 모음(5-15) |
+| `src/components/CodeCopy.astro` | 코드 블록 복사 버튼 동작. 클립보드를 쓸 수 있을 때만 버튼의 `hidden`을 푼다. 코드 블록이 나올 수 있는 화면이 한 번 부른다 |
+| `src/lib/readingTime.ts` | 읽는 시간 `readingMinutes()`·`readingTime()`(공백 뺀 글자 ÷ 500, 올림, 최소 1분. 기호·주소는 빼고 센다)(5-15) |
+| `src/lib/codeBlock.ts` | 코드 블록 Shiki transformer(`<figure>`로 감싸고 파일 이름 머리줄·복사 버튼)와 시안 색 테마 `CODE_THEME`. `astro.config.mjs`가 쓴다(5-15) |
+| `src/styles/prose.css` | Markdown 본문 공통 스타일(`.prose-body`): 문단·목록·강조·링크·이미지·인라인 코드·인용, 간격 변수 `--prose-gap`. `code-block.css`를 `@import` |
+| `src/styles/code-block.css` | 코드 블록 모양: 머리줄·복사 버튼·줄 번호(CSS 카운터 + sticky)·폭별 글자 크기. 테마와 무관한 고정 어두운 색 |
 | `src/layouts/SiteLayout.astro` | 공통 셸: 고정 글로우 바탕 3개 · `MenuBar` · `<main>` · `Dock`. props `active`(앱 id), `surface`(`desk` 홈 / `window` 창 화면), `title`·`description`, `dockHidden`(상세) |
 | `src/data/apps.ts` | 앱 목록 `APPS`(홈·프로젝트·스터디 기록·세미나 기록: 라벨·창 제목·설명·경로·아이콘 바탕·SVG), `CONTACT`(`/#contact`), `CODE_EDITOR`(`/#code`, 데스크톱 Dock 전용), `getApp()` |
 | `src/lib/url.ts` | `withBase(path)`: base(`/my-homepage`)를 붙인 내부 경로. 내부 링크는 모두 이것으로 만든다 |
@@ -574,7 +582,7 @@
 | `src/components/MenuBar.astro` | 유리 메뉴바. 데스크톱 36px(로고·이름·메뉴 4개 `aria-current`·테마 버튼·시계) / 모바일 52px·태블릿 56px(홈에서만, 로고·이름·44px 테마 버튼) |
 | `src/components/MenuClock.astro` | 데스크톱 메뉴바 시계. 기기 현지 시각 `HH:MM`, 분 경계마다 `setTimeout`으로 갱신, JS 전에는 빈 자리(폭 고정)(5-12) |
 | `src/components/Dock.astro` | 하단 고정 Dock. 앱 4개 + 실행 점 · 구분선 · 코드 에디터(데스크톱) · 연락처. `surface` desk/window 유리. 크기 모바일 48 / 태블릿 56 / 데스크톱 52px. 자동 숨김 스크립트(`data-state`)·힌트 막대(5-3). `startHidden`이면 숨긴 채 시작(5-14) |
-| `src/components/Window.astro` | 창. 데스크톱: 최대 1240px 가운데 창(타이틀 바 44px, ✕ 28px) / 모바일·태블릿: 위 12·16px 틈 시트(타이틀 바 52·56px sticky, ✕ 44px). 본문 여백 20·36·48px, 아래는 Dock 자리만큼 비움. `back`(href·label)이면 모바일·태블릿 타이틀 바 창 점 자리에 ‹ 링크 |
+| `src/components/Window.astro` | 창. 데스크톱: 최대 1240px 가운데 창(타이틀 바 44px, ✕ 28px) / 모바일·태블릿: 위 12·16px 틈 시트(타이틀 바 52·56px sticky, ✕ 44px). 본문 여백 20·36·48px, 아래는 Dock 자리만큼 비움. `back`(href·label)이면 모바일·태블릿 타이틀 바 창 점 자리에 ‹ 링크. `data-back-link` 링크에 직전 목록 필터를 붙이는 스크립트 포함(5-15) |
 | `src/components/PageHeading.astro` | 목록 화면 큰 제목(30·34·44px)과 한 줄 설명 |
 | `src/components/WindowDots.astro` | 창 점 3개(라일락 2 + 민트 1, 장식). 크기 `--dot-size`·간격 `--dot-gap`, `tone` window(테마 토큰)/code(고정색). `Window`·`HomePanel`이 사용 |
 | `src/components/HomePanel.astro` | 홈 창/위젯. 데스크톱 타이틀 바 44px(✕ 없음) / 모바일·태블릿 위젯. `tone` window/code. 폭·위치는 부모가 감싼 요소에서 |
@@ -646,6 +654,6 @@
 
 ## 13. 문서 관리 규칙
 - 이 문서가 현재 상태의 단일 기준이다. 작업이 끝날 때마다 1장(한눈에 보기)·2-1(지금 할 일)·4장(진행 기록)·12장(브랜치·커밋)을 먼저 갱신한다
-- 다음 작업이 정해지면 2-1에는 "2-N을 따라간다" 한 줄만 두고, 시안 수치·재사용 목록·결정할 것·커밋 순서는 전용 절(예: 2-6 스터디)에 모은다. 새 채팅이 그 절만 읽고 시작할 수 있어야 한다
+- 다음 작업이 정해지면 2-1에는 "2-N을 따라간다" 한 줄만 두고, 시안 수치·재사용 목록·결정할 것·커밋 순서는 전용 절(예: 2-6 세미나)에 모은다. 새 채팅이 그 절만 읽고 시작할 수 있어야 한다
 - 결정이 확정되면 5장에 옮기고, 끝난 할 일은 4장 표로 옮긴다
 - 사용자 취향·기준처럼 대화 밖에서도 유지할 내용은 Claude 메모리에도 저장되어 있다(디자인 취향, 기술 스택 결정 기준, 디자인 방향, 마지막 단계 개발 과정 설명 세션)
