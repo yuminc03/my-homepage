@@ -1,3 +1,6 @@
+/* 코드 블록(Shiki + src/lib/codeBlock.ts)은 덩어리가 커서 파일을 나눴다 */
+@import './code-block.css';
+
 /* Markdown이 만든 본문 요소의 공통 스타일: 프로젝트 상세(ProjectArticle)와 스터디 글이 함께 쓴다
    - Markdown 요소에는 Astro의 스코프 속성(data-astro-cid-*)이 붙지 않아 컴포넌트 <style>에서는 :global()로만 닿는다.
      두 화면이 같은 규칙을 복제하지 않도록 여기로 모으고, 쓰는 화면에서 import 한다(쓰지 않는 페이지 번들에는 실리지 않는다)
@@ -46,17 +49,6 @@
 	color: var(--win-tag-ink);
 	font-family: ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace;
 	font-size: 0.88em;
-}
-
-/* 코드 블록 색은 구문 강조 테마가 정한다(테마와 무관한 고정색) */
-.prose-body pre {
-	overflow-x: auto;
-	padding: 16px 18px;
-	border: 1px solid var(--win-divider);
-	border-radius: 12px;
-	font-family: ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace;
-	font-size: 13px;
-	line-height: 22px;
 }
 
 .prose-body blockquote {

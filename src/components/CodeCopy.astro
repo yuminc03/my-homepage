@@ -1,0 +1,43 @@
+---
+// 코드 블록 복사 버튼 동작. 코드 블록이 나올 수 있는 화면(스터디 글·프로젝트 상세)이 한 번 불러온다
+// - 버튼 자체는 Markdown 처리 때 src/lib/codeBlock.ts가 hidden으로 만들어 둔다. 클립보드를 쓸 수 있을 때만 여기서 보이게 한다
+//   (동작하지 않는 버튼은 만들지 않는다 — CLAUDE.md. 스크립트가 없거나 클립보드를 막은 브라우저에서는 머리줄에 파일 이름만 남는다)
+// - 복사할 코드는 <pre>의 텍스트다. 줄 번호는 CSS ::before로 그려 DOM에 없으므로 코드만 깨끗하게 복사된다
+---
+
+<script>
+	const DONE_MS = 1600;
+
+	function initCopy(button: HTMLButtonElement) {
+		const pre = button.closest('.code-block')?.querySelector('pre');
+		if (!pre) return;
+
+		button.hidden = false;
+
+		let timer: number | undefined;
+		button.addEventListener('click', async () => {
+			try {
+				await navigator.clipboard.writeText(pre.textContent ?? '');
+			} catch {
+				// 사용자가 권한을 막았거나 실패한 경우. 표시를 바꾸지 않아 복사되지 않았음을 알린다
+				return;
+			}
+
+			button.dataset.copied = '';
+			button.setAttribute('aria-label', '코드 복사됨');
+			const label = button.querySelector('.code-copy-label');
+			if (label) label.textContent = '복사됨';
+
+			clearTimeout(timer);
+			timer = setTimeout(() => {
+				delete button.dataset.copied;
+				button.setAttribute('aria-label', '코드 복사');
+				if (label) label.textContent = '복사';
+			}, DONE_MS);
+		});
+	}
+
+	if (navigator.clipboard?.writeText) {
+		document.querySelectorAll<HTMLButtonElement>('[data-code-copy]').forEach(initCopy);
+	}
+</script>
