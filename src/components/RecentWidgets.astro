@@ -2,13 +2,14 @@
 // 최근 기록 위젯(모바일·태블릿). 가장 최근 스터디 글 1개 · 세미나 1개를 홈 화면 위젯처럼 보여준다
 // - 모바일(design/MobileHome.dc.html 135–161줄): 높이 168px 위젯 2칸을 2열로
 // - 태블릿(design/TabletHome.dc.html 150–180줄): 세로로 쌓고(코드 위젯 옆 열) 세미나는 썸네일이 왼쪽에 붙는 가로 배치
-// - 위젯 전체가 목록으로 가는 링크다. 상세 페이지가 생기면 링크를 상세로 바꾼다(없는 주소로 링크하지 않는다)
+// - 위젯 전체가 링크다. 글이 있으면 그 글의 상세로, 없으면(빈 상태) 목록으로 보낸다
 // - 글이 없으면 틀은 두고 빈 상태 문구 + 목록 링크 문구를 보여준다(PROGRESS.md 5-13)
 // - 데스크톱에서는 페이지가 이 컴포넌트를 감싼 칸을 숨긴다(대신 최근 기록 창)
 import type { CollectionEntry } from 'astro:content';
 import { Image } from 'astro:assets';
 import AppIcon from './AppIcon.astro';
 import { getApp } from '../data/apps';
+import { seminarHref, studyHref } from '../lib/content';
 import { formatDay, formatMonth } from '../lib/date';
 import { withBase } from '../lib/url';
 
@@ -23,7 +24,7 @@ const seminarApp = getApp('seminars');
 ---
 
 <div class="widgets">
-	<a class="widget" href={withBase(studyApp.href)}>
+	<a class="widget" href={post ? studyHref(post) : withBase(studyApp.href)}>
 		<span class="head">
 			<AppIcon app={studyApp} />
 			<span class="head-label">최근 스터디</span>
@@ -44,7 +45,7 @@ const seminarApp = getApp('seminars');
 		}
 	</a>
 
-	<a class="widget seminar" href={withBase(seminarApp.href)}>
+	<a class="widget seminar" href={seminar ? seminarHref(seminar) : withBase(seminarApp.href)}>
 		{
 			/* 썸네일은 태블릿에서만 보인다. 옆에 제목이 있어 사진 설명은 비운다 */
 			seminar && (

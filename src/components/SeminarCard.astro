@@ -1,0 +1,305 @@
+---
+// 세미나 목록의 행사 항목. 폭마다 모양이 크게 다르지만 DOM은 한 벌이고 배치만 바꾼다
+// - 시안: design/Seminars.dc.html(데스크톱 타임라인) · TabletSeminars(가로 카드) · MobileSeminars(세로 카드)
+// - 모바일: 세로 카드(사진 180px → 날짜·장소 → 이름 → 소감)
+// - 태블릿: 가로 카드(왼쪽 사진 250px · 오른쪽 글, 세로 가운데)
+// - 데스크톱: 타임라인(왼쪽 날짜·장소 150px / 오른쪽 세로선 + 라일락 점 + 사진·이름·소감)
+//   글 묶음(.text)을 display: contents로 풀어 날짜만 왼쪽 칸으로 보낸다. 세로선은 오른쪽 칸 세 줄의
+//   border-left가 이어져 만들어지므로 줄 사이는 gap 대신 padding-bottom으로 띄운다
+// - href가 있을 때만 <a>로 그린다(동작 없는 링크를 만들지 않는다 — PROGRESS.md 5-12)
+import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import { formatMonth } from '../lib/date';
+
+interface Props {
+	seminar: CollectionEntry<'seminars'>;
+	href?: string;
+}
+
+const { seminar, href } = Astro.props;
+const { title, date, location, summary, cover, coverAlt } = seminar.data;
+const Tag = href ? 'a' : 'article';
+---
+
+<Tag class="entry" href={href}>
+	<div class="media">
+		<Image
+			src={cover}
+			alt={coverAlt}
+			widths={[400, 800, 1200]}
+			sizes="(min-width: 1180px) 954px, (min-width: 744px) 250px, 100vw"
+			loading="lazy"
+			decoding="async"
+		/>
+	</div>
+	<div class="text">
+		<div class="when">
+			<span class="mark" aria-hidden="true"></span>
+			<time datetime={date.toISOString().slice(0, 7)}>{formatMonth(date)}</time>
+			<span class="sep" aria-hidden="true"></span>
+			<span class="place">{location}</span>
+		</div>
+		<span class="title">{title}</span>
+		<span class="summary">{summary}</span>
+	</div>
+</Tag>
+
+<style>
+	.entry {
+		display: flex;
+		flex-direction: column;
+		overflow: clip;
+		border: 1px solid var(--win-divider);
+		border-radius: 18px;
+		background: var(--win-card);
+		transition:
+			border-color var(--dur-fast) var(--ease-out),
+			transform var(--dur-press) var(--ease-out);
+	}
+
+	a.entry:active {
+		border-color: var(--win-accent);
+		transform: scale(0.99);
+	}
+
+	a.entry:focus-visible {
+		outline: 2px solid var(--win-accent);
+		outline-offset: 2px;
+	}
+
+	.media {
+		position: relative;
+		height: 180px;
+		background: var(--win-bg);
+	}
+
+	.media img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.text {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+		min-width: 0;
+		padding: 16px 18px 18px;
+	}
+
+	.when {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		color: var(--win-ink-sub);
+		font-size: 13px;
+	}
+
+	/* 모바일·태블릿 카드에서 날짜 앞에 찍는 라일락 점(데스크톱에서는 타임라인 위의 점으로 바뀐다) */
+	.mark {
+		width: 7px;
+		height: 7px;
+		flex-shrink: 0;
+		border-radius: 50%;
+		background: var(--win-accent);
+	}
+
+	time {
+		color: var(--win-ink);
+		font-weight: 700;
+	}
+
+	.sep {
+		width: 3px;
+		height: 3px;
+		flex-shrink: 0;
+		border-radius: 50%;
+		background: var(--win-dot);
+	}
+
+	.place {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.title {
+		color: var(--win-ink-strong);
+		font-size: 18px;
+		font-weight: 800;
+		line-height: 1.4;
+		word-break: keep-all;
+	}
+
+	/* 소감은 두 줄까지만(카드 높이가 들쭉날쭉해지지 않게). 데스크톱에서는 전체를 보여준다 */
+	.summary {
+		display: -webkit-box;
+		overflow: hidden;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 2;
+		color: var(--win-ink-muted);
+		font-size: 14px;
+		line-height: 1.6;
+		word-break: keep-all;
+	}
+
+	/* 태블릿: 왼쪽 사진 · 오른쪽 글(세로 가운데) */
+	@media (min-width: 744px) {
+		.entry {
+			display: grid;
+			grid-template-columns: 250px minmax(0, 1fr);
+			min-height: 184px;
+			border-radius: 20px;
+		}
+
+		.media {
+			height: auto;
+		}
+
+		.text {
+			justify-content: center;
+			gap: 8px;
+			padding: 22px 26px;
+		}
+
+		.when {
+			font-size: 13.5px;
+		}
+
+		.title {
+			font-size: 20px;
+		}
+
+		.summary {
+			font-size: 15px;
+			line-height: 1.65;
+		}
+	}
+
+	/* 데스크톱: 카드가 아니라 타임라인. 왼쪽 날짜·장소 / 오른쪽 세로선 + 사진·이름·소감 */
+	@media (min-width: 1180px) {
+		.entry {
+			grid-template-areas:
+				'when media'
+				'when title'
+				'when summary';
+			grid-template-columns: 150px minmax(0, 1fr);
+			align-content: start;
+			min-height: 0;
+			overflow: visible;
+			border: 0;
+			border-radius: 0;
+			background: none;
+			column-gap: 40px;
+		}
+
+		a.entry:active {
+			transform: none;
+		}
+
+		a.entry:focus-visible {
+			outline-offset: 6px;
+		}
+
+		/* 글 묶음을 풀어 날짜·장소만 왼쪽 칸으로 보낸다 */
+		.text {
+			display: contents;
+		}
+
+		.media {
+			grid-area: media;
+		}
+
+		.title {
+			grid-area: title;
+		}
+
+		.summary {
+			grid-area: summary;
+		}
+
+		/* 오른쪽 칸 세 줄의 왼쪽 테두리가 이어져 타임라인 세로선이 된다 */
+		.media,
+		.title,
+		.summary {
+			padding-left: 40px;
+			border-left: 1px solid var(--win-chip-line);
+		}
+
+		.media {
+			height: auto;
+			padding-bottom: 24px;
+			background: none;
+		}
+
+		.media img {
+			height: 280px;
+			border-radius: 20px;
+			transition: transform var(--dur-fast) var(--ease-out);
+		}
+
+		a.entry:hover .media img {
+			transform: scale(1.01);
+		}
+
+		/* 타임라인 점: 세로선(왼쪽 테두리) 위에 걸치도록 padding box 기준 -5px */
+		.media::after {
+			content: '';
+			position: absolute;
+			top: 8px;
+			left: -5px;
+			width: 9px;
+			height: 9px;
+			border-radius: 50%;
+			background: var(--win-accent);
+		}
+
+		/* 날짜·장소는 왼쪽 칸에 오른쪽 정렬로 쌓는다 */
+		.when {
+			display: flex;
+			flex-direction: column;
+			align-items: flex-end;
+			grid-area: when;
+			gap: 12px;
+			padding-top: 4px;
+			font-size: 13px;
+		}
+
+		.mark,
+		.sep {
+			display: none;
+		}
+
+		time {
+			color: var(--win-ink-strong);
+			font-size: 15px;
+		}
+
+		.place {
+			overflow: visible;
+			max-width: 100%;
+			text-align: right;
+			white-space: normal;
+			word-break: keep-all;
+		}
+
+		.title {
+			padding-bottom: 10px;
+			font-size: 22px;
+		}
+
+		.summary {
+			display: block;
+			max-width: 800px;
+			font-size: 15px;
+			line-height: 1.7;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.entry,
+		.media img {
+			transition: none;
+		}
+	}
+</style>

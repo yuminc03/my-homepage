@@ -2,7 +2,7 @@
 // 프로젝트 상세 스크린샷 띠: 그라디언트 바탕 위에 iPhone 목업을 가로로 늘어놓는다
 // - 모바일·태블릿: 창 폭 끝까지 넓히고 가로 스크롤(마지막 폰이 화면 밖으로 넘쳐 스크롤을 암시). 바탕은 스크롤되지 않는 바깥 상자에 둔다
 // - 데스크톱: 본문 폭 안의 둥근 띠, 가운데 정렬. 양 끝을 뺀 가운데 폰들을 20px 올려 리듬을 준다. 넘치면 가로 스크롤
-// - 창 본문 좌우 여백(Window: 모바일 20px · 태블릿 36px)만큼 음수 margin으로 넓힌다. Window 여백을 바꾸면 여기도 바꾼다
+// - 창 본문 좌우 여백만큼 음수 margin으로 넓힌다. 여백 값은 Window가 --win-pad로 내보낸다(수치를 복제하지 않는다)
 // - 바탕 그라디언트는 ProjectCard와 같은 고정색, 다크에서만 --win-media-dim으로 덮는다
 import { Image } from 'astro:assets';
 import PhoneMockup from './PhoneMockup.astro';
@@ -35,7 +35,7 @@ const { screenshots, title } = Astro.props;
 		position: relative;
 		display: flex;
 		height: 420px;
-		margin: 0 -20px 40px;
+		margin: 0 calc(var(--win-pad, 20px) * -1) 40px;
 		background: linear-gradient(150deg, oklch(93% 0.02 295), oklch(87% 0.036 335));
 	}
 
@@ -88,7 +88,7 @@ const { screenshots, title } = Astro.props;
 	@media (min-width: 744px) {
 		.band {
 			height: 480px;
-			margin: 0 -36px 52px;
+			margin: 0 calc(var(--win-pad, 36px) * -1) 52px;
 		}
 
 		.shots {
