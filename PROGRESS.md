@@ -1,11 +1,11 @@
 # 진행 상황
 - 최종 업데이트: 2026-09-20
 - 이 문서 하나만 읽으면 새 채팅에서 바로 이어서 작업할 수 있도록 정리한 단일 기준 문서다
-- **마지막 세션 종료(2026-09-20)**: **세미나 목록·행사 상세를 구현했다**(브랜치 `feature/seminar-pages`). 미정이던 결정 3건(세션 라벨 표기 · 표지 사진 폭 · 라이트박스)을 사용자가 **확정**했고 근거는 5-16에 있다. 홈 최근 기록 카드·위젯 링크도 상세로 바꿔 남은 항목을 함께 끝냈다. 스크린샷(5폭 라이트/다크)·정렬·링크·Dock 검사까지 통과했고 **커밋 8개**(목록은 12장)를 `feature/seminar-pages`에 남겼다. **사용자 브라우저 확인 통과 → `develop` 병합 `8f704a4` → 기능 브랜치 삭제 → `origin/develop` push까지 끝났다.** **새 채팅은 2-1의 1(상태 확인) → 2-6 "페이지 전환 모션"** 부터 시작한다. 지금 브랜치는 `develop`이고 작업 트리는 깨끗하다
+- **마지막 세션 종료(2026-09-20)**: **페이지 전환 모션을 구현했다**(브랜치 `feature/page-transitions`). Astro의 `ClientRouter`를 넣고, 두 주소의 관계로 전환 종류(`push`·`pop`·`open`·`close`·`fade`)를 정해 `styles/transitions.css`가 모션을 고르게 했다. 전환 뒤에도 스크립트가 돌도록 `lib/pageInit.ts`의 `onEachPage`로 컴포넌트 초기화를 감쌌고, 전환 때 지워지는 `data-theme`도 다시 붙인다. 헤드리스 검사 17항목(전환 종류·테마 유지·Dock 시작 상태·필터 유지·목차 중복 없음·복사 버튼·시계·브라우저 뒤로·해시 링크)을 모두 통과했다. 결정과 확인 결과는 **5-17**. **커밋 6개**(목록은 12장)를 `feature/page-transitions`에 남겼고, 다음은 **사용자 브라우저 확인**이다 — 전환 도중 화면과 동작 줄이기는 헤드리스로 볼 수 없어 실제 브라우저에서만 확인된다(항목은 2-6). **새 채팅은 2-1의 1(상태 확인) → 2-6**부터 시작한다. 지금 브랜치는 `feature/page-transitions`다
 
 ## 1. 한눈에 보기
 - **무엇을 만드나**: iOS 개발자 Chu Yumin의 개인 홈페이지(자기소개·프로젝트·스터디 기록·세미나 기록)
-- **지금 단계**: 디자인 시안 완료, 기술 스택 확정(Astro + 일반 CSS), **Astro 프로젝트 생성**(임시 홈 1장, 빌드 확인), **전역 토큰 CSS 이식**(`src/styles/tokens.css`), **콘텐츠 컬렉션 스키마**(프로젝트·스터디·세미나, MDX) , **공통 셸**(테마 버튼·메뉴바·Dock 자동 숨김·창·시계, 목록 틀 3개), **홈 페이지**(첫 화면·iPhone 목업·최근 기록), **프로젝트 목록·상세**(필터 칩·카드·상세 페이지) — 여기까지 `develop` 병합·원격 push 완료. **스터디 목록·글**(카드·필터·글 페이지·목차·코드 블록·읽는 시간)까지 `develop` 병합·push 완료(2026-09-20, 병합 `4351c43`, 결정은 5-15). **세미나 목록·행사 상세**(타임라인·가로/세로 카드·표지 사진·사진 컴포넌트 3종·홈 최근 기록 링크)도 브라우저 확인까지 마치고 `develop`에 병합·push했다(2026-09-20, 병합 `8f704a4`, 결정은 5-16). 다음은 페이지 전환 모션이고, 작업 계획은 2-6에 정리해 두었다
+- **지금 단계**: 디자인 시안 완료, 기술 스택 확정(Astro + 일반 CSS), **Astro 프로젝트 생성**(임시 홈 1장, 빌드 확인), **전역 토큰 CSS 이식**(`src/styles/tokens.css`), **콘텐츠 컬렉션 스키마**(프로젝트·스터디·세미나, MDX) , **공통 셸**(테마 버튼·메뉴바·Dock 자동 숨김·창·시계, 목록 틀 3개), **홈 페이지**(첫 화면·iPhone 목업·최근 기록), **프로젝트 목록·상세**(필터 칩·카드·상세 페이지) — 여기까지 `develop` 병합·원격 push 완료. **스터디 목록·글**(카드·필터·글 페이지·목차·코드 블록·읽는 시간)까지 `develop` 병합·push 완료(2026-09-20, 병합 `4351c43`, 결정은 5-15). **세미나 목록·행사 상세**(타임라인·가로/세로 카드·표지 사진·사진 컴포넌트 3종·홈 최근 기록 링크)도 브라우저 확인까지 마치고 `develop`에 병합·push했다(2026-09-20, 병합 `8f704a4`, 결정은 5-16). **페이지 전환 모션**(View Transitions·스크립트 재실행·전환 종류별 모션)은 구현·헤드리스 검사·커밋 6개까지 끝냈고 사용자 브라우저 확인이 남았다(2026-09-20, 결정은 5-17). 다음은 콘텐츠 검색이고, 지금 할 일은 2-6에 정리해 두었다
 - **시안 진행도**
   - 데스크톱 7화면(홈·목록 3·상세 3) — 완료
   - 모바일 7화면(홈 화면 메타포) — 완료
@@ -15,16 +15,16 @@
 - **기술 스택**: Astro + 일반 CSS + TypeScript + Markdown Content Collections 확정(2026-09-14). 비교·약점·면접 질문은 `docs/tech-stack.md`
 - **시안 캔버스**: https://claude.ai/code/artifact/48a3c34c-b882-4f13-8e2f-7e3668bdb7b1 (v22, 페이지 5개 · 아트보드 25장)
 - **Git**: 시안·기술 스택 문서·`.claude/settings.json`(`92083d0`)이 `develop`에 반영되어 있다. `feature/astro-setup`(커밋 4개)을 `develop`에 병합 `004589b` → 브랜치 삭제(2026-09-14). `feature/site-shell`(테마 버튼 `872ec4b`, 공통 셸 `20d40c8`, Dock 자동 숨김 `e8eea35`, 시계 `88e86ca`, 문서 `cfe9270`)을 `develop`에 병합 `0227fa3` → 브랜치 삭제(2026-09-15). `feature/home-page`(첫 화면 `9907ebe`, iPhone 목업 `6da0b04`, 문서 `f6741d5`, 최근 기록 `062e860`, 문서 `1f8cbb8`)를 `develop`에 병합 `8c7568f` → 브랜치 삭제 → push(2026-09-16), 뒤이어 문서 `a725134` push. `feature/project-pages`(기능 12 + 문서 3, 커밋 목록은 12장)를 `develop`에 병합 `53f528e` → 로컬·원격 브랜치 삭제 → push(2026-09-18). `feature/study-pages`(기능 9 + 문서 2, 커밋 목록은 12장)를 `develop`에 병합 `4351c43` → 브랜치 삭제 → push(2026-09-20). `feature/seminar-pages`(기능 7 + 문서 1, 커밋 목록은 12장)를 `develop`에 병합 `8f704a4` → 브랜치 삭제 → push(2026-09-20). **원격**: `origin/develop` = 로컬 `develop`과 같음(2026-09-20 push), `origin/master` = `8bf0e7b`(로컬 `master`와 같음, 아직 건드리지 않았다). `develop` → `master` 병합은 아직 하지 않았다
-- **다음 단계**: 홈 완료 → 프로젝트 목록·상세 완료(병합·push 완료) → 스터디 목록·글 완료(병합 `4351c43`, 5-15) → 세미나 목록·행사 상세 완료(병합 `8f704a4`, 5-16) + 홈 최근 기록 링크를 상세로(함께 끝냄) → **페이지 전환 모션**(계획 2-6) → 콘텐츠 검색 → placeholder 정리 → 배포 → **마지막: 개발 과정 설명 세션**(2026-09-17 요청). 화면마다 `develop`에서 `feature/*` 브랜치를 새로 만든다
+- **다음 단계**: 홈 완료 → 프로젝트 목록·상세 완료(병합·push 완료) → 스터디 목록·글 완료(병합 `4351c43`, 5-15) → 세미나 목록·행사 상세 완료(병합 `8f704a4`, 5-16) + 홈 최근 기록 링크를 상세로(함께 끝냄) → 페이지 전환 모션 구현 완료(커밋 6개, 사용자 확인 대기, 5-17) → **콘텐츠 검색** → placeholder 정리 → 배포 → **마지막: 개발 과정 설명 세션**(2026-09-17 요청). 화면마다 `develop`에서 `feature/*` 브랜치를 새로 만든다
 
 ## 2. 새 채팅에서 이어서 시작하기
 ### 2-1. 지금 바로 할 일
 1. `git status`로 브랜치와 작업 트리를 확인한다
-   - 기대 상태: **`develop` 브랜치**, 마지막 커밋은 문서(`docs:`) 커밋이고 그 앞에 병합 `8f704a4`가 있다. 작업 트리 깨끗, `origin/develop`과 같음
-   - 기능 브랜치는 남아 있지 않다(`feature/seminar-pages`는 병합 후 삭제)
-   - 원격: `origin/develop` = 로컬과 같음, `origin/master` = `8bf0e7b`(아직 건드리지 않았다). `develop` → `master` 병합은 아직 하지 않았다
+   - 기대 상태: **`feature/page-transitions` 브랜치**, 커밋 6개(`f3f2735`…), 작업 트리 깨끗. 아직 `develop`에 병합하지 않았고 원격에도 올리지 않았다
+   - `develop`의 마지막 커밋은 문서(`docs:`) 커밋이고 그 앞에 병합 `8f704a4`가 있다
+   - 원격: `origin/develop` = 로컬 `develop`과 같음, `origin/master` = `8bf0e7b`(아직 건드리지 않았다). `develop` → `master` 병합은 아직 하지 않았다
 2. Node는 **nvm의 24**를 쓴다. 셸 기본값이 21.7.3이라 명령 전에 `source ~/.nvm/nvm.sh && nvm use`(`.nvmrc` = 24)를 먼저 실행한다. 검증 방법은 2-2
-3. **다음 작업은 페이지 전환 모션이다 → 2-6을 그대로 따라간다.** 시작할 때 `git switch -c feature/page-transitions`(`develop`에서)
+3. **지금 할 일은 2-6을 그대로 따라간다**(사용자 브라우저 확인 → `develop` 병합 → 콘텐츠 검색)
 4. 그 뒤 순서: 콘텐츠 검색(5-12) → 대괄호 `[ ]` placeholder 실제 콘텐츠 정리 → GitHub Actions 배포 → **마지막 단계: 개발 과정 설명 세션**(2026-09-17 사용자 요청). 화면마다 `develop`에서 `feature/*` 새 브랜치
    - 마지막 단계 내용: 사이트가 완성되면 사용자에게 개발 과정 전체를 설명한다. 쓰인 문법(Astro 컴포넌트·프런트매터·스코프 스타일·`light-dark()`·Content Collections·TypeScript 등), 핵심 기능별 구현 원리(테마·Dock 자동 숨김·필터·콘텐츠 헬퍼 등), 면접에서 나올 만한 질문과 답을 다룬다. 기술 선택 근거는 `docs/tech-stack.md`와 연결한다. 구현하면서 설명할 거리(원리·대안·트레이드오프)는 5장 결정 기록에 계속 남긴다
 
@@ -51,6 +51,13 @@
 - **커밋 나누기**: 작업을 한꺼번에 한 뒤 나눌 때는 최종 파일을 scratchpad에 복사해 두고 작업 트리를 되돌린 다음, 커밋 단위마다 파일을 다시 복사(한 파일에 두 변경이 섞였으면 중간 상태를 스크립트로 만든다) → 빌드 → 커밋. 끝나면 `cmp`로 최종 파일과 같은지 확인
 
 ### 2-3. 최근 세션에서 끝낸 일 (요약, 자세한 결정은 5장)
+- 페이지 전환 모션(`feature/page-transitions`, 2026-09-20, 결정은 **5-17**, 커밋 6개 목록은 12장)
+  - `ClientRouter`(`components/PageTransitions.astro`)를 `BaseLayout`에 넣어 링크 이동을 화면 전환으로 바꿨다
+  - 전환 종류는 **두 주소의 관계**로 정한다(`astro:before-preparation`에서 `direction`을 바꿔 `<html data-astro-transition="…">`으로 내보냄): `open`·`close`·`push`·`pop`·`fade`. 모션은 `styles/transitions.css`
+  - 스크립트 재실행: `lib/pageInit.ts`의 `onEachPage(setUp)` — 첫 화면에서 한 번, 그 뒤 `astro:after-swap`마다 다시. window·document에 건 이벤트는 `AbortSignal`로 끊는다. Dock·Toc·MenuClock·ThemeToggle·FilterChips·Window·CodeCopy가 쓴다
+  - **전환하면 `<html>`의 속성이 새 문서 것으로 통째로 바뀌어 `data-theme`이 사라진다** → `BaseLayout`의 인라인 스크립트가 `astro:after-swap`에서 다시 붙인다
+  - 메뉴바·Dock은 `transition:name`으로 본문 스냅샷에서 빼 제자리에 남긴다. 글로우는 일부러 빼지 않았다(화면 한 장이 통째로 넘어가야 해서)
+  - 확인: 헤드리스 17항목 통과(5-17 끝). 전환 도중 화면은 헤드리스로 찍히지 않아 **사용자 브라우저 확인이 필요하다**
 - 세미나 목록·행사 상세(`feature/seminar-pages`, 2026-09-20, 결정은 **5-16**, 커밋 8개 목록은 12장)
   - 창 여백을 `Window`가 `--win-pad`로 내보내게 바꾸고 `ScreenshotBand`가 그 값을 쓴다(창 폭 끝까지 넓히는 요소가 수치를 복제하지 않게)
   - 헬퍼: `seminarHref()`
@@ -96,33 +103,24 @@
 - 마크다운: 글머리 기호는 `-`, 헤더 바로 다음 줄에 본문(빈 줄 없음)
 - 기술 스택을 정할 때는 선택 이유와 React·Next.js 등 대안 대비 장단점, 예상 면접 질문까지 정리한다
 
-### 2-6. 다음 작업: 페이지 전환 모션 (2026-09-20 작성, 브랜치 `feature/page-transitions`)
-세미나 화면은 병합까지 끝났다(2026-09-20). 모션 값은 **5-9**가 기준이고, 시안 프로토타입은 `design/MotionDesktop.dc.html`·`MotionMobile.dc.html`이다.
+### 2-6. 지금 할 일: 페이지 전환 커밋 → 확인 → 병합 → 콘텐츠 검색 (2026-09-20 작성, 브랜치 `feature/page-transitions`)
+구현은 끝났다(결정·확인 결과는 **5-17**). 남은 것은 커밋과 사용자 확인이다.
 
-#### 무엇을 하나
-- Astro의 View Transitions(`astro:transitions`의 `ClientRouter`)를 `BaseLayout`의 `<head>`에 넣어 페이지 이동을 화면 전환으로 바꾼다
-- 메뉴바·Dock은 `transition:persist`로 유지해 전환 중에 깜빡이지 않게 한다
-- 전환 모양: 목록 → 상세는 **오른쪽에서 들어오기**(상세 `translateX(100%)→0`, 목록 `translateX(-24%)` + opacity .4, `--dur-push` 360ms), 상세 → 목록은 반대로 `--dur-pop` 300ms. 모바일·태블릿 창 시트는 아래에서 올라온다(`--dur-sheet` 420ms, `--ease-sheet`)
-- `prefers-reduced-motion`이면 이동 없이 짧은 페이드(`--dur-fast`)
+#### 1) 커밋 — 끝남 (2026-09-20, 커밋 6개는 12장)
+- 각 커밋 직전에 `npm run build`. 중간 상태도 빌드되고 동작한다(스크립트 재실행 정리 → `ClientRouter` → 셸 제외 → 모션 순서라 중간에 깨지는 화면이 없다)
 
-#### 반드시 다시 실행해야 하는 스크립트 (전환하면 `<script>`가 다시 돌지 않는다)
-- `Dock.astro`: `transition:persist`로 살아남으므로 다시 붙일 필요는 없지만 **스크롤 기준값(`lastY`)을 `astro:page-load`에서 초기화**해야 한다(5-3 마지막 줄). 상세로 가면 `startHidden`이라 초기 상태도 다시 정해야 한다
-- `FilterChips.astro`(칩 동작·`?category=` 복원), `Toc.astro`(토글·현재 항목), `Window.astro`(‹ 뒤로 링크에 분류 붙이기), `CodeCopy.astro`(복사 버튼 `hidden` 풀기), `MenuClock.astro`(시계 타이머), `ThemeToggle.astro`(문서 위임 클릭이라 한 번만 붙이면 되는지 확인)
-- 방법: 각 스크립트를 함수로 감싸고 `astro:page-load`에서 부른다(중복 등록을 막으려면 `document.addEventListener('astro:page-load', …)`를 모듈 최상위에서 한 번만 건다)
+#### 2) 사용자 브라우저 확인 (헤드리스로 찍을 수 없는 것) ← 지금 할 일
+- **전환 도중 화면**: 헤드리스 Chrome은 전환이 끝난 뒤에만 찍히고, 애니메이션을 멈춰 세우면 스크린샷 자체가 나오지 않는다 → 실제 브라우저에서만 볼 수 있다
+  - 목록 → 상세가 오른쪽에서 들어오고 목록이 왼쪽으로 물러나는지(360ms), 상세 → 목록이 그 반대인지(300ms)
+  - 모바일·태블릿에서 홈 → 창이 아래에서 올라오고 홈이 뒤로 물러나는지(420ms), 창 → 홈이 그 반대인지(300ms)
+  - 데스크톱에서 홈 → 창이 살짝 커지며 나타나는지(320ms)
+  - 전환 중 메뉴바·Dock이 제자리에 있는지(함께 밀리면 `transition:name`이 빠진 것이다)
+- **동작 줄이기**: 시스템 설정을 켜면 이동 없이 화면이 바로 바뀌는지(Astro가 전환 애니메이션을 모두 끈다, 5-17)
+- 테마를 바꾼 뒤 여러 화면을 옮겨 다녀도 유지되는지(헤드리스로는 통과했다)
 
-#### 확인할 것
-- 전환 중 메뉴바·Dock이 유지되는지, Dock 자동 숨김이 새 페이지에서 다시 맞게 동작하는지
-- 목록 → 상세 → 브라우저 뒤로 가기에서 필터(`?category=`)가 유지되는지
-- 스크립트가 두 번 붙어 이벤트가 중복 실행되지 않는지(복사 버튼·목차 토글로 확인)
-- `prefers-reduced-motion`에서 이동이 사라지는지
-- 5폭 라이트/다크에서 전환 직후 화면이 깨지지 않는지
-
-#### 커밋 순서 (빌드되는 가장 작은 단위, 2-5)
-1. `ClientRouter` 도입 + 메뉴바·Dock `transition:persist`
-2. 스크립트를 `astro:page-load`에서 다시 실행하도록 정리(컴포넌트마다 나눌 수 있으면 나눈다)
-3. 전환 모션(목록 ↔ 상세 · 시트) 정의
-4. 동작 줄이기 대응
-- 각 커밋 **직전마다** `npm run build`
+#### 3) 그 뒤: `develop` 병합 → 콘텐츠 검색
+- 확인이 끝나면 `develop`에 `--no-ff` 병합 → 기능 브랜치 삭제 → `origin/develop` push(2-5)
+- 다음 작업은 **콘텐츠 검색**이다. 방식(빌드 때 JSON 색인 + 부분 문자열 찾기, ⌘K/메뉴바 아이콘)은 5-12의 추천안이며 **시작 전에 사용자와 확정**한다. 검색 결과는 전환 대상이 아니므로(같은 페이지 안에서 열리는 창) 이번 작업과 겹치지 않는다
 
 ## 3. 프로젝트 개요
 - 자기소개, 프로젝트 포트폴리오, 학습 기록, 세미나·행사 기록(사진 포함)을 모으는 개인 홈페이지
@@ -184,6 +182,10 @@
 | 행사 상세 | `SeminarCover` + `[slug]` 페이지(머리·표지·세션 본문·Pager·Dock 숨김 시작), 목록 연결 | `feature/seminar-pages` | 5폭 스크린샷·Pager·Dock 검사(2026-09-20) |
 | 홈 최근 기록 링크 | 최근 기록 창·위젯 카드를 목록 → 상세로(빈 상태만 목록) | `feature/seminar-pages` | 빌드 HTML에서 링크 확인(2026-09-20) |
 | 세미나 병합 | 기능 7 + 문서 1 = 커밋 8개, 사용자 브라우저 확인 통과 | `feature/seminar-pages` | `develop` 병합 `8f704a4` → 브랜치 삭제 → push(2026-09-20) |
+| 스크립트 재실행 | `lib/pageInit.ts`의 `onEachPage`로 컴포넌트 초기화를 감싸고 window·document 이벤트를 `AbortSignal`로 끊음(7개 컴포넌트) | `feature/page-transitions` | 목차 토글 1회 검사로 중복 등록 없음 확인(2026-09-20) |
+| View Transitions | `ClientRouter`(`PageTransitions.astro`) 도입 + 전환 뒤 `data-theme` 복원 | `feature/page-transitions` | 전환 8회 동안 테마 유지 확인(2026-09-20) |
+| 셸 고정 | 메뉴바·Dock에 `transition:name`을 주어 본문 스냅샷에서 제외 | `feature/page-transitions` | 빌드 HTML에서 `view-transition-name` 확인(2026-09-20) |
+| 전환 모션 | 두 주소의 관계로 종류를 정하고(`push`·`pop`·`open`·`close`·`fade`) `styles/transitions.css`가 모션 선택 | `feature/page-transitions` | 종류 9가지 분류·CSS 파싱 확인(2026-09-20) |
 
 ### 남은 일
 - [x] 모션·✕·문서 커밋 → `develop` 병합 → 브랜치 삭제 (2026-09-14, 사용자 확인)
@@ -215,7 +217,9 @@
 - [x] 세미나 목록·행사 상세 사용자 브라우저 확인(2026-09-20, 임시 행사 3건으로 확인, 문제 없음)
 - [x] `feature/seminar-pages` → `develop` 병합 `8f704a4` → 브랜치 삭제 → push (2026-09-20, 사용자 요청)
 - [ ] 실기기 확인(배포 직전에 묶어서): Dock 트랙패드 스크롤 느낌·하단 hover·"동작 줄이기" / 320px 폭에서 모바일 Dock이 화면 폭과 거의 같은 문제
-- [ ] **페이지 전환 모션**(View Transitions `ClientRouter`, `transition:persist`로 메뉴바·Dock 유지) ← 다음 할 일. 계획은 **2-6**, 브랜치 `feature/page-transitions`
+- [x] **페이지 전환 모션 구현**(View Transitions `ClientRouter`, 메뉴바·Dock은 `transition:name`으로 제자리, 종류별 모션) — `feature/page-transitions`, 2026-09-20, 결정은 **5-17**
+- [x] 페이지 전환 커밋 6개(`f3f2735`…, 12장, 2026-09-20)
+- [ ] 페이지 전환 **사용자 브라우저 확인**(전환 도중 화면·동작 줄이기는 헤드리스로 볼 수 없다, 2-6) → `develop` 병합 → push
 - [ ] 콘텐츠 검색 기능 — 목록·상세 페이지 구현 뒤 별도 브랜치(방식은 5-12 추천안을 사용자와 확정)
 - [x] `draft` 제외 헬퍼·목록 정렬(날짜 내림차순)·날짜 표기 — `src/lib/content.ts`·`src/lib/date.ts`(2026-09-16, 홈 최근 기록과 함께). 목록 페이지도 이 헬퍼만 쓴다
 - [x] 스터디 글 코드 블록 결정: 복사 버튼은 실제 동작, 파일 이름은 울타리 meta + Shiki transformer (2026-09-19, 5-15)
@@ -479,6 +483,37 @@
   - Dock: 목록 `shown` / 상세 `hidden` + `data-start-hidden` ✓ · ‹ 뒤로 링크 ✓
   - 스크린샷 320·390·768·1180·1440 라이트/다크 ✓ · 프로젝트 상세 스크린샷 띠(여백 상쇄 리팩터링) 이상 없음 ✓
 
+### 5-17. 페이지 전환 모션 구현 (2026-09-20 결정)
+계획(옛 2-6)에서 세운 방침 두 가지가 **실제로는 맞지 않아 바꿨다**. 근거는 Astro 7.3.2의 `dist/transitions/router.js`·`swap-functions.js`를 직접 읽고 헤드리스로 확인한 결과다.
+- **메뉴바·Dock은 `transition:persist`가 아니라 `transition:name`으로 고정한다(계획 변경)**
+  - `transition:persist`는 요소를 **그대로 옮겨 온다** → 메뉴·Dock의 `aria-current="page"`(열린 앱 표시)가 이전 페이지 값으로 남는다. 활성 표시를 스크립트로 다시 칠해야 해서 오히려 손이 많이 간다
+  - `transition:name`은 그 요소를 **본문 스냅샷에서 빼내** 따로 움직이게 한다. 본문이 옆으로 밀려도 셸은 제자리에 남고, 요소 자체는 새 페이지 것으로 갈아 끼워지므로 활성 표시가 저절로 맞는다. 전환은 Astro 기본 페이드(180ms)라 바탕 유리 ↔ 창 유리처럼 모양이 바뀔 때만 짧게 겹친다
+  - **`transition:name`을 컴포넌트 태그(`<MenuBar transition:name="menubar" />`)에 붙이면 속성이 루트 요소로 내려가지 않는다**(빌드 결과에 `data-astro-transition-scope`가 없다). 각 컴포넌트 안의 실제 요소(`<header class="menubar">`·`<nav class="dock-zone">`)에 붙였다
+  - 글로우(`SiteLayout`의 `.glow`)는 일부러 이름을 주지 않았다. 바탕까지 함께 밀려야 "화면 한 장이 통째로 넘어가는" OS 메타포가 되고, 이름을 주면 스냅샷이 본문 **위**로 올라가 블러 얼룩이 글자를 덮는다
+- **스크립트 재실행은 `astro:page-load`가 아니라 `astro:after-swap`에서(계획 변경)**
+  - `astro:page-load`는 **첫 화면에서 window의 `load` 뒤에** 온다(`router.js`의 `addEventListener('load', onPageLoad)`). 그 사이 목차가 펼쳐진 채 보였다가 접히는 식으로 초기 상태가 노출된다
+  - `astro:after-swap`은 DOM을 갈아 끼운 직후, 새 화면을 그리기 전에 온다. 그래서 **첫 화면은 모듈이 실행될 때 바로 한 번, 그 뒤로는 `astro:after-swap`마다** 다시 부른다 → `src/lib/pageInit.ts`의 `onEachPage(setUp)`
+  - window·document에 건 이벤트는 페이지를 옮겨도 살아남아 전환할 때마다 쌓인다 → `onEachPage`가 넘겨주는 `AbortSignal`을 `addEventListener`에 주어 다음 전환에서 한꺼번에 끊는다(요소 자신에게 건 이벤트는 요소가 통째로 바뀌므로 그냥 둔다)
+  - 쓰는 곳: `Dock`(스크롤·포인터, 숨김 타이머) · `Toc`(스크롤) · `MenuClock`(분 경계 타이머·`visibilitychange`) · `ThemeToggle`(버튼 이름만 다시. 클릭은 문서 위임이라 한 번만 건다) · `FilterChips` · `Window`(‹ 링크) · `CodeCopy`
+- **전환 뒤 테마가 풀리는 문제**: `swapRootAttributes()`가 `<html>`의 속성을 **모두 지우고** 새 문서 것으로 바꾼다. 새 문서에는 `data-theme`이 없으므로(빌드 시점에는 모르는 값) 전환할 때마다 시스템 테마로 돌아간다 → `BaseLayout`의 인라인 스크립트가 `astro:after-swap`에서 다시 붙인다. `<head>` 인라인 스크립트 자체는 전환 때 다시 실행되지 않지만, `document`에 건 리스너는 살아남는다
+- **전환 종류는 기록(앞으로/뒤로)이 아니라 두 주소의 관계로 정한다**
+  - `astro:before-preparation`에서 `event.direction`에 값을 넣으면 ClientRouter가 `<html data-astro-transition="그 값">`으로 달아 준다(`forward`/`back` 말고 아무 문자열이나 된다 — `router.js` 316행). CSS는 `[data-astro-transition='push']::view-transition-old(root)`처럼 그 값으로 고른다
+  - 규칙(`components/PageTransitions.astro`): 홈 → 창 `open` · 창 → 홈 `close` · 목록 → 상세 `push` · 상세 → 목록 `pop` · 다른 앱으로 `fade`. 상세 ↔ 상세(맨 아래 이전/다음)는 깊이가 같아 주소로는 모르므로 **누른 링크의 `rel`**(`Pager`가 붙이는 `prev`/`next`)로 가른다
+  - 브라우저 뒤로 가기도 같은 규칙을 탄다. 상세에서 뒤로 가면 주소 관계가 상세 → 목록이라 저절로 `pop`이 된다
+  - 상세는 "구획 2개 이상"으로 본다(스터디 글은 폴더를 더 둘 수 있어 `/study/a/b/`가 될 수 있다)
+- **모션은 `root` 한 장만 움직인다**(`src/styles/transitions.css`): 메뉴바·Dock이 스냅샷에서 빠져 있어 `root`는 사실상 본문 + 바탕이다. `push`는 새 화면 `translateX(100%)→0` · 옛 화면 `translateX(-24%)` + opacity .4(`--dur-push` 360ms), `pop`은 그 반대(`--dur-pop` 300ms). 모바일·태블릿 `open`은 `translateY(100%)→0`(`--dur-sheet` 420ms) + 홈 `scale(.94)`, 데스크톱 `open`은 `translateY(10px) scale(.95)` + 페이드(`--dur-window` 320ms). 닫기는 여는 시간의 약 70%에 `--ease-in`(5-9)
+  - `pop`·`close`는 **나가는 화면이 위**에 있어야 그 아래에서 목록·홈이 드러난다 → `::view-transition-old(root) { z-index: 1 }`
+  - `fade`는 규칙을 두지 않고 브라우저 기본 크로스 페이드를 쓴다
+- **동작 줄이기는 Astro 기본을 따른다(계획 변경)**: `astro/components/viewtransitions.css`가 `prefers-reduced-motion`에서 모든 전환 애니메이션을 `animation: none !important`로 끈다. 계획의 "짧은 페이드"로 되돌리려면 `!important` 싸움을 해야 하는데, 이동도 페이드도 없이 곧바로 바뀌는 쪽이 "동작 줄이기"에 더 맞아 그대로 두었다
+- **확인 결과(헤드리스, 임시 콘텐츠 6개 = 프로젝트·스터디·세미나 각 2개)**
+  - 전환 종류 9가지 모두 의도대로: 목록→상세 `push` · 상세→목록 `pop` · 목록→홈 `close` · 홈→목록 `open` · 다음 글 `push` · 이전 글 `pop` · 다른 앱 `fade` · 브라우저 뒤로 `pop` · Dock 연락처(해시 링크) `close` + `#contact` 도착 ✓
+  - 테마: 전환 10회 동안 `data-theme="dark"` 유지 ✓ / Dock: 목록 `shown` · 상세 `hidden` ✓ / 시계: 전환마다 다시 채워짐 ✓
+  - 필터: `?category=`가 상세 ‹ 링크와 브라우저 뒤로 모두에서 유지되고 칩·카드가 다시 걸림 ✓ / 목차 토글 1회에 1번만 반응(중복 등록 없음) ✓ / 복사 버튼 `hidden` 풀림 ✓
+  - CSS: 전환 규칙 12개가 브라우저에 그대로 파싱됨(`z-index`·데스크톱 미디어 쿼리 포함) ✓ · 빌드 HTML에 `view-transition-name: menubar`·`dock` ✓
+  - 전환 **직후** 화면은 1440 라이트/다크에서 정상 ✓. **전환 도중 화면은 헤드리스로 찍히지 않았다**(가상 시계에서 애니메이션을 멈춰 세우면 스크린샷이 나오지 않고, 멈추지 않으면 끝난 뒤에 찍힌다) → 사용자 브라우저 확인 항목(2-6)
+  - 검사 방법(다시 쓸 때): `astro preview`를 띄우고 `dist`의 시작 페이지 `<head>` 맨 앞에 검사 스크립트를 끼운다. 전환은 `document.startViewTransition = undefined`로 끄고 `<meta name="astro-view-transitions-fallback">`을 `swap`으로 바꿔야 한다(가상 시계에서는 View Transition도 fallback 애니메이션도 끝나지 않는다). 메타는 전환마다 새 문서 것으로 바뀌므로 `astro:after-swap`에서 매번 다시 바꾼다. `data-astro-transition`은 전환이 끝나면 지워지므로 `astro:after-swap`에서 붙잡아 둔다
+  - **CSSOM으로 규칙을 셀 때 주의**: 요즘 Chrome은 일반 `CSSStyleRule`에도 (비어 있는) `cssRules`가 있어, `if (rule.cssRules) 재귀`를 먼저 두면 모든 규칙을 건너뛴다. `selectorText`를 먼저 본다
+
 ## 6. 저작권 주의선
 - macOS·Xcode의 실제 UI를 복제하지 않는다. Apple 로고, SF Symbols, 신호등 색(빨강·노랑·초록) 창 컨트롤, 실제 메뉴 구조를 쓰지 않는다
 - 자체 팔레트와 직접 그린 SVG 아이콘을 쓴다. 창 컨트롤 점은 라일락 2개 + 민트 1개(장식이며 기능 없음). 닫기는 별도 ✕ 버튼으로 둔다
@@ -609,13 +644,13 @@
 | `src/lib/codeBlock.ts` | 코드 블록 Shiki transformer(`<figure>`로 감싸고 파일 이름 머리줄·복사 버튼)와 시안 색 테마 `CODE_THEME`. `astro.config.mjs`가 쓴다(5-15) |
 | `src/styles/prose.css` | Markdown 본문 공통 스타일(`.prose-body`): 문단·목록·강조·링크·이미지·인라인 코드·인용, 간격 변수 `--prose-gap`. `code-block.css`를 `@import` |
 | `src/styles/code-block.css` | 코드 블록 모양: 머리줄·복사 버튼·줄 번호(CSS 카운터 + sticky)·폭별 글자 크기. 테마와 무관한 고정 어두운 색 |
-| `src/layouts/SiteLayout.astro` | 공통 셸: 고정 글로우 바탕 3개 · `MenuBar` · `<main>` · `Dock`. props `active`(앱 id), `surface`(`desk` 홈 / `window` 창 화면), `title`·`description`, `dockHidden`(상세) |
+| `src/layouts/SiteLayout.astro` | 공통 셸: 고정 글로우 바탕 3개 · `MenuBar` · `<main>` · `Dock`. props `active`(앱 id), `surface`(`desk` 홈 / `window` 창 화면), `title`·`description`, `dockHidden`(상세). 글로우는 전환 때 본문과 함께 밀린다(이름을 주지 않는다, 5-17) |
 | `src/data/apps.ts` | 앱 목록 `APPS`(홈·프로젝트·스터디 기록·세미나 기록: 라벨·창 제목·설명·경로·아이콘 바탕·SVG), `CONTACT`(`/#contact`), `CODE_EDITOR`(`/#code`, 데스크톱 Dock 전용), `getApp()` |
 | `src/lib/url.ts` | `withBase(path)`: base(`/my-homepage`)를 붙인 내부 경로. 내부 링크는 모두 이것으로 만든다 |
 | `src/components/AppIcon.astro` | 아이콘 타일. 크기는 부모의 CSS 변수(`--icon-size`·`--icon-radius`·`--glyph-size`·`--glyph-stroke`), `shadow` 옵션 |
-| `src/components/MenuBar.astro` | 유리 메뉴바. 데스크톱 36px(로고·이름·메뉴 4개 `aria-current`·테마 버튼·시계) / 모바일 52px·태블릿 56px(홈에서만, 로고·이름·44px 테마 버튼) |
+| `src/components/MenuBar.astro` | 유리 메뉴바. 데스크톱 36px(로고·이름·메뉴 4개 `aria-current`·테마 버튼·시계) / 모바일 52px·태블릿 56px(홈에서만, 로고·이름·44px 테마 버튼). `transition:name="menubar"`로 전환 때 제자리(5-17) |
 | `src/components/MenuClock.astro` | 데스크톱 메뉴바 시계. 기기 현지 시각 `HH:MM`, 분 경계마다 `setTimeout`으로 갱신, JS 전에는 빈 자리(폭 고정)(5-12) |
-| `src/components/Dock.astro` | 하단 고정 Dock. 앱 4개 + 실행 점 · 구분선 · 코드 에디터(데스크톱) · 연락처. `surface` desk/window 유리. 크기 모바일 48 / 태블릿 56 / 데스크톱 52px. 자동 숨김 스크립트(`data-state`)·힌트 막대(5-3). `startHidden`이면 숨긴 채 시작(5-14) |
+| `src/components/Dock.astro` | 하단 고정 Dock. 앱 4개 + 실행 점 · 구분선 · 코드 에디터(데스크톱) · 연락처. `surface` desk/window 유리. 크기 모바일 48 / 태블릿 56 / 데스크톱 52px. 자동 숨김 스크립트(`data-state`, `onEachPage`로 페이지마다 다시 건다)·힌트 막대(5-3). `startHidden`이면 숨긴 채 시작(5-14). `transition:name="dock"`으로 전환 때 제자리(5-17) |
 | `src/components/Window.astro` | 창. 데스크톱: 최대 1240px 가운데 창(타이틀 바 44px, ✕ 28px) / 모바일·태블릿: 위 12·16px 틈 시트(타이틀 바 52·56px sticky, ✕ 44px). 본문 여백 20·36·48px(`--win-pad`로 내보내 표지·스크린샷 띠가 상쇄에 쓴다), 아래는 Dock 자리만큼 비움. `back`(href·label)이면 모바일·태블릿 타이틀 바 창 점 자리에 ‹ 링크. `data-back-link` 링크에 직전 목록 필터를 붙이는 스크립트 포함(5-15) |
 | `src/components/PageHeading.astro` | 목록 화면 큰 제목(30·34·44px)과 한 줄 설명 |
 | `src/components/WindowDots.astro` | 창 점 3개(라일락 2 + 민트 1, 장식). 크기 `--dot-size`·간격 `--dot-gap`, `tone` window(테마 토큰)/code(고정색). `Window`·`HomePanel`이 사용 |
@@ -623,7 +658,10 @@
 | `src/components/ProfileCode.astro` | `ProfileView.swift` 코드 에디터 내용: 파일 탭(데스크톱) · 줄 번호 · Swift 구문 색(고정색). 보이는 줄 8/12/14 |
 | `src/components/PhoneMockup.astro` | iPhone 16 Pro 목업: 프레임 이미지(`<Image>` WebP 1x·2x) + 투명 화면 영역(slot, 넘긴 `img`는 꽉 채워 위 기준으로 자름). 폭 `--phone-width`(5-8) |
 | `src/assets/iphone-16-pro.png` | Apple Design Resources iPhone 16 Pro 프레임(450×920 RGBA, 50KB). 사용자 허용으로 커밋(5-8) |
-| `src/layouts/BaseLayout.astro` | 모든 페이지 공통 문서 뼈대: `lang="ko"`, 메타(title·description 기본값), Noto Sans KR `<link>`, `tokens.css`·`global.css` import, `<head>` 인라인 스크립트(저장된 테마를 첫 화면 전에 `data-theme`에 적용), `<slot />` |
+| `src/layouts/BaseLayout.astro` | 모든 페이지 공통 문서 뼈대: `lang="ko"`, 메타(title·description 기본값), Noto Sans KR `<link>`, `tokens.css`·`global.css`·`transitions.css` import, `<head>` 인라인 스크립트(저장된 테마를 첫 화면 전에 `data-theme`에 적용 + `astro:after-swap`에서 다시 적용), `PageTransitions`, `<slot />` |
+| `src/components/PageTransitions.astro` | 페이지 전환: `ClientRouter` + 떠나는/가는 주소로 전환 종류를 정해 `event.direction`에 넣는 스크립트(`open`·`close`·`push`·`pop`·`fade`, 상세↔상세는 링크의 `rel`)(5-17) |
+| `src/styles/transitions.css` | 전환 종류별 `::view-transition-old/new(root)` 모션. 시간·곡선은 모션 토큰만 쓰고 `pop`·`close`는 나가는 화면을 위로(`z-index: 1`). 데스크톱은 시트 대신 창이 커지며 열린다(5-17) |
+| `src/lib/pageInit.ts` | `onEachPage(setUp)`: 첫 화면에서 한 번, 그 뒤 `astro:after-swap`마다 초기화를 다시 부른다. 넘겨주는 `AbortSignal`로 지난 페이지의 window·document 이벤트를 끊는다(5-17) |
 | `src/components/ThemeToggle.astro` | 테마 전환 버튼(해/달 아이콘, `size` desktop/touch). 문서 위임 클릭 → `data-theme`·`localStorage('theme')` 저장, 버튼 이름 갱신, 누른 뒤 아이콘 애니메이션 |
 | `src/styles/tokens.css` | 디자인 토큰. 모션 곡선 3·시간 12, 색 55쌍 `light-dark()`, `color-scheme` 3가지(`:root`·`[data-theme="dark"]`·`[data-theme="light"]`) |
 | `src/styles/global.css` | 전역 기본: box-sizing, body 바탕 `--desk`·글자 `--ink`·글꼴, 링크 `--win-accent`(hover 전환은 모션 토큰), `img` 반응형, `[hidden]` 항상 숨김(필터용), `.code` 고정폭 글꼴 |
@@ -653,7 +691,14 @@
 - 인터랙션은 `onClick="{{handler}}"`, 조건 표시는 `<sc-if value="{{bool}}">`, 상태 스타일은 `data-*="{{값}}"` + CSS 선택자로 만든다(`class`에 값 끼워 넣기는 쓰지 않았다)
 
 ## 12. 브랜치·커밋 기록
-- 로컬 브랜치: `master`, `develop`(현재). 원격(`origin`, `https://github.com/yuminc03/my-homepage.git`): `master` `8bf0e7b`(로컬과 같음), `develop`(2026-09-20 push, `origin/develop` 추적, 로컬과 같음 — 마지막은 세미나 병합 뒤 문서 커밋). 기능 브랜치는 남아 있지 않다. `develop` → `master` 병합은 아직 하지 않았다
+- `feature/page-transitions`(2026-09-20, `develop` `f509654`에서 분기, **병합 전 — 사용자 브라우저 확인 대기**), 오래된 순. 각 커밋 직전에 `npm run build`
+  - `f3f2735` refactor: 컴포넌트 초기화를 페이지마다 다시 실행하는 onEachPage 헬퍼 추가 (`src/lib/pageInit.ts` 신규 + `Dock`이 첫 사용자)
+  - `379dab5` refactor: 나머지 컴포넌트 스크립트도 onEachPage로 감싸기 (`Toc`·`MenuClock`·`ThemeToggle`·`FilterChips`·`Window`·`CodeCopy`)
+  - `1fe981f` feat: ClientRouter로 페이지 전환 도입하고 전환 뒤 테마 속성 복원
+  - `47c2f82` feat: 메뉴바·Dock을 전환 스냅샷에서 빼 제자리에 두기(`transition:name`)
+  - `bc8a3f0` feat: 두 화면의 관계에 따라 페이지 전환 모션 적용(`PageTransitions`의 종류 판별 + `styles/transitions.css`)
+  - (이 문서 갱신) docs: 페이지 전환 모션 구현 기록과 다음 작업 정리
+- 로컬 브랜치: `master`, `develop`, `feature/page-transitions`(현재). 원격(`origin`, `https://github.com/yuminc03/my-homepage.git`): `master` `8bf0e7b`(로컬과 같음), `develop`(2026-09-20 push, `origin/develop` 추적, 로컬과 같음 — 마지막은 세미나 병합 뒤 문서 커밋). 기능 브랜치는 남아 있지 않다. `develop` → `master` 병합은 아직 하지 않았다
 - `feature/seminar-pages`(2026-09-20, `develop` `40837df`에서 분기, **`develop` 병합 `8f704a4`로 완료, 브랜치 삭제**), 오래된 순. 각 커밋 직전에 `npm run build`
   - `f28a2fa` refactor: 창 본문 좌우 여백을 --win-pad 변수로 내보냄
   - `47136c4` feat: 행사 상세 주소 seminarHref 헬퍼 추가

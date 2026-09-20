@@ -26,6 +26,8 @@ const { categories, label } = Astro.props;
 <p class="status" data-filter-status aria-live="polite"></p>
 
 <script>
+	import { onEachPage } from '../lib/pageInit';
+
 	function initFilter(root: HTMLElement) {
 		const chips = [...root.querySelectorAll<HTMLButtonElement>('[data-filter-chip]')];
 		const items = [...root.querySelectorAll<HTMLElement>('[data-filter-item]')];
@@ -75,7 +77,11 @@ const { categories, label } = Astro.props;
 		else remember('');
 	}
 
-	document.querySelectorAll<HTMLElement>('[data-filter]').forEach(initFilter);
+	// 전환으로 목록에 들어올 때마다 칩을 다시 걸고 주소의 ?category=를 다시 적용한다
+	// (상세에서 ‹로 돌아오면 ?category=가 붙은 주소로 오므로, 여기서 다시 읽어야 고른 분류가 유지된다)
+	onEachPage(() => {
+		document.querySelectorAll<HTMLElement>('[data-filter]').forEach(initFilter);
+	});
 </script>
 
 <style>

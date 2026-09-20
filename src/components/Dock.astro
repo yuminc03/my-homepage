@@ -7,6 +7,8 @@
 //   - 키보드: Dock 안으로 포커스가 들어오면 나타난다
 // - startHidden: 상세 화면처럼 본문을 읽는 화면은 숨긴 채로 시작한다(힌트 막대만). 위로 스크롤하거나 마우스·키보드로 부르면 나타난다
 //   맨 위 근처에서도 저절로 나타나지 않게 해, 읽기 시작하며 조금 스크롤할 때 Dock이 튀어나오지 않는다
+// - transition:name: 페이지 전환 때 본문 스냅샷에서 빠져 제자리에 남는다. 바탕 유리 ↔ 창 유리처럼
+//   모양이 바뀌는 경우만 Astro 기본 페이드(180ms)로 짧게 겹친다
 import AppIcon from './AppIcon.astro';
 import { APPS, CODE_EDITOR, CONTACT, type AppId } from '../data/apps';
 import { withBase } from '../lib/url';
@@ -20,7 +22,13 @@ interface Props {
 const { active, surface = 'desk', startHidden = false } = Astro.props;
 ---
 
-<nav class="dock-zone" aria-label="Dock" data-state={startHidden ? 'hidden' : 'shown'} data-start-hidden={startHidden ? '' : undefined}>
+<nav
+	class="dock-zone"
+	aria-label="Dock"
+	data-state={startHidden ? 'hidden' : 'shown'}
+	data-start-hidden={startHidden ? '' : undefined}
+	transition:name="dock"
+>
 	<div class="dock" data-surface={surface}>
 		{
 			APPS.map((app) => (
@@ -45,15 +53,21 @@ const { active, surface = 'desk', startHidden = false } = Astro.props;
 
 <script>
 	// Dock 자동 숨김. 상태는 .dock-zone의 data-state="shown|hidden" 하나로 표현하고, 모양·모션은 CSS가 맡는다
+	import { onEachPage } from '../lib/pageInit';
+
 	const SCROLL_THRESHOLD = 6; // 이만큼 쌓여야 방향 전환으로 본다(손 떨림·관성 끝의 1~2px 무시)
 	const TOP_ZONE = 48; // 맨 위 근처에서는 항상 보인다
 	const REVEAL_ZONE = 112; // 데스크톱: 마우스가 화면 하단 이 높이 안에 들어오면 나타난다
 	const HIDE_DELAY = 600; // 불러낸 Dock에서 벗어난 뒤 다시 숨기까지
 
-	const zone = document.querySelector<HTMLElement>('.dock-zone');
-	if (zone) setupAutoHide(zone);
+	// 페이지를 옮기면 Dock도 새것으로 바뀌고 스크롤도 맨 위로 돌아간다 →
+	// 스크롤 기준값(lastY)과 시작 상태(목록은 보임 / 상세는 숨김)를 새 화면 기준으로 다시 잡는다
+	onEachPage((signal) => {
+		const zone = document.querySelector<HTMLElement>('.dock-zone');
+		if (zone) setupAutoHide(zone, signal);
+	});
 
-	function setupAutoHide(zone: HTMLElement) {
+	function setupAutoHide(zone: HTMLElement, signal: AbortSignal) {
 		const startHidden = zone.hasAttribute('data-start-hidden');
 		let lastY = clampedScrollY();
 		let scrolledDown = startHidden; // 아래로 스크롤해 숨긴 상태인가(마우스·포커스로 잠깐 불러낸 동안에도 유지). 숨긴 채 시작하면 처음부터 이 상태
@@ -62,6 +76,9 @@ const { active, surface = 'desk', startHidden = false } = Astro.props;
 		let keyboardFocus = false;
 		let hideTimer: number | undefined;
 		let frameRequested = false;
+
+		// 다음 페이지로 넘어가면 예약해 둔 숨김도 함께 취소한다(사라진 Dock을 건드리지 않게)
+		signal.addEventListener('abort', () => clearTimeout(hideTimer));
 
 		const setShown = (shown: boolean) => {
 			zone.dataset.state = shown ? 'shown' : 'hidden';
@@ -115,7 +132,7 @@ const { active, surface = 'desk', startHidden = false } = Astro.props;
 				frameRequested = true;
 				requestAnimationFrame(onFrame);
 			},
-			{ passive: true },
+			{ passive: true, signal },
 		);
 
 		// 마우스: 보이지 않는 영역 요소를 깔면 그 아래 본문 클릭을 막으므로, 포인터 위치(clientY)로만 판단한다
@@ -133,13 +150,17 @@ const { active, surface = 'desk', startHidden = false } = Astro.props;
 				if (event.pointerType !== 'mouse') return;
 				setPointerInZone(event.clientY >= window.innerHeight - REVEAL_ZONE);
 			},
-			{ passive: true },
+			{ passive: true, signal },
 		);
 
 		// 마우스가 창 밖으로 나가면(아래 가장자리 포함) 영역을 벗어난 것으로 본다
-		document.documentElement.addEventListener('pointerleave', (event) => {
-			if (event.pointerType === 'mouse') setPointerInZone(false);
-		});
+		document.documentElement.addEventListener(
+			'pointerleave',
+			(event) => {
+				if (event.pointerType === 'mouse') setPointerInZone(false);
+			},
+			{ signal },
+		);
 
 		// 키보드: 숨은 Dock도 Tab으로 들어올 수 있고, 들어오면 나타난다
 		// 마우스 클릭으로 링크에 남은 포커스는 붙잡지 않도록 :focus-visible일 때만 센다

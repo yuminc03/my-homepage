@@ -114,6 +114,8 @@ const { size = 'desktop' } = Astro.props;
 </style>
 
 <script>
+	import { onEachPage } from '../lib/pageInit';
+
 	const root = document.documentElement;
 	const systemDark = window.matchMedia('(prefers-color-scheme: dark)');
 
@@ -147,5 +149,8 @@ const { size = 'desktop' } = Astro.props;
 	});
 
 	systemDark.addEventListener('change', syncLabels);
-	syncLabels();
+
+	// 클릭·시스템 설정 감지는 문서에 한 번만 걸면 되지만, 버튼 이름은 페이지를 옮길 때마다 새 버튼에 다시 붙여야 한다
+	// (새 버튼은 서버가 그린 기본 이름 "테마 전환"을 달고 온다)
+	onEachPage(syncLabels);
 </script>
