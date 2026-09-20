@@ -178,8 +178,11 @@ const { title, back } = Astro.props;
 		outline-offset: -2px;
 	}
 
+	/* --win-pad는 본문 좌우 여백이다. 창 폭 끝까지 넓히는 요소(표지 사진·스크린샷 띠)가
+	   margin-inline: calc(var(--win-pad) * -1)로 이 여백을 상쇄한다 — 수치를 여기 한 곳에만 둔다 */
 	.body {
-		padding: 26px 20px 150px;
+		--win-pad: 20px;
+		padding: 26px var(--win-pad) 150px;
 	}
 
 	@media (min-width: 744px) {
@@ -223,7 +226,8 @@ const { title, back } = Astro.props;
 		}
 
 		.body {
-			padding: 34px 36px 170px;
+			--win-pad: 36px;
+			padding: 34px var(--win-pad) 170px;
 		}
 	}
 
@@ -293,7 +297,8 @@ const { title, back } = Astro.props;
 		}
 
 		.body {
-			padding: 48px;
+			--win-pad: 48px;
+			padding: var(--win-pad);
 		}
 	}
 </style>
