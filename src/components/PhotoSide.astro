@@ -1,0 +1,94 @@
+---
+// 행사 본문 사진 옆 글. MDX에서 <PhotoSide src={사진} alt="…">문단들</PhotoSide>로 쓴다
+// - 데스크톱·태블릿은 왼쪽 사진 / 오른쪽 글, 모바일은 사진 위 · 글 아래로 쌓는다(시안)
+// - DOM 순서가 사진 → 글이라 좁은 폭에서 쌓아도 읽는 순서가 그대로다
+// - 사진 칸 높이를 글과 나란히 맞춰야 해서 PhotoPair와 같게 4:3으로 자른다
+// - 문단 사이 간격은 slot 안 문단에 스코프 속성이 닿지 않아 CSS gap으로 준다(PhoneMockup과 같은 제약)
+import { Image } from 'astro:assets';
+
+interface Props {
+	src: ImageMetadata;
+	alt: string;
+	caption?: string;
+}
+
+const { src, alt, caption } = Astro.props;
+---
+
+<div class="side">
+	<figure class="shot">
+		<Image src={src} alt={alt} widths={[280, 340, 680]} sizes="(min-width: 1180px) 340px, (min-width: 744px) 280px, 100vw" loading="lazy" decoding="async" />
+		{caption && <figcaption>{caption}</figcaption>}
+	</figure>
+	<div class="text">
+		<slot />
+	</div>
+</div>
+
+<style>
+	.side {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+	}
+
+	.shot {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		margin: 0;
+	}
+
+	.shot img {
+		width: 100%;
+		height: auto;
+		aspect-ratio: 4 / 3;
+		border-radius: 14px;
+		object-fit: cover;
+	}
+
+	figcaption {
+		color: var(--win-ink-sub);
+		font-size: 12.5px;
+		line-height: 1.6;
+		word-break: keep-all;
+	}
+
+	.text {
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
+	}
+
+	@media (min-width: 744px) {
+		.side {
+			display: grid;
+			grid-template-columns: 280px minmax(0, 1fr);
+			gap: 28px;
+			align-items: start;
+		}
+
+		.shot img {
+			border-radius: 16px;
+		}
+
+		figcaption {
+			font-size: 13px;
+		}
+	}
+
+	@media (min-width: 1180px) {
+		.side {
+			grid-template-columns: 340px minmax(0, 1fr);
+			gap: 32px;
+		}
+
+		.shot {
+			gap: 12px;
+		}
+
+		.text {
+			gap: 20px;
+		}
+	}
+</style>
