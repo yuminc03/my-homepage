@@ -1,0 +1,292 @@
+---
+// 행사 상세 창(PROGRESS.md 5-4의 "글 흐름형", 2-6)
+// - 순서: (데스크톱) ‹ Seminars & Events → 날짜·장소 → 이름 → 표지 사진(창 폭) → 본문(세션·사진) → 이전/다음
+// - 시안: design/SeminarDetail.dc.html · TabletSeminarDetail · MobileSeminarDetail
+// - 읽기 폭: 모바일 창 여백 그대로 · 태블릿 좌우 48px(창 여백 36 + 12) · 데스크톱 800px 가운데.
+//   표지 사진만 더 넓어 .column 밖에 둔다
+// - 주소는 콘텐츠 폴더 이름(seminar.id). 세미나 glob이 폴더형뿐이라 id에 /가 없어 [slug] 하나로 받는다(프로젝트와 같다)
+// - 본문 MDX의 사진 컴포넌트는 여기서 넘겨야 렌더링된다(<Content components={{ ... }} />)
+// - 프로젝트 상세·스터디 글과 같게 Dock은 모든 폭에서 숨긴 채 시작한다(5-14)
+import { render, type CollectionEntry } from 'astro:content';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import Window from '../../components/Window.astro';
+import SeminarCover from '../../components/SeminarCover.astro';
+import Photo from '../../components/Photo.astro';
+import PhotoPair from '../../components/PhotoPair.astro';
+import PhotoSide from '../../components/PhotoSide.astro';
+import Pager from '../../components/Pager.astro';
+import { getApp } from '../../data/apps';
+import { getSeminars, seminarHref } from '../../lib/content';
+import { formatDay } from '../../lib/date';
+import { withBase } from '../../lib/url';
+import '../../styles/prose.css';
+
+type Seminar = CollectionEntry<'seminars'>;
+
+interface Props {
+	seminar: Seminar;
+	prev?: Seminar;
+	next?: Seminar;
+}
+
+export async function getStaticPaths() {
+	const seminars = await getSeminars();
+	return seminars.map((seminar, index) => ({
+		params: { slug: seminar.id },
+		props: { seminar, prev: seminars[index - 1], next: seminars[index + 1] },
+	}));
+}
+
+const { seminar, prev, next } = Astro.props;
+const { data } = seminar;
+const { Content } = await render(seminar);
+const app = getApp('seminars');
+const listHref = withBase(app.href);
+
+const pagerLink = (entry?: Seminar) => entry && { href: seminarHref(entry), title: entry.data.title };
+---
+
+<SiteLayout active={app.id} title={`${data.title} · ${app.label} · Chu Yumin`} description={data.summary} dockHidden>
+	<Window title={app.title} back={{ href: listHref, label: `${app.label} 목록으로` }}>
+		<div class="column">
+			<a class="back" href={listHref} data-back-link>
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<path d="M15 5l-7 7 7 7" />
+				</svg>
+				<span>{app.title}</span>
+			</a>
+
+			<header class="head">
+				<div class="meta">
+					<span class="meta-item">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M4 6h16v14H4z" />
+							<path d="M4 10h16M9 3v5M15 3v5" />
+						</svg>
+						<time datetime={data.date.toISOString().slice(0, 10)}>{formatDay(data.date)}</time>
+					</span>
+					<span class="dot" aria-hidden="true"></span>
+					<span class="meta-item">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M12 21s-6.5-6.2-6.5-11A6.5 6.5 0 0 1 18.5 10c0 4.8-6.5 11-6.5 11z" />
+							<circle cx="12" cy="10" r="2.3" />
+						</svg>
+						{data.location}
+					</span>
+				</div>
+				<h1>{data.title}</h1>
+			</header>
+		</div>
+
+		{/* 표지 사진만 읽기 폭보다 넓다. 사진 설명(coverAlt)을 figcaption으로 보여 주므로
+		    alt는 비운다 — 같은 문장을 alt에도 넣으면 스크린 리더가 두 번 읽는다 */}
+		<SeminarCover src={data.cover} alt="" caption={data.coverAlt} />
+
+		<div class="column">
+			<article class="prose-body seminar-body">
+				<Content components={{ Photo, PhotoPair, PhotoSide }} />
+			</article>
+
+			<Pager prev={pagerLink(prev)} next={pagerLink(next)} prevLabel="이전 행사" nextLabel="다음 행사" />
+		</div>
+	</Window>
+</SiteLayout>
+
+<style>
+	.back {
+		display: none;
+	}
+
+	.head {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		margin-bottom: 24px;
+	}
+
+	.meta {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 8px;
+		color: var(--win-ink-sub);
+		font-size: 13px;
+	}
+
+	.meta-item {
+		display: flex;
+		align-items: center;
+		gap: 5px;
+	}
+
+	.meta-item svg {
+		width: 14px;
+		height: 14px;
+		flex-shrink: 0;
+	}
+
+	.dot {
+		width: 3px;
+		height: 3px;
+		border-radius: 50%;
+		background: var(--win-dot);
+	}
+
+	h1 {
+		margin: 0;
+		color: var(--win-ink-strong);
+		font-size: 24px;
+		font-weight: 800;
+		line-height: 1.4;
+		letter-spacing: -0.015em;
+		word-break: keep-all;
+	}
+
+	/* 본문 문단·사진 사이 간격(시안 20/22/28px). prose.css가 이 값으로 흐름 간격을 준다 */
+	.seminar-body {
+		--prose-gap: 20px;
+		display: flex;
+		flex-direction: column;
+	}
+
+	/* 세션 머리는 ## 라벨 + ### 제목 한 쌍이다(2026-09-20 결정, PROGRESS.md 5-16)
+	   - ## 뒤에 ###이 오면 → 작은 액센트 라벨(SESSION 01 · 발표자)
+	   - ## 단독이면 → 마무리 구획 제목(배운 점 · 소감). 위에 구분선을 그린다 */
+	.seminar-body :global(h2:has(+ h3)) {
+		margin: 40px 0 6px;
+		color: var(--win-accent);
+		font-size: 12px;
+		font-weight: 800;
+		letter-spacing: 0.01em;
+	}
+
+	.seminar-body :global(h2:not(:has(+ h3))) {
+		margin: 40px 0 14px;
+		padding-top: 32px;
+		border-top: 1px solid var(--win-divider);
+		color: var(--win-ink-strong);
+		font-size: 20px;
+		font-weight: 800;
+		line-height: 1.4;
+		word-break: keep-all;
+	}
+
+	.seminar-body :global(h3) {
+		margin: 0 0 14px;
+		color: var(--win-ink-strong);
+		font-size: 20px;
+		font-weight: 800;
+		line-height: 1.4;
+		word-break: keep-all;
+	}
+
+	/* 제목 바로 다음 요소는 제목의 margin-bottom만 쓴다(흐름 간격을 더하지 않는다) */
+	.seminar-body :global(:is(h2, h3) + *) {
+		margin-top: 0;
+	}
+
+	@media (min-width: 744px) {
+		.column {
+			padding: 0 12px;
+		}
+
+		.head {
+			gap: 14px;
+			margin-bottom: 28px;
+		}
+
+		.meta {
+			font-size: 14px;
+		}
+
+		.meta-item svg {
+			width: 15px;
+			height: 15px;
+		}
+
+		h1 {
+			font-size: 30px;
+			line-height: 1.35;
+		}
+
+		.seminar-body {
+			--prose-gap: 22px;
+		}
+
+		.seminar-body :global(h2:has(+ h3)) {
+			margin-top: 48px;
+			font-size: 12.5px;
+		}
+
+		.seminar-body :global(h2:not(:has(+ h3))) {
+			margin-top: 48px;
+			padding-top: 36px;
+			font-size: 22px;
+		}
+
+		.seminar-body :global(h3) {
+			font-size: 22px;
+		}
+	}
+
+	@media (min-width: 1180px) {
+		.column {
+			max-width: 800px;
+			margin: 0 auto;
+			padding: 0;
+		}
+
+		.back,
+		.back:hover {
+			display: inline-flex;
+			align-items: center;
+			gap: 6px;
+			margin-bottom: 32px;
+			font-size: 14px;
+			font-weight: 600;
+		}
+
+		.back svg {
+			width: 16px;
+			height: 16px;
+		}
+
+		.back:focus-visible {
+			border-radius: 4px;
+			outline: 2px solid var(--win-accent);
+			outline-offset: 3px;
+		}
+
+		.head {
+			margin-bottom: 36px;
+		}
+
+		.meta {
+			gap: 10px;
+		}
+
+		h1 {
+			font-size: 36px;
+		}
+
+		.seminar-body {
+			--prose-gap: 28px;
+		}
+
+		.seminar-body :global(h2:has(+ h3)) {
+			margin-top: 56px;
+			font-size: 13px;
+		}
+
+		.seminar-body :global(h2:not(:has(+ h3))) {
+			margin-top: 56px;
+			padding-top: 40px;
+			font-size: 24px;
+		}
+
+		.seminar-body :global(h3) {
+			margin-bottom: 18px;
+			font-size: 24px;
+		}
+	}
+</style>
