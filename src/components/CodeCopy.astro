@@ -6,6 +6,8 @@
 ---
 
 <script>
+	import { onEachPage } from '../lib/pageInit';
+
 	const DONE_MS = 1600;
 
 	function initCopy(button: HTMLButtonElement) {
@@ -37,7 +39,9 @@
 		});
 	}
 
-	if (navigator.clipboard?.writeText) {
+	// 전환으로 다른 글에 들어가면 복사 버튼도 새것(hidden)이라 다시 걸어 준다
+	onEachPage(() => {
+		if (!navigator.clipboard?.writeText) return;
 		document.querySelectorAll<HTMLButtonElement>('[data-code-copy]').forEach(initCopy);
-	}
+	});
 </script>

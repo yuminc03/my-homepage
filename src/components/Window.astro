@@ -52,17 +52,22 @@ const { title, back } = Astro.props;
 	// 목록에서 고른 분류를 기억했다가(FilterChips가 sessionStorage에 남긴다) ‹ 뒤로 링크에 도로 붙인다.
 	// 브라우저 뒤로 가기는 주소의 ?category=로 이미 유지되지만, 창 안의 ‹ 링크는 정적 주소라 전체 목록으로 가 버린다
 	// 스크립트가 없거나 저장을 막아 둔 브라우저에서는 링크가 그대로 전체 목록으로 간다
-	for (const link of document.querySelectorAll<HTMLAnchorElement>('[data-back-link]')) {
-		try {
-			const url = new URL(link.href);
-			const category = sessionStorage.getItem(`filter:${url.pathname}`);
-			if (!category) continue;
-			url.searchParams.set('category', category);
-			link.href = url.toString();
-		} catch {
-			// 저장소를 쓸 수 없는 브라우저(시크릿 모드 등)
+	import { onEachPage } from '../lib/pageInit';
+
+	// 페이지를 옮기면 링크도 새것(정적 주소)이라 전환할 때마다 다시 붙여 준다
+	onEachPage(() => {
+		for (const link of document.querySelectorAll<HTMLAnchorElement>('[data-back-link]')) {
+			try {
+				const url = new URL(link.href);
+				const category = sessionStorage.getItem(`filter:${url.pathname}`);
+				if (!category) continue;
+				url.searchParams.set('category', category);
+				link.href = url.toString();
+			} catch {
+				// 저장소를 쓸 수 없는 브라우저(시크릿 모드 등)
+			}
 		}
-	}
+	});
 </script>
 
 <style>

@@ -48,9 +48,11 @@ const items = Astro.props.headings.filter((heading) => heading.depth === 2);
 }
 
 <script>
+	import { onEachPage } from '../lib/pageInit';
+
 	const TOP_OFFSET = 100; // 이 높이를 지나간 소제목까지를 "읽는 중"으로 본다
 
-	function initToc(toc: HTMLElement) {
+	function initToc(toc: HTMLElement, signal: AbortSignal) {
 		const toggle = toc.querySelector<HTMLButtonElement>('[data-toc-toggle]');
 		const links = [...toc.querySelectorAll<HTMLAnchorElement>('[data-toc-link]')];
 
@@ -91,12 +93,15 @@ const items = Astro.props.headings.filter((heading) => heading.depth === 2);
 				ticking = true;
 				requestAnimationFrame(mark);
 			},
-			{ passive: true },
+			{ passive: true, signal },
 		);
 		mark();
 	}
 
-	document.querySelectorAll<HTMLElement>('.toc').forEach(initToc);
+	// 전환으로 다른 글에 들어가면 목차도 새것이다 → 접힘 상태와 현재 항목을 다시 잡는다
+	onEachPage((signal) => {
+		document.querySelectorAll<HTMLElement>('.toc').forEach((toc) => initToc(toc, signal));
+	});
 </script>
 
 <style>
