@@ -7,6 +7,8 @@
 //   - 키보드: Dock 안으로 포커스가 들어오면 나타난다
 // - startHidden: 상세 화면처럼 본문을 읽는 화면은 숨긴 채로 시작한다(힌트 막대만). 위로 스크롤하거나 마우스·키보드로 부르면 나타난다
 //   맨 위 근처에서도 저절로 나타나지 않게 해, 읽기 시작하며 조금 스크롤할 때 Dock이 튀어나오지 않는다
+// - transition:name: 페이지 전환 때 본문 스냅샷에서 빠져 제자리에 남는다. 바탕 유리 ↔ 창 유리처럼
+//   모양이 바뀌는 경우만 Astro 기본 페이드(180ms)로 짧게 겹친다
 import AppIcon from './AppIcon.astro';
 import { APPS, CODE_EDITOR, CONTACT, type AppId } from '../data/apps';
 import { withBase } from '../lib/url';
@@ -20,7 +22,13 @@ interface Props {
 const { active, surface = 'desk', startHidden = false } = Astro.props;
 ---
 
-<nav class="dock-zone" aria-label="Dock" data-state={startHidden ? 'hidden' : 'shown'} data-start-hidden={startHidden ? '' : undefined}>
+<nav
+	class="dock-zone"
+	aria-label="Dock"
+	data-state={startHidden ? 'hidden' : 'shown'}
+	data-start-hidden={startHidden ? '' : undefined}
+	transition:name="dock"
+>
 	<div class="dock" data-surface={surface}>
 		{
 			APPS.map((app) => (
