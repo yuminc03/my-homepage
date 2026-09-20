@@ -29,6 +29,10 @@ export async function getStudyPosts(): Promise<CollectionEntry<'study'>[]> {
 	return posts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
 }
 
+/** 행사 상세 주소(/my-homepage/seminars/<폴더 이름>/). 세미나는 폴더형 글만 받아 id에 /가 없다 */
+export const seminarHref = (seminar: CollectionEntry<'seminars'>): string =>
+	withBase(`${getApp('seminars').href}${seminar.id}/`);
+
 /** 공개된 세미나 기록, 최신 순 */
 export async function getSeminars(): Promise<CollectionEntry<'seminars'>[]> {
 	const seminars = await getCollection('seminars', ({ data }) => !data.draft);
