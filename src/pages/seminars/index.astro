@@ -1,15 +1,62 @@
 ---
-// 세미나 기록 목록 창(셸 틀). 행사 타임라인·카드는 페이지 구현 단계에서 추가한다
+// 세미나 기록 목록 창: 제목 → 행사 항목(최신 순)
+// - 세미나는 분류가 없어 필터 칩을 두지 않는다(프로젝트·스터디 목록과 다른 점)
+// - 항목 모양은 SeminarCard가 폭마다 바꾼다(모바일 세로 카드 · 태블릿 가로 카드 · 데스크톱 타임라인)
 import SiteLayout from '../../layouts/SiteLayout.astro';
 import Window from '../../components/Window.astro';
 import PageHeading from '../../components/PageHeading.astro';
+import SeminarCard from '../../components/SeminarCard.astro';
 import { getApp } from '../../data/apps';
+import { getSeminars } from '../../lib/content';
 
 const app = getApp('seminars');
+const seminars = await getSeminars();
 ---
 
 <SiteLayout active={app.id}>
 	<Window title={app.title}>
 		<PageHeading title={app.title} description={app.description} />
+		{
+			seminars.length > 0 ? (
+				<ul class="list">
+					{seminars.map((seminar) => (
+						<li>
+							<SeminarCard seminar={seminar} />
+						</li>
+					))}
+				</ul>
+			) : (
+				<p class="empty">아직 공개한 세미나 기록이 없습니다. 행사를 추가하면 여기에 사진과 함께 보입니다.</p>
+			)
+		}
 	</Window>
 </SiteLayout>
+
+<style>
+	.list {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.empty {
+		margin: 0;
+		padding: 18px 20px;
+		border: 1px dashed var(--win-divider);
+		border-radius: 14px;
+		color: var(--win-ink-muted);
+		font-size: 14px;
+		line-height: 1.6;
+		word-break: keep-all;
+	}
+
+	/* 데스크톱 타임라인은 항목 사이가 넓다(시안 48px) */
+	@media (min-width: 1180px) {
+		.list {
+			gap: 48px;
+		}
+	}
+</style>
