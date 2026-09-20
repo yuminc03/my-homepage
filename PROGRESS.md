@@ -1,11 +1,11 @@
 # 진행 상황
 - 최종 업데이트: 2026-09-20
 - 이 문서 하나만 읽으면 새 채팅에서 바로 이어서 작업할 수 있도록 정리한 단일 기준 문서다
-- **마지막 세션 종료(2026-09-20)**: **세미나 목록·행사 상세를 구현했다**(브랜치 `feature/seminar-pages`). 미정이던 결정 3건(세션 라벨 표기 · 표지 사진 폭 · 라이트박스)을 사용자가 **확정**했고 근거는 5-16에 있다. 홈 최근 기록 카드·위젯 링크도 상세로 바꿔 남은 항목을 함께 끝냈다. 스크린샷(5폭 라이트/다크)·정렬·링크·Dock 검사까지 통과했고 **커밋 8개**(목록은 12장)를 `feature/seminar-pages`에 남겼다. **사용자 브라우저 확인도 통과했다(2026-09-20). 아직 `develop`에 병합하지 않았으므로 다음 할 일은 병합 → 브랜치 삭제 → push다.** **새 채팅은 2-1의 1(상태 확인)** 부터 시작한다
+- **마지막 세션 종료(2026-09-20)**: **세미나 목록·행사 상세를 구현했다**(브랜치 `feature/seminar-pages`). 미정이던 결정 3건(세션 라벨 표기 · 표지 사진 폭 · 라이트박스)을 사용자가 **확정**했고 근거는 5-16에 있다. 홈 최근 기록 카드·위젯 링크도 상세로 바꿔 남은 항목을 함께 끝냈다. 스크린샷(5폭 라이트/다크)·정렬·링크·Dock 검사까지 통과했고 **커밋 8개**(목록은 12장)를 `feature/seminar-pages`에 남겼다. **사용자 브라우저 확인 통과 → `develop` 병합 `8f704a4` → 기능 브랜치 삭제 → `origin/develop` push까지 끝났다.** **새 채팅은 2-1의 1(상태 확인) → 2-6 "페이지 전환 모션"** 부터 시작한다. 지금 브랜치는 `develop`이고 작업 트리는 깨끗하다
 
 ## 1. 한눈에 보기
 - **무엇을 만드나**: iOS 개발자 Chu Yumin의 개인 홈페이지(자기소개·프로젝트·스터디 기록·세미나 기록)
-- **지금 단계**: 디자인 시안 완료, 기술 스택 확정(Astro + 일반 CSS), **Astro 프로젝트 생성**(임시 홈 1장, 빌드 확인), **전역 토큰 CSS 이식**(`src/styles/tokens.css`), **콘텐츠 컬렉션 스키마**(프로젝트·스터디·세미나, MDX) , **공통 셸**(테마 버튼·메뉴바·Dock 자동 숨김·창·시계, 목록 틀 3개), **홈 페이지**(첫 화면·iPhone 목업·최근 기록), **프로젝트 목록·상세**(필터 칩·카드·상세 페이지) — 여기까지 `develop` 병합·원격 push 완료. **스터디 목록·글**(카드·필터·글 페이지·목차·코드 블록·읽는 시간)까지 `develop` 병합·push 완료(2026-09-20, 병합 `4351c43`, 결정은 5-15). **세미나 목록·행사 상세**(타임라인·가로/세로 카드·표지 사진·사진 컴포넌트 3종·홈 최근 기록 링크)는 `feature/seminar-pages`에 커밋·사용자 브라우저 확인까지 끝냈고 **병합만 남았다**(결정은 5-16)
+- **지금 단계**: 디자인 시안 완료, 기술 스택 확정(Astro + 일반 CSS), **Astro 프로젝트 생성**(임시 홈 1장, 빌드 확인), **전역 토큰 CSS 이식**(`src/styles/tokens.css`), **콘텐츠 컬렉션 스키마**(프로젝트·스터디·세미나, MDX) , **공통 셸**(테마 버튼·메뉴바·Dock 자동 숨김·창·시계, 목록 틀 3개), **홈 페이지**(첫 화면·iPhone 목업·최근 기록), **프로젝트 목록·상세**(필터 칩·카드·상세 페이지) — 여기까지 `develop` 병합·원격 push 완료. **스터디 목록·글**(카드·필터·글 페이지·목차·코드 블록·읽는 시간)까지 `develop` 병합·push 완료(2026-09-20, 병합 `4351c43`, 결정은 5-15). **세미나 목록·행사 상세**(타임라인·가로/세로 카드·표지 사진·사진 컴포넌트 3종·홈 최근 기록 링크)도 브라우저 확인까지 마치고 `develop`에 병합·push했다(2026-09-20, 병합 `8f704a4`, 결정은 5-16). 다음은 페이지 전환 모션이고, 작업 계획은 2-6에 정리해 두었다
 - **시안 진행도**
   - 데스크톱 7화면(홈·목록 3·상세 3) — 완료
   - 모바일 7화면(홈 화면 메타포) — 완료
@@ -14,17 +14,18 @@
   - 데스크톱 창 ✕ 닫기 버튼 — 채택(2026-09-14), 데스크톱 창 화면 6장에 반영, `develop` 병합
 - **기술 스택**: Astro + 일반 CSS + TypeScript + Markdown Content Collections 확정(2026-09-14). 비교·약점·면접 질문은 `docs/tech-stack.md`
 - **시안 캔버스**: https://claude.ai/code/artifact/48a3c34c-b882-4f13-8e2f-7e3668bdb7b1 (v22, 페이지 5개 · 아트보드 25장)
-- **Git**: 시안·기술 스택 문서·`.claude/settings.json`(`92083d0`)이 `develop`에 반영되어 있다. `feature/astro-setup`(커밋 4개)을 `develop`에 병합 `004589b` → 브랜치 삭제(2026-09-14). `feature/site-shell`(테마 버튼 `872ec4b`, 공통 셸 `20d40c8`, Dock 자동 숨김 `e8eea35`, 시계 `88e86ca`, 문서 `cfe9270`)을 `develop`에 병합 `0227fa3` → 브랜치 삭제(2026-09-15). `feature/home-page`(첫 화면 `9907ebe`, iPhone 목업 `6da0b04`, 문서 `f6741d5`, 최근 기록 `062e860`, 문서 `1f8cbb8`)를 `develop`에 병합 `8c7568f` → 브랜치 삭제 → push(2026-09-16), 뒤이어 문서 `a725134` push. `feature/project-pages`(기능 12 + 문서 3, 커밋 목록은 12장)를 `develop`에 병합 `53f528e` → 로컬·원격 브랜치 삭제 → push(2026-09-18). `feature/study-pages`(기능 9 + 문서 2, 커밋 목록은 12장)를 `develop`에 병합 `4351c43` → 브랜치 삭제 → push(2026-09-20). `feature/seminar-pages`(기능 7 + 문서 1, 커밋 목록은 12장, 2026-09-20)는 **커밋만 있고 아직 병합하지 않았다**. **원격**: `origin/develop` = 로컬 `develop`과 같음(2026-09-20 push), `origin/master` = `8bf0e7b`(로컬 `master`와 같음, 아직 건드리지 않았다). `develop` → `master` 병합은 아직 하지 않았다
-- **다음 단계**: 홈 완료 → 프로젝트 목록·상세 완료(병합·push 완료) → 스터디 목록·글 완료(병합 `4351c43`, 5-15) → 세미나 목록·행사 상세 완료(커밋 완료, 5-16) + 홈 최근 기록 링크를 상세로(함께 끝냄) → **세미나 `develop` 병합·push** → 페이지 전환 모션(계획 2-6) → 콘텐츠 검색 → placeholder 정리 → 배포 → **마지막: 개발 과정 설명 세션**(2026-09-17 요청). 화면마다 `develop`에서 `feature/*` 브랜치를 새로 만든다
+- **Git**: 시안·기술 스택 문서·`.claude/settings.json`(`92083d0`)이 `develop`에 반영되어 있다. `feature/astro-setup`(커밋 4개)을 `develop`에 병합 `004589b` → 브랜치 삭제(2026-09-14). `feature/site-shell`(테마 버튼 `872ec4b`, 공통 셸 `20d40c8`, Dock 자동 숨김 `e8eea35`, 시계 `88e86ca`, 문서 `cfe9270`)을 `develop`에 병합 `0227fa3` → 브랜치 삭제(2026-09-15). `feature/home-page`(첫 화면 `9907ebe`, iPhone 목업 `6da0b04`, 문서 `f6741d5`, 최근 기록 `062e860`, 문서 `1f8cbb8`)를 `develop`에 병합 `8c7568f` → 브랜치 삭제 → push(2026-09-16), 뒤이어 문서 `a725134` push. `feature/project-pages`(기능 12 + 문서 3, 커밋 목록은 12장)를 `develop`에 병합 `53f528e` → 로컬·원격 브랜치 삭제 → push(2026-09-18). `feature/study-pages`(기능 9 + 문서 2, 커밋 목록은 12장)를 `develop`에 병합 `4351c43` → 브랜치 삭제 → push(2026-09-20). `feature/seminar-pages`(기능 7 + 문서 1, 커밋 목록은 12장)를 `develop`에 병합 `8f704a4` → 브랜치 삭제 → push(2026-09-20). **원격**: `origin/develop` = 로컬 `develop`과 같음(2026-09-20 push), `origin/master` = `8bf0e7b`(로컬 `master`와 같음, 아직 건드리지 않았다). `develop` → `master` 병합은 아직 하지 않았다
+- **다음 단계**: 홈 완료 → 프로젝트 목록·상세 완료(병합·push 완료) → 스터디 목록·글 완료(병합 `4351c43`, 5-15) → 세미나 목록·행사 상세 완료(병합 `8f704a4`, 5-16) + 홈 최근 기록 링크를 상세로(함께 끝냄) → **페이지 전환 모션**(계획 2-6) → 콘텐츠 검색 → placeholder 정리 → 배포 → **마지막: 개발 과정 설명 세션**(2026-09-17 요청). 화면마다 `develop`에서 `feature/*` 브랜치를 새로 만든다
 
 ## 2. 새 채팅에서 이어서 시작하기
 ### 2-1. 지금 바로 할 일
 1. `git status`로 브랜치와 작업 트리를 확인한다
-   - 기대 상태: **`feature/seminar-pages` 브랜치**, 마지막 커밋은 문서(`docs:`) 커밋이다. 작업 트리 깨끗, 원격에는 올리지 않았다
-   - `develop`에는 아직 병합하지 않았다. 원격: `origin/develop` = 병합 `4351c43`까지, `origin/master` = `8bf0e7b`
+   - 기대 상태: **`develop` 브랜치**, 마지막 커밋은 문서(`docs:`) 커밋이고 그 앞에 병합 `8f704a4`가 있다. 작업 트리 깨끗, `origin/develop`과 같음
+   - 기능 브랜치는 남아 있지 않다(`feature/seminar-pages`는 병합 후 삭제)
+   - 원격: `origin/develop` = 로컬과 같음, `origin/master` = `8bf0e7b`(아직 건드리지 않았다). `develop` → `master` 병합은 아직 하지 않았다
 2. Node는 **nvm의 24**를 쓴다. 셸 기본값이 21.7.3이라 명령 전에 `source ~/.nvm/nvm.sh && nvm use`(`.nvmrc` = 24)를 먼저 실행한다. 검증 방법은 2-2
-3. **다음 작업은 `feature/seminar-pages`를 `develop`에 병합하는 것이다**(사용자 브라우저 확인은 2026-09-20에 통과). `git switch develop` → `git merge --no-ff feature/seminar-pages` → 브랜치 삭제 → `git push origin develop`(사용자 확인 뒤). 병합 메시지는 `-m`을 문단마다 여러 번 쓴다(2-2)
-4. 그 뒤 순서: **페이지 전환 모션**(계획 2-6) → 콘텐츠 검색(5-12) → 대괄호 `[ ]` placeholder 실제 콘텐츠 정리 → GitHub Actions 배포 → **마지막 단계: 개발 과정 설명 세션**(2026-09-17 사용자 요청). 화면마다 `develop`에서 `feature/*` 새 브랜치
+3. **다음 작업은 페이지 전환 모션이다 → 2-6을 그대로 따라간다.** 시작할 때 `git switch -c feature/page-transitions`(`develop`에서)
+4. 그 뒤 순서: 콘텐츠 검색(5-12) → 대괄호 `[ ]` placeholder 실제 콘텐츠 정리 → GitHub Actions 배포 → **마지막 단계: 개발 과정 설명 세션**(2026-09-17 사용자 요청). 화면마다 `develop`에서 `feature/*` 새 브랜치
    - 마지막 단계 내용: 사이트가 완성되면 사용자에게 개발 과정 전체를 설명한다. 쓰인 문법(Astro 컴포넌트·프런트매터·스코프 스타일·`light-dark()`·Content Collections·TypeScript 등), 핵심 기능별 구현 원리(테마·Dock 자동 숨김·필터·콘텐츠 헬퍼 등), 면접에서 나올 만한 질문과 답을 다룬다. 기술 선택 근거는 `docs/tech-stack.md`와 연결한다. 구현하면서 설명할 거리(원리·대안·트레이드오프)는 5장 결정 기록에 계속 남긴다
 
 ### 2-2. 검증 방법 (다시 쓰는 요령)
@@ -96,7 +97,7 @@
 - 기술 스택을 정할 때는 선택 이유와 React·Next.js 등 대안 대비 장단점, 예상 면접 질문까지 정리한다
 
 ### 2-6. 다음 작업: 페이지 전환 모션 (2026-09-20 작성, 브랜치 `feature/page-transitions`)
-세미나 화면이 병합된 뒤에 시작한다. 모션 값은 **5-9**가 기준이고, 시안 프로토타입은 `design/MotionDesktop.dc.html`·`MotionMobile.dc.html`이다.
+세미나 화면은 병합까지 끝났다(2026-09-20). 모션 값은 **5-9**가 기준이고, 시안 프로토타입은 `design/MotionDesktop.dc.html`·`MotionMobile.dc.html`이다.
 
 #### 무엇을 하나
 - Astro의 View Transitions(`astro:transitions`의 `ClientRouter`)를 `BaseLayout`의 `<head>`에 넣어 페이지 이동을 화면 전환으로 바꾼다
@@ -182,6 +183,7 @@
 | 세미나 목록 | `SeminarCard`(모바일 세로 카드 / 태블릿 가로 카드 / 데스크톱 타임라인) + 목록 페이지·빈 상태 | `feature/seminar-pages` | 정렬·5폭 라이트/다크 스크린샷(2026-09-20) |
 | 행사 상세 | `SeminarCover` + `[slug]` 페이지(머리·표지·세션 본문·Pager·Dock 숨김 시작), 목록 연결 | `feature/seminar-pages` | 5폭 스크린샷·Pager·Dock 검사(2026-09-20) |
 | 홈 최근 기록 링크 | 최근 기록 창·위젯 카드를 목록 → 상세로(빈 상태만 목록) | `feature/seminar-pages` | 빌드 HTML에서 링크 확인(2026-09-20) |
+| 세미나 병합 | 기능 7 + 문서 1 = 커밋 8개, 사용자 브라우저 확인 통과 | `feature/seminar-pages` | `develop` 병합 `8f704a4` → 브랜치 삭제 → push(2026-09-20) |
 
 ### 남은 일
 - [x] 모션·✕·문서 커밋 → `develop` 병합 → 브랜치 삭제 (2026-09-14, 사용자 확인)
@@ -211,9 +213,9 @@
 - [x] **세미나 목록·행사 상세 구현**(`feature/seminar-pages`, 2026-09-20, 결정은 5-16, 커밋 8개)
 - [x] 홈 최근 기록의 카드·위젯 링크를 목록에서 **상세로** 바꿈(빈 상태만 목록으로 간다, 2026-09-20)
 - [x] 세미나 목록·행사 상세 사용자 브라우저 확인(2026-09-20, 임시 행사 3건으로 확인, 문제 없음)
-- [ ] `feature/seminar-pages` → `develop` 병합 → 브랜치 삭제 → push ← 다음 할 일(사용자 확인 뒤)
+- [x] `feature/seminar-pages` → `develop` 병합 `8f704a4` → 브랜치 삭제 → push (2026-09-20, 사용자 요청)
 - [ ] 실기기 확인(배포 직전에 묶어서): Dock 트랙패드 스크롤 느낌·하단 hover·"동작 줄이기" / 320px 폭에서 모바일 Dock이 화면 폭과 거의 같은 문제
-- [ ] 페이지 전환 모션(View Transitions `ClientRouter`, `transition:persist`로 메뉴바·Dock 유지) — 계획은 **2-6**, 세미나 병합 뒤에 시작
+- [ ] **페이지 전환 모션**(View Transitions `ClientRouter`, `transition:persist`로 메뉴바·Dock 유지) ← 다음 할 일. 계획은 **2-6**, 브랜치 `feature/page-transitions`
 - [ ] 콘텐츠 검색 기능 — 목록·상세 페이지 구현 뒤 별도 브랜치(방식은 5-12 추천안을 사용자와 확정)
 - [x] `draft` 제외 헬퍼·목록 정렬(날짜 내림차순)·날짜 표기 — `src/lib/content.ts`·`src/lib/date.ts`(2026-09-16, 홈 최근 기록과 함께). 목록 페이지도 이 헬퍼만 쓴다
 - [x] 스터디 글 코드 블록 결정: 복사 버튼은 실제 동작, 파일 이름은 울타리 meta + Shiki transformer (2026-09-19, 5-15)
@@ -651,8 +653,8 @@
 - 인터랙션은 `onClick="{{handler}}"`, 조건 표시는 `<sc-if value="{{bool}}">`, 상태 스타일은 `data-*="{{값}}"` + CSS 선택자로 만든다(`class`에 값 끼워 넣기는 쓰지 않았다)
 
 ## 12. 브랜치·커밋 기록
-- 로컬 브랜치: `master`, `develop`, **`feature/seminar-pages`(현재)**. 원격(`origin`, `https://github.com/yuminc03/my-homepage.git`): `master` `8bf0e7b`(로컬과 같음), `develop`(2026-09-20 push, `origin/develop` 추적, 로컬과 같음 — 마지막은 문서 커밋). 기능 브랜치는 남아 있지 않다. `develop` → `master` 병합은 아직 하지 않았다
-- `feature/seminar-pages`(2026-09-20, `develop` `40837df`에서 분기, **아직 병합하지 않았다 — 사용자 브라우저 확인은 통과**), 오래된 순. 각 커밋 직전에 `npm run build`
+- 로컬 브랜치: `master`, `develop`(현재). 원격(`origin`, `https://github.com/yuminc03/my-homepage.git`): `master` `8bf0e7b`(로컬과 같음), `develop`(2026-09-20 push, `origin/develop` 추적, 로컬과 같음 — 마지막은 세미나 병합 뒤 문서 커밋). 기능 브랜치는 남아 있지 않다. `develop` → `master` 병합은 아직 하지 않았다
+- `feature/seminar-pages`(2026-09-20, `develop` `40837df`에서 분기, **`develop` 병합 `8f704a4`로 완료, 브랜치 삭제**), 오래된 순. 각 커밋 직전에 `npm run build`
   - `f28a2fa` refactor: 창 본문 좌우 여백을 --win-pad 변수로 내보냄
   - `47136c4` feat: 행사 상세 주소 seminarHref 헬퍼 추가
   - `50fff4c` feat: 행사 본문 사진 컴포넌트 3종 추가
@@ -660,7 +662,7 @@
   - `a792747` feat: 행사 상세 페이지와 표지 사진 컴포넌트 구현
   - `ebeadeb` feat: 세미나 목록 항목을 행사 상세로 연결
   - `5c64fd3` feat: 홈 최근 기록 카드·위젯을 상세 페이지로 연결
-  - (이 커밋) docs: 세미나 목록·행사 상세 구현 기록과 다음 작업(페이지 전환 모션) 정리
+  - `6ede1d2` docs: 세미나 목록·행사 상세 구현 기록과 다음 작업(페이지 전환 모션) 정리
 - `feature/study-pages`(2026-09-19~20, `develop` `7a69180`에서 분기, **`develop` 병합 `4351c43`으로 완료, 브랜치 삭제**), 오래된 순. 각 커밋 직전에 `npm run build`
   - `186134a` feat: 스터디 글 읽는 시간 계산과 글 주소 헬퍼 추가
   - `7a3a511` fix: 프로젝트 상세 본문 문단 사이 간격이 적용되지 않던 문제 수정
@@ -690,7 +692,7 @@
   - `9744b81` docs: 프로젝트 목록·상세 구현 기록과 다음 작업(스터디) 정리
   - `8ffb68c` docs: 프로젝트 목록·상세 브라우저 확인 결과와 확정된 결정 2건 기록
 - `develop` 직접 커밋: `92083d0` `.claude/settings.json` 권한 추가(2026-09-14), (이 문서 갱신) docs: 스터디 목록·글 작업 계획 정리(2026-09-18)
-- 병합 후 삭제한 브랜치(순서대로, 마지막은 `feature/project-pages` 병합 `53f528e`·2026-09-18·원격까지 삭제): `feature/design-theme-dock`, `feature/design-color-direction`(`fab45e5`), `feature/design-theme-toggle`(`e610858`), `feature/design-detail-screens`(`bfcf341`), `feature/design-project-detail`(`0c7d2c9`), `feature/design-mobile`(`74c8149`), `feature/design-dark-windows`, `feature/design-iphone-mockup`(`eceb50a`), `feature/design-tablet`(`2d280cd`), `bugfix/profileview-code-widget`(`aa62f64`), `feature/design-tablet-rest`(`c1e2f5c`), `feature/design-motion`(모션 설계 · 데스크톱 창 ✕ 버튼 · 인수인계 문서, 2026-09-14), `feature/tech-stack`(기술 스택 결정 문서, 2026-09-14), `feature/astro-setup`(Astro 생성·토큰·MDX·스키마, 병합 `004589b`, 2026-09-14), `feature/site-shell`(테마 버튼·공통 셸·Dock 자동 숨김·시계, 병합 `0227fa3`, 2026-09-15), `feature/home-page`(홈 첫 화면·iPhone 목업·최근 기록, 커밋 5개, 병합 `8c7568f`, 2026-09-16), `feature/study-pages`(스터디 목록·글, 커밋 11개, 병합 `4351c43`, 2026-09-20)
+- 병합 후 삭제한 브랜치(순서대로, 마지막은 `feature/project-pages` 병합 `53f528e`·2026-09-18·원격까지 삭제): `feature/design-theme-dock`, `feature/design-color-direction`(`fab45e5`), `feature/design-theme-toggle`(`e610858`), `feature/design-detail-screens`(`bfcf341`), `feature/design-project-detail`(`0c7d2c9`), `feature/design-mobile`(`74c8149`), `feature/design-dark-windows`, `feature/design-iphone-mockup`(`eceb50a`), `feature/design-tablet`(`2d280cd`), `bugfix/profileview-code-widget`(`aa62f64`), `feature/design-tablet-rest`(`c1e2f5c`), `feature/design-motion`(모션 설계 · 데스크톱 창 ✕ 버튼 · 인수인계 문서, 2026-09-14), `feature/tech-stack`(기술 스택 결정 문서, 2026-09-14), `feature/astro-setup`(Astro 생성·토큰·MDX·스키마, 병합 `004589b`, 2026-09-14), `feature/site-shell`(테마 버튼·공통 셸·Dock 자동 숨김·시계, 병합 `0227fa3`, 2026-09-15), `feature/home-page`(홈 첫 화면·iPhone 목업·최근 기록, 커밋 5개, 병합 `8c7568f`, 2026-09-16), `feature/study-pages`(스터디 목록·글, 커밋 11개, 병합 `4351c43`, 2026-09-20), `feature/seminar-pages`(세미나 목록·행사 상세 + 홈 최근 기록 링크, 커밋 8개, 병합 `8f704a4`, 2026-09-20)
 - 참고로 남겨 둔 비교안 커밋: 색상 A~F `de7d440`, 행사 상세 사진 묶음형 A `1769266`
 
 ## 13. 문서 관리 규칙
