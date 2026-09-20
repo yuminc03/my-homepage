@@ -7,7 +7,7 @@ import Window from '../../components/Window.astro';
 import PageHeading from '../../components/PageHeading.astro';
 import SeminarCard from '../../components/SeminarCard.astro';
 import { getApp } from '../../data/apps';
-import { getSeminars } from '../../lib/content';
+import { getSeminars, seminarHref } from '../../lib/content';
 
 const app = getApp('seminars');
 const seminars = await getSeminars();
@@ -21,7 +21,7 @@ const seminars = await getSeminars();
 				<ul class="list">
 					{seminars.map((seminar) => (
 						<li>
-							<SeminarCard seminar={seminar} />
+							<SeminarCard seminar={seminar} href={seminarHref(seminar)} />
 						</li>
 					))}
 				</ul>
