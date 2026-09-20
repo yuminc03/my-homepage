@@ -1,8 +1,44 @@
 ---
 // 페이지 전환(View Transitions)
 // - ClientRouter가 사이트 안의 링크 클릭을 가로채 <body>만 갈아 끼우고, 그 사이를 브라우저 View Transition으로 잇는다
+// - 전환 모양은 두 화면의 관계에 따라 달라야 한다(목록 → 상세는 오른쪽에서, 홈 → 창은 아래에서).
+//   아래 스크립트가 떠나는 주소와 가는 주소를 보고 종류를 정해 ClientRouter에 넘기면,
+//   ClientRouter가 전환하는 동안 <html data-astro-transition="종류">를 달아 준다. 모션은 styles/transitions.css가 그 값으로 고른다
+// - 종류: open(홈 → 창) · close(창 → 홈) · push(목록 → 상세) · pop(상세 → 목록) · fade(그 밖)
 // - 스크립트가 없거나 브라우저가 View Transition을 모르면 링크는 그냥 새 페이지를 연다(모션만 없어진다)
 import { ClientRouter } from 'astro:transitions';
 ---
 
 <ClientRouter />
+
+<script>
+	import type { TransitionBeforePreparationEvent } from 'astro:transitions/client';
+	import { withBase } from '../lib/url';
+
+	const base = withBase('/');
+
+	// 주소를 base 뒤의 구획 배열로 바꾼다: 홈 [] · 목록 ['projects'] · 상세 ['projects', 'my-app']
+	// 스터디 글은 폴더를 더 둘 수 있어(컬렉션 glob이 **) 상세는 "구획 2개 이상"으로 본다
+	const segments = (url: URL) => url.pathname.slice(base.length).split('/').filter(Boolean);
+
+	const transitionKind = (from: URL, to: URL, source: Element | undefined) => {
+		const now = segments(from);
+		const next = segments(to);
+
+		if (now.length === 0) return next.length === 0 ? 'fade' : 'open'; // 홈 → 창이 열린다
+		if (next.length === 0) return 'close'; // 창을 닫고 홈으로
+		if (now[0] !== next[0]) return 'fade'; // 메뉴·Dock으로 다른 앱으로 건너뛴다
+		if (now.length === 1 && next.length > 1) return 'push'; // 목록 → 상세
+		if (now.length > 1 && next.length === 1) return 'pop'; // 상세 → 목록
+
+		// 상세 → 상세(맨 아래 이전/다음). 주소 깊이가 같아 방향을 알 수 없으니 누른 링크의 rel로 정한다
+		return source?.closest<HTMLAnchorElement>('a')?.rel === 'prev' ? 'pop' : 'push';
+	};
+
+	// 브라우저 뒤로 가기도 같은 규칙을 탄다: 방향을 기록이 아니라 두 주소의 관계로 정하므로
+	// 상세에서 뒤로 가면(= 목록으로) 자연스럽게 pop이 된다
+	document.addEventListener('astro:before-preparation', (event) => {
+		const navigation = event as TransitionBeforePreparationEvent;
+		navigation.direction = transitionKind(navigation.from, navigation.to, navigation.sourceElement);
+	});
+</script>
