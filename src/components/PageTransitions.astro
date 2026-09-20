@@ -1,0 +1,8 @@
+---
+// 페이지 전환(View Transitions)
+// - ClientRouter가 사이트 안의 링크 클릭을 가로채 <body>만 갈아 끼우고, 그 사이를 브라우저 View Transition으로 잇는다
+// - 스크립트가 없거나 브라우저가 View Transition을 모르면 링크는 그냥 새 페이지를 연다(모션만 없어진다)
+import { ClientRouter } from 'astro:transitions';
+---
+
+<ClientRouter />
