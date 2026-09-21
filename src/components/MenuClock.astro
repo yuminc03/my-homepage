@@ -1,0 +1,71 @@
+---
+// 데스크톱 메뉴바 시계: 방문자 기기의 현재 시각을 HH:MM(24시간)으로 보여준다
+// - 빌드 시각을 넣으면 틀린 시각이 보이므로, JS가 채우기 전에는 비워 둔다(자리 폭은 미리 잡아 버튼이 밀리지 않게)
+// - 표시 여부(데스크톱만)는 MenuBar가 정한다
+---
+
+<time class="clock" data-menu-clock></time>
+
+<style>
+	.clock {
+		display: inline-block;
+		min-width: 4.4ch; /* 숫자 4개(tabular-nums = 각 1ch) + 콜론 */
+		color: var(--ink);
+		font-size: 12.5px;
+		font-weight: 500;
+		font-variant-numeric: tabular-nums;
+		text-align: right;
+		white-space: nowrap;
+	}
+</style>
+
+<script>
+	import { onEachPage } from '../lib/pageInit';
+
+	// 로케일에 따라 "오전" 등이 섞이지 않도록 시·분 조각만 꺼내 HH:MM으로 합친다
+	const formatter = new Intl.DateTimeFormat('ko-KR', { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
+
+	// 페이지를 옮기면 시계 요소도 새것(비어 있음)이라 다시 채워야 한다
+	onEachPage((signal) => {
+		const clocks = document.querySelectorAll<HTMLTimeElement>('[data-menu-clock]');
+		if (clocks.length > 0) startClock(clocks, signal);
+	});
+
+	function startClock(clocks: NodeListOf<HTMLTimeElement>, signal: AbortSignal) {
+		let timer: number | undefined;
+
+		const render = () => {
+			const now = new Date();
+			const parts = formatter.formatToParts(now);
+			const pick = (type: Intl.DateTimeFormatPartTypes) => parts.find((part) => part.type === type)?.value ?? '';
+			const text = `${pick('hour')}:${pick('minute')}`;
+
+			for (const clock of clocks) {
+				if (clock.textContent !== text) clock.textContent = text;
+				clock.dateTime = text;
+			}
+			return now;
+		};
+
+		// setInterval(60s)은 조금씩 밀리고 절전·백그라운드 탭에서 늦어지므로, 매번 다음 분 경계까지 남은 시간을 새로 계산한다
+		const tick = () => {
+			const now = render();
+			const untilNextMinute = 60_000 - (now.getSeconds() * 1000 + now.getMilliseconds());
+			clearTimeout(timer);
+			timer = window.setTimeout(tick, untilNextMinute + 50); // 경계 직전에 깨어 같은 분을 다시 그리지 않도록 약간 늦춘다
+		};
+
+		// 다음 페이지로 넘어가면 이 시계는 사라지므로 타이머도 함께 끊는다(전환할 때마다 쌓이지 않게)
+		signal.addEventListener('abort', () => clearTimeout(timer));
+
+		tick();
+		// 잠자기·탭 전환에서 돌아오면 타이머를 기다리지 않고 바로 맞춘다
+		document.addEventListener(
+			'visibilitychange',
+			() => {
+				if (document.visibilityState === 'visible') tick();
+			},
+			{ signal },
+		);
+	}
+</script>

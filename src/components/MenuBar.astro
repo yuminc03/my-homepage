@@ -1,0 +1,202 @@
+---
+// 유리 메뉴바
+// - 데스크톱(≥1180px): 모든 화면 상단. 로고·이름 · 메뉴 4개(열린 창 활성 표시) · 검색 · 테마 버튼 · 시계
+//   데스크톱은 창 타이틀 바에 돋보기를 두지 않고 메뉴바에만 둔다(PROGRESS.md 5-18)
+// - 모바일·태블릿: 홈 화면에서만(showOnTouch). 로고·이름 · 검색 · 테마 버튼(각 44px).
+//   목록·상세는 창 시트가 화면을 채우므로 돋보기가 창 타이틀 바로 간다
+//   시계는 기기 상태 표시줄과 겹치므로 두지 않는다
+// - transition:name: 페이지 전환 때 본문 스냅샷에서 빠져 제자리에 남는다(본문만 움직인다).
+//   전환 자체는 Astro 기본 페이드(180ms)라 열린 메뉴 표시가 바뀔 때 짧게 겹친다
+import ThemeToggle from './ThemeToggle.astro';
+import MenuClock from './MenuClock.astro';
+import SearchButton from './SearchButton.astro';
+import { APPS, getApp, type AppId } from '../data/apps';
+import { withBase } from '../lib/url';
+
+interface Props {
+	active: AppId;
+	showOnTouch?: boolean;
+}
+
+const { active, showOnTouch = false } = Astro.props;
+const home = getApp('home');
+---
+
+<header class="menubar" data-touch={showOnTouch ? 'show' : 'hide'} transition:name="menubar">
+	<a class="brand" href={withBase(home.href)}>
+		<span class="logo" style={`--logo-bg: ${home.background};`} aria-hidden="true">CY</span>
+		<span class="name">Chu Yumin</span>
+	</a>
+
+	<nav class="menu" aria-label="주요 메뉴">
+		{
+			APPS.map((app) => (
+				<a class="menuitem" href={withBase(app.href)} aria-current={app.id === active ? 'page' : undefined}>
+					{app.label}
+				</a>
+			))
+		}
+	</nav>
+
+	<div class="status">
+		<span class="desktop-only">
+			<SearchButton />
+			<ThemeToggle />
+			<MenuClock />
+		</span>
+		<span class="touch-only">
+			<SearchButton size="touch" />
+			<ThemeToggle size="touch" />
+		</span>
+	</div>
+</header>
+
+<style>
+	.menubar {
+		position: sticky;
+		top: 0;
+		z-index: 80;
+		display: flex;
+		align-items: center;
+		height: 52px;
+		padding: 0 20px;
+		background: var(--glass);
+		backdrop-filter: blur(24px) saturate(180%);
+		-webkit-backdrop-filter: blur(24px) saturate(180%);
+		border-bottom: 1px solid var(--glass-line);
+		box-shadow: inset 0 1px 0 var(--glass-hi);
+	}
+
+	.menubar[data-touch='hide'] {
+		display: none;
+	}
+
+	.brand,
+	.brand:hover {
+		display: flex;
+		align-items: center;
+		gap: 9px;
+		color: var(--ink-strong);
+	}
+
+	.logo {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 24px;
+		height: 24px;
+		border-radius: 7px;
+		background: var(--logo-bg);
+		color: oklch(99% 0 0);
+		font-size: 10.5px;
+		font-weight: 800;
+		letter-spacing: -0.02em;
+	}
+
+	.name {
+		font-size: 14px;
+		font-weight: 700;
+	}
+
+	.menu {
+		display: none;
+	}
+
+	.status {
+		display: flex;
+		align-items: center;
+		gap: 16px;
+		margin-left: auto;
+	}
+
+	.desktop-only {
+		display: none;
+	}
+
+	/* 누르는 영역 44px은 유지하되 아이콘은 가장자리 여백에 맞춘다 */
+	.touch-only {
+		display: flex;
+		margin-right: -10px;
+	}
+
+	.brand:focus-visible,
+	.menuitem:focus-visible {
+		outline: 2px solid var(--win-accent);
+		outline-offset: 2px;
+		border-radius: 7px;
+	}
+
+	@media (min-width: 744px) {
+		.menubar {
+			height: 56px;
+			padding: 0 28px;
+		}
+
+		.name {
+			font-size: 15px;
+		}
+	}
+
+	@media (min-width: 1180px) {
+		.menubar,
+		.menubar[data-touch='hide'] {
+			display: flex;
+			height: 36px;
+			padding: 0 18px;
+			backdrop-filter: blur(28px) saturate(180%);
+			-webkit-backdrop-filter: blur(28px) saturate(180%);
+			box-shadow:
+				inset 0 1px 0 var(--glass-hi),
+				0 8px 32px var(--glass-shadow);
+		}
+
+		.logo {
+			width: 19px;
+			height: 19px;
+			border-radius: 6px;
+			font-size: 9.5px;
+		}
+
+		.name {
+			font-size: 13px;
+		}
+
+		.menu {
+			display: flex;
+			align-items: center;
+			gap: 6px;
+			margin-left: 22px;
+		}
+
+		.menuitem {
+			padding: 4px 10px;
+			border-radius: 7px;
+			color: var(--ink-muted);
+			font-size: 12.5px;
+			transition:
+				color var(--dur-fast) var(--ease-out),
+				background-color var(--dur-fast) var(--ease-out);
+		}
+
+		.menuitem:hover {
+			color: var(--ink-strong);
+		}
+
+		.menuitem[aria-current='page'] {
+			background: var(--menu-active);
+			color: var(--ink-strong);
+			font-weight: 600;
+		}
+
+		/* 테마 버튼 · 시계 (시안 간격 16px) */
+		.desktop-only {
+			display: flex;
+			align-items: center;
+			gap: 16px;
+		}
+
+		.touch-only {
+			display: none;
+		}
+	}
+</style>

@@ -1,0 +1,52 @@
+---
+// 태그 목록(라일락 알약). 프로젝트 카드와 프로젝트 상세 머리가 함께 쓴다
+// - 바깥 여백은 부모가 감싼 요소에서 정한다
+interface Props {
+	tags: readonly string[];
+}
+
+const { tags } = Astro.props;
+---
+
+{
+	tags.length > 0 && (
+		<ul class="tags">
+			{tags.map((tag) => (
+				<li class="tag">{tag}</li>
+			))}
+		</ul>
+	)
+}
+
+<style>
+	.tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.tag {
+		padding: 4px 11px;
+		border-radius: 999px;
+		background: var(--win-tag-bg);
+		color: var(--win-tag-ink);
+		font-size: 12px;
+		font-weight: 600;
+	}
+
+	@media (min-width: 744px) {
+		.tag {
+			padding: 5px 12px;
+			font-size: 12.5px;
+		}
+	}
+
+	@media (min-width: 1180px) {
+		.tags {
+			gap: 8px;
+		}
+	}
+</style>

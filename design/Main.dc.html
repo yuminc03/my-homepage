@@ -12,38 +12,64 @@
   *{box-sizing:border-box;}
   body,html{margin:0;padding:0;}
   .site{font-family:'Noto Sans KR',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;}
-  a{color:oklch(62% 0.19 262);text-decoration:none;transition:color .15s ease;}
-  a:hover{color:oklch(52% 0.19 262);}
-  .menuitem{color:oklch(82% 0.01 260);transition:color .15s ease;}
-  .menuitem:hover{color:oklch(97% 0.004 260);}
+  a{color:var(--win-accent);text-decoration:none;transition:color .15s ease;}
+  a:hover{color:var(--win-accent-hover);}
+  .menuitem{color:var(--ink-muted);transition:color .15s ease;}
+  .menuitem:hover{color:var(--ink-strong);}
+  /* 테마 토큰: 바탕·유리·메뉴 글자와 창 본문(--win-*)을 함께 전환한다. 앱 화면(iPhone 안쪽)과 코드 에디터·코드 블록은 고정 */
+  .site{--desk:oklch(18% 0.02 290);--glow-a:oklch(58% 0.13 300);--glow-b:oklch(60% 0.1 170);--glow-c:oklch(52% 0.12 300);--glass:oklch(100% 0 0 / 0.10);--glass-line:oklch(100% 0 0 / 0.12);--glass-hi:oklch(100% 0 0 / 0.18);--glass-shadow:oklch(10% 0.022 290 / 0.35);--ink-strong:oklch(97% 0.006 290);--ink:oklch(88% 0.015 290);--ink-muted:oklch(82% 0.015 290);--menu-active:oklch(100% 0 0 / 0.14);--label:oklch(90% 0.012 290);--cue:oklch(76% 0.022 290);--dock-sep:oklch(100% 0 0 / 0.16);--dock-dot:oklch(90% 0.015 290);--dock-shadow:oklch(8% 0.022 290 / 0.5);--win-line:oklch(100% 0 0 / 0.12);--win-shadow:oklch(6% 0.022 290 / 0.55);--icon-shadow:oklch(8% 0.022 290 / 0.45);--win-bg:oklch(23% 0.018 290);--win-bar:oklch(27% 0.02 290);--win-bar-line:oklch(33% 0.02 290);--win-card:oklch(27% 0.019 290);--win-divider:oklch(33% 0.02 290);--win-chip-line:oklch(38% 0.02 290);--win-ink-strong:oklch(95% 0.008 290);--win-ink:oklch(85% 0.012 290);--win-ink-2:oklch(80% 0.012 290);--win-ink-muted:oklch(72% 0.015 290);--win-ink-sub:oklch(66% 0.015 290);--win-title:oklch(78% 0.015 290);--win-icon:oklch(80% 0.015 290);--win-dot:oklch(50% 0.015 290);--win-tag-bg:oklch(33% 0.05 295);--win-tag-ink:oklch(84% 0.09 295);--win-accent:oklch(76% 0.12 295);--win-accent-hover:oklch(84% 0.1 295);--win-solid-bg:oklch(93% 0.01 290);--win-solid-ink:oklch(20% 0.015 290);--win-solid-press:oklch(84% 0.03 295);--win-ctrl-a:oklch(62% 0.08 295);--win-ctrl-b:oklch(52% 0.06 295);--win-ctrl-c:oklch(56% 0.07 170);--win-press:oklch(100% 0 0 / 0.08);--win-hint:oklch(100% 0 0 / 0.3);--win-dock-glass:oklch(26% 0.02 290 / 0.78);--win-dock-line:oklch(100% 0 0 / 0.1);--win-dock-hi:oklch(100% 0 0 / 0.12);--win-dock-shadow:oklch(6% 0.022 290 / 0.5);--win-dock-sep:oklch(100% 0 0 / 0.16);--win-dock-dot:oklch(90% 0.015 290);--win-media-icon:oklch(90% 0.012 290 / 0.75);--win-media-dim:oklch(16% 0.02 290 / 0.6);--win-code-line:oklch(100% 0 0 / 0.08);}
+  .site[data-theme="light"]{--desk:oklch(96% 0.012 290);--glow-a:oklch(86% 0.08 300);--glow-b:oklch(89% 0.07 170);--glow-c:oklch(90% 0.06 300);--glass:oklch(100% 0 0 / 0.55);--glass-line:oklch(25% 0.022 290 / 0.08);--glass-hi:oklch(100% 0 0 / 0.7);--glass-shadow:oklch(40% 0.024 295 / 0.10);--ink-strong:oklch(20% 0.015 290);--ink:oklch(32% 0.015 290);--ink-muted:oklch(42% 0.015 290);--menu-active:oklch(25% 0.022 290 / 0.08);--label:oklch(28% 0.015 290);--cue:oklch(46% 0.022 290);--dock-sep:oklch(25% 0.022 290 / 0.14);--dock-dot:oklch(35% 0.015 290);--dock-shadow:oklch(40% 0.024 295 / 0.16);--win-line:oklch(25% 0.022 290 / 0.08);--win-shadow:oklch(35% 0.024 295 / 0.18);--icon-shadow:oklch(40% 0.024 295 / 0.22);--win-bg:oklch(98% 0.006 290);--win-bar:oklch(94% 0.006 290);--win-bar-line:oklch(89% 0.007 290);--win-card:oklch(96% 0.007 290);--win-divider:oklch(91% 0.007 290);--win-chip-line:oklch(88% 0.007 290);--win-ink-strong:oklch(18% 0.015 290);--win-ink:oklch(30% 0.015 290);--win-ink-2:oklch(36% 0.015 290);--win-ink-muted:oklch(46% 0.015 290);--win-ink-sub:oklch(54% 0.015 290);--win-title:oklch(42% 0.015 290);--win-icon:oklch(40% 0.015 290);--win-dot:oklch(70% 0.015 290);--win-tag-bg:oklch(95% 0.03 295);--win-tag-ink:oklch(46% 0.14 295);--win-accent:oklch(60% 0.15 295);--win-accent-hover:oklch(50% 0.15 295);--win-solid-bg:oklch(20% 0.015 290);--win-solid-ink:oklch(98% 0.006 290);--win-solid-press:oklch(30% 0.03 295);--win-ctrl-a:oklch(72% 0.06 295);--win-ctrl-b:oklch(81% 0.04 295);--win-ctrl-c:oklch(86% 0.06 170);--win-press:oklch(25% 0.022 290 / 0.06);--win-hint:oklch(25% 0.022 290 / 0.22);--win-dock-glass:oklch(98% 0.006 290 / 0.78);--win-dock-line:oklch(25% 0.022 290 / 0.08);--win-dock-hi:oklch(100% 0 0 / 0.7);--win-dock-shadow:oklch(35% 0.024 295 / 0.2);--win-dock-sep:oklch(25% 0.022 290 / 0.14);--win-dock-dot:oklch(35% 0.015 290);--win-media-icon:oklch(35% 0.022 290);--win-media-dim:oklch(100% 0 0 / 0);--win-code-line:oklch(100% 0 0 / 0);}
   .code{font-family:ui-monospace,'Cascadia Code',Menlo,Consolas,monospace;font-size:13px;line-height:22px;white-space:pre;}
   @keyframes scrollcue{0%,100%{transform:translateY(0);opacity:.5;}50%{transform:translateY(8px);opacity:1;}}
+  /* Dock 자동 숨김: 숨을 때 아래로 빠지고 하단에 얇은 힌트 막대만 남는다 */
+  .dock{transition:transform .38s cubic-bezier(.2,.8,.2,1),opacity .28s ease;}
+  .dock-hint{opacity:0;transition:opacity .28s ease;}
+  .dockzone[data-state="hidden"] .dock{transform:translateY(calc(100% + 32px));opacity:0;pointer-events:none;}
+  .dockzone[data-state="hidden"] .dock-hint{opacity:1;}
+  /* 테마 전환 버튼: 누르면 바뀔 모드의 아이콘(다크=해, 라이트=달)을 보여준다 */
+  .themebtn{display:flex;align-items:center;justify-content:center;width:28px;height:22px;padding:0;border:0;border-radius:6px;background:transparent;color:var(--ink);cursor:pointer;transition:background-color .15s ease,color .15s ease;}
+  .themebtn:hover{background:var(--menu-active);color:var(--ink-strong);}
+  .themebtn:focus-visible{outline:2px solid oklch(60% 0.15 295);outline-offset:1px;}
+  .themebtn svg{transition:transform .35s cubic-bezier(.2,.8,.2,1);}
+  .themebtn:hover svg{transform:rotate(-18deg);}
+  /* 사진 자리·썸네일 바탕: 다크에서만 어둡게 덮는다 (시안용 자리 표시. 실제 사진에는 쓰지 않는다) */
+  .media{position:relative;}
+  .media::after{content:"";position:absolute;inset:0;border-radius:inherit;background:var(--win-media-dim);pointer-events:none;}
+  .media > *{z-index:1;}
 </style>
 </helmet>
 
-<div class="site" style="width:1440px;min-height:1640px;background:oklch(15% 0.012 260);position:relative;overflow:hidden;">
+<div class="site" data-theme="{{theme}}" onWheel="{{handleWheel}}" style="width:1440px;min-height:1640px;background:var(--desk);position:relative;overflow:hidden;transition:background-color .4s ease;">
 
-  <div style="position:absolute;top:-240px;left:-180px;width:760px;height:760px;border-radius:50%;background:oklch(55% 0.2 262);filter:blur(160px);opacity:0.34;"></div>
-  <div style="position:absolute;top:120px;right:-240px;width:680px;height:680px;border-radius:50%;background:oklch(45% 0.18 305);filter:blur(180px);opacity:0.3;"></div>
-  <div style="position:absolute;top:980px;left:280px;width:620px;height:620px;border-radius:50%;background:oklch(48% 0.16 275);filter:blur(190px);opacity:0.22;"></div>
+  <div style="position:absolute;top:-240px;left:-180px;width:760px;height:760px;border-radius:50%;background:var(--glow-a);filter:blur(160px);opacity:0.34;"></div>
+  <div style="position:absolute;top:120px;right:-240px;width:680px;height:680px;border-radius:50%;background:var(--glow-b);filter:blur(180px);opacity:0.3;"></div>
+  <div style="position:absolute;top:980px;left:280px;width:620px;height:620px;border-radius:50%;background:var(--glow-c);filter:blur(190px);opacity:0.22;"></div>
 
   <!-- MENU BAR -->
-  <div style="position:sticky;top:0;z-index:80;display:flex;align-items:center;justify-content:space-between;height:36px;padding:0 18px;background:oklch(100% 0 0 / 0.10);backdrop-filter:blur(28px) saturate(180%);-webkit-backdrop-filter:blur(28px) saturate(180%);border-bottom:1px solid oklch(100% 0 0 / 0.12);box-shadow:inset 0 1px 0 oklch(100% 0 0 / 0.18), 0 8px 32px oklch(10% 0.02 265 / 0.35);">
+  <div style="position:sticky;top:0;z-index:80;display:flex;align-items:center;justify-content:space-between;height:36px;padding:0 18px;background:var(--glass);backdrop-filter:blur(28px) saturate(180%);-webkit-backdrop-filter:blur(28px) saturate(180%);border-bottom:1px solid var(--glass-line);box-shadow:inset 0 1px 0 var(--glass-hi), 0 8px 32px var(--glass-shadow);">
     <div style="display:flex;align-items:center;gap:22px;">
       <div style="display:flex;align-items:center;gap:9px;">
-        <div style="width:19px;height:19px;border-radius:6px;background:linear-gradient(140deg, oklch(66% 0.18 262), oklch(52% 0.17 300));display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:800;color:oklch(99% 0 0);letter-spacing:-0.02em;">CY</div>
-        <span style="font-size:13px;font-weight:700;color:oklch(97% 0.004 260);">Chu Yumin</span>
+        <div style="width:19px;height:19px;border-radius:6px;background:linear-gradient(140deg, oklch(70% 0.13 300), oklch(58% 0.15 285));display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:800;color:oklch(99% 0 0);letter-spacing:-0.02em;">CY</div>
+        <span style="font-size:13px;font-weight:700;color:var(--ink-strong);">Chu Yumin</span>
       </div>
       <div style="display:flex;align-items:center;gap:6px;">
-        <span class="menuitem" style="font-size:12.5px;font-weight:600;color:oklch(97% 0.004 260);padding:4px 10px;border-radius:7px;background:oklch(100% 0 0 / 0.14);">홈</span>
+        <span class="menuitem" style="font-size:12.5px;font-weight:600;color:var(--ink-strong);padding:4px 10px;border-radius:7px;background:var(--menu-active);">홈</span>
         <span class="menuitem" style="font-size:12.5px;padding:4px 10px;border-radius:7px;">프로젝트</span>
         <span class="menuitem" style="font-size:12.5px;padding:4px 10px;border-radius:7px;">스터디 기록</span>
         <span class="menuitem" style="font-size:12.5px;padding:4px 10px;border-radius:7px;">세미나 기록</span>
       </div>
     </div>
     <div style="display:flex;align-items:center;gap:16px;">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="oklch(88% 0.01 260)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg>
-      <span style="font-size:12.5px;font-weight:500;color:oklch(88% 0.01 260);">11:52</span>
+      <button type="button" class="themebtn" aria-label="{{themeToggleLabel}}" title="{{themeToggleLabel}}" onClick="{{toggleTheme}}">
+        <sc-if value="{{isDark}}" hint-placeholder-val="{{ true }}">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>
+        </sc-if>
+        <sc-if value="{{isLight}}" hint-placeholder-val="{{ false }}">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+        </sc-if>
+      </button>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="color:var(--ink);" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg>
+      <span style="font-size:12.5px;font-weight:500;color:var(--ink);">11:52</span>
     </div>
   </div>
 
@@ -53,55 +79,55 @@
     <!-- desktop shortcuts -->
     <div style="position:absolute;left:56px;top:48px;display:flex;flex-direction:column;gap:26px;">
       <div style="display:flex;flex-direction:column;align-items:center;gap:9px;width:84px;">
-        <div style="width:60px;height:60px;border-radius:17px;background:linear-gradient(145deg, oklch(66% 0.18 262), oklch(52% 0.17 298));display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px oklch(8% 0.02 265 / 0.45);">
+        <div style="width:60px;height:60px;border-radius:17px;background:linear-gradient(145deg, oklch(70% 0.13 300), oklch(58% 0.15 285));display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px var(--icon-shadow);">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="oklch(99% 0 0)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5 12 4l8 6.5V20H4z"/></svg>
         </div>
-        <span style="font-size:12px;font-weight:500;color:oklch(90% 0.008 260);">홈</span>
+        <span style="font-size:12px;font-weight:500;color:var(--label);">홈</span>
       </div>
       <div style="display:flex;flex-direction:column;align-items:center;gap:9px;width:84px;">
-        <div style="width:60px;height:60px;border-radius:17px;background:linear-gradient(145deg, oklch(62% 0.16 220), oklch(50% 0.16 268));display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px oklch(8% 0.02 265 / 0.45);">
+        <div style="width:60px;height:60px;border-radius:17px;background:linear-gradient(145deg, oklch(76% 0.11 170), oklch(64% 0.11 185));display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px var(--icon-shadow);">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="oklch(99% 0 0)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h6l2 2h10v9H3z"/></svg>
         </div>
-        <span style="font-size:12px;font-weight:500;color:oklch(90% 0.008 260);">프로젝트</span>
+        <span style="font-size:12px;font-weight:500;color:var(--label);">프로젝트</span>
       </div>
       <div style="display:flex;flex-direction:column;align-items:center;gap:9px;width:84px;">
-        <div style="width:60px;height:60px;border-radius:17px;background:linear-gradient(145deg, oklch(64% 0.16 300), oklch(52% 0.16 255));display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px oklch(8% 0.02 265 / 0.45);">
+        <div style="width:60px;height:60px;border-radius:17px;background:linear-gradient(145deg, oklch(72% 0.12 340), oklch(60% 0.14 320));display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px var(--icon-shadow);">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="oklch(99% 0 0)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/></svg>
         </div>
-        <span style="font-size:12px;font-weight:500;color:oklch(90% 0.008 260);">스터디 기록</span>
+        <span style="font-size:12px;font-weight:500;color:var(--label);">스터디 기록</span>
       </div>
       <div style="display:flex;flex-direction:column;align-items:center;gap:9px;width:84px;">
-        <div style="width:60px;height:60px;border-radius:17px;background:linear-gradient(145deg, oklch(68% 0.15 245), oklch(54% 0.15 310));display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px oklch(8% 0.02 265 / 0.45);">
+        <div style="width:60px;height:60px;border-radius:17px;background:linear-gradient(145deg, oklch(78% 0.1 220), oklch(64% 0.12 255));display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px var(--icon-shadow);">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="oklch(99% 0 0)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
         </div>
-        <span style="font-size:12px;font-weight:500;color:oklch(90% 0.008 260);">세미나 기록</span>
+        <span style="font-size:12px;font-weight:500;color:var(--label);">세미나 기록</span>
       </div>
     </div>
 
     <!-- ABOUT WINDOW -->
-    <div style="position:absolute;left:180px;top:74px;width:552px;z-index:2;border-radius:16px;overflow:hidden;background:oklch(98% 0.004 260);border:1px solid oklch(100% 0 0 / 0.12);box-shadow:0 44px 96px oklch(6% 0.02 265 / 0.55);">
-      <div style="position:relative;display:flex;align-items:center;justify-content:center;height:44px;background:oklch(94% 0.004 260);border-bottom:1px solid oklch(89% 0.005 260);">
+    <div style="position:absolute;left:180px;top:74px;width:552px;z-index:2;border-radius:16px;overflow:hidden;background:var(--win-bg);border:1px solid var(--win-line);box-shadow:0 44px 96px var(--win-shadow);">
+      <div style="position:relative;display:flex;align-items:center;justify-content:center;height:44px;background:var(--win-bar);border-bottom:1px solid var(--win-bar-line);">
         <div style="position:absolute;left:16px;display:flex;gap:8px;">
-          <div style="width:11px;height:11px;border-radius:50%;background:oklch(70% 0.07 262);"></div>
-          <div style="width:11px;height:11px;border-radius:50%;background:oklch(80% 0.045 262);"></div>
-          <div style="width:11px;height:11px;border-radius:50%;background:oklch(88% 0.025 262);"></div>
+          <div style="width:11px;height:11px;border-radius:50%;background:var(--win-ctrl-a);"></div>
+          <div style="width:11px;height:11px;border-radius:50%;background:var(--win-ctrl-b);"></div>
+          <div style="width:11px;height:11px;border-radius:50%;background:var(--win-ctrl-c);"></div>
         </div>
-        <span style="font-size:13px;font-weight:600;color:oklch(42% 0.01 260);">About me</span>
+        <span style="font-size:13px;font-weight:600;color:var(--win-title);">About me</span>
       </div>
       <div style="padding:40px;display:flex;flex-direction:column;">
-        <h1 style="margin:0 0 26px 0;font-size:36px;line-height:1.36;font-weight:800;letter-spacing:-0.015em;color:oklch(18% 0.01 260);">
+        <h1 style="margin:0 0 26px 0;font-size:36px;line-height:1.36;font-weight:800;letter-spacing:-0.015em;color:var(--win-ink-strong);">
           안녕하세요,<br>iOS 개발자 Chu Yumin입니다.
         </h1>
-        <p style="margin:0 0 30px 0;padding-left:20px;border-left:3px solid oklch(62% 0.19 262);font-size:20px;line-height:1.65;font-weight:300;color:oklch(40% 0.012 260);">
+        <p style="margin:0 0 30px 0;padding-left:20px;border-left:3px solid var(--win-accent);font-size:20px;line-height:1.65;font-weight:300;color:var(--win-ink-2);">
           기회가 주어지면 최선을 다하는 것이 아니라<br>최선을 다하고 있으면 기회가 주어지는 것이다.
         </p>
         <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px;">
-          <span style="font-size:12.5px;font-weight:600;padding:6px 14px;border-radius:999px;background:oklch(94% 0.03 262);color:oklch(45% 0.15 262);">Swift</span>
-          <span style="font-size:12.5px;font-weight:600;padding:6px 14px;border-radius:999px;background:oklch(94% 0.03 262);color:oklch(45% 0.15 262);">SwiftUI</span>
-          <span style="font-size:12.5px;font-weight:600;padding:6px 14px;border-radius:999px;background:oklch(94% 0.03 262);color:oklch(45% 0.15 262);">UIKit</span>
-          <span style="font-size:12.5px;font-weight:600;padding:6px 14px;border-radius:999px;background:oklch(94% 0.03 262);color:oklch(45% 0.15 262);">Xcode</span>
+          <span style="font-size:12.5px;font-weight:600;padding:6px 14px;border-radius:999px;background:var(--win-tag-bg);color:var(--win-tag-ink);">Swift</span>
+          <span style="font-size:12.5px;font-weight:600;padding:6px 14px;border-radius:999px;background:var(--win-tag-bg);color:var(--win-tag-ink);">SwiftUI</span>
+          <span style="font-size:12.5px;font-weight:600;padding:6px 14px;border-radius:999px;background:var(--win-tag-bg);color:var(--win-tag-ink);">UIKit</span>
+          <span style="font-size:12.5px;font-weight:600;padding:6px 14px;border-radius:999px;background:var(--win-tag-bg);color:var(--win-tag-ink);">Xcode</span>
         </div>
-        <div style="display:flex;gap:20px;padding-top:22px;border-top:1px solid oklch(91% 0.005 260);">
+        <div style="display:flex;gap:20px;padding-top:22px;border-top:1px solid var(--win-divider);">
           <a href="#" style="font-size:13.5px;font-weight:600;">GitHub</a>
           <a href="#" style="font-size:13.5px;font-weight:600;">Email</a>
           <a href="#" style="font-size:13.5px;font-weight:600;">LinkedIn</a>
@@ -110,21 +136,21 @@
     </div>
 
     <!-- CODE EDITOR WINDOW -->
-    <div style="position:absolute;left:700px;top:40px;width:620px;z-index:3;border-radius:16px;overflow:hidden;background:oklch(19% 0.012 265);border:1px solid oklch(100% 0 0 / 0.10);box-shadow:0 44px 96px oklch(6% 0.02 265 / 0.6);">
-      <div style="position:relative;display:flex;align-items:center;justify-content:center;height:44px;background:oklch(24% 0.014 265);border-bottom:1px solid oklch(30% 0.014 265);">
+    <div style="position:absolute;left:700px;top:40px;width:620px;z-index:3;border-radius:16px;overflow:hidden;background:oklch(19% 0.018 290);border:1px solid var(--win-line);box-shadow:0 44px 96px var(--win-shadow);">
+      <div style="position:relative;display:flex;align-items:center;justify-content:center;height:44px;background:oklch(24% 0.021 290);border-bottom:1px solid oklch(30% 0.021 290);">
         <div style="position:absolute;left:16px;display:flex;gap:8px;">
-          <div style="width:11px;height:11px;border-radius:50%;background:oklch(62% 0.09 262);"></div>
-          <div style="width:11px;height:11px;border-radius:50%;background:oklch(52% 0.06 262);"></div>
-          <div style="width:11px;height:11px;border-radius:50%;background:oklch(44% 0.04 262);"></div>
+          <div style="width:11px;height:11px;border-radius:50%;background:oklch(62% 0.08 295);"></div>
+          <div style="width:11px;height:11px;border-radius:50%;background:oklch(52% 0.06 295);"></div>
+          <div style="width:11px;height:11px;border-radius:50%;background:oklch(56% 0.07 170);"></div>
         </div>
-        <span style="font-size:13px;font-weight:600;color:oklch(78% 0.01 260);">ProfileView.swift</span>
+        <span style="font-size:13px;font-weight:600;color:oklch(78% 0.015 290);">ProfileView.swift</span>
       </div>
-      <div style="display:flex;height:34px;background:oklch(22% 0.013 265);border-bottom:1px solid oklch(28% 0.014 265);">
-        <div style="display:flex;align-items:center;padding:0 16px;font-size:12px;color:oklch(88% 0.01 260);background:oklch(19% 0.012 265);border-right:1px solid oklch(28% 0.014 265);border-top:2px solid oklch(62% 0.19 262);">ProfileView.swift</div>
-        <div style="display:flex;align-items:center;padding:0 16px;font-size:12px;color:oklch(58% 0.015 260);border-right:1px solid oklch(28% 0.014 265);">AppRouter.swift</div>
+      <div style="display:flex;height:34px;background:oklch(22% 0.019 290);border-bottom:1px solid oklch(28% 0.021 290);">
+        <div style="display:flex;align-items:center;padding:0 16px;font-size:12px;color:oklch(88% 0.015 290);background:oklch(19% 0.018 290);border-right:1px solid oklch(28% 0.021 290);border-top:2px solid oklch(60% 0.15 295);">ProfileView.swift</div>
+        <div style="display:flex;align-items:center;padding:0 16px;font-size:12px;color:oklch(58% 0.022 290);border-right:1px solid oklch(28% 0.021 290);">AppRouter.swift</div>
       </div>
       <div style="display:flex;padding:18px 0 22px 0;">
-        <div class="code" style="width:44px;text-align:right;padding-right:14px;color:oklch(45% 0.015 262);flex-shrink:0;">1
+        <div class="code" style="width:44px;text-align:right;padding-right:14px;color:oklch(45% 0.022 290);flex-shrink:0;">1
 2
 3
 4
@@ -138,174 +164,176 @@
 12
 13
 14</div>
-        <div class="code" style="flex-grow:1;color:oklch(88% 0.01 260);padding-right:18px;"><span style="color:oklch(72% 0.16 330);">import</span> <span style="color:oklch(78% 0.13 195);">SwiftUI</span>
+        <div class="code" style="flex-grow:1;color:oklch(88% 0.015 290);padding-right:18px;"><span style="color:oklch(76% 0.13 300);">import</span> <span style="color:oklch(80% 0.11 170);">SwiftUI</span><br><br><span style="color:oklch(76% 0.13 300);">struct</span> <span style="color:oklch(80% 0.11 170);">ProfileView</span>: <span style="color:oklch(80% 0.11 170);">View</span> {
+    <span style="color:oklch(76% 0.13 300);">@State</span> <span style="color:oklch(76% 0.13 300);">private var</span> <span>isReady</span> = <span style="color:oklch(76% 0.13 300);">false</span>
 
-<span style="color:oklch(72% 0.16 330);">struct</span> <span style="color:oklch(78% 0.13 195);">ProfileView</span>: <span style="color:oklch(78% 0.13 195);">View</span> {
-    <span style="color:oklch(72% 0.16 330);">@State</span> <span style="color:oklch(72% 0.16 330);">private var</span> isReady = <span style="color:oklch(72% 0.16 330);">false</span>
-
-    <span style="color:oklch(72% 0.16 330);">var</span> body: <span style="color:oklch(72% 0.16 330);">some</span> <span style="color:oklch(78% 0.13 195);">View</span> {
-        <span style="color:oklch(78% 0.13 195);">VStack</span>(spacing: <span style="color:oklch(80% 0.12 250);">16</span>) {
-            <span style="color:oklch(78% 0.13 195);">Avatar</span>(name: <span style="color:oklch(78% 0.14 55);">"Chu Yumin"</span>)
-            <span style="color:oklch(78% 0.13 195);">Text</span>(greeting)
-                .<span style="color:oklch(80% 0.12 250);">font</span>(.title3.bold())
+    <span style="color:oklch(76% 0.13 300);">var</span> body: <span style="color:oklch(76% 0.13 300);">some</span> <span style="color:oklch(80% 0.11 170);">View</span> {
+        <span style="color:oklch(80% 0.11 170);">VStack</span>(spacing: <span style="color:oklch(80% 0.1 220);">16</span>) {
+            <span style="color:oklch(80% 0.11 170);">Avatar</span>(name: <span style="color:oklch(82% 0.1 80);">"Chu Yumin"</span>)
+            <span style="color:oklch(80% 0.11 170);">Text</span>(greeting)
+                .<span style="color:oklch(80% 0.1 220);">font</span>(.title3.bold())
         }
-        .<span style="color:oklch(80% 0.12 250);">task</span> { <span style="color:oklch(72% 0.16 330);">await</span> load() }
+        .<span style="color:oklch(80% 0.1 220);">task</span> { <span style="color:oklch(76% 0.13 300);">await</span> load() }
     }
 }</div>
       </div>
     </div>
 
     <!-- IPHONE MOCKUP -->
-    <div style="position:absolute;left:1128px;top:318px;z-index:4;width:206px;height:424px;border-radius:36px;padding:8px;background:oklch(30% 0.015 265);box-shadow:0 34px 70px oklch(6% 0.02 265 / 0.6);transform:rotate(3deg);">
-      <div style="width:100%;height:100%;border-radius:29px;background:oklch(98% 0.004 260);overflow:hidden;display:flex;flex-direction:column;">
-        <div style="flex-grow:1;padding:26px 16px 0 16px;display:flex;flex-direction:column;align-items:center;gap:14px;">
-          <div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(140deg, oklch(66% 0.18 262), oklch(52% 0.17 300));"></div>
-          <div style="height:12px;width:104px;border-radius:6px;background:oklch(32% 0.02 262);"></div>
-          <div style="height:8px;width:72px;border-radius:4px;background:oklch(88% 0.008 260);"></div>
-          <div style="width:100%;height:78px;border-radius:14px;background:linear-gradient(135deg, oklch(93% 0.03 262), oklch(88% 0.045 300));margin-top:6px;"></div>
+    <div style="position:absolute;flex-shrink:0;width:206px;aspect-ratio:450 / 920;left:1128px;top:318px;z-index:4;transform:rotate(3deg);filter:drop-shadow(0 34px 70px var(--win-shadow));">
+      <div style="position:absolute;left:5.56%;top:2.61%;width:88.89%;height:94.78%;border-radius:13.75% / 6.3%;overflow:hidden;background:oklch(98% 0.006 290);display:flex;flex-direction:column;">
+        <div style="flex-grow:1;padding:34px 14px 0 14px;display:flex;flex-direction:column;align-items:center;gap:14px;">
+          <div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(140deg, oklch(70% 0.13 300), oklch(58% 0.15 285));"></div>
+          <div style="height:12px;width:104px;border-radius:6px;background:oklch(32% 0.022 290);"></div>
+          <div style="height:8px;width:72px;border-radius:4px;background:oklch(88% 0.012 290);"></div>
+          <div style="width:100%;height:78px;border-radius:14px;background:linear-gradient(135deg, oklch(93% 0.024 295), oklch(88% 0.036 335));margin-top:6px;"></div>
           <div style="width:100%;display:flex;flex-direction:column;gap:8px;">
-            <div style="height:8px;width:88%;border-radius:4px;background:oklch(90% 0.006 260);"></div>
-            <div style="height:8px;width:64%;border-radius:4px;background:oklch(92% 0.004 260);"></div>
+            <div style="height:8px;width:88%;border-radius:4px;background:oklch(90% 0.009 290);"></div>
+            <div style="height:8px;width:64%;border-radius:4px;background:oklch(92% 0.006 290);"></div>
           </div>
         </div>
-        <div style="height:56px;border-top:1px solid oklch(92% 0.004 260);display:flex;align-items:center;justify-content:space-around;padding-bottom:8px;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="oklch(62% 0.19 262)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5 12 4l8 6.5V20H4z"/></svg>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="oklch(74% 0.01 260)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="oklch(74% 0.01 260)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6"/></svg>
+        <div style="height:56px;border-top:1px solid oklch(92% 0.006 290);display:flex;align-items:center;justify-content:space-around;padding-bottom:8px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="oklch(60% 0.15 295)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5 12 4l8 6.5V20H4z"/></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="oklch(74% 0.015 290)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="oklch(74% 0.015 290)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6"/></svg>
         </div>
       </div>
+      <img src="iphone-16-pro.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;">
     </div>
 
     <!-- SCROLL CUE -->
     <div style="position:absolute;left:50%;transform:translateX(-50%);bottom:122px;z-index:5;display:flex;flex-direction:column;align-items:center;gap:8px;animation:scrollcue 2.2s ease-in-out infinite;">
-      <span style="font-size:12px;font-weight:500;color:oklch(76% 0.015 260);">스크롤해서 기록 보기</span>
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="oklch(76% 0.015 260)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16M6 14l6 6 6-6"/></svg>
+      <span style="font-size:12px;font-weight:500;color:var(--cue);">스크롤해서 기록 보기</span>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="color:var(--cue);" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16M6 14l6 6 6-6"/></svg>
     </div>
 
-    <!-- DOCK -->
-    <div style="position:absolute;left:50%;transform:translateX(-50%);bottom:24px;z-index:6;display:flex;align-items:flex-end;gap:12px;padding:10px 14px;border-radius:24px;background:oklch(100% 0 0 / 0.10);backdrop-filter:blur(28px) saturate(180%);-webkit-backdrop-filter:blur(28px) saturate(180%);border:1px solid oklch(100% 0 0 / 0.12);box-shadow:inset 0 1px 0 oklch(100% 0 0 / 0.18), 0 18px 44px oklch(8% 0.02 265 / 0.5);">
+    <!-- DOCK (하단 112px 영역에 마우스가 들어오면 나타남) -->
+    <div class="dockzone" data-state="{{dockState}}" onMouseEnter="{{revealDock}}" onMouseLeave="{{leaveDock}}" style="position:absolute;left:0;right:0;bottom:0;height:112px;z-index:6;display:flex;align-items:flex-end;justify-content:center;padding-bottom:24px;">
+    <div class="dock" style="display:flex;align-items:flex-end;gap:12px;padding:10px 14px;border-radius:24px;background:var(--glass);backdrop-filter:blur(28px) saturate(180%);-webkit-backdrop-filter:blur(28px) saturate(180%);border:1px solid var(--glass-line);box-shadow:inset 0 1px 0 var(--glass-hi), 0 18px 44px var(--dock-shadow);">
       <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
-        <div style="width:52px;height:52px;border-radius:15px;background:linear-gradient(145deg, oklch(66% 0.18 262), oklch(52% 0.17 298));display:flex;align-items:center;justify-content:center;">
+        <div style="width:52px;height:52px;border-radius:15px;background:linear-gradient(145deg, oklch(70% 0.13 300), oklch(58% 0.15 285));display:flex;align-items:center;justify-content:center;">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="oklch(99% 0 0)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5 12 4l8 6.5V20H4z"/></svg>
         </div>
-        <div style="width:4px;height:4px;border-radius:50%;background:oklch(90% 0.01 260);"></div>
+        <div style="width:4px;height:4px;border-radius:50%;background:var(--dock-dot);"></div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
-        <div style="width:52px;height:52px;border-radius:15px;background:linear-gradient(145deg, oklch(62% 0.16 220), oklch(50% 0.16 268));display:flex;align-items:center;justify-content:center;">
+        <div style="width:52px;height:52px;border-radius:15px;background:linear-gradient(145deg, oklch(76% 0.11 170), oklch(64% 0.11 185));display:flex;align-items:center;justify-content:center;">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="oklch(99% 0 0)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h6l2 2h10v9H3z"/></svg>
         </div>
         <div style="width:4px;height:4px;border-radius:50%;background:oklch(100% 0 0 / 0);"></div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
-        <div style="width:52px;height:52px;border-radius:15px;background:linear-gradient(145deg, oklch(64% 0.16 300), oklch(52% 0.16 255));display:flex;align-items:center;justify-content:center;">
+        <div style="width:52px;height:52px;border-radius:15px;background:linear-gradient(145deg, oklch(72% 0.12 340), oklch(60% 0.14 320));display:flex;align-items:center;justify-content:center;">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="oklch(99% 0 0)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/></svg>
         </div>
         <div style="width:4px;height:4px;border-radius:50%;background:oklch(100% 0 0 / 0);"></div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
-        <div style="width:52px;height:52px;border-radius:15px;background:linear-gradient(145deg, oklch(68% 0.15 245), oklch(54% 0.15 310));display:flex;align-items:center;justify-content:center;">
+        <div style="width:52px;height:52px;border-radius:15px;background:linear-gradient(145deg, oklch(78% 0.1 220), oklch(64% 0.12 255));display:flex;align-items:center;justify-content:center;">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="oklch(99% 0 0)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
         </div>
         <div style="width:4px;height:4px;border-radius:50%;background:oklch(100% 0 0 / 0);"></div>
       </div>
-      <div style="width:1px;height:44px;background:oklch(100% 0 0 / 0.16);margin:0 4px;"></div>
+      <div style="width:1px;height:44px;background:var(--dock-sep);margin:0 4px;"></div>
       <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
-        <div style="width:52px;height:52px;border-radius:15px;background:oklch(28% 0.015 265);display:flex;align-items:center;justify-content:center;">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="oklch(92% 0.008 260)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6L3 12l5 6M16 6l5 6-5 6"/></svg>
+        <div style="width:52px;height:52px;border-radius:15px;background:oklch(28% 0.022 290);display:flex;align-items:center;justify-content:center;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="oklch(92% 0.012 290)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6L3 12l5 6M16 6l5 6-5 6"/></svg>
         </div>
         <div style="width:4px;height:4px;border-radius:50%;background:oklch(100% 0 0 / 0);"></div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
-        <div style="width:52px;height:52px;border-radius:15px;background:linear-gradient(145deg, oklch(72% 0.13 240), oklch(58% 0.14 280));display:flex;align-items:center;justify-content:center;">
+        <div style="width:52px;height:52px;border-radius:15px;background:linear-gradient(145deg, oklch(74% 0.1 195), oklch(62% 0.11 215));display:flex;align-items:center;justify-content:center;">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="oklch(99% 0 0)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18v12H3z"/><path d="M3 7l9 6 9-6"/></svg>
         </div>
         <div style="width:4px;height:4px;border-radius:50%;background:oklch(100% 0 0 / 0);"></div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
-        <div style="width:52px;height:52px;border-radius:15px;background:oklch(22% 0.013 265);display:flex;align-items:center;justify-content:center;">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="oklch(88% 0.12 150)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v14H4z"/><path d="M8 10l3 2.5L8 15"/><path d="M13 15h4"/></svg>
+        <div style="width:52px;height:52px;border-radius:15px;background:oklch(22% 0.019 290);display:flex;align-items:center;justify-content:center;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="oklch(84% 0.11 170)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v14H4z"/><path d="M8 10l3 2.5L8 15"/><path d="M13 15h4"/></svg>
         </div>
         <div style="width:4px;height:4px;border-radius:50%;background:oklch(100% 0 0 / 0);"></div>
       </div>
+    </div>
+    <div class="dock-hint" style="position:absolute;left:50%;bottom:10px;width:44px;height:4px;margin-left:-22px;border-radius:999px;background:var(--dock-sep);"></div>
     </div>
 
   </div>
 
   <!-- RECENT RECORDS WINDOW -->
   <div style="position:relative;z-index:2;padding:0 0 100px 0;">
-    <div style="width:1100px;margin:0 auto;border-radius:16px;overflow:hidden;background:oklch(98% 0.004 260);border:1px solid oklch(100% 0 0 / 0.12);box-shadow:0 44px 96px oklch(6% 0.02 265 / 0.5);">
-      <div style="position:relative;display:flex;align-items:center;justify-content:center;height:44px;background:oklch(94% 0.004 260);border-bottom:1px solid oklch(89% 0.005 260);">
+    <div style="width:1100px;margin:0 auto;border-radius:16px;overflow:hidden;background:var(--win-bg);border:1px solid var(--win-line);box-shadow:0 44px 96px var(--win-shadow);">
+      <div style="position:relative;display:flex;align-items:center;justify-content:center;height:44px;background:var(--win-bar);border-bottom:1px solid var(--win-bar-line);">
         <div style="position:absolute;left:16px;display:flex;gap:8px;">
-          <div style="width:11px;height:11px;border-radius:50%;background:oklch(70% 0.07 262);"></div>
-          <div style="width:11px;height:11px;border-radius:50%;background:oklch(80% 0.045 262);"></div>
-          <div style="width:11px;height:11px;border-radius:50%;background:oklch(88% 0.025 262);"></div>
+          <div style="width:11px;height:11px;border-radius:50%;background:var(--win-ctrl-a);"></div>
+          <div style="width:11px;height:11px;border-radius:50%;background:var(--win-ctrl-b);"></div>
+          <div style="width:11px;height:11px;border-radius:50%;background:var(--win-ctrl-c);"></div>
         </div>
-        <span style="font-size:13px;font-weight:600;color:oklch(42% 0.01 260);">최근 기록</span>
+        <span style="font-size:13px;font-weight:600;color:var(--win-title);">최근 기록</span>
       </div>
 
       <div style="padding:40px;display:grid;grid-template-columns:repeat(2, minmax(0, 1fr));gap:44px;">
 
         <div style="display:flex;flex-direction:column;">
           <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:22px;">
-            <h2 style="margin:0;font-size:20px;font-weight:800;color:oklch(18% 0.01 260);">스터디 기록</h2>
+            <h2 style="margin:0;font-size:20px;font-weight:800;color:var(--win-ink-strong);">스터디 기록</h2>
             <a href="#" style="font-size:13.5px;font-weight:600;">전체 보기 →</a>
           </div>
           <div style="display:flex;flex-direction:column;gap:12px;">
-            <div style="display:flex;flex-direction:column;gap:8px;padding:18px 20px;border-radius:14px;background:oklch(96% 0.005 260);border:1px solid oklch(91% 0.005 260);">
+            <div style="display:flex;flex-direction:column;gap:8px;padding:18px 20px;border-radius:14px;background:var(--win-card);border:1px solid var(--win-divider);">
               <div style="display:flex;align-items:center;gap:12px;">
-                <span style="font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:999px;background:oklch(94% 0.03 262);color:oklch(45% 0.15 262);">[카테고리]</span>
-                <span style="font-size:12.5px;color:oklch(54% 0.01 260);">[YYYY.MM.DD]</span>
+                <span style="font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--win-tag-bg);color:var(--win-tag-ink);">[카테고리]</span>
+                <span style="font-size:12.5px;color:var(--win-ink-sub);">[YYYY.MM.DD]</span>
               </div>
-              <div style="font-size:15px;font-weight:600;color:oklch(20% 0.01 260);">[포스트 제목을 입력하세요]</div>
+              <div style="font-size:15px;font-weight:600;color:var(--win-ink-strong);">[포스트 제목을 입력하세요]</div>
             </div>
-            <div style="display:flex;flex-direction:column;gap:8px;padding:18px 20px;border-radius:14px;background:oklch(96% 0.005 260);border:1px solid oklch(91% 0.005 260);">
+            <div style="display:flex;flex-direction:column;gap:8px;padding:18px 20px;border-radius:14px;background:var(--win-card);border:1px solid var(--win-divider);">
               <div style="display:flex;align-items:center;gap:12px;">
-                <span style="font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:999px;background:oklch(94% 0.03 262);color:oklch(45% 0.15 262);">[카테고리]</span>
-                <span style="font-size:12.5px;color:oklch(54% 0.01 260);">[YYYY.MM.DD]</span>
+                <span style="font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--win-tag-bg);color:var(--win-tag-ink);">[카테고리]</span>
+                <span style="font-size:12.5px;color:var(--win-ink-sub);">[YYYY.MM.DD]</span>
               </div>
-              <div style="font-size:15px;font-weight:600;color:oklch(20% 0.01 260);">[포스트 제목을 입력하세요]</div>
+              <div style="font-size:15px;font-weight:600;color:var(--win-ink-strong);">[포스트 제목을 입력하세요]</div>
             </div>
-            <div style="display:flex;flex-direction:column;gap:8px;padding:18px 20px;border-radius:14px;background:oklch(96% 0.005 260);border:1px solid oklch(91% 0.005 260);">
+            <div style="display:flex;flex-direction:column;gap:8px;padding:18px 20px;border-radius:14px;background:var(--win-card);border:1px solid var(--win-divider);">
               <div style="display:flex;align-items:center;gap:12px;">
-                <span style="font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:999px;background:oklch(94% 0.03 262);color:oklch(45% 0.15 262);">[카테고리]</span>
-                <span style="font-size:12.5px;color:oklch(54% 0.01 260);">[YYYY.MM.DD]</span>
+                <span style="font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--win-tag-bg);color:var(--win-tag-ink);">[카테고리]</span>
+                <span style="font-size:12.5px;color:var(--win-ink-sub);">[YYYY.MM.DD]</span>
               </div>
-              <div style="font-size:15px;font-weight:600;color:oklch(20% 0.01 260);">[포스트 제목을 입력하세요]</div>
+              <div style="font-size:15px;font-weight:600;color:var(--win-ink-strong);">[포스트 제목을 입력하세요]</div>
             </div>
           </div>
         </div>
 
         <div style="display:flex;flex-direction:column;">
           <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:22px;">
-            <h2 style="margin:0;font-size:20px;font-weight:800;color:oklch(18% 0.01 260);">세미나 기록</h2>
+            <h2 style="margin:0;font-size:20px;font-weight:800;color:var(--win-ink-strong);">세미나 기록</h2>
             <a href="#" style="font-size:13.5px;font-weight:600;">전체 보기 →</a>
           </div>
           <div style="display:flex;flex-direction:column;gap:12px;">
-            <div style="display:flex;align-items:center;gap:16px;padding:14px 16px;border-radius:14px;background:oklch(96% 0.005 260);border:1px solid oklch(91% 0.005 260);">
-              <div style="width:64px;height:64px;border-radius:12px;flex-shrink:0;background:linear-gradient(150deg, oklch(88% 0.03 262), oklch(78% 0.05 300));display:flex;align-items:center;justify-content:center;">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="oklch(38% 0.02 260)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+            <div style="display:flex;align-items:center;gap:16px;padding:14px 16px;border-radius:14px;background:var(--win-card);border:1px solid var(--win-divider);">
+              <div class="media" style="width:64px;height:64px;border-radius:12px;flex-shrink:0;background:linear-gradient(150deg, oklch(88% 0.024 295), oklch(78% 0.04 335));display:flex;align-items:center;justify-content:center;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="color:var(--win-media-icon)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
               </div>
               <div style="display:flex;flex-direction:column;gap:6px;">
-                <div style="font-size:15px;font-weight:600;color:oklch(20% 0.01 260);">[세미나 / 컨퍼런스 이름]</div>
-                <div style="font-size:12.5px;color:oklch(54% 0.01 260);">[YYYY.MM] · [장소]</div>
+                <div style="font-size:15px;font-weight:600;color:var(--win-ink-strong);">[세미나 / 컨퍼런스 이름]</div>
+                <div style="font-size:12.5px;color:var(--win-ink-sub);">[YYYY.MM] · [장소]</div>
               </div>
             </div>
-            <div style="display:flex;align-items:center;gap:16px;padding:14px 16px;border-radius:14px;background:oklch(96% 0.005 260);border:1px solid oklch(91% 0.005 260);">
-              <div style="width:64px;height:64px;border-radius:12px;flex-shrink:0;background:linear-gradient(150deg, oklch(86% 0.04 240), oklch(76% 0.05 280));display:flex;align-items:center;justify-content:center;">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="oklch(38% 0.02 260)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+            <div style="display:flex;align-items:center;gap:16px;padding:14px 16px;border-radius:14px;background:var(--win-card);border:1px solid var(--win-divider);">
+              <div class="media" style="width:64px;height:64px;border-radius:12px;flex-shrink:0;background:linear-gradient(150deg, oklch(86% 0.032 295), oklch(76% 0.04 295));display:flex;align-items:center;justify-content:center;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="color:var(--win-media-icon)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
               </div>
               <div style="display:flex;flex-direction:column;gap:6px;">
-                <div style="font-size:15px;font-weight:600;color:oklch(20% 0.01 260);">[세미나 / 컨퍼런스 이름]</div>
-                <div style="font-size:12.5px;color:oklch(54% 0.01 260);">[YYYY.MM] · [장소]</div>
+                <div style="font-size:15px;font-weight:600;color:var(--win-ink-strong);">[세미나 / 컨퍼런스 이름]</div>
+                <div style="font-size:12.5px;color:var(--win-ink-sub);">[YYYY.MM] · [장소]</div>
               </div>
             </div>
-            <div style="display:flex;align-items:center;gap:16px;padding:14px 16px;border-radius:14px;background:oklch(96% 0.005 260);border:1px solid oklch(91% 0.005 260);">
-              <div style="width:64px;height:64px;border-radius:12px;flex-shrink:0;background:linear-gradient(150deg, oklch(89% 0.03 300), oklch(80% 0.04 262));display:flex;align-items:center;justify-content:center;">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="oklch(38% 0.02 260)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+            <div style="display:flex;align-items:center;gap:16px;padding:14px 16px;border-radius:14px;background:var(--win-card);border:1px solid var(--win-divider);">
+              <div class="media" style="width:64px;height:64px;border-radius:12px;flex-shrink:0;background:linear-gradient(150deg, oklch(89% 0.024 335), oklch(80% 0.032 295));display:flex;align-items:center;justify-content:center;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="color:var(--win-media-icon)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
               </div>
               <div style="display:flex;flex-direction:column;gap:6px;">
-                <div style="font-size:15px;font-weight:600;color:oklch(20% 0.01 260);">[세미나 / 컨퍼런스 이름]</div>
-                <div style="font-size:12.5px;color:oklch(54% 0.01 260);">[YYYY.MM] · [장소]</div>
+                <div style="font-size:15px;font-weight:600;color:var(--win-ink-strong);">[세미나 / 컨퍼런스 이름]</div>
+                <div style="font-size:12.5px;color:var(--win-ink-sub);">[YYYY.MM] · [장소]</div>
               </div>
             </div>
           </div>
@@ -317,5 +345,57 @@
 
 </div>
 </x-dc>
+<script data-dc-script data-props='{"theme":{"editor":"enum","options":["dark","light"],"default":"dark"},"dockPreview":{"editor":"enum","options":["auto","shown","hidden"],"default":"auto"}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    // theme: 버튼으로 바꾼 값. null이면 theme 조절 칩(props) 값을 따른다
+    this.state = { dockShown: true, theme: null };
+    this.scrolledDown = false;
+    this.hideTimer = null;
+    this.showDock = () => {
+      clearTimeout(this.hideTimer);
+      if (!this.state.dockShown) this.setState({ dockShown: true });
+    };
+    this.hideDockSoon = () => {
+      clearTimeout(this.hideTimer);
+      this.hideTimer = setTimeout(() => this.setState({ dockShown: false }), 600);
+    };
+  }
+
+  componentDidUpdate(prevProps) {
+    // 조절 칩을 바꾸면 버튼으로 바꾼 상태를 버리고 칩 값을 따른다
+    if (prevProps.theme !== this.props.theme && this.state.theme !== null) {
+      this.setState({ theme: null });
+    }
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.hideTimer);
+  }
+
+  renderVals() {
+    const preview = this.props.dockPreview ?? 'auto';
+    const shown = preview === 'shown' ? true : preview === 'hidden' ? false : this.state.dockShown;
+    const theme = this.state.theme ?? this.props.theme ?? 'dark';
+    const isDark = theme === 'dark';
+    return {
+      theme,
+      isDark,
+      isLight: !isDark,
+      themeToggleLabel: isDark ? '라이트 모드로 전환' : '다크 모드로 전환',
+      toggleTheme: () => this.setState({ theme: isDark ? 'light' : 'dark' }),
+      dockState: shown ? 'shown' : 'hidden',
+      revealDock: this.showDock,
+      // 아래로 스크롤해 숨겨진 상태에서 마우스로 불러냈다면, 영역을 벗어날 때 다시 숨긴다
+      leaveDock: () => { if (this.scrolledDown) this.hideDockSoon(); },
+      handleWheel: (e) => {
+        if (e.deltaY > 4) { this.scrolledDown = true; this.hideDockSoon(); }
+        else if (e.deltaY < -4) { this.scrolledDown = false; this.showDock(); }
+      },
+    };
+  }
+}
+</script>
 </body>
 </html>

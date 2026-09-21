@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Read(//Users/chuyumin/**)",
-      "Read(//Users/chuyumin/.gemini/**)"
+      "Read(//Users/chuyumin/.gemini/**)",
+      "Bash(bash -c ' *)"
     ]
   }
 }

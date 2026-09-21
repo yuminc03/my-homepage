@@ -1,0 +1,551 @@
+---
+// 콘텐츠 검색 창 (결정은 PROGRESS.md 5-18)
+// - 페이지를 옮기지 않고 같은 화면 위에 겹쳐 뜨는 창이다. SiteLayout이 모든 화면에 하나씩 둔다
+// - 왜 <dialog>인가: 열면 브라우저가 top layer로 올려 메뉴바·Dock 위에 뜨고, 뒤 화면을 눌리지 않게 막고,
+//   Tab이 창 밖으로 새지 않게 가두고, Esc로 닫아 준다. 직접 만들면 이 네 가지를 모두 손으로 써야 한다
+// - 여는 길은 두 가지: ⌘K(맥)·Ctrl+K, 그리고 [data-search-open]이 붙은 버튼(메뉴바·창 타이틀 바의 돋보기)
+// - 결과는 상세 페이지로 바로 가는 진짜 <a>다. ⌘+클릭으로 새 탭에 열거나 주소를 복사할 수 있어야 한다
+// - 결과 요소는 스크립트가 만들어 스코프 속성이 붙지 않으므로, 스타일은 .results :global(...)로 한정한다
+//   (Markdown 본문에 prose.css를 쓰는 것과 같은 이유 — CLAUDE.md 스타일 계층)
+---
+
+<dialog class="search" aria-label="콘텐츠 검색" data-search>
+	<form class="field" role="search" data-search-form>
+		<svg class="glass" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+			<circle cx="11" cy="11" r="7"></circle>
+			<path d="M16.5 16.5L21 21"></path>
+		</svg>
+		<!-- type="search"가 아닌 이유: 그 입력칸은 Esc를 가로채 값만 지우고 창을 닫지 않는다(브라우저마다 다르다).
+		     Esc는 언제나 창을 닫아야 해서 text로 두고, 모바일 키보드의 확인 키만 enterkeyhint로 맞춘다 -->
+		<input
+			class="input"
+			type="text"
+			name="q"
+			enterkeyhint="search"
+			placeholder="프로젝트 · 스터디 · 세미나 검색"
+			aria-label="검색어"
+			autocomplete="off"
+			autocorrect="off"
+			spellcheck="false"
+			data-search-input
+		/>
+		<button class="close" type="button" aria-label="검색 닫기" data-search-close>
+			<span class="esc" aria-hidden="true">esc</span>
+		</button>
+	</form>
+
+	<div class="results" data-search-results></div>
+
+	<p class="notice" role="status" data-search-notice></p>
+</dialog>
+
+<script>
+	import { onEachPage } from '../lib/pageInit';
+	import {
+		MIN_QUERY_LENGTH,
+		SEARCH_INDEX_URL,
+		groupHits,
+		isSearchable,
+		recentGroups,
+		searchDocs,
+		type HighlightPart,
+		type SearchDoc,
+		type SearchGroup,
+	} from '../lib/search';
+
+	/** 묶음 하나에 보여 줄 결과 최대 개수 */
+	const GROUP_LIMIT = 5;
+
+	/** 찾을 말이 없을 때 묶음마다 보여 줄 최근 글 개수 */
+	const RECENT_LIMIT = 2;
+
+	// 색인은 모듈 바깥에 둔다 — onEachPage는 페이지마다 다시 돌지만 모듈은 한 번만 평가되므로,
+	// 페이지를 옮겨도 이미 받아 둔 색인을 그대로 쓴다(5-18: 처음 열 때 한 번만 내려받는다)
+	let indexPromise: Promise<SearchDoc[]> | undefined;
+
+	/** 색인이 이미 손에 있는지. 처음 열 때만 "불러오는 중"을 보여 주려고 쓴다 */
+	let indexReady = false;
+
+	const loadIndex = (): Promise<SearchDoc[]> => {
+		indexPromise ??= fetch(SEARCH_INDEX_URL)
+			.then((response) => {
+				if (!response.ok) throw new Error(`색인을 받지 못했습니다 (${response.status})`);
+				return response.json() as Promise<SearchDoc[]>;
+			})
+			.then((docs) => {
+				indexReady = true;
+				return docs;
+			})
+			.catch((error: unknown) => {
+				// 실패한 약속을 남겨 두면 다시 열어도 영영 실패한다
+				indexPromise = undefined;
+				throw error;
+			});
+		return indexPromise;
+	};
+
+	/** 강조 조각을 요소로 만든다. 글 내용을 문자열로 이어 붙이지 않아 <,&가 HTML로 해석되지 않는다 */
+	const lineOf = (className: string, parts: HighlightPart[]) => {
+		const line = document.createElement('span');
+		line.className = className;
+		for (const part of parts) {
+			if (!part.hit) {
+				line.append(part.text);
+				continue;
+			}
+			const mark = document.createElement('mark');
+			mark.textContent = part.text;
+			line.append(mark);
+		}
+		return line;
+	};
+
+	onEachPage((signal) => {
+		const dialog = document.querySelector<HTMLDialogElement>('[data-search]');
+		const input = document.querySelector<HTMLInputElement>('[data-search-input]');
+		const results = document.querySelector<HTMLElement>('[data-search-results]');
+		const notice = document.querySelector<HTMLElement>('[data-search-notice]');
+		const form = document.querySelector<HTMLFormElement>('[data-search-form]');
+		if (!dialog || !input || !results || !notice || !form) return;
+
+		/** 창을 열기 직전에 포커스가 있던 곳. 닫을 때 돌려준다 */
+		let opener: HTMLElement | null = null;
+
+		const draw = (groups: SearchGroup[]) => {
+			const fragment = document.createDocumentFragment();
+
+			for (const group of groups) {
+				const section = document.createElement('section');
+				section.className = 'group';
+
+				const heading = document.createElement('h2');
+				heading.className = 'group-title';
+				heading.textContent = group.label;
+				section.append(heading);
+
+				for (const hit of group.hits) {
+					const link = document.createElement('a');
+					link.className = 'result';
+					link.href = hit.doc.href;
+
+					const head = document.createElement('span');
+					head.className = 'head';
+					head.append(lineOf('title', hit.title));
+					if (hit.doc.meta) {
+						const meta = document.createElement('span');
+						meta.className = 'meta';
+						meta.textContent = hit.doc.meta;
+						head.append(meta);
+					}
+
+					// 요약 / 본문 발췌 / 걸린 태그·기술을 서로 다르게 보이게 한다
+					const snippet = lineOf('snippet', hit.snippet);
+					snippet.dataset.from = hit.from;
+
+					link.append(head, snippet);
+					section.append(link);
+				}
+
+				// 자른 나머지가 있으면 숫자로 알린다(결과를 말없이 감추지 않는다)
+				if (group.total > group.hits.length) {
+					const more = document.createElement('p');
+					more.className = 'more';
+					more.textContent = `그 밖 ${group.total - group.hits.length}건`;
+					section.append(more);
+				}
+
+				fragment.append(section);
+			}
+
+			results.replaceChildren(fragment);
+		};
+
+		const render = async () => {
+			const query = input.value;
+
+			// 처음 열 때만 색인을 기다린다. 그동안 빈 창을 보여 주지 않는다
+			if (!indexReady) notice.textContent = '불러오는 중…';
+
+			let docs: SearchDoc[];
+			try {
+				docs = await loadIndex();
+			} catch {
+				results.replaceChildren();
+				notice.textContent = '검색 목록을 불러오지 못했습니다. 잠시 뒤 다시 열어 주세요.';
+				return;
+			}
+
+			// 색인을 기다리는 동안 더 쳤다면 이 결과는 버린다(마지막 입력만 그린다)
+			if (query !== input.value) return;
+
+			if (!isSearchable(query)) {
+				// 1글자 이하는 안내 문구 대신 최근 글을 조용히 보여 준다(5-18)
+				draw(recentGroups(docs, RECENT_LIMIT));
+				notice.textContent = query.trim() ? `${MIN_QUERY_LENGTH}글자부터 찾습니다` : '';
+				return;
+			}
+
+			const hits = searchDocs(docs, query);
+			draw(groupHits(hits, GROUP_LIMIT));
+			notice.textContent = hits.length ? `${hits.length}건` : '찾는 내용이 없습니다';
+		};
+
+		// from: 돋보기 버튼으로 열었을 때 그 버튼. 맥 사파리·파이어폭스는 버튼을 눌러도 포커스를 주지 않아
+		// activeElement만 보면 닫을 때 <body>로 돌아가 버린다
+		const open = (from?: HTMLElement) => {
+			if (dialog.open) return;
+			opener = from ?? (document.activeElement instanceof HTMLElement ? document.activeElement : null);
+			dialog.showModal();
+			// 창이 떠 있는 동안 뒤 화면이 스크롤되지 않게 한다.
+			// <html>은 페이지 전환에도 살아남으므로 닫을 때 반드시 되돌린다
+			document.documentElement.style.overflow = 'hidden';
+			void render();
+		};
+
+		const close = () => {
+			if (dialog.open) dialog.close();
+		};
+
+		// Esc·backdrop·닫기 버튼 어느 쪽으로 닫혀도 뒷정리는 여기 한 곳에서 한다
+		dialog.addEventListener('close', () => {
+			document.documentElement.style.overflow = '';
+			input.value = '';
+			results.replaceChildren();
+			notice.textContent = '';
+			opener?.focus();
+			opener = null;
+		});
+
+		// 창 바깥(backdrop)을 눌러도 이벤트 대상은 dialog 자신이다 — 안쪽을 누른 것과 이렇게 가른다
+		dialog.addEventListener('click', (event) => {
+			if (event.target === dialog) close();
+		});
+
+		dialog.querySelector('[data-search-close]')?.addEventListener('click', close);
+
+		// Enter로 페이지를 새로 띄우지 않는다. 결과는 치는 대로 좁혀진다(5-18)
+		form.addEventListener('submit', (event) => event.preventDefault());
+
+		input.addEventListener('input', () => void render());
+
+		// ↑↓로 결과를 오간다. 진짜 링크에 포커스를 옮기므로 Enter·⌘클릭이 브라우저 기본 동작 그대로 걸린다
+		dialog.addEventListener('keydown', (event) => {
+			if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return;
+			const links = [...dialog.querySelectorAll<HTMLAnchorElement>('.result')];
+			if (!links.length) return;
+			event.preventDefault();
+
+			const at = links.indexOf(document.activeElement as HTMLAnchorElement);
+			const step = event.key === 'ArrowDown' ? 1 : -1;
+			// 입력칸에서 ↓는 첫 결과, ↑는 마지막 결과. 목록 끝을 넘으면 입력칸으로 돌아온다
+			const next = at < 0 ? (step === 1 ? 0 : links.length - 1) : at + step;
+			if (next < 0 || next >= links.length) input.focus();
+			else links[next].focus();
+		});
+
+		// 결과를 누르면 페이지 전환이 시작된다 → 새 화면에 창이 남지 않게 먼저 닫는다(2-6 제약)
+		document.addEventListener('astro:before-preparation', close, { signal });
+
+		// ⌘K(맥) / Ctrl+K. 입력칸에 포커스가 있어도 들어야 하므로 document에 건다
+		document.addEventListener(
+			'keydown',
+			(event) => {
+				if (event.key !== 'k' || !(event.metaKey || event.ctrlKey)) return;
+				event.preventDefault();
+				if (dialog.open) close();
+				else open();
+			},
+			{ signal },
+		);
+
+		// 메뉴바·창 타이틀 바의 돋보기. 버튼이 늘어나도 여기를 고치지 않게 속성으로 찾는다
+		document.addEventListener(
+			'click',
+			(event) => {
+				if (!(event.target instanceof Element)) return;
+				const button = event.target.closest<HTMLElement>('[data-search-open]');
+				if (button) open(button);
+			},
+			{ signal },
+		);
+	});
+</script>
+
+<style>
+	/* 창은 화면 위쪽에 붙는다. dialog 기본 margin: auto를 눌러 좌우 가운데 정렬만 남긴다 */
+	.search {
+		width: calc(100% - 24px);
+		max-width: 640px;
+		margin: 12px auto auto;
+		padding: 0;
+		overflow: hidden;
+		border: 1px solid var(--win-line);
+		border-radius: 18px;
+		background: var(--win-bg);
+		box-shadow: 0 30px 80px var(--win-shadow);
+		color: var(--win-ink);
+		opacity: 0;
+		transform: translateY(-10px) scale(0.98);
+		/* display·overlay까지 전환해야 닫히는 모션이 보인다(그 전에 top layer에서 빠지면 그냥 사라진다) */
+		transition:
+			opacity var(--dur-fast) var(--ease-out),
+			transform var(--dur-fast) var(--ease-out),
+			overlay var(--dur-fast) allow-discrete,
+			display var(--dur-fast) allow-discrete;
+	}
+
+	.search::backdrop {
+		background: light-dark(oklch(40% 0.024 295 / 0.24), oklch(8% 0.022 290 / 0.5));
+		opacity: 0;
+		backdrop-filter: blur(6px);
+		-webkit-backdrop-filter: blur(6px);
+		transition:
+			opacity var(--dur-fast) var(--ease-out),
+			overlay var(--dur-fast) allow-discrete,
+			display var(--dur-fast) allow-discrete;
+	}
+
+	.search[open] {
+		opacity: 1;
+		transform: none;
+	}
+
+	.search[open]::backdrop {
+		opacity: 1;
+	}
+
+	/* 열릴 때의 시작 모습(top layer에 막 들어온 순간). 없으면 첫 프레임부터 다 보인다 */
+	@starting-style {
+		.search[open] {
+			opacity: 0;
+			transform: translateY(-10px) scale(0.98);
+		}
+
+		.search[open]::backdrop {
+			opacity: 0;
+		}
+	}
+
+	/* 입력 줄 */
+	.field {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		height: 56px;
+		padding: 0 10px 0 16px;
+		border-bottom: 1px solid var(--win-bar-line);
+		background: var(--win-bar);
+	}
+
+	.glass {
+		flex: none;
+		width: 18px;
+		height: 18px;
+		color: var(--win-ink-sub);
+	}
+
+	.input {
+		flex: 1;
+		min-width: 0;
+		height: 100%;
+		border: 0;
+		background: none;
+		color: var(--win-ink-strong);
+		font-family: inherit;
+		font-size: 16px;
+	}
+
+	.input::placeholder {
+		color: var(--win-ink-sub);
+	}
+
+	.input:focus {
+		outline: none;
+	}
+
+	.close {
+		display: flex;
+		flex: none;
+		align-items: center;
+		justify-content: center;
+		width: 44px;
+		height: 44px;
+		padding: 0;
+		border: 0;
+		border-radius: 12px;
+		background: none;
+		color: var(--win-ink-sub);
+		cursor: pointer;
+		transition: background-color var(--dur-fast) var(--ease-out);
+	}
+
+	.close:active {
+		background: var(--win-press);
+	}
+
+	.close:focus-visible {
+		outline: 2px solid var(--win-accent);
+		outline-offset: -2px;
+	}
+
+	.esc {
+		padding: 3px 6px;
+		border: 1px solid var(--win-chip-line);
+		border-radius: 6px;
+		font-size: 10.5px;
+		font-weight: 600;
+		letter-spacing: 0.02em;
+		line-height: 1;
+	}
+
+	/* 결과 칸. 안쪽 요소는 스크립트가 만들어 스코프 속성이 없으므로 :global로 한정한다 */
+	.results {
+		max-height: min(64dvh, 480px);
+		overflow-y: auto;
+		overscroll-behavior: contain;
+		padding: 6px;
+	}
+
+	.results:empty {
+		padding: 0;
+	}
+
+	.results :global(.group + .group) {
+		margin-top: 4px;
+		border-top: 1px solid var(--win-divider);
+		padding-top: 6px;
+	}
+
+	.results :global(.group-title) {
+		margin: 0;
+		padding: 8px 10px 4px;
+		color: var(--win-ink-sub);
+		font-size: 11.5px;
+		font-weight: 700;
+		letter-spacing: 0.04em;
+	}
+
+	.results :global(.result) {
+		display: flex;
+		flex-direction: column;
+		gap: 3px;
+		padding: 9px 10px;
+		border-radius: 10px;
+		color: var(--win-ink);
+	}
+
+	.results :global(.result:hover) {
+		background: var(--win-press);
+		color: var(--win-ink);
+	}
+
+	.results :global(.result:focus-visible) {
+		background: var(--win-press);
+		outline: 2px solid var(--win-accent);
+		outline-offset: -2px;
+	}
+
+	.results :global(.head) {
+		display: flex;
+		align-items: baseline;
+		gap: 8px;
+	}
+
+	.results :global(.title) {
+		overflow: hidden;
+		color: var(--win-ink-strong);
+		font-size: 14.5px;
+		font-weight: 600;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.results :global(.meta) {
+		flex: none;
+		color: var(--win-ink-sub);
+		font-size: 11.5px;
+	}
+
+	/* 요약·본문 발췌는 두 줄까지 */
+	.results :global(.snippet) {
+		display: -webkit-box;
+		overflow: hidden;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 2;
+		color: var(--win-ink-muted);
+		font-size: 12.5px;
+		line-height: 1.5;
+	}
+
+	/* 본문에서 잘라 온 줄은 인용처럼 세로선을 둬 요약과 구분한다 */
+	.results :global(.snippet[data-from='body']) {
+		border-left: 2px solid var(--win-divider);
+		padding-left: 8px;
+	}
+
+	/* 태그·기술에서만 걸린 경우: 문장이 아니라 값의 나열이라 더 작고 흐리게 */
+	.results :global(.snippet[data-from='keywords']) {
+		color: var(--win-ink-sub);
+		font-size: 12px;
+	}
+
+	.results :global(.more) {
+		margin: 0;
+		padding: 2px 10px 6px;
+		color: var(--win-ink-sub);
+		font-size: 11.5px;
+	}
+
+	.results :global(mark) {
+		border-radius: 3px;
+		background: var(--win-tag-bg);
+		color: var(--win-tag-ink);
+		font-weight: 700;
+	}
+
+	.notice {
+		margin: 0;
+		padding: 12px 16px;
+		border-top: 1px solid var(--win-divider);
+		color: var(--win-ink-sub);
+		font-size: 12.5px;
+	}
+
+	/* 할 말이 없을 때는 줄 자체를 없앤다(빈 칸이 남지 않게) */
+	.notice:empty {
+		display: none;
+	}
+
+	@media (min-width: 744px) {
+		.search {
+			margin-top: 10vh;
+		}
+
+		.field {
+			height: 60px;
+			padding-left: 18px;
+		}
+	}
+
+	@media (min-width: 1180px) {
+		.search {
+			margin-top: 12vh;
+		}
+
+		.input {
+			font-size: 15px;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.search {
+			transform: none;
+		}
+
+		@starting-style {
+			.search[open] {
+				transform: none;
+			}
+		}
+	}
+</style>

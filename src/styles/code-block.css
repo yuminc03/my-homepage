@@ -1,0 +1,185 @@
+/* 코드 블록: Shiki가 만든 <pre>를 src/lib/codeBlock.ts가 <figure class="code-block">으로 감싼 모양
+   - 시안: design/StudyPost.dc.html(데스크톱) · MobileStudyPost · TabletStudyPost
+   - 테마와 무관하게 항상 어둡다(PROGRESS.md 5-2). 그래서 여기서는 토큰 대신 시안의 고정 oklch 값을 쓴다
+     (테두리 --win-code-line만 토큰: 다크에서만 옅은 선, 라이트에서는 투명)
+   - 줄 번호는 Shiki가 남기는 <span class="line">에 CSS 카운터로 붙인다. 가로로 스크롤해도 보이도록 sticky
+   - 글자 크기: 모바일 13px/22 · 태블릿 14px/23 · 데스크톱 14px/24 (시안 .code) */
+
+.prose-body .code-block {
+	margin: 0;
+	overflow: hidden;
+	border: 1px solid var(--win-code-line);
+	border-radius: 12px;
+	background: oklch(19% 0.018 290);
+}
+
+/* 앞뒤 간격은 문단 사이(--prose-gap)보다 조금 넓다(시안 28~32px) */
+.prose-body > * + .code-block,
+.prose-body > .code-block + * {
+	margin-top: 1.8em;
+}
+
+.code-head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	height: 36px;
+	padding: 0 6px 0 14px;
+	background: oklch(24% 0.021 290);
+}
+
+.code-file {
+	overflow: hidden;
+	color: oklch(82% 0.015 290);
+	font-size: 12px;
+	font-weight: 500;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+/* 파일 이름이 없는 블록에서도 버튼은 오른쪽에 둔다 */
+.code-copy {
+	display: flex;
+	flex-shrink: 0;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	width: 44px;
+	height: 36px;
+	margin-left: auto;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	color: oklch(66% 0.015 290);
+	font: inherit;
+	font-size: 12px;
+	cursor: pointer;
+}
+
+.code-copy svg {
+	width: 15px;
+	height: 15px;
+}
+
+.code-copy:focus-visible {
+	outline: 2px solid oklch(76% 0.12 295);
+	outline-offset: -2px;
+}
+
+/* 아이콘은 평소 복사, 누른 뒤 잠깐 체크 표시 */
+.code-copy-done,
+.code-copy[data-copied] .code-copy-icon {
+	display: none;
+}
+
+.code-copy[data-copied] .code-copy-done {
+	display: block;
+	color: oklch(80% 0.11 170);
+}
+
+.code-copy-label {
+	display: none;
+}
+
+.prose-body .code-block pre {
+	margin: 0;
+	padding: 16px 0 18px;
+	border: 0;
+	border-radius: 0;
+	font-family: ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace;
+	font-size: 13px;
+	line-height: 22px;
+}
+
+.prose-body .code-block code {
+	display: block;
+	width: max-content;
+	min-width: 100%;
+	padding-right: 20px;
+	counter-reset: code-line;
+}
+
+/* 줄 번호 칸: 가로 스크롤에서도 왼쪽에 붙어 있다 */
+.code-block .line::before {
+	position: sticky;
+	left: 0;
+	display: inline-block;
+	width: 48px;
+	padding-right: 12px;
+	background: oklch(19% 0.018 290);
+	color: oklch(45% 0.022 290);
+	content: counter(code-line);
+	counter-increment: code-line;
+	text-align: right;
+}
+
+@media (min-width: 744px) {
+	.prose-body .code-block {
+		border-radius: 14px;
+	}
+
+	.code-head {
+		height: 40px;
+		padding: 0 6px 0 16px;
+	}
+
+	.code-file {
+		font-size: 12.5px;
+	}
+
+	.code-copy {
+		height: 40px;
+	}
+
+	.code-copy svg {
+		width: 16px;
+		height: 16px;
+	}
+
+	.prose-body .code-block pre {
+		padding: 18px 0 20px;
+		font-size: 14px;
+		line-height: 23px;
+	}
+
+	.code-block .line::before {
+		width: 58px;
+		padding-right: 14px;
+	}
+}
+
+@media (min-width: 1180px) {
+	/* 데스크톱은 폭이 넉넉해 아이콘 옆에 "복사" 글자까지 보인다 */
+	.code-head {
+		height: 38px;
+		padding: 0 16px;
+	}
+
+	.code-copy {
+		width: auto;
+		height: 28px;
+		padding: 0 2px;
+	}
+
+	.code-copy svg {
+		width: 14px;
+		height: 14px;
+	}
+
+	.code-copy-label {
+		display: block;
+	}
+
+	.code-copy:hover {
+		color: oklch(88% 0.015 290);
+	}
+
+	.prose-body .code-block pre {
+		line-height: 24px;
+	}
+
+	.code-block .line::before {
+		width: 64px;
+		padding-right: 16px;
+	}
+}

@@ -1,0 +1,53 @@
+# GitHub Pages 자동 배포
+# - Git Flow에 맞춰 master(= 공개된 상태)에 올라갈 때만 배포한다. develop은 배포하지 않는다
+# - 손으로도 돌릴 수 있게 workflow_dispatch를 둔다(설정을 바꾸고 다시 올리고 싶을 때)
+# - Node 버전은 .nvmrc 한 곳에서만 정한다(node-version-file). 여기에 숫자를 적으면 두 곳이 어긋난다
+# - 저장소 Settings → Pages → Source를 "GitHub Actions"로 두어야 동작한다(브랜치 배포 방식이 아니다)
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+# deploy-pages가 요구하는 권한. contents는 읽기만 있으면 된다
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 배포는 한 번에 하나만. 진행 중인 배포를 끊지 않고 기다린다(끊으면 사이트가 반쯤 올라간 상태로 남을 수 있다)
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      # package-lock.json 그대로 설치한다(npm install과 달리 잠금 파일을 고치지 않는다)
+      - run: npm ci
+
+      - run: npm run build
+
+      # astro.config.mjs의 base가 '/my-homepage'라 프로젝트 사이트 주소에 그대로 맞는다
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

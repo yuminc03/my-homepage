@@ -1,0 +1,77 @@
+---
+// 프로젝트 목록 창: 제목 → 필터 칩 → 카드(모바일 1열 · 태블릿 2열 · 데스크톱 3열)
+// - 칩은 공개된 프로젝트에 실제로 쓰인 분류만, PROJECT_CATEGORIES 순서로 만든다. 분류가 하나뿐이면 거를 것이 없어 칩을 두지 않는다
+// - 프로젝트가 없으면 빈 상태 문구만 보여준다
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import Window from '../../components/Window.astro';
+import PageHeading from '../../components/PageHeading.astro';
+import FilterChips from '../../components/FilterChips.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { PROJECT_CATEGORIES } from '../../content.config';
+import { getApp } from '../../data/apps';
+import { getProjects, projectHref } from '../../lib/content';
+
+const app = getApp('projects');
+const projects = await getProjects();
+const categories = PROJECT_CATEGORIES.filter((category) =>
+	projects.some((project) => project.data.categories.includes(category)),
+);
+---
+
+<SiteLayout active={app.id}>
+	<Window title={app.title}>
+		<PageHeading title={app.title} description={app.description} />
+		{
+			projects.length > 0 ? (
+				<div data-filter>
+					{categories.length > 1 && <FilterChips categories={categories} label="프로젝트 분류" />}
+					<ul class="grid">
+						{projects.map((project, index) => (
+							<li data-filter-item data-categories={project.data.categories.join('|')}>
+								<ProjectCard project={project} tone={index} href={projectHref(project)} />
+							</li>
+						))}
+					</ul>
+				</div>
+			) : (
+				<p class="empty">아직 공개한 프로젝트가 없습니다. 프로젝트를 추가하면 여기에 카드로 보입니다.</p>
+			)
+		}
+	</Window>
+</SiteLayout>
+
+<style>
+	.grid {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		gap: 30px;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.empty {
+		margin: 0;
+		padding: 18px 20px;
+		border: 1px dashed var(--win-divider);
+		border-radius: 14px;
+		color: var(--win-ink-muted);
+		font-size: 14px;
+		line-height: 1.6;
+		word-break: keep-all;
+	}
+
+	@media (min-width: 744px) {
+		.grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 40px 24px;
+		}
+	}
+
+	@media (min-width: 1180px) {
+		.grid {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			gap: 40px 32px;
+		}
+	}
+</style>

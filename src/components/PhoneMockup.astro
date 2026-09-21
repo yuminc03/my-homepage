@@ -1,0 +1,55 @@
+---
+// iPhone 16 Pro 목업: Apple Design Resources 프레임 이미지 + 투명한 화면 영역(PROGRESS.md 5-8)
+// - 프레임 PNG(450×920)는 화면 부분이 투명하다. 화면 영역 left 5.56% · top 2.61% · width 88.89% · height 94.78%, 모서리 13.75% / 6.3%
+// - 화면 안 내용은 slot으로 받는다(홈은 가짜 앱 화면, 프로젝트 카드·상세는 실제 스크린샷)
+//   스크린샷 img 하나를 넘기면 화면을 꽉 채우고 위쪽을 기준으로 자른다(기기마다 화면 비율이 조금씩 달라서)
+// - 폭은 부모가 --phone-width로 정한다. 기울기·그림자도 부모가 감싼 요소에서 준다
+// - 테마와 무관하게 그대로 쓰고, 프레임은 장식이라 alt를 비운다
+import { Image } from 'astro:assets';
+import frame from '../assets/iphone-16-pro.png';
+---
+
+<div class="phone">
+	<div class="screen">
+		<slot />
+	</div>
+	<Image src={frame} alt="" width={225} densities={[1, 2]} loading="lazy" decoding="async" />
+</div>
+
+<style>
+	.phone {
+		position: relative;
+		width: var(--phone-width, 206px);
+		max-width: 100%;
+		aspect-ratio: 450 / 920;
+	}
+
+	.screen {
+		position: absolute;
+		top: 2.61%;
+		left: 5.56%;
+		width: 88.89%;
+		height: 94.78%;
+		overflow: hidden;
+		border-radius: 13.75% / 6.3%;
+		background: oklch(98% 0.006 290);
+	}
+
+	/* slot으로 넘긴 img는 부모 컴포넌트의 스코프 속성이 붙어 여기 선택자가 닿지 않으므로 :global로 잡는다 */
+	.screen > :global(img) {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: top;
+	}
+
+	/* <Image>는 Astro 내장 컴포넌트지만 만든 img에 이 컴포넌트의 스코프 속성이 붙어 일반 선택자로 스타일할 수 있다(빌드 결과 확인) */
+	.phone > img {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		pointer-events: none;
+	}
+</style>

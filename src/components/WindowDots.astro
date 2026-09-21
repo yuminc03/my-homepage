@@ -1,0 +1,48 @@
+---
+// 창 점 3개: 라일락 2 + 민트 1. 장식이며 기능이 없다(신호등 색·창 컨트롤 복제 금지, PROGRESS.md 6장)
+// - 크기·간격은 부모가 CSS 변수로 정한다: --dot-size, --dot-gap
+// - tone: window = 테마를 따르는 창 색 / code = 코드 에디터(테마와 무관한 고정색)
+interface Props {
+	tone?: 'window' | 'code';
+}
+
+const { tone = 'window' } = Astro.props;
+---
+
+<span class="dots" data-tone={tone} aria-hidden="true"><span></span><span></span><span></span></span>
+
+<style>
+	.dots {
+		display: flex;
+		flex-shrink: 0;
+		gap: var(--dot-gap, 8px);
+	}
+
+	.dots span {
+		width: var(--dot-size, 11px);
+		height: var(--dot-size, 11px);
+		border-radius: 50%;
+		background: var(--win-ctrl-a);
+	}
+
+	.dots span:nth-child(2) {
+		background: var(--win-ctrl-b);
+	}
+
+	.dots span:nth-child(3) {
+		background: var(--win-ctrl-c);
+	}
+
+	/* 코드 에디터는 테마와 무관하게 다크 창 점 색을 쓴다 */
+	.dots[data-tone='code'] span {
+		background: oklch(62% 0.08 295);
+	}
+
+	.dots[data-tone='code'] span:nth-child(2) {
+		background: oklch(52% 0.06 295);
+	}
+
+	.dots[data-tone='code'] span:nth-child(3) {
+		background: oklch(56% 0.07 170);
+	}
+</style>

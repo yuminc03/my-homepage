@@ -1,0 +1,393 @@
+---
+// 화면 하단에 떠 있는 Dock
+// - 앱 4개(열린 앱 아래 실행 점) | 구분선 | 코드 에디터(데스크톱만) · 연락처
+// - surface: desk = 바탕 위 유리(홈), window = 창 위 유리(목록·상세)
+// - 자동 숨김(PROGRESS.md 5-3): 아래로 스크롤하면 숨고 위로 스크롤하면 나타난다. 숨은 동안 하단 가운데 힌트 막대
+//   - 마우스: 화면 하단 112px 영역에 들어오면 나타나고, 스크롤로 숨었던 상태면 벗어난 뒤 600ms에 다시 숨는다
+//   - 키보드: Dock 안으로 포커스가 들어오면 나타난다
+// - startHidden: 상세 화면처럼 본문을 읽는 화면은 숨긴 채로 시작한다(힌트 막대만). 위로 스크롤하거나 마우스·키보드로 부르면 나타난다
+//   맨 위 근처에서도 저절로 나타나지 않게 해, 읽기 시작하며 조금 스크롤할 때 Dock이 튀어나오지 않는다
+// - transition:name: 페이지 전환 때 본문 스냅샷에서 빠져 제자리에 남는다. 바탕 유리 ↔ 창 유리처럼
+//   모양이 바뀌는 경우만 Astro 기본 페이드(180ms)로 짧게 겹친다
+import AppIcon from './AppIcon.astro';
+import { APPS, CODE_EDITOR, CONTACT, type AppId } from '../data/apps';
+import { withBase } from '../lib/url';
+
+interface Props {
+	active: AppId;
+	surface?: 'desk' | 'window';
+	startHidden?: boolean;
+}
+
+const { active, surface = 'desk', startHidden = false } = Astro.props;
+---
+
+<nav
+	class="dock-zone"
+	aria-label="Dock"
+	data-state={startHidden ? 'hidden' : 'shown'}
+	data-start-hidden={startHidden ? '' : undefined}
+	transition:name="dock"
+>
+	<div class="dock" data-surface={surface}>
+		{
+			APPS.map((app) => (
+				<a class="item" href={withBase(app.href)} title={app.label} aria-label={app.label} aria-current={app.id === active ? 'page' : undefined}>
+					<AppIcon app={app} />
+					<span class="dot" aria-hidden="true" />
+				</a>
+			))
+		}
+		<span class="sep" aria-hidden="true"></span>
+		<a class="item desktop-only" href={withBase(CODE_EDITOR.href)} title={CODE_EDITOR.label} aria-label={CODE_EDITOR.label}>
+			<AppIcon app={CODE_EDITOR} />
+			<span class="dot" aria-hidden="true"></span>
+		</a>
+		<a class="item" href={withBase(CONTACT.href)} title={CONTACT.label} aria-label={CONTACT.label}>
+			<AppIcon app={CONTACT} />
+			<span class="dot" aria-hidden="true"></span>
+		</a>
+	</div>
+	<span class="hint" data-surface={surface} aria-hidden="true"></span>
+</nav>
+
+<script>
+	// Dock 자동 숨김. 상태는 .dock-zone의 data-state="shown|hidden" 하나로 표현하고, 모양·모션은 CSS가 맡는다
+	import { onEachPage } from '../lib/pageInit';
+
+	const SCROLL_THRESHOLD = 6; // 이만큼 쌓여야 방향 전환으로 본다(손 떨림·관성 끝의 1~2px 무시)
+	const TOP_ZONE = 48; // 맨 위 근처에서는 항상 보인다
+	const REVEAL_ZONE = 112; // 데스크톱: 마우스가 화면 하단 이 높이 안에 들어오면 나타난다
+	const HIDE_DELAY = 600; // 불러낸 Dock에서 벗어난 뒤 다시 숨기까지
+
+	// 페이지를 옮기면 Dock도 새것으로 바뀌고 스크롤도 맨 위로 돌아간다 →
+	// 스크롤 기준값(lastY)과 시작 상태(목록은 보임 / 상세는 숨김)를 새 화면 기준으로 다시 잡는다
+	onEachPage((signal) => {
+		const zone = document.querySelector<HTMLElement>('.dock-zone');
+		if (zone) setupAutoHide(zone, signal);
+	});
+
+	function setupAutoHide(zone: HTMLElement, signal: AbortSignal) {
+		const startHidden = zone.hasAttribute('data-start-hidden');
+		let lastY = clampedScrollY();
+		let scrolledDown = startHidden; // 아래로 스크롤해 숨긴 상태인가(마우스·포커스로 잠깐 불러낸 동안에도 유지). 숨긴 채 시작하면 처음부터 이 상태
+		let revealedByScroll = !startHidden; // 한 번이라도 위로 스크롤해 나타났는가. 그전에는 맨 위 근처 규칙을 쓰지 않는다
+		let pointerInZone = false;
+		let keyboardFocus = false;
+		let hideTimer: number | undefined;
+		let frameRequested = false;
+
+		// 다음 페이지로 넘어가면 예약해 둔 숨김도 함께 취소한다(사라진 Dock을 건드리지 않게)
+		signal.addEventListener('abort', () => clearTimeout(hideTimer));
+
+		const setShown = (shown: boolean) => {
+			zone.dataset.state = shown ? 'shown' : 'hidden';
+		};
+		const show = () => {
+			clearTimeout(hideTimer);
+			setShown(true);
+		};
+		const hideSoon = () => {
+			clearTimeout(hideTimer);
+			hideTimer = window.setTimeout(() => setShown(false), HIDE_DELAY);
+		};
+		// 마우스나 키보드가 Dock을 붙잡고 있지 않을 때만, 스크롤로 숨긴 상태로 돌아간다
+		const releaseIfScrolledDown = () => {
+			if (scrolledDown && !pointerInZone && !keyboardFocus) hideSoon();
+		};
+
+		// 스크롤: 이벤트마다 계산하지 않고 한 프레임에 한 번만 처리한다
+		const onFrame = () => {
+			frameRequested = false;
+			const y = clampedScrollY();
+
+			if (y <= TOP_ZONE && revealedByScroll) {
+				lastY = y;
+				scrolledDown = false;
+				show();
+				return;
+			}
+
+			const delta = y - lastY;
+			if (Math.abs(delta) < SCROLL_THRESHOLD) return; // lastY를 두어 느린 스크롤도 누적되게 한다
+			lastY = y;
+
+			if (delta > 0) {
+				scrolledDown = true;
+				if (!pointerInZone && !keyboardFocus) {
+					clearTimeout(hideTimer);
+					setShown(false);
+				}
+			} else {
+				scrolledDown = false;
+				revealedByScroll = true;
+				show();
+			}
+		};
+
+		window.addEventListener(
+			'scroll',
+			() => {
+				if (frameRequested) return;
+				frameRequested = true;
+				requestAnimationFrame(onFrame);
+			},
+			{ passive: true, signal },
+		);
+
+		// 마우스: 보이지 않는 영역 요소를 깔면 그 아래 본문 클릭을 막으므로, 포인터 위치(clientY)로만 판단한다
+		// 터치·펜은 hover가 없어 스크롤 규칙만 따른다
+		const setPointerInZone = (inZone: boolean) => {
+			if (inZone === pointerInZone) return;
+			pointerInZone = inZone;
+			if (inZone) show();
+			else releaseIfScrolledDown();
+		};
+
+		document.addEventListener(
+			'pointermove',
+			(event) => {
+				if (event.pointerType !== 'mouse') return;
+				setPointerInZone(event.clientY >= window.innerHeight - REVEAL_ZONE);
+			},
+			{ passive: true, signal },
+		);
+
+		// 마우스가 창 밖으로 나가면(아래 가장자리 포함) 영역을 벗어난 것으로 본다
+		document.documentElement.addEventListener(
+			'pointerleave',
+			(event) => {
+				if (event.pointerType === 'mouse') setPointerInZone(false);
+			},
+			{ signal },
+		);
+
+		// 키보드: 숨은 Dock도 Tab으로 들어올 수 있고, 들어오면 나타난다
+		// 마우스 클릭으로 링크에 남은 포커스는 붙잡지 않도록 :focus-visible일 때만 센다
+		zone.addEventListener('focusin', (event) => {
+			if (!(event.target instanceof Element) || !event.target.matches(':focus-visible')) return;
+			keyboardFocus = true;
+			show();
+		});
+
+		zone.addEventListener('focusout', (event) => {
+			if (event.relatedTarget instanceof Node && zone.contains(event.relatedTarget)) return;
+			if (!keyboardFocus) return;
+			keyboardFocus = false;
+			releaseIfScrolledDown();
+		});
+	}
+
+	// iOS 바운스처럼 문서 범위를 넘는 스크롤 값은 방향 판단에 쓰지 않는다
+	function clampedScrollY() {
+		const max = Math.max(document.documentElement.scrollHeight - window.innerHeight, 0);
+		return Math.min(Math.max(window.scrollY, 0), max);
+	}
+</script>
+
+<style>
+	.dock-zone {
+		position: fixed;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		z-index: 60;
+		display: flex;
+		justify-content: center;
+		padding-bottom: calc(22px + env(safe-area-inset-bottom));
+		pointer-events: none;
+	}
+
+	.dock {
+		display: flex;
+		align-items: flex-start;
+		gap: 10px;
+		padding: 8px 10px 6px;
+		border: 1px solid var(--glass-line);
+		border-radius: 26px;
+		background: var(--glass);
+		backdrop-filter: blur(24px) saturate(180%);
+		-webkit-backdrop-filter: blur(24px) saturate(180%);
+		box-shadow:
+			inset 0 1px 0 var(--glass-hi),
+			0 14px 36px var(--dock-shadow);
+		pointer-events: auto;
+		transition:
+			transform var(--dur-dock) var(--ease-out),
+			opacity 280ms ease;
+	}
+
+	.dock[data-surface='window'] {
+		border-color: var(--win-dock-line);
+		background: var(--win-dock-glass);
+		box-shadow:
+			inset 0 1px 0 var(--win-dock-hi),
+			0 14px 36px var(--win-dock-shadow);
+	}
+
+	/* 숨김: 자기 높이 + 아래 여백만큼 화면 밖으로 내려가고, 누를 수 없게 한다(Tab 포커스는 받는다) */
+	.dock-zone[data-state='hidden'] .dock {
+		transform: translateY(calc(100% + 32px));
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	/* 숨은 동안만 보이는 힌트 막대(장식) */
+	.hint {
+		position: absolute;
+		bottom: calc(10px + env(safe-area-inset-bottom));
+		left: 50%;
+		width: 44px;
+		height: 5px;
+		margin-left: -22px;
+		border-radius: 999px;
+		background: var(--dock-sep);
+		opacity: 0;
+		transition: opacity 280ms ease;
+	}
+
+	.hint[data-surface='window'] {
+		background: var(--win-hint);
+	}
+
+	.dock-zone[data-state='hidden'] .hint {
+		opacity: 1;
+	}
+
+	.item {
+		--icon-size: 48px;
+		--icon-radius: 14px;
+		--glyph-size: 22px;
+		--glyph-stroke: 1.8;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 4px;
+		border-radius: 14px;
+		transition: transform var(--dur-press) var(--ease-out);
+	}
+
+	.item:active {
+		transform: scale(0.92);
+	}
+
+	.item:focus-visible {
+		outline: 2px solid var(--win-accent);
+		outline-offset: 3px;
+	}
+
+	/* 실행 중 점: 열린 앱 아래에만 보인다 */
+	.dot {
+		width: 4px;
+		height: 4px;
+		border-radius: 50%;
+		background: transparent;
+		transition: background-color 240ms var(--ease-out);
+	}
+
+	.item[aria-current='page'] .dot {
+		background: var(--dock-dot);
+	}
+
+	.dock[data-surface='window'] .item[aria-current='page'] .dot {
+		background: var(--win-dock-dot);
+	}
+
+	.sep {
+		width: 1px;
+		height: 40px;
+		margin: 4px 2px 0;
+		background: var(--dock-sep);
+	}
+
+	.dock[data-surface='window'] .sep {
+		background: var(--win-dock-sep);
+	}
+
+	.desktop-only {
+		display: none;
+	}
+
+	@media (min-width: 744px) {
+		.dock-zone {
+			padding-bottom: calc(28px + env(safe-area-inset-bottom));
+		}
+
+		.dock {
+			gap: 12px;
+			padding: 10px 12px 7px;
+			border-radius: 30px;
+			backdrop-filter: blur(26px) saturate(180%);
+			-webkit-backdrop-filter: blur(26px) saturate(180%);
+		}
+
+		.hint {
+			width: 52px;
+			margin-left: -26px;
+		}
+
+		.item {
+			--icon-size: 56px;
+			--icon-radius: 16px;
+			--glyph-size: 26px;
+			gap: 5px;
+		}
+
+		.sep {
+			height: 46px;
+			margin: 5px 2px 0;
+		}
+	}
+
+	@media (min-width: 1180px) {
+		.dock-zone {
+			padding-bottom: 24px;
+		}
+
+		.dock {
+			align-items: flex-end;
+			padding: 10px 14px;
+			border-radius: 24px;
+			backdrop-filter: blur(28px) saturate(180%);
+			-webkit-backdrop-filter: blur(28px) saturate(180%);
+			box-shadow:
+				inset 0 1px 0 var(--glass-hi),
+				0 18px 44px var(--dock-shadow);
+		}
+
+		.hint {
+			width: 44px;
+			height: 4px;
+			margin-left: -22px;
+		}
+
+		.item {
+			--icon-size: 52px;
+			--icon-radius: 15px;
+			--glyph-size: 24px;
+			--glyph-stroke: 1.7;
+			gap: 6px;
+		}
+
+		.sep {
+			align-self: center;
+			height: 44px;
+			margin: 0 4px;
+		}
+
+		.desktop-only {
+			display: flex;
+		}
+	}
+
+	/* 동작 줄이기: 아래로 이동하지 않고 짧게 사라지고 나타난다 */
+	@media (prefers-reduced-motion: reduce) {
+		.dock {
+			transition: opacity var(--dur-fast) ease;
+		}
+
+		.dock-zone[data-state='hidden'] .dock {
+			transform: none;
+		}
+	}
+</style>

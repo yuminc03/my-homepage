@@ -1,0 +1,300 @@
+---
+// 스터디 글 목차. 화면 폭에 따라 모양이 다르다(시안 design/StudyPost.dc.html · MobileStudyPost · TabletStudyPost)
+// - 데스크톱(≥1180px): 본문 오른쪽 240px 칸에 sticky로 붙고, 지금 읽는 항목만 왼쪽 라일락 선 + 굵게
+// - 모바일·태블릿: 제목 아래 접히는 상자(기본 접힘). 오른쪽 목차를 두면 본문이 400px대로 좁아진다(PROGRESS.md 5-7)
+// - DOM은 하나만 만든다(폭마다 다른 목록을 두 벌 두면 스크린 리더가 같은 목차를 두 번 읽는다)
+// - 스크립트가 없으면: 여는 버튼이 숨은 채로 목록이 펼쳐져 있다. 동작하지 않는 버튼을 두지 않기 위해
+//   버튼은 hidden으로 내보내고 스크립트가 살아 있을 때만 보이게 한다(CLAUDE.md)
+// - 항목은 ## 소제목(depth 2)만 모은다. ### 이하는 글 안에서 잘게 쪼개져 목차가 길어진다
+import type { MarkdownHeading } from 'astro';
+
+interface Props {
+	headings: MarkdownHeading[];
+}
+
+const items = Astro.props.headings.filter((heading) => heading.depth === 2);
+---
+
+{
+	items.length > 0 && (
+		<nav class="toc" aria-label="목차">
+			<button type="button" class="toc-toggle" aria-expanded="true" aria-controls="toc-list" data-toc-toggle hidden>
+				<span class="toggle-text">
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<path d="M8 6h12M8 12h12M8 18h12" />
+						<path d="M4 6h.01M4 12h.01M4 18h.01" />
+					</svg>
+					<span class="toggle-label">목차</span>
+					<span class="toggle-count">{items.length}개 항목</span>
+				</span>
+				<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<path d="M6 9l6 6 6-6" />
+				</svg>
+			</button>
+
+			<p class="rail-title">목차</p>
+
+			<ol class="list" id="toc-list">
+				{items.map((heading) => (
+					<li>
+						<a href={`#${heading.slug}`} data-toc-link={heading.slug}>
+							{heading.text}
+						</a>
+					</li>
+				))}
+			</ol>
+		</nav>
+	)
+}
+
+<script>
+	import { onEachPage } from '../lib/pageInit';
+
+	const TOP_OFFSET = 100; // 이 높이를 지나간 소제목까지를 "읽는 중"으로 본다
+
+	function initToc(toc: HTMLElement, signal: AbortSignal) {
+		const toggle = toc.querySelector<HTMLButtonElement>('[data-toc-toggle]');
+		const links = [...toc.querySelectorAll<HTMLAnchorElement>('[data-toc-link]')];
+
+		// 모바일·태블릿: 기본은 접힘. 데스크톱에서는 CSS가 목록을 늘 보여주고 버튼을 숨긴다
+		if (toggle) {
+			toc.dataset.open = 'false';
+			toggle.setAttribute('aria-expanded', 'false');
+			toggle.hidden = false;
+			toggle.addEventListener('click', () => {
+				const open = toc.dataset.open !== 'true';
+				toc.dataset.open = String(open);
+				toggle.setAttribute('aria-expanded', String(open));
+			});
+		}
+
+		// 데스크톱 목차의 현재 항목 표시. 소제목 위치는 창 크기·이미지에 따라 바뀌므로 스크롤할 때마다 다시 잰다
+		const targets = links
+			.map((link) => ({ link, heading: document.getElementById(link.dataset.tocLink ?? '') }))
+			.filter((item): item is { link: HTMLAnchorElement; heading: HTMLElement } => !!item.heading);
+		if (targets.length === 0) return;
+
+		let ticking = false;
+		const mark = () => {
+			ticking = false;
+			let current = targets[0];
+			for (const target of targets) {
+				if (target.heading.getBoundingClientRect().top <= TOP_OFFSET) current = target;
+			}
+			for (const target of targets) {
+				target.link.classList.toggle('current', target === current);
+			}
+		};
+
+		addEventListener(
+			'scroll',
+			() => {
+				if (ticking) return;
+				ticking = true;
+				requestAnimationFrame(mark);
+			},
+			{ passive: true, signal },
+		);
+		mark();
+	}
+
+	// 전환으로 다른 글에 들어가면 목차도 새것이다 → 접힘 상태와 현재 항목을 다시 잡는다
+	onEachPage((signal) => {
+		document.querySelectorAll<HTMLElement>('.toc').forEach((toc) => initToc(toc, signal));
+	});
+</script>
+
+<style>
+	/* 모바일·태블릿: 접히는 상자 */
+	.toc {
+		display: flex;
+		flex-direction: column;
+		margin: 20px 0 28px;
+	}
+
+	.toc-toggle {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		width: 100%;
+		height: 48px;
+		padding: 0 14px 0 16px;
+		border: 1px solid var(--win-divider);
+		border-radius: 12px;
+		background: var(--win-card);
+		font: inherit;
+		cursor: pointer;
+		transition: border-color var(--dur-fast) var(--ease-out);
+	}
+
+	.toc-toggle:active {
+		border-color: var(--win-accent);
+	}
+
+	.toc-toggle:focus-visible {
+		outline: 2px solid var(--win-accent);
+		outline-offset: 2px;
+	}
+
+	.toggle-text {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		min-width: 0;
+	}
+
+	.toggle-text svg {
+		flex-shrink: 0;
+		width: 16px;
+		height: 16px;
+		color: var(--win-ink-muted);
+	}
+
+	.toggle-label {
+		color: var(--win-ink);
+		font-size: 14px;
+		font-weight: 700;
+	}
+
+	.toggle-count {
+		color: var(--win-ink-sub);
+		font-size: 13px;
+	}
+
+	.chevron {
+		flex-shrink: 0;
+		width: 18px;
+		height: 18px;
+		color: var(--win-ink-muted);
+		transition: transform var(--dur-fast) var(--ease-out);
+	}
+
+	.toc[data-open='true'] .chevron {
+		transform: rotate(180deg);
+	}
+
+	.rail-title {
+		display: none;
+	}
+
+	.list {
+		display: flex;
+		flex-direction: column;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	/* 버튼이 보이는 동안(스크립트 있음)에만 접는다. 스크립트가 없으면 펼친 채로 둔다 */
+	.toc[data-open='false'] .list {
+		display: none;
+	}
+
+	.list a {
+		display: block;
+		padding: 10px 4px;
+		color: var(--win-ink-sub);
+		font-size: 14px;
+		line-height: 1.45;
+		word-break: keep-all;
+	}
+
+	.toc[data-open] .list {
+		margin-top: 10px;
+	}
+
+	@media (min-width: 744px) {
+		.toc {
+			margin: 24px 0 32px;
+		}
+
+		.toc-toggle {
+			height: 52px;
+			padding: 0 16px 0 18px;
+			border-radius: 14px;
+		}
+
+		.toggle-text {
+			gap: 9px;
+		}
+
+		.toggle-text svg {
+			width: 17px;
+			height: 17px;
+		}
+
+		.toggle-label {
+			font-size: 15px;
+		}
+
+		.toggle-count {
+			font-size: 14px;
+		}
+
+		.chevron {
+			width: 20px;
+			height: 20px;
+		}
+
+		.list a {
+			font-size: 15px;
+		}
+	}
+
+	/* 데스크톱: 본문 오른쪽 sticky 목차 */
+	@media (min-width: 1180px) {
+		.toc {
+			position: sticky;
+			top: 60px;
+			gap: 14px;
+			align-self: flex-start;
+			margin: 0;
+		}
+
+		.toc-toggle {
+			display: none;
+		}
+
+		.rail-title {
+			display: block;
+			margin: 0;
+			color: var(--win-ink-muted);
+			font-size: 12.5px;
+			font-weight: 700;
+		}
+
+		.toc[data-open='false'] .list,
+		.toc[data-open] .list {
+			display: flex;
+			margin-top: 0;
+		}
+
+		.list {
+			border-left: 1px solid var(--win-bar-line);
+		}
+
+		.list a {
+			padding: 6px 0 6px 17px;
+			transition: color var(--dur-fast) var(--ease-out);
+		}
+
+		.list a:hover {
+			color: var(--win-ink-strong);
+		}
+
+		.list a.current {
+			margin-left: -1px;
+			padding-left: 16px;
+			border-left: 2px solid var(--win-accent);
+			color: var(--win-tag-ink);
+			font-weight: 600;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.chevron,
+		.toc-toggle {
+			transition: none;
+		}
+	}
+</style>

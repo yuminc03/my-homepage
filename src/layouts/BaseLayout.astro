@@ -1,0 +1,53 @@
+---
+// 모든 페이지가 공유하는 문서 뼈대: 메타 태그, 글꼴, 전역 토큰·기본 스타일, 페이지 전환
+import '../styles/tokens.css';
+import '../styles/global.css';
+import '../styles/transitions.css';
+import PageTransitions from '../components/PageTransitions.astro';
+
+interface Props {
+	title?: string;
+	description?: string;
+}
+
+const {
+	title = 'Chu Yumin',
+	description = 'iOS 개발자 Chu Yumin의 프로젝트·스터디·세미나 기록',
+} = Astro.props;
+---
+
+<html lang="ko">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="description" content={description} />
+		<title>{title}</title>
+		<script is:inline>
+			// 저장된 테마를 <html data-theme>에 적용한다. 저장값이 없으면 CSS가 시스템 설정을 따른다
+			// - 첫 화면: 그리기 전에 실행해 깜빡임을 막는다
+			// - 페이지 전환: ClientRouter가 <html>의 속성을 새 문서 것으로 통째로 갈아 끼워 data-theme이 사라지므로 다시 붙인다.
+			//   astro:after-swap은 새 화면을 그리기 전에 오므로 여기서도 깜빡이지 않는다
+			(() => {
+				const applyTheme = () => {
+					try {
+						const theme = localStorage.getItem('theme');
+						if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme;
+					} catch {}
+				};
+				applyTheme();
+				document.addEventListener('astro:after-swap', applyTheme);
+			})();
+		</script>
+		<PageTransitions />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;800;900&display=swap"
+		/>
+	</head>
+	<body>
+		<slot />
+	</body>
+</html>

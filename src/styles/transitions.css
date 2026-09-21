@@ -1,0 +1,162 @@
+/*
+ * 페이지 전환 모션 (값의 기준은 PROGRESS.md 5-9)
+ * - 브라우저는 전환하는 동안 떠나는 화면과 들어오는 화면을 각각 한 장의 그림으로 떠서
+ *   ::view-transition-old(root) · ::view-transition-new(root)에 담는다. 여기서는 그 두 장을 어떻게 움직일지만 정한다
+ * - 어느 모션을 쓸지는 components/PageTransitions.astro가 정해 <html data-astro-transition="…">으로 달아 준다
+ * - 메뉴바·Dock은 자기 이름(transition:name)을 가져 이 두 장에서 빠진다 → 본문만 움직이고 셸은 제자리에 남는다
+ * - 시간·곡선은 tokens.css의 모션 토큰만 쓴다. transform·opacity만 바꿔 리플로우가 없다
+ * - 동작 줄이기(prefers-reduced-motion): Astro가 모든 전환 애니메이션을 끄므로 화면이 곧바로 바뀐다.
+ *   이동도 페이드도 없이 끊어 주는 쪽이 "동작 줄이기"에 더 맞다(5-9는 짧은 페이드였으나 Astro 기본을 따른다)
+ * - data-astro-transition이 fade이거나 값이 없을 때는 브라우저 기본 크로스 페이드를 그대로 쓴다
+ */
+
+/* 목록 → 상세: 상세가 오른쪽에서 들어오고, 목록은 뒤에서 살짝 왼쪽으로 물러난다 */
+[data-astro-transition='push']::view-transition-old(root) {
+	animation: page-recede var(--dur-push) var(--ease-out) both;
+}
+
+[data-astro-transition='push']::view-transition-new(root) {
+	animation: page-from-right var(--dur-push) var(--ease-out) both;
+}
+
+/* 상세 → 목록: 반대로, 더 짧게. 나가는 상세가 위에 있어야 그 아래에서 목록이 드러난다 */
+[data-astro-transition='pop']::view-transition-old(root) {
+	z-index: 1;
+	animation: page-to-right var(--dur-pop) var(--ease-in) both;
+}
+
+[data-astro-transition='pop']::view-transition-new(root) {
+	animation: page-return var(--dur-pop) var(--ease-out) both;
+}
+
+/* 홈 → 창: 모바일·태블릿은 시트가 아래에서 올라오고 홈은 뒤에서 작아진다(데스크톱 값은 아래 미디어 쿼리에서 덮는다) */
+[data-astro-transition='open']::view-transition-old(root) {
+	animation: page-behind var(--dur-sheet) var(--ease-sheet) both;
+}
+
+[data-astro-transition='open']::view-transition-new(root) {
+	animation: page-from-bottom var(--dur-sheet) var(--ease-sheet) both;
+}
+
+/* 창 → 홈: 시트가 아래로 내려가고 홈이 제 크기로 돌아온다. 여는 시간의 약 70% */
+[data-astro-transition='close']::view-transition-old(root) {
+	z-index: 1;
+	animation: page-to-bottom var(--dur-sheet-close) var(--ease-in) both;
+}
+
+[data-astro-transition='close']::view-transition-new(root) {
+	animation: page-ahead var(--dur-sheet-close) var(--ease-out) both;
+}
+
+@keyframes page-from-right {
+	from {
+		transform: translateX(100%);
+	}
+}
+
+@keyframes page-recede {
+	to {
+		transform: translateX(-24%);
+		opacity: 0.4;
+	}
+}
+
+@keyframes page-to-right {
+	to {
+		transform: translateX(100%);
+	}
+}
+
+@keyframes page-return {
+	from {
+		transform: translateX(-24%);
+		opacity: 0.4;
+	}
+}
+
+@keyframes page-from-bottom {
+	from {
+		transform: translateY(100%);
+	}
+}
+
+@keyframes page-to-bottom {
+	to {
+		transform: translateY(100%);
+	}
+}
+
+@keyframes page-behind {
+	to {
+		transform: scale(0.94);
+	}
+}
+
+@keyframes page-ahead {
+	from {
+		transform: scale(0.94);
+	}
+}
+
+/* 데스크톱은 시트가 아니라 창이 열린다: 살짝 커지며 나타나고, 닫을 때는 반대로 더 빠르게(5-9) */
+@media (min-width: 1180px) {
+	[data-astro-transition='open']::view-transition-old(root) {
+		animation: page-fade-out var(--dur-close) var(--ease-in) both;
+	}
+
+	[data-astro-transition='open']::view-transition-new(root) {
+		animation: page-window-in var(--dur-window) var(--ease-out) both;
+	}
+
+	[data-astro-transition='close']::view-transition-old(root) {
+		z-index: 1;
+		animation: page-window-out var(--dur-close) var(--ease-in) both;
+	}
+
+	[data-astro-transition='close']::view-transition-new(root) {
+		animation: page-fade-in var(--dur-window) var(--ease-out) both;
+	}
+}
+
+@keyframes page-window-in {
+	from {
+		transform: translateY(10px) scale(0.95);
+		opacity: 0;
+	}
+}
+
+@keyframes page-window-out {
+	to {
+		transform: translateY(10px) scale(0.95);
+		opacity: 0;
+	}
+}
+
+@keyframes page-fade-in {
+	from {
+		opacity: 0;
+	}
+}
+
+@keyframes page-fade-out {
+	to {
+		opacity: 0;
+	}
+}
+
+/*
+ * 검색 창(components/SearchPanel.astro)이 열린 동안 메뉴바·Dock을 스스로 물러나게 한다.
+ * - 왜 필요한가: transition:name이 붙은 요소는 모달 <dialog>의 ::backdrop보다 위에 그려진다.
+ *   그래서 뒤 화면은 흐려지는데 메뉴바·Dock만 또렷하게 남아, 누를 수 없는데 살아 있는 것처럼 보인다
+ * - 왜 이름을 거두지 않나: 열리는 순간 view-transition-name을 none으로 바꿔 봤지만(계산값은 바뀐다)
+ *   이미 올라간 합성 레이어가 내려오지 않아 그대로 위에 그려진다. 그리는 순서를 다투는 대신
+ *   backdrop과 같은 정도로 직접 흐리고 어둡게 해 결과를 맞춘다 — 순서가 반대인 브라우저에서도 안전하다
+ * - 셸을 누를 수 없게 막는 일은 모달 <dialog>가 이미 한다(그리는 순서와 무관하다)
+ */
+html:has(dialog[data-search][open]) :is(.menubar, .dock-zone) {
+	opacity: 0.4;
+	filter: blur(6px);
+	transition:
+		opacity var(--dur-fast) var(--ease-out),
+		filter var(--dur-fast) var(--ease-out);
+}

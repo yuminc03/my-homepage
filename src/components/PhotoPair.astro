@@ -1,0 +1,74 @@
+---
+// 행사 본문 사진 2장 나란히. MDX에서 <PhotoPair a={사진} aAlt="…" b={사진} bAlt="…" caption="…" />로 쓴다
+// - 두 칸의 높이가 맞아야 해서 4:3으로 자른다(object-fit: cover). 한 장짜리 Photo는 원본 비율을 지킨다
+// - 좁은 폭에서도 나란히 둔다(시안: 모바일에서도 2열). 사진이 작아지지만 "함께 보는 두 장"이라는 뜻이 남는다
+import { Image } from 'astro:assets';
+
+interface Props {
+	a: ImageMetadata;
+	aAlt: string;
+	b: ImageMetadata;
+	bAlt: string;
+	caption?: string;
+}
+
+const { a, aAlt, b, bAlt, caption } = Astro.props;
+---
+
+<figure class="pair">
+	<div class="shots">
+		<Image src={a} alt={aAlt} widths={[200, 400, 600]} sizes="(min-width: 1180px) 394px, (min-width: 744px) 330px, 48vw" loading="lazy" decoding="async" />
+		<Image src={b} alt={bAlt} widths={[200, 400, 600]} sizes="(min-width: 1180px) 394px, (min-width: 744px) 330px, 48vw" loading="lazy" decoding="async" />
+	</div>
+	{caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+	.pair {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		margin: 0;
+	}
+
+	.shots {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 8px;
+	}
+
+	.shots img {
+		width: 100%;
+		height: auto;
+		aspect-ratio: 4 / 3;
+		border-radius: 12px;
+		object-fit: cover;
+	}
+
+	figcaption {
+		color: var(--win-ink-sub);
+		font-size: 12.5px;
+		line-height: 1.6;
+		word-break: keep-all;
+	}
+
+	@media (min-width: 744px) {
+		.shots {
+			gap: 12px;
+		}
+
+		.shots img {
+			border-radius: 16px;
+		}
+
+		figcaption {
+			font-size: 13px;
+		}
+	}
+
+	@media (min-width: 1180px) {
+		.pair {
+			gap: 12px;
+		}
+	}
+</style>

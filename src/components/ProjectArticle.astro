@@ -1,0 +1,134 @@
+---
+// 프로젝트 상세 본문: Markdown(## 소개 / ## 기술적으로 고민한 점 / ## 배운 점) 사이에 주요 기능을 끼워 넣는다
+// - 시안 순서: 소개 → 주요 기능 → 기술적으로 고민한 점 → 배운 점. 주요 기능은 프런트매터 데이터라 본문 Markdown에 없다
+// - 기본 slot(<Content />)과 features slot을 HTML 문자열로 렌더링한 뒤, 본문을 ## 단위로 나눠 첫 섹션 뒤에 주요 기능을 넣는다(src/lib/sections.ts)
+// - Markdown 요소의 공통 스타일(문단·목록·인용·인라인 코드·코드 블록)은 스터디 글과 함께 쓰는 src/styles/prose.css에 있다.
+//   여기 남은 것은 프로젝트 전용인 섹션 제목(## → h2)과 카드(### → .doc-card)뿐이다
+// - 공통 스타일은 .prose-body 안으로 한정된다. 끼워 넣은 주요 기능(자기 스타일이 있음)은 그 밖에 있어 닿지 않는다
+import { splitSections } from '../lib/sections';
+import '../styles/prose.css';
+
+const body = await Astro.slots.render('default');
+const features = Astro.slots.has('features') ? await Astro.slots.render('features') : '';
+const { lead, sections } = splitSections(body);
+const [first = '', ...rest] = sections;
+const html = [lead && `<div class="doc-lead prose-body">${lead}</div>`, first, features, ...rest].join('');
+---
+
+<div class="prose" set:html={html} />
+
+<style>
+	.prose {
+		display: flex;
+		flex-direction: column;
+		gap: 40px;
+	}
+
+	.prose :global(.doc-section > h2) {
+		margin: 0 0 12px;
+		color: var(--win-ink-strong);
+		font-size: 20px;
+		font-weight: 800;
+		line-height: 1.4;
+		word-break: keep-all;
+	}
+
+	/* ### 카드: "기술적으로 고민한 점"의 문제 하나 = 카드 하나 */
+	.prose :global(.doc-cards) {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	/* 카드가 제목 바로 아래면 제목 아래 간격을 조금 더 벌린다(시안: 글 12px · 카드 16px) */
+	.prose :global(.doc-section > h2 + .doc-cards) {
+		margin-top: 4px;
+	}
+
+	.prose :global(.doc-card) {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		padding: 18px 20px;
+		border: 1px solid var(--win-divider);
+		border-radius: 16px;
+		background: var(--win-card);
+	}
+
+	.prose :global(.doc-card > h3) {
+		margin: 0;
+		color: var(--win-ink-strong);
+		font-size: 16.5px;
+		font-weight: 700;
+		line-height: 1.45;
+		word-break: keep-all;
+	}
+
+	.prose :global(.doc-card :is(p, li)) {
+		color: var(--win-ink-2);
+		font-size: 15px;
+		line-height: 1.75;
+	}
+
+	@media (min-width: 744px) {
+		.prose {
+			gap: 48px;
+		}
+
+		.prose :global(.doc-section > h2) {
+			margin-bottom: 14px;
+			font-size: 22px;
+		}
+
+		.prose :global(.doc-cards) {
+			gap: 12px;
+		}
+
+		.prose :global(.doc-section > h2 + .doc-cards) {
+			margin-top: 6px;
+		}
+
+		.prose :global(.doc-card) {
+			gap: 9px;
+			padding: 22px 24px;
+		}
+
+		.prose :global(.doc-card > h3) {
+			font-size: 17px;
+		}
+
+		.prose :global(.doc-card :is(p, li)) {
+			font-size: 15.5px;
+			line-height: 1.8;
+		}
+	}
+
+	@media (min-width: 1180px) {
+		.prose {
+			gap: 56px;
+		}
+
+		.prose :global(.doc-section > h2) {
+			margin-bottom: 16px;
+			font-size: 24px;
+		}
+
+		.prose :global(.doc-section > h2 + .doc-cards) {
+			margin-top: 8px;
+		}
+
+		.prose :global(.doc-card) {
+			gap: 10px;
+			padding: 24px 28px;
+		}
+
+		.prose :global(.doc-card > h3) {
+			font-size: 18px;
+		}
+
+		.prose :global(.doc-card :is(p, li)) {
+			font-size: 16px;
+			line-height: 1.8;
+		}
+	}
+</style>

@@ -1,0 +1,220 @@
+---
+// 최근 기록 창(데스크톱). 첫 화면 아래로 스크롤하면 나오는 창으로, 스터디·세미나 최근 3개씩을 2열로 보여준다
+// - 시안: design/Main.dc.html 262–344줄. 창 틀은 홈의 다른 창과 같은 HomePanel(✕ 없음)
+// - 카드 전체가 그 글의 상세로 가는 링크다(열 머리의 "전체 보기 →"만 목록으로 간다)
+// - 글이 없으면 열 머리(전체 보기 링크)는 두고 빈 상태 문구만 보여준다(PROGRESS.md 5-13)
+// - 폭·위치·바깥 여백은 페이지가 감싼 요소에서 정한다
+import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import HomePanel from './HomePanel.astro';
+import { getApp } from '../data/apps';
+import { seminarHref, studyHref } from '../lib/content';
+import { formatDay, formatMonth } from '../lib/date';
+import { withBase } from '../lib/url';
+
+interface Props {
+	posts: CollectionEntry<'study'>[];
+	seminars: CollectionEntry<'seminars'>[];
+}
+
+const { posts, seminars } = Astro.props;
+const studyApp = getApp('study');
+const seminarApp = getApp('seminars');
+---
+
+<HomePanel title="최근 기록">
+	<div class="columns">
+		<section class="column">
+			<header class="column-head">
+				<h2>{studyApp.label}</h2>
+				<a href={withBase(studyApp.href)}>전체 보기 →</a>
+			</header>
+			{
+				posts.length > 0 ? (
+					<div class="cards">
+						{posts.map((post) => (
+							<a class="card" href={studyHref(post)}>
+								<span class="card-meta">
+									<span class="chip">{post.data.category}</span>
+									<span class="date">{formatDay(post.data.pubDate)}</span>
+								</span>
+								<span class="card-title">{post.data.title}</span>
+							</a>
+						))}
+					</div>
+				) : (
+					<p class="empty">아직 남긴 스터디 기록이 없습니다. 새 글을 쓰면 최근 3개가 여기에 보입니다.</p>
+				)
+			}
+		</section>
+
+		<section class="column">
+			<header class="column-head">
+				<h2>{seminarApp.label}</h2>
+				<a href={withBase(seminarApp.href)}>전체 보기 →</a>
+			</header>
+			{
+				seminars.length > 0 ? (
+					<div class="cards">
+						{seminars.map((seminar) => (
+							<a class="card seminar" href={seminarHref(seminar)}>
+								{/* 옆에 이름이 있어 표지 사진 설명은 비운다 */}
+								<span class="thumb">
+									<Image src={seminar.data.cover} alt="" width={128} loading="lazy" decoding="async" />
+								</span>
+								<span class="seminar-text">
+									<span class="card-title">{seminar.data.title}</span>
+									<span class="date">
+										{formatMonth(seminar.data.date)} · {seminar.data.location}
+									</span>
+								</span>
+							</a>
+						))}
+					</div>
+				) : (
+					<p class="empty">아직 남긴 세미나 기록이 없습니다. 새 기록을 쓰면 최근 3개가 여기에 보입니다.</p>
+				)
+			}
+		</section>
+	</div>
+</HomePanel>
+
+<style>
+	.columns {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 44px;
+	}
+
+	.column-head {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 16px;
+		margin-bottom: 22px;
+	}
+
+	h2 {
+		margin: 0;
+		color: var(--win-ink-strong);
+		font-size: 20px;
+		font-weight: 800;
+	}
+
+	.column-head a {
+		flex-shrink: 0;
+		font-size: 13.5px;
+		font-weight: 600;
+	}
+
+	.cards {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+	}
+
+	.card {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		padding: 18px 20px;
+		border: 1px solid var(--win-divider);
+		border-radius: 14px;
+		background: var(--win-card);
+		transition:
+			transform var(--dur-press) var(--ease-out),
+			border-color var(--dur-fast) var(--ease-out);
+	}
+
+	.card:hover {
+		border-color: var(--win-accent);
+	}
+
+	.card:active {
+		transform: scale(0.985);
+	}
+
+	.card:focus-visible {
+		outline: 2px solid var(--win-accent);
+		outline-offset: 2px;
+	}
+
+	.card-meta {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+	}
+
+	.chip {
+		flex-shrink: 0;
+		padding: 4px 10px;
+		border-radius: 999px;
+		background: var(--win-tag-bg);
+		color: var(--win-tag-ink);
+		font-size: 11.5px;
+		font-weight: 700;
+	}
+
+	.date {
+		overflow: hidden;
+		color: var(--win-ink-sub);
+		font-size: 12.5px;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.card-title {
+		display: -webkit-box;
+		overflow: hidden;
+		color: var(--win-ink-strong);
+		font-size: 15px;
+		font-weight: 600;
+		line-height: 1.45;
+		word-break: keep-all;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 2;
+	}
+
+	/* 세미나 카드: 썸네일 | 이름·날짜 */
+	.card.seminar {
+		flex-direction: row;
+		align-items: center;
+		gap: 16px;
+		padding: 14px 16px;
+	}
+
+	.thumb {
+		flex-shrink: 0;
+		overflow: hidden;
+		width: 64px;
+		height: 64px;
+		border-radius: 12px;
+		background: var(--win-bg);
+	}
+
+	/* <Image>가 만든 img에도 이 컴포넌트의 스코프 속성이 붙는다(PhoneMockup과 같음) */
+	.thumb img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.seminar-text {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+		min-width: 0;
+	}
+
+	.empty {
+		margin: 0;
+		padding: 18px 20px;
+		border: 1px dashed var(--win-divider);
+		border-radius: 14px;
+		color: var(--win-ink-muted);
+		font-size: 14px;
+		line-height: 1.6;
+		word-break: keep-all;
+	}
+</style>

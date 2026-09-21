@@ -1,0 +1,64 @@
+---
+// 행사 본문 사진 1장(읽기 폭 전체). MDX에서 <Photo src={사진} alt="…" caption="…" />로 쓴다
+// - 상세 페이지가 <Content components={{ Photo, PhotoPair, PhotoSide }} />로 넘겨야 렌더링된다(CLAUDE.md)
+// - 시안은 높이를 220/320/450px로 고정했지만(자리 표시용 상자) 실제 사진은 원본 비율 그대로 둔다.
+//   본문 한 장짜리 사진은 잘라서 얻을 것이 없고, 세로 사진이 들어오면 잘림이 커진다.
+//   높이를 맞춰야 하는 PhotoPair·PhotoSide만 4:3으로 자른다
+// - 위아래 간격은 본문 흐름(prose.css의 --prose-gap)이 정하므로 figure에 margin을 두지 않는다
+import { Image } from 'astro:assets';
+
+interface Props {
+	src: ImageMetadata;
+	alt: string;
+	caption?: string;
+}
+
+const { src, alt, caption } = Astro.props;
+---
+
+<figure class="photo">
+	<Image src={src} alt={alt} widths={[400, 800, 1200]} sizes="(min-width: 1180px) 800px, (min-width: 744px) 672px, 100vw" loading="lazy" decoding="async" />
+	{caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+	.photo {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		margin: 0;
+	}
+
+	.photo img {
+		width: 100%;
+		height: auto;
+		border-radius: 14px;
+	}
+
+	figcaption {
+		color: var(--win-ink-sub);
+		font-size: 12.5px;
+		line-height: 1.6;
+		word-break: keep-all;
+	}
+
+	@media (min-width: 744px) {
+		.photo img {
+			border-radius: 18px;
+		}
+
+		figcaption {
+			font-size: 13px;
+		}
+	}
+
+	@media (min-width: 1180px) {
+		.photo {
+			gap: 12px;
+		}
+
+		.photo img {
+			border-radius: 16px;
+		}
+	}
+</style>

@@ -1,0 +1,57 @@
+---
+// 창 안 목록 화면의 큰 제목과 한 줄 설명(Projects · Study Log · Seminars & Events)
+interface Props {
+	title: string;
+	description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<div class="page-heading">
+	<h1>{title}</h1>
+	{description && <p>{description}</p>}
+</div>
+
+<style>
+	h1 {
+		margin: 0 0 8px;
+		color: var(--win-ink-strong);
+		font-size: 30px;
+		font-weight: 900;
+		line-height: 1.25;
+		letter-spacing: -0.02em;
+	}
+
+	p {
+		margin: 0 0 22px;
+		color: var(--win-ink-muted);
+		font-size: 15px;
+		font-weight: 300;
+	}
+
+	@media (min-width: 744px) {
+		h1 {
+			margin-bottom: 10px;
+			font-size: 34px;
+		}
+
+		p {
+			margin-bottom: 26px;
+			font-size: 16px;
+		}
+	}
+
+	@media (min-width: 1180px) {
+		h1 {
+			margin-bottom: 14px;
+			font-size: 44px;
+			line-height: 1.2;
+		}
+
+		p {
+			margin-bottom: 36px;
+			font-size: 17px;
+		}
+	}
+</style>

@@ -1,0 +1,447 @@
+---
+// 프로젝트 상세 창(PROGRESS.md 5-4)
+// - 순서: (데스크톱) ‹ Projects → 앱 아이콘·이름·한 줄 소개 → 태그 → 링크 버튼 → 요약(기간·역할·기술·플랫폼)
+//   → 스크린샷 띠 → 본문(소개 → 주요 기능 → 기술적으로 고민한 점 → 배운 점) → 이전/다음
+// - 시안: design/ProjectDetail.dc.html · TabletProjectDetail · MobileProjectDetail
+// - 읽기 폭: 모바일 창 여백 그대로 · 태블릿 좌우 48px(창 여백 36 + 12) · 데스크톱 800px 가운데. 스크린샷 띠만 더 넓다
+// - 주소는 콘텐츠 폴더 이름(project.id). 컬렉션 glob이 */index.md라 id에 /가 없어 [slug] 하나로 받는다
+// - 모바일·태블릿 시안처럼 Dock은 숨긴 채 시작한다(힌트 막대만)
+import { render, type CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import Window from '../../components/Window.astro';
+import TagList from '../../components/TagList.astro';
+import ScreenshotBand from '../../components/ScreenshotBand.astro';
+import ProjectArticle from '../../components/ProjectArticle.astro';
+import ProjectFeatures from '../../components/ProjectFeatures.astro';
+import Pager from '../../components/Pager.astro';
+import CodeCopy from '../../components/CodeCopy.astro';
+import { getApp } from '../../data/apps';
+import { getProjects, projectHref } from '../../lib/content';
+import { formatMonth } from '../../lib/date';
+import { withBase } from '../../lib/url';
+
+type Project = CollectionEntry<'projects'>;
+
+interface Props {
+	project: Project;
+	prev?: Project;
+	next?: Project;
+}
+
+export async function getStaticPaths() {
+	const projects = await getProjects();
+	return projects.map((project, index) => ({
+		params: { slug: project.id },
+		props: { project, prev: projects[index - 1], next: projects[index + 1] },
+	}));
+}
+
+const { project, prev, next } = Astro.props;
+const { data } = project;
+const { Content } = await render(project);
+const app = getApp('projects');
+const listHref = withBase(app.href);
+
+const period = `${formatMonth(data.startDate)} – ${data.endDate ? formatMonth(data.endDate) : '진행 중'}`;
+const summary = [
+	{ label: '기간', value: period },
+	{ label: '역할', value: data.role },
+	{ label: '기술', value: data.stack.join(' · ') },
+	{ label: '플랫폼', value: data.platform },
+];
+
+// 첫 번째 링크가 진한 버튼(시안: App Store에서 보기), 나머지는 테두리 버튼
+const links = [
+	data.links.appStore && { href: data.links.appStore, label: 'App Store에서 보기' },
+	data.links.github && { href: data.links.github, label: 'GitHub' },
+].filter((link) => !!link);
+
+const pagerLink = (entry?: Project) => entry && { href: projectHref(entry), title: entry.data.title };
+---
+
+<SiteLayout active={app.id} title={`${data.title} · ${app.label} · Chu Yumin`} description={data.summary} dockHidden>
+	<Window title={app.title} back={{ href: listHref, label: `${app.label} 목록으로` }}>
+		<div class="column">
+			<a class="back" href={listHref} data-back-link>
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<path d="M15 5l-7 7 7 7" />
+				</svg>
+				<span>{app.title}</span>
+			</a>
+
+			<header class="head">
+				{/* 이름이 바로 옆에 있어 아이콘 설명은 비운다 */}
+				<Image class="icon" src={data.icon} alt="" width={88} densities={[1, 2]} />
+				<div class="head-text">
+					<h1>{data.title}</h1>
+					<p>{data.summary}</p>
+				</div>
+			</header>
+
+			<div class="tags-slot">
+				<TagList tags={data.tags} />
+			</div>
+
+			{
+				links.length > 0 && (
+					<div class="links">
+						{links.map((link, index) => (
+							<a class:list={['button', index === 0 ? 'primary' : 'secondary']} href={link.href} target="_blank" rel="noopener noreferrer">
+								{link.label}
+								<span class="visually-hidden">(새 창)</span>
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+									<path d="M7 17L17 7M9 7h8v8" />
+								</svg>
+							</a>
+						))}
+					</div>
+				)
+			}
+
+			<dl class="summary">
+				{
+					summary.map((item) => (
+						<div class="summary-item">
+							<dt>{item.label}</dt>
+							<dd>{item.value}</dd>
+						</div>
+					))
+				}
+			</dl>
+		</div>
+
+		{data.screenshots.length > 0 && <ScreenshotBand screenshots={data.screenshots} title={data.title} />}
+
+		<div class="column">
+			<ProjectArticle>
+				<Content />
+				{data.features.length > 0 && <ProjectFeatures slot="features" features={data.features} />}
+			</ProjectArticle>
+
+			<Pager prev={pagerLink(prev)} next={pagerLink(next)} prevLabel="이전 프로젝트" nextLabel="다음 프로젝트" />
+		</div>
+
+		{/* 본문에 코드 블록이 있으면 복사 버튼을 살린다 */}
+		<CodeCopy />
+	</Window>
+</SiteLayout>
+
+<style>
+	.back {
+		display: none;
+	}
+
+	.head {
+		display: flex;
+		align-items: center;
+		gap: 16px;
+		margin-bottom: 16px;
+	}
+
+	.icon {
+		flex-shrink: 0;
+		width: 72px;
+		height: 72px;
+		border-radius: 18px;
+		box-shadow: 0 12px 26px oklch(20% 0.022 290 / 0.25);
+		object-fit: cover;
+	}
+
+	.head-text {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		min-width: 0;
+	}
+
+	h1 {
+		margin: 0;
+		color: var(--win-ink-strong);
+		font-size: 24px;
+		font-weight: 800;
+		line-height: 1.35;
+		letter-spacing: -0.015em;
+		word-break: keep-all;
+	}
+
+	.head-text p {
+		margin: 0;
+		color: var(--win-ink-muted);
+		font-size: 14.5px;
+		line-height: 1.55;
+		word-break: keep-all;
+	}
+
+	.tags-slot {
+		margin-bottom: 20px;
+	}
+
+	/* 모바일: 버튼 칸을 똑같이 나눈다(링크가 하나면 한 칸을 다 쓴다) */
+	.links {
+		display: grid;
+		grid-auto-columns: minmax(0, 1fr);
+		grid-auto-flow: column;
+		gap: 8px;
+		margin-bottom: 24px;
+	}
+
+	.button {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 6px;
+		height: 48px;
+		padding: 0 10px;
+		border-radius: 12px;
+		font-size: 14px;
+		font-weight: 600;
+		white-space: nowrap;
+		transition:
+			background-color var(--dur-fast) var(--ease-out),
+			border-color var(--dur-fast) var(--ease-out);
+	}
+
+	.button svg {
+		flex-shrink: 0;
+		width: 14px;
+		height: 14px;
+	}
+
+	.button:focus-visible {
+		outline: 2px solid var(--win-accent);
+		outline-offset: 2px;
+	}
+
+	.primary,
+	.primary:hover {
+		background: var(--win-solid-bg);
+		color: var(--win-solid-ink);
+	}
+
+	.primary:active {
+		background: var(--win-solid-press);
+	}
+
+	.secondary,
+	.secondary:hover {
+		border: 1px solid var(--win-chip-line);
+		background: var(--win-bg);
+		color: var(--win-ink);
+	}
+
+	.secondary:active {
+		border-color: var(--win-accent);
+	}
+
+	/* 아주 좁은 폭(320px대)에서는 "App Store에서 보기"가 반 칸에 들어가지 않아 한 줄에 하나씩 쌓는다 */
+	@media (max-width: 359px) {
+		.links {
+			grid-auto-flow: row;
+		}
+	}
+
+	.visually-hidden {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		margin: -1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
+	}
+
+	/* 요약: 모바일·태블릿 2×2, 데스크톱 한 줄 4칸. 칸 사이 선은 칸의 왼쪽·아래 테두리로 긋는다 */
+	.summary {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		margin: 0 0 36px;
+		border: 1px solid var(--win-divider);
+		border-radius: 16px;
+		background: var(--win-card);
+	}
+
+	.summary-item {
+		display: flex;
+		flex-direction: column;
+		gap: 5px;
+		min-width: 0;
+		padding: 16px 18px;
+	}
+
+	.summary-item:nth-child(-n + 2) {
+		border-bottom: 1px solid var(--win-divider);
+	}
+
+	.summary-item:nth-child(even) {
+		border-left: 1px solid var(--win-divider);
+	}
+
+	dt {
+		color: var(--win-ink-sub);
+		font-size: 12px;
+	}
+
+	dd {
+		margin: 0;
+		color: var(--win-ink-strong);
+		font-size: 14.5px;
+		font-weight: 700;
+		line-height: 1.45;
+		word-break: keep-all;
+	}
+
+	@media (min-width: 744px) {
+		.column {
+			padding: 0 12px;
+		}
+
+		.head {
+			gap: 22px;
+			margin-bottom: 20px;
+		}
+
+		.icon {
+			width: 88px;
+			height: 88px;
+			border-radius: 22px;
+			box-shadow: 0 14px 30px oklch(20% 0.022 290 / 0.25);
+		}
+
+		.head-text {
+			gap: 6px;
+		}
+
+		h1 {
+			font-size: 30px;
+			line-height: 1.3;
+		}
+
+		.head-text p {
+			font-size: 16px;
+			line-height: 1.6;
+		}
+
+		.tags-slot {
+			margin-bottom: 24px;
+		}
+
+		/* 태블릿·데스크톱: 글자 길이만큼 */
+		.links {
+			display: flex;
+			gap: 10px;
+			margin-bottom: 30px;
+		}
+
+		.button {
+			gap: 8px;
+			padding: 0 22px;
+			font-size: 15px;
+		}
+
+		.button svg {
+			width: 15px;
+			height: 15px;
+		}
+
+		.summary {
+			margin-bottom: 44px;
+			border-radius: 18px;
+		}
+
+		.summary-item {
+			gap: 6px;
+			padding: 18px 22px;
+		}
+
+		dt {
+			font-size: 12.5px;
+		}
+
+		dd {
+			font-size: 15px;
+		}
+	}
+
+	@media (min-width: 1180px) {
+		.column {
+			max-width: 800px;
+			margin: 0 auto;
+			padding: 0;
+		}
+
+		.back,
+		.back:hover {
+			display: inline-flex;
+			align-items: center;
+			gap: 6px;
+			margin-bottom: 32px;
+			font-size: 14px;
+			font-weight: 600;
+		}
+
+		.back svg {
+			width: 16px;
+			height: 16px;
+		}
+
+		.back:focus-visible {
+			border-radius: 4px;
+			outline: 2px solid var(--win-accent);
+			outline-offset: 3px;
+		}
+
+		.head {
+			gap: 24px;
+			margin-bottom: 22px;
+		}
+
+		.head-text {
+			gap: 8px;
+		}
+
+		h1 {
+			font-size: 36px;
+		}
+
+		.head-text p {
+			font-size: 17px;
+		}
+
+		.links {
+			margin-bottom: 36px;
+		}
+
+		.button {
+			height: 44px;
+			padding: 0 20px;
+			font-size: 14.5px;
+		}
+
+		.primary:hover {
+			background: var(--win-solid-press);
+		}
+
+		.secondary:hover {
+			border-color: var(--win-accent);
+		}
+
+		.summary {
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+			margin-bottom: 48px;
+			border-radius: 16px;
+		}
+
+		.summary-item {
+			padding: 20px 22px;
+		}
+
+		.summary-item:nth-child(-n + 2) {
+			border-bottom: 0;
+		}
+
+		.summary-item + .summary-item {
+			border-left: 1px solid var(--win-divider);
+		}
+	}
+</style>

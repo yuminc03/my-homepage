@@ -1,0 +1,87 @@
+---
+// 행사 상세의 표지 사진. 읽기 폭(800px)보다 넓은 유일한 요소다
+// - 모바일·태블릿: 창 본문 여백을 상쇄해 창 폭 끝까지, 모서리 없이(시안)
+// - 데스크톱: 창 본문 폭 전체를 쓰는 둥근 사진(440px), 사진 설명만 읽기 폭 가운데에 둔다
+// - 여백 상쇄에 쓰는 --win-pad는 Window가 내보낸다(수치를 여기에 복제하지 않는다)
+import { Image } from 'astro:assets';
+
+interface Props {
+	src: ImageMetadata;
+	alt: string;
+	/** 사진 설명. 없으면 줄을 그리지 않는다 */
+	caption?: string;
+}
+
+const { src, alt, caption } = Astro.props;
+---
+
+<figure class="cover">
+	<Image
+		src={src}
+		alt={alt}
+		widths={[480, 768, 1144, 1600]}
+		sizes="(min-width: 1180px) 1144px, 100vw"
+		loading="eager"
+		fetchpriority="high"
+		decoding="async"
+	/>
+	{caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+	.cover {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		margin: 0 calc(var(--win-pad, 20px) * -1) 28px;
+	}
+
+	.cover img {
+		width: 100%;
+		height: 240px;
+		object-fit: cover;
+	}
+
+	figcaption {
+		/* 사진 설명은 본문과 같은 줄에서 시작한다(창 여백만큼 도로 들여쓴다) */
+		padding: 0 var(--win-pad, 20px);
+		color: var(--win-ink-sub);
+		font-size: 12.5px;
+		line-height: 1.6;
+		word-break: keep-all;
+	}
+
+	@media (min-width: 744px) {
+		.cover {
+			margin-bottom: 36px;
+		}
+
+		.cover img {
+			height: 360px;
+		}
+
+		/* 본문(.column)이 태블릿에서 12px 더 들어가므로 설명도 같이 맞춘다 */
+		figcaption {
+			padding: 0 calc(var(--win-pad, 36px) + 12px);
+			font-size: 13px;
+		}
+	}
+
+	@media (min-width: 1180px) {
+		.cover {
+			gap: 12px;
+			margin: 0 0 56px;
+		}
+
+		.cover img {
+			height: 440px;
+			border-radius: 20px;
+		}
+
+		figcaption {
+			width: 800px;
+			margin: 0 auto;
+			padding: 0;
+		}
+	}
+</style>
