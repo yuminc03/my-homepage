@@ -180,3 +180,19 @@ export const groupHits = (hits: readonly SearchHit[], limitPerGroup: number): Se
 			hits: hits.filter((hit) => hit.doc.collection === app.id).slice(0, limitPerGroup),
 		}))
 		.filter((group) => group.hits.length > 0);
+
+/** 강조할 것이 없는 결과 한 줄(최근 글용) */
+const plainHit = (doc: SearchDoc): SearchHit => ({
+	doc,
+	title: [{ text: doc.title, hit: false }],
+	snippet: [{ text: doc.summary, hit: false }],
+	fromBody: false,
+});
+
+/**
+ * 아직 찾을 말이 없을 때 보여 줄 최근 글(5-18).
+ * 색인 순서가 곧 목록 순서(최신 글 먼저)라 앞에서 몇 건씩 끊으면 된다.
+ * 결과와 같은 모양으로 돌려주므로 화면도 같은 코드로 그린다
+ */
+export const recentGroups = (docs: readonly SearchDoc[], perGroup: number): SearchGroup[] =>
+	groupHits(docs.map(plainHit), perGroup);
