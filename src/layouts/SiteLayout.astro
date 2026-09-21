@@ -9,6 +9,7 @@
 import BaseLayout from './BaseLayout.astro';
 import MenuBar from '../components/MenuBar.astro';
 import Dock from '../components/Dock.astro';
+import SearchPanel from '../components/SearchPanel.astro';
 import { getApp, type AppId } from '../data/apps';
 
 interface Props {
@@ -35,6 +36,7 @@ const pageTitle = title ?? (active === 'home' ? app.title : `${app.label} · Chu
 		<slot />
 	</main>
 	<Dock active={active} surface={surface} startHidden={dockHidden} />
+	<SearchPanel />
 </BaseLayout>
 
 <style>

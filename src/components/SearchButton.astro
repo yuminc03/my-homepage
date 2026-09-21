@@ -1,0 +1,93 @@
+---
+// 검색 창을 여는 돋보기 버튼 (자리는 PROGRESS.md 5-18)
+// - 데스크톱: 메뉴바 테마 버튼 왼쪽 / 모바일·태블릿: 홈은 메뉴바, 목록·상세는 창 타이틀 바
+// - 동작은 SearchPanel이 [data-search-open]을 문서에서 찾아 처리한다. 버튼이 몇 개든 이 속성만 붙이면 된다
+//   (동작 없는 아이콘은 만들지 않는다 — 5-12)
+// - size: desktop = 메뉴바 28×22, touch = 누르는 영역 44×44
+// - tone: shell = 유리 메뉴바 위(--ink), window = 창 타이틀 바 위(--win-icon). 두 면의 글자색 계열이 다르다
+interface Props {
+	size?: 'desktop' | 'touch';
+	tone?: 'shell' | 'window';
+}
+
+const { size = 'desktop', tone = 'shell' } = Astro.props;
+---
+
+<button type="button" class="search-button" data-size={size} data-tone={tone} aria-label="검색" title="검색" data-search-open>
+	<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+		<circle cx="11" cy="11" r="7"></circle>
+		<path d="M16.5 16.5L21 21"></path>
+	</svg>
+</button>
+
+<style>
+	.search-button {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0;
+		border: 0;
+		background: transparent;
+		cursor: pointer;
+		transition:
+			background-color var(--dur-fast) var(--ease-out),
+			color var(--dur-fast) var(--ease-out);
+	}
+
+	.search-button[data-tone='shell'] {
+		color: var(--ink);
+	}
+
+	.search-button[data-tone='window'] {
+		color: var(--win-icon);
+	}
+
+	.search-button:focus-visible {
+		outline: 2px solid var(--win-accent);
+		outline-offset: 1px;
+	}
+
+	.search-button[data-size='desktop'] {
+		width: 28px;
+		height: 22px;
+		border-radius: 6px;
+	}
+
+	.search-button[data-size='desktop'] svg {
+		width: 15px;
+		height: 15px;
+		stroke-width: 1.9;
+	}
+
+	.search-button[data-size='touch'] {
+		width: 44px;
+		height: 44px;
+		border-radius: 12px;
+	}
+
+	.search-button[data-size='touch'] svg {
+		width: 19px;
+		height: 19px;
+		stroke-width: 1.9;
+	}
+
+	@media (hover: hover) {
+		.search-button[data-tone='shell']:hover {
+			background: var(--menu-active);
+			color: var(--ink-strong);
+		}
+
+		.search-button[data-tone='window']:hover {
+			background: var(--win-press);
+			color: var(--win-ink-strong);
+		}
+	}
+
+	.search-button[data-tone='shell']:active {
+		background: var(--menu-active);
+	}
+
+	.search-button[data-tone='window']:active {
+		background: var(--win-press);
+	}
+</style>

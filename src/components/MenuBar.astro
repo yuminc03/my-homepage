@@ -1,12 +1,15 @@
 ---
 // 유리 메뉴바
-// - 데스크톱(≥1180px): 모든 화면 상단. 로고·이름 · 메뉴 4개(열린 창 활성 표시) · 테마 버튼 · 시계
-// - 모바일·태블릿: 홈 화면에서만(showOnTouch). 로고·이름 · 테마 버튼(44px). 목록·상세는 창 시트가 화면을 채운다
+// - 데스크톱(≥1180px): 모든 화면 상단. 로고·이름 · 메뉴 4개(열린 창 활성 표시) · 검색 · 테마 버튼 · 시계
+//   데스크톱은 창 타이틀 바에 돋보기를 두지 않고 메뉴바에만 둔다(PROGRESS.md 5-18)
+// - 모바일·태블릿: 홈 화면에서만(showOnTouch). 로고·이름 · 검색 · 테마 버튼(각 44px).
+//   목록·상세는 창 시트가 화면을 채우므로 돋보기가 창 타이틀 바로 간다
 //   시계는 기기 상태 표시줄과 겹치므로 두지 않는다
 // - transition:name: 페이지 전환 때 본문 스냅샷에서 빠져 제자리에 남는다(본문만 움직인다).
 //   전환 자체는 Astro 기본 페이드(180ms)라 열린 메뉴 표시가 바뀔 때 짧게 겹친다
 import ThemeToggle from './ThemeToggle.astro';
 import MenuClock from './MenuClock.astro';
+import SearchButton from './SearchButton.astro';
 import { APPS, getApp, type AppId } from '../data/apps';
 import { withBase } from '../lib/url';
 
@@ -37,10 +40,12 @@ const home = getApp('home');
 
 	<div class="status">
 		<span class="desktop-only">
+			<SearchButton />
 			<ThemeToggle />
 			<MenuClock />
 		</span>
 		<span class="touch-only">
+			<SearchButton size="touch" />
 			<ThemeToggle size="touch" />
 		</span>
 	</div>

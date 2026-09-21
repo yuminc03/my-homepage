@@ -143,3 +143,20 @@
 		opacity: 0;
 	}
 }
+
+/*
+ * 검색 창(components/SearchPanel.astro)이 열린 동안 메뉴바·Dock을 스스로 물러나게 한다.
+ * - 왜 필요한가: transition:name이 붙은 요소는 모달 <dialog>의 ::backdrop보다 위에 그려진다.
+ *   그래서 뒤 화면은 흐려지는데 메뉴바·Dock만 또렷하게 남아, 누를 수 없는데 살아 있는 것처럼 보인다
+ * - 왜 이름을 거두지 않나: 열리는 순간 view-transition-name을 none으로 바꿔 봤지만(계산값은 바뀐다)
+ *   이미 올라간 합성 레이어가 내려오지 않아 그대로 위에 그려진다. 그리는 순서를 다투는 대신
+ *   backdrop과 같은 정도로 직접 흐리고 어둡게 해 결과를 맞춘다 — 순서가 반대인 브라우저에서도 안전하다
+ * - 셸을 누를 수 없게 막는 일은 모달 <dialog>가 이미 한다(그리는 순서와 무관하다)
+ */
+html:has(dialog[data-search][open]) :is(.menubar, .dock-zone) {
+	opacity: 0.4;
+	filter: blur(6px);
+	transition:
+		opacity var(--dur-fast) var(--ease-out),
+		filter var(--dur-fast) var(--ease-out);
+}
