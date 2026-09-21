@@ -25,16 +25,29 @@ export interface App extends Shortcut {
 	description: string;
 }
 
+// 사이트 이름: 메뉴바 왼쪽 끝과 브라우저 탭 제목 끝에 붙는다. 사용자 닉네임(리아) + 기록(.log)
+// 홈 인사말·코드 위젯의 실명(Chu Yumin)은 자기소개라 profile.ts에 그대로 둔다
+export const SITE_NAME = 'Lia.log';
+
 const gradient = (from: string, to: string) => `linear-gradient(145deg, ${from}, ${to})`;
+
+const LILAC = gradient('oklch(70% 0.13 300)', 'oklch(58% 0.15 285)');
+
+// 사이트 아이콘(창): 메뉴바 로고. public/favicon.svg가 같은 그림을 16진수 색으로 그린다(모양을 바꾸면 함께 고친다)
+// 선 굵기는 파비콘과 같게 --glyph-stroke 1.875, 글리프는 타일과 같은 크기로 그려 창이 타일의 62.5%를 차지한다
+export const BRAND: AppIconSpec = {
+	background: LILAC,
+	icon: '<rect x="4.5" y="5.75" width="15" height="12.5" rx="2.25"/><path d="M4.5 9.75h15"/>',
+};
 
 export const APPS: readonly App[] = [
 	{
 		id: 'home',
 		label: '홈',
-		title: 'Chu Yumin',
+		title: SITE_NAME,
 		description: 'iOS 개발자 Chu Yumin의 프로젝트·스터디·세미나 기록',
 		href: '/',
-		background: gradient('oklch(70% 0.13 300)', 'oklch(58% 0.15 285)'),
+		background: LILAC,
 		icon: '<path d="M4 10.5 12 4l8 6.5V20H4z"/>',
 	},
 	{

@@ -46,7 +46,7 @@ const listHref = withBase(app.href);
 const pagerLink = (entry?: Seminar) => entry && { href: seminarHref(entry), title: entry.data.title };
 ---
 
-<SiteLayout active={app.id} title={`${data.title} · ${app.label} · Chu Yumin`} description={data.summary} dockHidden>
+<SiteLayout active={app.id} title={data.title} description={data.summary} dockHidden>
 	<Window title={app.title} back={{ href: listHref, label: `${app.label} 목록으로` }}>
 		<div class="column">
 			<a class="back" href={listHref} data-back-link>
