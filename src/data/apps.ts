@@ -33,7 +33,7 @@ const gradient = (from: string, to: string) => `linear-gradient(145deg, ${from},
 
 const LILAC = gradient('oklch(70% 0.13 300)', 'oklch(58% 0.15 285)');
 
-// 사이트 아이콘(창): 메뉴바 로고. 파비콘도 같은 그림을 쓴다
+// 사이트 아이콘(창): 메뉴바 로고. public/favicon.svg가 같은 그림을 16진수 색으로 그린다(모양을 바꾸면 함께 고친다)
 // 선 굵기는 파비콘과 같게 --glyph-stroke 1.875, 글리프는 타일과 같은 크기로 그려 창이 타일의 62.5%를 차지한다
 export const BRAND: AppIconSpec = {
 	background: LILAC,
