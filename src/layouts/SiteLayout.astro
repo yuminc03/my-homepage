@@ -3,6 +3,7 @@
 // - active: 메뉴바 활성 표시와 Dock 실행 점을 붙일 앱
 // - surface: desk = 홈(바탕 위, 모바일·태블릿에도 메뉴바 표시) / window = 창이 열린 화면(목록·상세)
 // - dockHidden: Dock을 숨긴 채 시작한다(상세 화면)
+// - title: 상세 화면의 글 제목만 넘긴다. 탭 제목은 "글 제목 · 앱 라벨 · 사이트 이름"으로 여기서 조립한다(홈은 사이트 이름만)
 // 페이지 전환(PageTransitions): 메뉴바·Dock은 각자 transition:name을 가져(MenuBar·Dock 안에 있다) 화면 전환과 따로 논다.
 // 이름이 있는 요소는 본문 스냅샷에서 빠지므로 본문이 옆으로 밀려도 제자리에 남는다.
 // 글로우는 일부러 이름을 주지 않는다 — 바탕까지 함께 밀려야 "화면 한 장이 통째로 넘어가는" OS 메타포가 된다
@@ -10,7 +11,7 @@ import BaseLayout from './BaseLayout.astro';
 import MenuBar from '../components/MenuBar.astro';
 import Dock from '../components/Dock.astro';
 import SearchPanel from '../components/SearchPanel.astro';
-import { getApp, type AppId } from '../data/apps';
+import { SITE_NAME, getApp, type AppId } from '../data/apps';
 
 interface Props {
 	active: AppId;
@@ -22,7 +23,7 @@ interface Props {
 
 const { active, surface = 'window', title, description, dockHidden = false } = Astro.props;
 const app = getApp(active);
-const pageTitle = title ?? (active === 'home' ? app.title : `${app.label} · Chu Yumin`);
+const pageTitle = [title, active === 'home' ? undefined : app.label, SITE_NAME].filter(Boolean).join(' · ');
 ---
 
 <BaseLayout title={pageTitle} description={description ?? app.description}>

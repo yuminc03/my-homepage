@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+	<!-- 사이트 아이콘(창): 메뉴바 로고와 같은 그림이다. 모양·색은 src/data/apps.ts의 BRAND와 맞춘다 -->
+	<!-- 파비콘은 브라우저마다 oklch 지원이 달라 BRAND 그라디언트를 16진수로 바꿔 쓴다 -->
+	<defs>
+		<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+			<stop offset="0" stop-color="#ab8be3" />
+			<stop offset="1" stop-color="#736ace" />
+		</linearGradient>
+	</defs>
+	<rect width="24" height="24" rx="5.6" fill="url(#bg)" />
+	<g fill="none" stroke="#fff" stroke-width="1.875" stroke-linecap="round" stroke-linejoin="round">
+		<rect x="4.5" y="5.75" width="15" height="12.5" rx="2.25" />
+		<path d="M4.5 9.75h15" />
+	</g>
+</svg>

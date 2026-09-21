@@ -4,6 +4,8 @@ import '../styles/tokens.css';
 import '../styles/global.css';
 import '../styles/transitions.css';
 import PageTransitions from '../components/PageTransitions.astro';
+import { SITE_NAME } from '../data/apps';
+import { withBase } from '../lib/url';
 
 interface Props {
 	title?: string;
@@ -11,7 +13,7 @@ interface Props {
 }
 
 const {
-	title = 'Chu Yumin',
+	title = SITE_NAME,
 	description = 'iOS 개발자 Chu Yumin의 프로젝트·스터디·세미나 기록',
 } = Astro.props;
 ---
@@ -23,6 +25,10 @@ const {
 		<meta name="generator" content={Astro.generator} />
 		<meta name="description" content={description} />
 		<title>{title}</title>
+		<!-- 파비콘: SVG를 읽는 브라우저는 SVG를, 못 읽으면 ICO(16·32)를 쓴다. ICO는 sizes="32x32"로 두어야 SVG보다 앞서 고르지 않는다 -->
+		<link rel="icon" href={withBase('/favicon.ico')} sizes="32x32" />
+		<link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml" />
+		<link rel="apple-touch-icon" href={withBase('/apple-touch-icon.png')} />
 		<script is:inline>
 			// 저장된 테마를 <html data-theme>에 적용한다. 저장값이 없으면 CSS가 시스템 설정을 따른다
 			// - 첫 화면: 그리기 전에 실행해 깜빡임을 막는다
