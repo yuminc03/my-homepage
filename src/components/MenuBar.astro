@@ -25,7 +25,7 @@ const home = getApp('home');
 <header class="menubar" data-touch={showOnTouch ? 'show' : 'hide'} transition:name="menubar">
 	<a class="brand" href={withBase(home.href)}>
 		<span class="logo" style={`--logo-bg: ${home.background};`} aria-hidden="true">CY</span>
-		<span class="name">Chu Yumin</span>
+		<span class="name">{home.title}</span>
 	</a>
 
 	<nav class="menu" aria-label="주요 메뉴">

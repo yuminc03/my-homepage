@@ -4,6 +4,7 @@ import '../styles/tokens.css';
 import '../styles/global.css';
 import '../styles/transitions.css';
 import PageTransitions from '../components/PageTransitions.astro';
+import { SITE_NAME } from '../data/apps';
 
 interface Props {
 	title?: string;
@@ -11,7 +12,7 @@ interface Props {
 }
 
 const {
-	title = 'Chu Yumin',
+	title = SITE_NAME,
 	description = 'iOS 개발자 Chu Yumin의 프로젝트·스터디·세미나 기록',
 } = Astro.props;
 ---

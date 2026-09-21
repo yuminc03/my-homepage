@@ -25,13 +25,17 @@ export interface App extends Shortcut {
 	description: string;
 }
 
+// 사이트 이름: 메뉴바 왼쪽 끝과 브라우저 탭 제목 끝에 붙는다. 사용자 닉네임(리아) + 기록(.log)
+// 홈 인사말·코드 위젯의 실명(Chu Yumin)은 자기소개라 profile.ts에 그대로 둔다
+export const SITE_NAME = 'Lia.log';
+
 const gradient = (from: string, to: string) => `linear-gradient(145deg, ${from}, ${to})`;
 
 export const APPS: readonly App[] = [
 	{
 		id: 'home',
 		label: '홈',
-		title: 'Chu Yumin',
+		title: SITE_NAME,
 		description: 'iOS 개발자 Chu Yumin의 프로젝트·스터디·세미나 기록',
 		href: '/',
 		background: gradient('oklch(70% 0.13 300)', 'oklch(58% 0.15 285)'),
