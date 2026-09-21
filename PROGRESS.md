@@ -1,10 +1,11 @@
 # 진행 상황
 - 최종 업데이트: 2026-09-21
 - 이 문서 하나만 읽으면 새 채팅에서 바로 이어서 작업할 수 있도록 정리한 단일 기준 문서다
-- **마지막 세션 종료(2026-09-21)**: **콘텐츠 검색을 끝내 병합하고, 이어서 사이트를 배포해 공개했다.** 먼저 검색부터 — 구현은 브랜치 `feature/content-search`(커밋 8개, 목록은 12장)에서 했다. 빌드 때 본문까지 담은 JSON 색인(`/search-index.json`)을 만들고, 검색 창을 처음 열 때 한 번 내려받아 브라우저에서 부분 문자열로 찾는다. 창은 `<dialog>` 모달이라 포커스 가두기·Esc·뒤 화면 잠금을 브라우저가 맡고, ⌘K(맥)·Ctrl+K와 돋보기 버튼(데스크톱은 메뉴바, 모바일·태블릿은 홈=메뉴바·목록/상세=창 타이틀 바)으로 연다. 결과는 컬렉션별로 묶고 일치 글자를 강조하며, 요약에 없으면 본문에서 잘라 온 줄을, 그것도 없으면 걸린 태그·기술을 보여 준다. 실시간 CDP 검사(열고 닫기 4경로·키보드 이동·전환 뒤 재동작·색인 1회 요청·브라우저 뒤로·색인 실패)와 5폭 라이트/다크 화면, **사용자 브라우저 확인**(임시 콘텐츠 7건, 지적 없음)을 모두 통과했다. 커밋 8개(목록은 12장) → 병합 `d81c5fc` → 기능 브랜치 삭제 → `origin/develop` push까지 끝났다. 결정과 근거는 **5-19**(방식 확정은 5-18). 이로써 **계획한 화면·기능 구현이 모두 끝났다.** 이어서 **GitHub Actions 배포까지 마쳤다**(2026-09-21): 저장소를 공개로 바꾸고 Pages를 GitHub Actions 방식으로 켠 뒤 `develop` → `master` 병합 `ea31474`를 push해 첫 배포에 성공했다. **사이트가 https://yuminc03.github.io/my-homepage/ 에 실제로 떠 있다**(결정은 5-20). 다만 **공개된 글은 아직 하나도 없다** — 예시 글 3개가 모두 `draft: true`라 목록이 빈 상태로 나온다. 다음은 대괄호 `[ ]` placeholder를 실제 콘텐츠로 채우는 일이고(2-6), 그 뒤 실기기 확인 → 마지막 개발 과정 설명 세션이다. **새 채팅은 2-1의 1(상태 확인) → 2-6**부터 시작한다. 지금 브랜치는 `develop`이고 작업 트리는 깨끗하다
+- **마지막 세션 종료(2026-09-21, 이어서)**: **사이트 이름을 `Lia.log`(닉네임 리아 + 기록)로 바꾸고, 메뉴바 로고를 `CY` 글자에서 창 그림으로, 같은 그림으로 파비콘을 추가했다**(결정은 **5-21**). 브랜치 `feature/site-name-favicon`에 커밋 3개 + 문서 1개(12장), **아직 `develop`에 병합하지 않았다**. 작업 중 저장소에 생기던 ` 2` 사본 파일의 원인이 **iCloud "데스크탑 및 문서" 동기화**임을 확인하고 모두 지웠다(2-2 끝). 콘텐츠 재료를 받는 형식은 2-6에 정리해 사용자에게 안내했다 — **사용자가 재료를 보내 주면 2-6을 따라간다**
+- **그 전 세션(2026-09-21)**: **콘텐츠 검색을 끝내 병합하고, 이어서 사이트를 배포해 공개했다.** 먼저 검색부터 — 구현은 브랜치 `feature/content-search`(커밋 8개, 목록은 12장)에서 했다. 빌드 때 본문까지 담은 JSON 색인(`/search-index.json`)을 만들고, 검색 창을 처음 열 때 한 번 내려받아 브라우저에서 부분 문자열로 찾는다. 창은 `<dialog>` 모달이라 포커스 가두기·Esc·뒤 화면 잠금을 브라우저가 맡고, ⌘K(맥)·Ctrl+K와 돋보기 버튼(데스크톱은 메뉴바, 모바일·태블릿은 홈=메뉴바·목록/상세=창 타이틀 바)으로 연다. 결과는 컬렉션별로 묶고 일치 글자를 강조하며, 요약에 없으면 본문에서 잘라 온 줄을, 그것도 없으면 걸린 태그·기술을 보여 준다. 실시간 CDP 검사(열고 닫기 4경로·키보드 이동·전환 뒤 재동작·색인 1회 요청·브라우저 뒤로·색인 실패)와 5폭 라이트/다크 화면, **사용자 브라우저 확인**(임시 콘텐츠 7건, 지적 없음)을 모두 통과했다. 커밋 8개(목록은 12장) → 병합 `d81c5fc` → 기능 브랜치 삭제 → `origin/develop` push까지 끝났다. 결정과 근거는 **5-19**(방식 확정은 5-18). 이로써 **계획한 화면·기능 구현이 모두 끝났다.** 이어서 **GitHub Actions 배포까지 마쳤다**(2026-09-21): 저장소를 공개로 바꾸고 Pages를 GitHub Actions 방식으로 켠 뒤 `develop` → `master` 병합 `ea31474`를 push해 첫 배포에 성공했다. **사이트가 https://yuminc03.github.io/my-homepage/ 에 실제로 떠 있다**(결정은 5-20). 다만 **공개된 글은 아직 하나도 없다** — 예시 글 3개가 모두 `draft: true`라 목록이 빈 상태로 나온다. 다음은 대괄호 `[ ]` placeholder를 실제 콘텐츠로 채우는 일이고(2-6), 그 뒤 실기기 확인 → 마지막 개발 과정 설명 세션이다. **새 채팅은 2-1의 1(상태 확인) → 2-6**부터 시작한다. 지금 브랜치는 `develop`이고 작업 트리는 깨끗하다
 
 ## 1. 한눈에 보기
-- **무엇을 만드나**: iOS 개발자 Chu Yumin의 개인 홈페이지(자기소개·프로젝트·스터디 기록·세미나 기록)
+- **무엇을 만드나**: iOS 개발자 Chu Yumin의 개인 홈페이지(자기소개·프로젝트·스터디 기록·세미나 기록). 사이트 이름은 **`Lia.log`**(2026-09-21, 5-21)
 - **지금 단계**: 디자인 시안 완료, 기술 스택 확정(Astro + 일반 CSS), **Astro 프로젝트 생성**(임시 홈 1장, 빌드 확인), **전역 토큰 CSS 이식**(`src/styles/tokens.css`), **콘텐츠 컬렉션 스키마**(프로젝트·스터디·세미나, MDX) , **공통 셸**(테마 버튼·메뉴바·Dock 자동 숨김·창·시계, 목록 틀 3개), **홈 페이지**(첫 화면·iPhone 목업·최근 기록), **프로젝트 목록·상세**(필터 칩·카드·상세 페이지) — 여기까지 `develop` 병합·원격 push 완료. **스터디 목록·글**(카드·필터·글 페이지·목차·코드 블록·읽는 시간)까지 `develop` 병합·push 완료(2026-09-20, 병합 `4351c43`, 결정은 5-15). **세미나 목록·행사 상세**(타임라인·가로/세로 카드·표지 사진·사진 컴포넌트 3종·홈 최근 기록 링크)도 브라우저 확인까지 마치고 `develop`에 병합·push했다(2026-09-20, 병합 `8f704a4`, 결정은 5-16). **페이지 전환 모션**(View Transitions·스크립트 재실행·전환 종류별 모션)도 브라우저 확인까지 마치고 `develop`에 병합·push했다(2026-09-20, 병합 `0cd15af`, 결정은 5-17). **콘텐츠 검색**(빌드 색인 JSON·찾기 헬퍼·`<dialog>` 검색 창·⌘K·돋보기 버튼)도 브라우저 확인까지 마치고 `develop`에 병합·push했다(2026-09-21, 병합 `d81c5fc`, 결정은 5-19). **여기까지로 계획한 화면·기능은 모두 끝났다.** 이어서 **GitHub Actions 배포**를 붙이고 저장소를 공개로 전환해 `develop` → `master` 병합 `ea31474`로 첫 배포에 성공했다(2026-09-21, 결정은 5-20). 남은 것은 실제 콘텐츠 채우기다. 작업 계획은 2-6에 정리해 두었다
 - **시안 진행도**
   - 데스크톱 7화면(홈·목록 3·상세 3) — 완료
@@ -20,8 +21,9 @@
 ## 2. 새 채팅에서 이어서 시작하기
 ### 2-1. 지금 바로 할 일
 1. `git status`로 브랜치와 작업 트리를 확인한다
-   - 기대 상태: **`develop` 브랜치**, 마지막 커밋은 문서(`docs:`) 커밋이다. 작업 트리 깨끗, `origin/develop`과 같음
-   - 기능 브랜치는 남아 있지 않다(`feature/content-search`·`feature/deploy` 모두 병합 후 삭제)
+   - 기대 상태: **`feature/site-name-favicon` 브랜치**(사이트 이름·로고·파비콘, 5-21), 마지막 커밋은 문서(`docs:`) 커밋이다. 작업 트리 깨끗
+   - **이 브랜치는 아직 `develop`에 병합하지 않았다** → 사용자 확인 뒤 `develop`에 `--no-ff` 병합 → 브랜치 삭제 → push. 실제 사이트에 반영하려면 이어서 `develop` → `master` 병합(배포)
+   - ` 2`가 붙은 파일·폴더가 다시 보이면 iCloud 동기화 사본이다(2-2 끝). 원본과 비교한 뒤 지운다
    - 원격: `origin/develop` = 로컬 `develop`과 같음, `origin/master` = `ea31474`(첫 배포). **`master`에 push하면 배포가 돌아간다** — 실제 콘텐츠가 준비되면 `develop` → `master` 병합으로 다시 배포한다
 2. Node는 **nvm의 24**를 쓴다. 셸 기본값이 21.7.3이라 명령 전에 `source ~/.nvm/nvm.sh && nvm use`(`.nvmrc` = 24)를 먼저 실행한다. 검증 방법은 2-2
 3. **지금 할 일은 대괄호 `[ ]` placeholder를 실제 콘텐츠로 채우는 일이다 → 2-6을 그대로 따라간다.** 시작할 때 `git switch -c feature/real-content`(`develop`에서)
@@ -57,6 +59,9 @@
   - **좁은 폭은 `Emulation.setDeviceMetricsOverride`로 바로 만든다** — 창 최소 폭 문제가 없어 320·390px iframe 하네스가 더 이상 필요 없다. `mobile` 값을 도중에 바꾸면 렌더러가 갈려 `Runtime.evaluate`가 응답하지 않으니 고정하고, 폭을 바꿀 때마다 `Page.navigate`로 다시 연다
   - 스크린샷은 `Page.captureScreenshot`, 명령마다 타임아웃(15초)을 두어야 응답이 없을 때 스크립트가 멈추지 않는다
   - 같은 출처 주의: `file://` 페이지에서 `http://localhost` iframe의 `contentWindow.document`는 교차 출처로 막힌다. 하네스 페이지는 `dist/`에 두어 같은 출처로 연다
+- **` 2`가 붙은 사본 파일(2026-09-21 원인 확인)**: 저장소가 `~/Documents` 아래에 있고 macOS의 **iCloud "데스크탑 및 문서 폴더" 동기화**가 켜져 있다(`defaults read com.apple.finder FXICloudDriveDesktop` = 1). 동기화가 충돌을 만나면 `파일 2.확장자`·`폴더 2` 사본을 만든다. 이번에는 루트·`design/`·`src/` 파일 30개(세션 도중 스스로 사라짐), 빈 폴더 9개, `node_modules` 안 612개가 있었다. `.git` 안에는 없었다
+  - 정리: 빈 폴더는 `rmdir`, `node_modules`는 통째로 지우고 `npm ci`(설치 스크립트 경고는 `fsevents` 하나뿐이고 무시해도 된다)
+  - 근본 해결은 저장소를 iCloud 밖(예: `~/Developer/`)으로 옮기거나 동기화를 끄는 것이다. `.git` 안에 사본이 생기면 저장소가 깨질 수 있어 옮기는 편이 안전하다 — 사용자에게 제안만 했다
 
 ### 2-3. 최근 세션에서 끝낸 일 (요약, 자세한 결정은 5장)
 - 콘텐츠 검색(`feature/content-search`, 2026-09-21, 결정은 **5-19**, 커밋 6개 목록은 12장, **아직 병합 전**)
@@ -131,6 +136,14 @@
 - **프로젝트**: 이름 · 한 줄 소개 · 분류(iOS/Web/Side Project) · 태그 · 앱 아이콘 · 시작일(진행 중이면 종료일 없음) · 역할 · 기술 스택 · 플랫폼 · 링크(App Store·GitHub, 있는 것만) · 스크린샷 · 주요 기능(제목·설명·폰 화면) · 본문(`## 소개` / `## 기술적으로 고민한 점` / `## 배운 점`)
 - **스터디 글**: 제목 · 요약 · 카테고리(칩은 쓰인 카테고리를 모아 만든다) · 날짜 · 본문(`##` 소제목, 코드 블록은 ```` ```swift title="파일.swift" ````)
 - **세미나**: 행사 이름 · 날짜 · 장소 · 짧은 소감 · 표지 사진(+설명) · 본문(`## SESSION 01 · 발표자` + `### 세션 제목` 한 쌍, 사진은 `<Photo>`·`<PhotoPair>`·`<PhotoSide>`)
+
+#### 재료를 받는 형식 (2026-09-21 사용자에게 안내함)
+- 글은 채팅에 편하게, 사진은 폴더(예: `~/Desktop/lia-log/프로젝트-앱이름/`)에 모아 경로만 받는다. Markdown 변환은 Claude가 한다. 없는 칸은 비워도 된다
+- 컬렉션 하나씩, **프로젝트부터** 권했다
+- 안내한 틀(위 필드와 같다)
+  - 프로젝트: 이름 · 한 줄 소개 · 분류 · 태그 · 기간 · 역할 · 기술 스택 · 플랫폼 · 링크 · 주요 기능(이름+설명+화면, 0~3개) · 소개 · 기술적으로 고민한 점(문제→원인→해결→결과) · 배운 점 / 사진: 아이콘·스크린샷·기능 화면
+  - 스터디: 제목 · 요약 · 카테고리 · 날짜 · 본문(코드는 파일 이름과 함께). 노션·블로그 원문을 붙여 줘도 된다고 했다
+  - 세미나: 행사 이름 · 날짜 · 장소 · 짧은 소감 · 도입 · 세션(발표자/제목/내용, 사진 표시) · 배운 점·소감 / 사진: 표지 1장+설명, 세션별 사진
 
 #### 순서
 1. 사용자에게 재료를 받는다(컬렉션 하나씩 시작하는 편이 낫다)
@@ -217,6 +230,10 @@
 | Pages 배포 설정 | `.github/workflows/deploy.yml`(master push에만, Node는 `.nvmrc`에서) | `feature/deploy` | 로컬 `npm ci` + 빌드로 CI와 같은 설치 확인, `54d0de2`(2026-09-21) |
 | 저장소 공개 전환 | 무료 계정에서 Pages를 쓰려면 공개여야 한다. 비밀 값 없음 확인 | — | `gh repo edit --visibility public`(2026-09-21, 사용자 선택) |
 | 첫 배포 | Pages를 GitHub Actions 방식으로 켜고 `develop` → `master` 병합 push | `master` | run 35572925109 성공, 5개 주소 200 확인, 병합 `ea31474`(2026-09-21) |
+| 사이트 이름 | `Chu Yumin` → `Lia.log`(`SITE_NAME`), 탭 제목 조립을 `SiteLayout` 한곳으로 | `feature/site-name-favicon` | 빌드 결과 탭 제목·메뉴바 확인, `fbef4cb`(2026-09-21) |
+| 메뉴바 로고 | `CY` 글자 → 창 그림(`BRAND` + `AppIcon`) | `feature/site-name-favicon` | 1440 라이트·다크, 800 다크 스크린샷, `15785f9`(2026-09-21) |
+| 파비콘 | `public/favicon.svg`·`favicon.ico`(16·32)·`apple-touch-icon.png`(180) + `<head>` 링크 | `feature/site-name-favicon` | 후보 4개(반짝임·기록장·창·프롬프트) 중 사용자 선택 C, `f6894bb`(2026-09-21) |
+| iCloud 사본 정리 | ` 2` 사본(빈 폴더 9 · `node_modules` 612) 삭제, `npm ci` | — | 원인 확인(2-2 끝), 남은 사본 0개(2026-09-21) |
 
 ### 남은 일
 - [x] 모션·✕·문서 커밋 → `develop` 병합 → 브랜치 삭제 (2026-09-14, 사용자 확인)
@@ -265,6 +282,9 @@
 - [x] GitHub Actions로 GitHub Pages 자동 배포 설정 + 저장소 공개 전환 + 첫 배포 성공 (2026-09-21, 5-20). 사이트: https://yuminc03.github.io/my-homepage/
 - [x] 연락처 링크(GitHub·Email)는 `src/data/profile.ts`에 실제 주소로 들어가 있다(LinkedIn은 두지 않았다 — 동작 없는 링크 금지)
 - [x] `develop` → `master` 병합 `ea31474`·push (2026-09-21, 첫 배포). 앞으로도 배포는 이 병합으로 한다
+- [x] 사이트 이름 `Lia.log`·메뉴바 로고·파비콘 (2026-09-21, 5-21, 커밋 3개)
+- [ ] `feature/site-name-favicon` → `develop` 병합 → 브랜치 삭제 → push (사용자 확인 뒤). 배포는 그다음 `develop` → `master`
+- [ ] (제안) 저장소를 iCloud 동기화 밖으로 옮기기 — ` 2` 사본이 `.git` 안에 생기면 저장소가 깨질 수 있다(2-2 끝)
 - [ ] **마지막 단계: 개발 과정 설명 세션** — 사이트 완성 뒤 문법·핵심 기능·면접 예상 질문을 사용자에게 설명(2026-09-17 요청, 자세한 내용은 2-1의 4)
 - 선택 과제: `DirectionG.dc.html` 색 기준표의 미니 화면은 "창 본문은 항상 밝게" 시절 모습이다. 다시 쓸 일이 생기면 갱신
 
@@ -612,6 +632,21 @@
 - **확인 결과(2026-09-21)**: 첫 배포 성공(run 35572925109). `/`·`/projects/`·`/study/`·`/seminars/`·`/search-index.json` 모두 200, 홈 제목·검색 창·돋보기·`base` 경로 에셋 10개 정상, 실제 화면 스크린샷 확인. **공개된 글이 없어 색인은 `[]`이고 목록은 빈 상태로 나온다**(예시 글 3개가 `draft: true`)
 - 워크플로 로그에 나오는 경고 2건은 조치하지 않아도 된다: `actions/checkout@v4` 등이 Node 20을 target한다는 안내(러너가 알아서 24로 돌린다)와 `ubuntu-latest`가 2026-10-19부터 Ubuntu 26으로 바뀐다는 안내
 
+### 5-21. 사이트 이름·로고·파비콘 (2026-09-21 결정)
+- **사이트 이름 `Lia.log`(사용자 제안)**: 사용자 닉네임 "리아" + 기록을 뜻하는 `.log`. 후보로 `Yumin.log`·`Yumin OS`·`Yumin's Desk`를 냈고 사용자가 닉네임으로 바꿔 골랐다
+  - 쓰이는 곳: 메뉴바 왼쪽 끝, 브라우저 탭 제목(홈 `Lia.log` / 목록 `프로젝트 · Lia.log` / 상세 `글 제목 · 프로젝트 · Lia.log`)
+  - **실명은 남긴다**: 홈 인사말 "Chu Yumin입니다."·코드 위젯 `Avatar(name:)`는 자기소개이고, `description` 메타는 실명 검색에 걸리도록 `iOS 개발자 Chu Yumin의 …`를 유지한다
+  - 이름은 `apps.ts`의 `SITE_NAME` 하나. 상세 페이지 3곳이 `· Chu Yumin`을 각자 붙이던 중복을 없애고 `SiteLayout`이 `[글 제목, 앱 라벨, SITE_NAME]`을 조립한다(상세는 `title={data.title}`만 넘긴다)
+- **로고·파비콘은 글자 없이 그림 하나(사용자 요청)** — 이니셜은 이름이 바뀌면 다시 만들어야 하고 16px에서 두 글자는 뭉개진다. 후보 4개(반짝임 ✦ · 기록장 · 창 · 프롬프트 `>_`)를 16px 탭 모형까지 그려 비교했고 **C. 창**(타이틀 바가 있는 창 = 사이트의 데스크톱·창 메타포)을 골랐다
+  - 그림 기준은 `apps.ts`의 `BRAND`(24 viewBox, 창이 타일의 62.5%, 선 1.875). 메뉴바는 다른 앱 아이콘처럼 `AppIcon`으로 그리고 크기는 `.brand`의 CSS 변수로 내려보낸다(자식 컴포넌트 루트에 스코프 스타일이 닿지 않아서)
+  - 홈 앱과 로고가 같은 라일락 그라디언트라 `LILAC` 상수로 묶었다
+- **파비콘 파일 3개**(`public/`): `favicon.svg`(기준, 어떤 크기든 선명) · `favicon.ico`(16·32 PNG 내장, SVG를 못 읽는 브라우저) · `apple-touch-icon.png`(180, iPhone 홈 화면 추가용)
+  - SVG의 색은 16진수(`#ab8be3` → `#736ace`, `oklch`를 계산해 바꿈) — 파비콘 SVG의 `oklch` 지원이 브라우저마다 달라서
+  - apple-touch-icon은 **모서리를 깎지 않은 꽉 찬 사각형**이다. iOS가 모서리를 스스로 깎고 투명한 곳은 검게 채우기 때문
+  - ICO·PNG는 SVG에서 `sharp`(Astro 의존성으로 이미 설치됨)로 만들었다. 스크립트는 scratchpad에 두었다가 사라졌다 — 다시 만들려면 `sharp(svg, { density: 72 * size / 24 }).resize(size).png()`로 PNG를 만들고, ICO는 헤더 6바이트 + 항목 16바이트 × n + PNG 데이터를 이어 붙인다
+  - `<link rel="icon" href=".ico" sizes="32x32">`를 SVG보다 먼저 둔다. `sizes`가 없으면 Chrome이 SVG 대신 ICO를 고르는 경우가 있다. 주소는 `withBase()`
+  - **모양을 바꿀 때는 `BRAND`와 `favicon.svg`를 함께 고치고 ICO·PNG를 다시 만든다**(정적 파일이라 코드에서 읽을 수 없다)
+
 ## 6. 저작권 주의선
 - macOS·Xcode의 실제 UI를 복제하지 않는다. Apple 로고, SF Symbols, 신호등 색(빨강·노랑·초록) 창 컨트롤, 실제 메뉴 구조를 쓰지 않는다
 - 자체 팔레트와 직접 그린 SVG 아이콘을 쓴다. 창 컨트롤 점은 라일락 2개 + 민트 1개(장식이며 기능 없음). 닫기는 별도 ✕ 버튼으로 둔다
@@ -743,10 +778,11 @@
 | `src/styles/prose.css` | Markdown 본문 공통 스타일(`.prose-body`): 문단·목록·강조·링크·이미지·인라인 코드·인용, 간격 변수 `--prose-gap`. `code-block.css`를 `@import` |
 | `src/styles/code-block.css` | 코드 블록 모양: 머리줄·복사 버튼·줄 번호(CSS 카운터 + sticky)·폭별 글자 크기. 테마와 무관한 고정 어두운 색 |
 | `src/layouts/SiteLayout.astro` | 공통 셸: 고정 글로우 바탕 3개 · `MenuBar` · `<main>` · `Dock`. props `active`(앱 id), `surface`(`desk` 홈 / `window` 창 화면), `title`·`description`, `dockHidden`(상세). 글로우는 전환 때 본문과 함께 밀린다(이름을 주지 않는다, 5-17) |
-| `src/data/apps.ts` | 앱 목록 `APPS`(홈·프로젝트·스터디 기록·세미나 기록: 라벨·창 제목·설명·경로·아이콘 바탕·SVG), `CONTACT`(`/#contact`), `CODE_EDITOR`(`/#code`, 데스크톱 Dock 전용), `getApp()` |
+| `public/favicon.svg` · `favicon.ico` · `apple-touch-icon.png` | 파비콘(창 그림, `BRAND`와 같은 모양). ICO 16·32, 애플 180 꽉 찬 사각형(5-21) |
+| `src/data/apps.ts` | 사이트 이름 `SITE_NAME`(`Lia.log`), 로고 그림 `BRAND`(5-21), 앱 목록 `APPS`(홈·프로젝트·스터디 기록·세미나 기록: 라벨·창 제목·설명·경로·아이콘 바탕·SVG), `CONTACT`(`/#contact`), `CODE_EDITOR`(`/#code`, 데스크톱 Dock 전용), `getApp()` |
 | `src/lib/url.ts` | `withBase(path)`: base(`/my-homepage`)를 붙인 내부 경로. 내부 링크는 모두 이것으로 만든다 |
 | `src/components/AppIcon.astro` | 아이콘 타일. 크기는 부모의 CSS 변수(`--icon-size`·`--icon-radius`·`--glyph-size`·`--glyph-stroke`), `shadow` 옵션 |
-| `src/components/MenuBar.astro` | 유리 메뉴바. 데스크톱 36px(로고·이름·메뉴 4개 `aria-current`·테마 버튼·시계) / 모바일 52px·태블릿 56px(홈에서만, 로고·이름·44px 테마 버튼). `transition:name="menubar"`로 전환 때 제자리(5-17) |
+| `src/components/MenuBar.astro` | 유리 메뉴바. 로고는 `AppIcon`(`BRAND`, 24px·데스크톱 19px) + 이름 `SITE_NAME`. 데스크톱 36px(로고·이름·메뉴 4개 `aria-current`·테마 버튼·시계) / 모바일 52px·태블릿 56px(홈에서만, 로고·이름·44px 테마 버튼). `transition:name="menubar"`로 전환 때 제자리(5-17) |
 | `src/components/MenuClock.astro` | 데스크톱 메뉴바 시계. 기기 현지 시각 `HH:MM`, 분 경계마다 `setTimeout`으로 갱신, JS 전에는 빈 자리(폭 고정)(5-12) |
 | `src/components/Dock.astro` | 하단 고정 Dock. 앱 4개 + 실행 점 · 구분선 · 코드 에디터(데스크톱) · 연락처. `surface` desk/window 유리. 크기 모바일 48 / 태블릿 56 / 데스크톱 52px. 자동 숨김 스크립트(`data-state`, `onEachPage`로 페이지마다 다시 건다)·힌트 막대(5-3). `startHidden`이면 숨긴 채 시작(5-14). `transition:name="dock"`으로 전환 때 제자리(5-17) |
 | `src/components/Window.astro` | 창. 데스크톱: 최대 1240px 가운데 창(타이틀 바 44px, ✕ 28px) / 모바일·태블릿: 위 12·16px 틈 시트(타이틀 바 52·56px sticky, ✕ 44px). 본문 여백 20·36·48px(`--win-pad`로 내보내 표지·스크린샷 띠가 상쇄에 쓴다), 아래는 Dock 자리만큼 비움. `back`(href·label)이면 모바일·태블릿 타이틀 바 창 점 자리에 ‹ 링크. `data-back-link` 링크에 직전 목록 필터를 붙이는 스크립트 포함(5-15) |
@@ -756,7 +792,7 @@
 | `src/components/ProfileCode.astro` | `ProfileView.swift` 코드 에디터 내용: 파일 탭(데스크톱) · 줄 번호 · Swift 구문 색(고정색). 보이는 줄 8/12/14 |
 | `src/components/PhoneMockup.astro` | iPhone 16 Pro 목업: 프레임 이미지(`<Image>` WebP 1x·2x) + 투명 화면 영역(slot, 넘긴 `img`는 꽉 채워 위 기준으로 자름). 폭 `--phone-width`(5-8) |
 | `src/assets/iphone-16-pro.png` | Apple Design Resources iPhone 16 Pro 프레임(450×920 RGBA, 50KB). 사용자 허용으로 커밋(5-8) |
-| `src/layouts/BaseLayout.astro` | 모든 페이지 공통 문서 뼈대: `lang="ko"`, 메타(title·description 기본값), Noto Sans KR `<link>`, `tokens.css`·`global.css`·`transitions.css` import, `<head>` 인라인 스크립트(저장된 테마를 첫 화면 전에 `data-theme`에 적용 + `astro:after-swap`에서 다시 적용), `PageTransitions`, `<slot />` |
+| `src/layouts/BaseLayout.astro` | 모든 페이지 공통 문서 뼈대: `lang="ko"`, 메타(title·description 기본값), 파비콘 링크 3개(5-21), Noto Sans KR `<link>`, `tokens.css`·`global.css`·`transitions.css` import, `<head>` 인라인 스크립트(저장된 테마를 첫 화면 전에 `data-theme`에 적용 + `astro:after-swap`에서 다시 적용), `PageTransitions`, `<slot />` |
 | `src/components/PageTransitions.astro` | 페이지 전환: `ClientRouter` + 떠나는/가는 주소로 전환 종류를 정해 `event.direction`에 넣는 스크립트(`open`·`close`·`push`·`pop`·`fade`, 상세↔상세는 링크의 `rel`)(5-17) |
 | `src/styles/transitions.css` | 전환 종류별 `::view-transition-old/new(root)` 모션. 시간·곡선은 모션 토큰만 쓰고 `pop`·`close`는 나가는 화면을 위로(`z-index: 1`). 데스크톱은 시트 대신 창이 커지며 열린다(5-17) 맨 아래에 검색 창이 열린 동안 메뉴바·Dock을 흐리게 하는 규칙(5-19) |
 | `src/lib/markdownText.ts` | 마크다운·MDX에서 읽는 글자만 남기는 `markdownToText(body, { keepCode })`. 읽는 시간(코드 포함)과 검색 색인(코드 제외)이 함께 쓴다(5-19) |
@@ -769,7 +805,7 @@
 | `src/components/ThemeToggle.astro` | 테마 전환 버튼(해/달 아이콘, `size` desktop/touch). 문서 위임 클릭 → `data-theme`·`localStorage('theme')` 저장, 버튼 이름 갱신, 누른 뒤 아이콘 애니메이션 |
 | `src/styles/tokens.css` | 디자인 토큰. 모션 곡선 3·시간 12, 색 55쌍 `light-dark()`, `color-scheme` 3가지(`:root`·`[data-theme="dark"]`·`[data-theme="light"]`) |
 | `src/styles/global.css` | 전역 기본: box-sizing, body 바탕 `--desk`·글자 `--ink`·글꼴, 링크 `--win-accent`(hover 전환은 모션 토큰), `img` 반응형, `[hidden]` 항상 숨김(필터용), `.code` 고정폭 글꼴 |
-- 템플릿에서 가져오지 않은 것: `README.md`·`AGENTS.md`(기존 README·`CLAUDE.md` 사용), `.vscode/launch.json`, 기본 Astro 파비콘(나중에 자체 아이콘으로 추가)
+- 템플릿에서 가져오지 않은 것: `README.md`·`AGENTS.md`(기존 README·`CLAUDE.md` 사용), `.vscode/launch.json`, 기본 Astro 파비콘(자체 아이콘은 2026-09-21 추가, 5-21)
 
 ### 10-3. 그 밖의 파일
 - `docs/tech-stack.md` — 기술 스택 비교표·약점·예상 면접 질문·결정 기록
@@ -795,7 +831,12 @@
 - 인터랙션은 `onClick="{{handler}}"`, 조건 표시는 `<sc-if value="{{bool}}">`, 상태 스타일은 `data-*="{{값}}"` + CSS 선택자로 만든다(`class`에 값 끼워 넣기는 쓰지 않았다)
 
 ## 12. 브랜치·커밋 기록
-- 로컬 브랜치: `master`, `develop`(현재). 원격(`origin`, `https://github.com/yuminc03/my-homepage.git`, **2026-09-21부터 공개 저장소**): `master` `ea31474`(첫 배포, 로컬과 같음), `develop`(2026-09-21 push, `origin/develop` 추적). 기능 브랜치는 남아 있지 않다. **`master`에 push하면 GitHub Actions가 배포한다**(5-20)
+- 로컬 브랜치: `master`, `develop`, `feature/site-name-favicon`(현재, 병합 전). 원격(`origin`, `https://github.com/yuminc03/my-homepage.git`, **2026-09-21부터 공개 저장소**): `master` `ea31474`(첫 배포, 로컬과 같음), `develop`(2026-09-21 push, `origin/develop` 추적). **`master`에 push하면 GitHub Actions가 배포한다**(5-20)
+- `feature/site-name-favicon`(2026-09-21, `develop` `48ae273`에서 분기, **아직 병합 전**), 오래된 순. 각 커밋 직전에 `npm run build`
+  - `fbef4cb` feat: 사이트 이름을 Lia.log로 바꾸고 탭 제목 조립을 한곳으로 모음
+  - `15785f9` feat: 메뉴바 로고를 CY 글자에서 창 그림 아이콘으로 바꿈
+  - `f6894bb` feat: 파비콘과 iPhone 홈 화면 아이콘 추가
+  - (이 문서 갱신) docs: 사이트 이름·파비콘 결정과 iCloud 사본 원인 기록
 - `feature/deploy`(2026-09-21, `develop` `32b70ba`에서 분기, **`develop` 병합 `36f0456`으로 완료, 브랜치 삭제**)
   - `54d0de2` ci: GitHub Actions로 GitHub Pages 자동 배포 설정
 - `master` 병합: `ea31474` merge: develop → master (첫 배포, 2026-09-21). 이 push가 run 35572925109을 일으켜 배포에 성공했다
