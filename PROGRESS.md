@@ -1,7 +1,7 @@
 # 진행 상황
 - 최종 업데이트: 2026-09-21
 - 이 문서 하나만 읽으면 새 채팅에서 바로 이어서 작업할 수 있도록 정리한 단일 기준 문서다
-- **마지막 세션 종료(2026-09-21, 이어서)**: **사이트 이름을 `Lia.log`(닉네임 리아 + 기록)로 바꾸고, 메뉴바 로고를 `CY` 글자에서 창 그림으로, 같은 그림으로 파비콘을 추가했다**(결정은 **5-21**). 브랜치 `feature/site-name-favicon`에 커밋 3개 + 문서 1개(12장), **아직 `develop`에 병합하지 않았다**. 작업 중 저장소에 생기던 ` 2` 사본 파일의 원인이 **iCloud "데스크탑 및 문서" 동기화**임을 확인하고 모두 지웠다(2-2 끝). 콘텐츠 재료를 받는 형식은 2-6에 정리해 사용자에게 안내했다 — **사용자가 재료를 보내 주면 2-6을 따라간다**
+- **마지막 세션 종료(2026-09-21, 이어서)**: **사이트 이름을 `Lia.log`(닉네임 리아 + 기록)로 바꾸고, 메뉴바 로고를 `CY` 글자에서 창 그림으로, 같은 그림으로 파비콘을 추가했다**(결정은 **5-21**). 브랜치 `feature/site-name-favicon`(커밋 3개 + 문서 1개, 12장)을 `develop`에 병합 `cc6040f` → 브랜치 삭제 → push하고, `develop` → `master` 병합 `398be50`으로 **배포까지 마쳤다**(run 35576351264 성공, 실제 주소에서 탭 제목·메뉴바·파비콘 3종 200 확인). 작업 중 저장소에 생기던 ` 2` 사본 파일의 원인이 **iCloud "데스크탑 및 문서" 동기화**임을 확인하고 모두 지웠다(2-2 끝). 콘텐츠 재료를 받는 형식은 2-6에 정리해 사용자에게 안내했다 — **사용자가 재료를 보내 주면 2-6을 따라간다**
 - **그 전 세션(2026-09-21)**: **콘텐츠 검색을 끝내 병합하고, 이어서 사이트를 배포해 공개했다.** 먼저 검색부터 — 구현은 브랜치 `feature/content-search`(커밋 8개, 목록은 12장)에서 했다. 빌드 때 본문까지 담은 JSON 색인(`/search-index.json`)을 만들고, 검색 창을 처음 열 때 한 번 내려받아 브라우저에서 부분 문자열로 찾는다. 창은 `<dialog>` 모달이라 포커스 가두기·Esc·뒤 화면 잠금을 브라우저가 맡고, ⌘K(맥)·Ctrl+K와 돋보기 버튼(데스크톱은 메뉴바, 모바일·태블릿은 홈=메뉴바·목록/상세=창 타이틀 바)으로 연다. 결과는 컬렉션별로 묶고 일치 글자를 강조하며, 요약에 없으면 본문에서 잘라 온 줄을, 그것도 없으면 걸린 태그·기술을 보여 준다. 실시간 CDP 검사(열고 닫기 4경로·키보드 이동·전환 뒤 재동작·색인 1회 요청·브라우저 뒤로·색인 실패)와 5폭 라이트/다크 화면, **사용자 브라우저 확인**(임시 콘텐츠 7건, 지적 없음)을 모두 통과했다. 커밋 8개(목록은 12장) → 병합 `d81c5fc` → 기능 브랜치 삭제 → `origin/develop` push까지 끝났다. 결정과 근거는 **5-19**(방식 확정은 5-18). 이로써 **계획한 화면·기능 구현이 모두 끝났다.** 이어서 **GitHub Actions 배포까지 마쳤다**(2026-09-21): 저장소를 공개로 바꾸고 Pages를 GitHub Actions 방식으로 켠 뒤 `develop` → `master` 병합 `ea31474`를 push해 첫 배포에 성공했다. **사이트가 https://yuminc03.github.io/my-homepage/ 에 실제로 떠 있다**(결정은 5-20). 다만 **공개된 글은 아직 하나도 없다** — 예시 글 3개가 모두 `draft: true`라 목록이 빈 상태로 나온다. 다음은 대괄호 `[ ]` placeholder를 실제 콘텐츠로 채우는 일이고(2-6), 그 뒤 실기기 확인 → 마지막 개발 과정 설명 세션이다. **새 채팅은 2-1의 1(상태 확인) → 2-6**부터 시작한다. 지금 브랜치는 `develop`이고 작업 트리는 깨끗하다
 
 ## 1. 한눈에 보기
@@ -21,8 +21,8 @@
 ## 2. 새 채팅에서 이어서 시작하기
 ### 2-1. 지금 바로 할 일
 1. `git status`로 브랜치와 작업 트리를 확인한다
-   - 기대 상태: **`feature/site-name-favicon` 브랜치**(사이트 이름·로고·파비콘, 5-21), 마지막 커밋은 문서(`docs:`) 커밋이다. 작업 트리 깨끗
-   - **이 브랜치는 아직 `develop`에 병합하지 않았다** → 사용자 확인 뒤 `develop`에 `--no-ff` 병합 → 브랜치 삭제 → push. 실제 사이트에 반영하려면 이어서 `develop` → `master` 병합(배포)
+   - 기대 상태: **`develop` 브랜치**, 마지막 커밋은 문서(`docs:`) 커밋이다. 작업 트리 깨끗, `origin/develop`과 같음
+   - 기능 브랜치는 남아 있지 않다(`feature/site-name-favicon`도 병합 `cc6040f` 후 삭제). `origin/master` = `398be50`(Lia.log 배포)
    - ` 2`가 붙은 파일·폴더가 다시 보이면 iCloud 동기화 사본이다(2-2 끝). 원본과 비교한 뒤 지운다
    - 원격: `origin/develop` = 로컬 `develop`과 같음, `origin/master` = `ea31474`(첫 배포). **`master`에 push하면 배포가 돌아간다** — 실제 콘텐츠가 준비되면 `develop` → `master` 병합으로 다시 배포한다
 2. Node는 **nvm의 24**를 쓴다. 셸 기본값이 21.7.3이라 명령 전에 `source ~/.nvm/nvm.sh && nvm use`(`.nvmrc` = 24)를 먼저 실행한다. 검증 방법은 2-2
@@ -283,7 +283,7 @@
 - [x] 연락처 링크(GitHub·Email)는 `src/data/profile.ts`에 실제 주소로 들어가 있다(LinkedIn은 두지 않았다 — 동작 없는 링크 금지)
 - [x] `develop` → `master` 병합 `ea31474`·push (2026-09-21, 첫 배포). 앞으로도 배포는 이 병합으로 한다
 - [x] 사이트 이름 `Lia.log`·메뉴바 로고·파비콘 (2026-09-21, 5-21, 커밋 3개)
-- [ ] `feature/site-name-favicon` → `develop` 병합 → 브랜치 삭제 → push (사용자 확인 뒤). 배포는 그다음 `develop` → `master`
+- [x] `feature/site-name-favicon` → `develop` 병합 `cc6040f` → 브랜치 삭제 → push, `develop` → `master` 병합 `398be50`으로 배포 (2026-09-21, 사용자 요청, run 35576351264 성공)
 - [ ] (제안) 저장소를 iCloud 동기화 밖으로 옮기기 — ` 2` 사본이 `.git` 안에 생기면 저장소가 깨질 수 있다(2-2 끝)
 - [ ] **마지막 단계: 개발 과정 설명 세션** — 사이트 완성 뒤 문법·핵심 기능·면접 예상 질문을 사용자에게 설명(2026-09-17 요청, 자세한 내용은 2-1의 4)
 - 선택 과제: `DirectionG.dc.html` 색 기준표의 미니 화면은 "창 본문은 항상 밝게" 시절 모습이다. 다시 쓸 일이 생기면 갱신
@@ -831,12 +831,13 @@
 - 인터랙션은 `onClick="{{handler}}"`, 조건 표시는 `<sc-if value="{{bool}}">`, 상태 스타일은 `data-*="{{값}}"` + CSS 선택자로 만든다(`class`에 값 끼워 넣기는 쓰지 않았다)
 
 ## 12. 브랜치·커밋 기록
-- 로컬 브랜치: `master`, `develop`, `feature/site-name-favicon`(현재, 병합 전). 원격(`origin`, `https://github.com/yuminc03/my-homepage.git`, **2026-09-21부터 공개 저장소**): `master` `ea31474`(첫 배포, 로컬과 같음), `develop`(2026-09-21 push, `origin/develop` 추적). **`master`에 push하면 GitHub Actions가 배포한다**(5-20)
-- `feature/site-name-favicon`(2026-09-21, `develop` `48ae273`에서 분기, **아직 병합 전**), 오래된 순. 각 커밋 직전에 `npm run build`
+- 로컬 브랜치: `master`, `develop`(현재). 원격(`origin`, `https://github.com/yuminc03/my-homepage.git`, **2026-09-21부터 공개 저장소**): `master` `398be50`(Lia.log 배포, 로컬과 같음), `develop`(2026-09-21 push, `origin/develop` 추적). **`master`에 push하면 GitHub Actions가 배포한다**(5-20)
+- `feature/site-name-favicon`(2026-09-21, `develop` `48ae273`에서 분기, **`develop` 병합 `cc6040f`로 완료, 브랜치 삭제**), 오래된 순. 각 커밋 직전에 `npm run build`
   - `fbef4cb` feat: 사이트 이름을 Lia.log로 바꾸고 탭 제목 조립을 한곳으로 모음
   - `15785f9` feat: 메뉴바 로고를 CY 글자에서 창 그림 아이콘으로 바꿈
   - `f6894bb` feat: 파비콘과 iPhone 홈 화면 아이콘 추가
-  - (이 문서 갱신) docs: 사이트 이름·파비콘 결정과 iCloud 사본 원인 기록
+  - `28c617a` docs: 사이트 이름·파비콘 결정과 iCloud 사본 원인 기록
+- `master` 병합: `398be50` merge: develop → master (사이트 이름 Lia.log · 로고 · 파비콘, 2026-09-21). run 35576351264 성공
 - `feature/deploy`(2026-09-21, `develop` `32b70ba`에서 분기, **`develop` 병합 `36f0456`으로 완료, 브랜치 삭제**)
   - `54d0de2` ci: GitHub Actions로 GitHub Pages 자동 배포 설정
 - `master` 병합: `ea31474` merge: develop → master (첫 배포, 2026-09-21). 이 push가 run 35572925109을 일으켜 배포에 성공했다
@@ -894,7 +895,7 @@
   - `9744b81` docs: 프로젝트 목록·상세 구현 기록과 다음 작업(스터디) 정리
   - `8ffb68c` docs: 프로젝트 목록·상세 브라우저 확인 결과와 확정된 결정 2건 기록
 - `develop` 직접 커밋: `92083d0` `.claude/settings.json` 권한 추가(2026-09-14), `e32bb16` docs: 스터디 목록·글 작업 계획 정리(2026-09-18), `a322ec1` docs: 페이지 전환 병합 결과와 다음 작업(콘텐츠 검색) 정리(2026-09-20), `5fa1638` docs: 콘텐츠 검색 방식 4건 확정 기록(2026-09-20), (이 문서 갱신) docs: 콘텐츠 검색 병합 결과와 다음 작업(실제 콘텐츠) 정리(2026-09-21)
-- 병합 후 삭제한 브랜치(순서대로, 마지막은 `feature/project-pages` 병합 `53f528e`·2026-09-18·원격까지 삭제): `feature/design-theme-dock`, `feature/design-color-direction`(`fab45e5`), `feature/design-theme-toggle`(`e610858`), `feature/design-detail-screens`(`bfcf341`), `feature/design-project-detail`(`0c7d2c9`), `feature/design-mobile`(`74c8149`), `feature/design-dark-windows`, `feature/design-iphone-mockup`(`eceb50a`), `feature/design-tablet`(`2d280cd`), `bugfix/profileview-code-widget`(`aa62f64`), `feature/design-tablet-rest`(`c1e2f5c`), `feature/design-motion`(모션 설계 · 데스크톱 창 ✕ 버튼 · 인수인계 문서, 2026-09-14), `feature/tech-stack`(기술 스택 결정 문서, 2026-09-14), `feature/astro-setup`(Astro 생성·토큰·MDX·스키마, 병합 `004589b`, 2026-09-14), `feature/site-shell`(테마 버튼·공통 셸·Dock 자동 숨김·시계, 병합 `0227fa3`, 2026-09-15), `feature/home-page`(홈 첫 화면·iPhone 목업·최근 기록, 커밋 5개, 병합 `8c7568f`, 2026-09-16), `feature/study-pages`(스터디 목록·글, 커밋 11개, 병합 `4351c43`, 2026-09-20), `feature/seminar-pages`(세미나 목록·행사 상세 + 홈 최근 기록 링크, 커밋 8개, 병합 `8f704a4`, 2026-09-20), `feature/page-transitions`(페이지 전환 모션, 커밋 6개, 병합 `0cd15af`, 2026-09-20), `feature/content-search`(콘텐츠 검색, 커밋 8개, 병합 `d81c5fc`, 2026-09-21)
+- 병합 후 삭제한 브랜치(순서대로, 마지막은 `feature/project-pages` 병합 `53f528e`·2026-09-18·원격까지 삭제): `feature/design-theme-dock`, `feature/design-color-direction`(`fab45e5`), `feature/design-theme-toggle`(`e610858`), `feature/design-detail-screens`(`bfcf341`), `feature/design-project-detail`(`0c7d2c9`), `feature/design-mobile`(`74c8149`), `feature/design-dark-windows`, `feature/design-iphone-mockup`(`eceb50a`), `feature/design-tablet`(`2d280cd`), `bugfix/profileview-code-widget`(`aa62f64`), `feature/design-tablet-rest`(`c1e2f5c`), `feature/design-motion`(모션 설계 · 데스크톱 창 ✕ 버튼 · 인수인계 문서, 2026-09-14), `feature/tech-stack`(기술 스택 결정 문서, 2026-09-14), `feature/astro-setup`(Astro 생성·토큰·MDX·스키마, 병합 `004589b`, 2026-09-14), `feature/site-shell`(테마 버튼·공통 셸·Dock 자동 숨김·시계, 병합 `0227fa3`, 2026-09-15), `feature/home-page`(홈 첫 화면·iPhone 목업·최근 기록, 커밋 5개, 병합 `8c7568f`, 2026-09-16), `feature/study-pages`(스터디 목록·글, 커밋 11개, 병합 `4351c43`, 2026-09-20), `feature/seminar-pages`(세미나 목록·행사 상세 + 홈 최근 기록 링크, 커밋 8개, 병합 `8f704a4`, 2026-09-20), `feature/page-transitions`(페이지 전환 모션, 커밋 6개, 병합 `0cd15af`, 2026-09-20), `feature/content-search`(콘텐츠 검색, 커밋 8개, 병합 `d81c5fc`, 2026-09-21), `feature/site-name-favicon`(사이트 이름·로고·파비콘, 커밋 4개, 병합 `cc6040f`, 2026-09-21)
 - 참고로 남겨 둔 비교안 커밋: 색상 A~F `de7d440`, 행사 상세 사진 묶음형 A `1769266`
 
 ## 13. 문서 관리 규칙
