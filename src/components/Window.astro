@@ -1,13 +1,16 @@
 ---
 // 앱 창
 // - 데스크톱(≥1180px): 메뉴바 아래 가운데 떠 있는 창(최대 1240px). 타이틀 바 44px · 창 점 · 제목 · ✕(28px)
-// - 모바일·태블릿: 아래에서 올라와 화면을 채운 시트. 위 12/16px 틈으로 바탕이 비친다. 타이틀 바 52/56px(스크롤해도 고정) · ✕(44px)
+//   돋보기는 메뉴바에만 두므로 여기서는 뺀다(PROGRESS.md 5-18)
+// - 모바일·태블릿: 아래에서 올라와 화면을 채운 시트. 위 12/16px 틈으로 바탕이 비친다.
+//   타이틀 바 52/56px(스크롤해도 고정) · 오른쪽에 돋보기 · ✕(각 44px) — 창 화면에는 메뉴바가 없어 여기가 검색을 여는 자리다
 // - ✕는 창을 닫고 홈으로 간다. 창 점은 장식(기능 없음, 신호등 색 쓰지 않음)
 // - back이 있으면(상세 화면) 모바일·태블릿 타이틀 바 왼쪽의 창 점 자리에 ‹ 목록 링크를 둔다
 //   데스크톱은 창 점을 그대로 두고, 목록 링크는 페이지가 본문 읽기 폭 맨 위에 둔다(시안)
 // - 뒤로 가는 링크에는 data-back-link를 붙인다(아래 스크립트가 목록에서 고른 분류를 도로 붙여 준다).
 //   페이지가 따로 두는 데스크톱 ‹ 링크에도 같은 속성을 붙인다
 import WindowDots from './WindowDots.astro';
+import SearchButton from './SearchButton.astro';
 import { withBase } from '../lib/url';
 
 interface Props {
@@ -36,11 +39,14 @@ const { title, back } = Astro.props;
 				)
 			}
 			<span class="title">{title}</span>
-			<a class="close" href={withBase('/')} aria-label="창 닫고 홈으로">
-				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-					<path d="M6 6l12 12M18 6L6 18"></path>
-				</svg>
-			</a>
+			<span class="actions">
+				<span class="search-slot"><SearchButton size="touch" tone="window" /></span>
+				<a class="close" href={withBase('/')} aria-label="창 닫고 홈으로">
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<path d="M6 6l12 12M18 6L6 18"></path>
+					</svg>
+				</a>
+			</span>
 		</header>
 		<div class="body">
 			<slot />
@@ -89,17 +95,28 @@ const { title, back } = Astro.props;
 		color: var(--win-ink);
 	}
 
+	/* 양옆 칸을 같은 폭으로 두어 제목이 가운데 온다. 오른쪽 칸은 돋보기 + ✕ = 88px */
 	.titlebar {
 		position: sticky;
 		top: 0;
 		z-index: 5;
 		display: grid;
-		grid-template-columns: 80px minmax(0, 1fr) 80px;
+		grid-template-columns: 88px minmax(0, 1fr) 88px;
 		align-items: center;
 		height: 52px;
 		padding: 0 6px 0 16px;
 		border-bottom: 1px solid var(--win-bar-line);
 		background: var(--win-bar);
+	}
+
+	/* 돋보기·✕ 묶음. 데스크톱에서는 돋보기가 빠지고 ✕가 절대 위치로 빠져 빈 칸이 된다 */
+	.actions {
+		display: flex;
+		justify-content: flex-end;
+	}
+
+	.search-slot {
+		display: flex;
 	}
 
 	/* 창 점 크기·간격은 WindowDots가 읽는 변수로 정한다 */
@@ -159,7 +176,6 @@ const { title, back } = Astro.props;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		justify-self: end;
 		width: 44px;
 		height: 44px;
 		border-radius: 12px;
@@ -270,6 +286,11 @@ const { title, back } = Astro.props;
 		/* 데스크톱은 목록 링크를 본문에 두므로 타이틀 바에서는 뺀다 */
 		.titlebar.has-back {
 			padding-left: 44px;
+		}
+
+		/* 데스크톱은 돋보기를 메뉴바에만 둔다(5-18) → 타이틀 바는 창 점 · 제목 · ✕ 그대로 */
+		.search-slot {
+			display: none;
 		}
 
 		.back,

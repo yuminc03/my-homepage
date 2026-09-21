@@ -172,9 +172,11 @@
 			notice.textContent = hits.length ? `${hits.length}건` : '찾는 내용이 없습니다';
 		};
 
-		const open = () => {
+		// from: 돋보기 버튼으로 열었을 때 그 버튼. 맥 사파리·파이어폭스는 버튼을 눌러도 포커스를 주지 않아
+		// activeElement만 보면 닫을 때 <body>로 돌아가 버린다
+		const open = (from?: HTMLElement) => {
 			if (dialog.open) return;
-			opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+			opener = from ?? (document.activeElement instanceof HTMLElement ? document.activeElement : null);
 			dialog.showModal();
 			// 창이 떠 있는 동안 뒤 화면이 스크롤되지 않게 한다.
 			// <html>은 페이지 전환에도 살아남으므로 닫을 때 반드시 되돌린다
@@ -242,7 +244,9 @@
 		document.addEventListener(
 			'click',
 			(event) => {
-				if (event.target instanceof Element && event.target.closest('[data-search-open]')) open();
+				if (!(event.target instanceof Element)) return;
+				const button = event.target.closest<HTMLElement>('[data-search-open]');
+				if (button) open(button);
 			},
 			{ signal },
 		);
