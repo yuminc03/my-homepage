@@ -1,11 +1,11 @@
 # 진행 상황
-- 최종 업데이트: 2026-09-20
+- 최종 업데이트: 2026-09-21
 - 이 문서 하나만 읽으면 새 채팅에서 바로 이어서 작업할 수 있도록 정리한 단일 기준 문서다
-- **마지막 세션 종료(2026-09-20)**: **페이지 전환 모션을 끝내 `develop`에 병합했다**(병합 `0cd15af`). Astro의 `ClientRouter`를 넣고, 두 주소의 관계로 전환 종류(`open`·`close`·`push`·`pop`·`fade`)를 정해 `styles/transitions.css`가 모션을 고르게 했다. 전환 뒤에도 스크립트가 돌도록 `lib/pageInit.ts`의 `onEachPage`로 컴포넌트 초기화를 감쌌고, 전환 때 지워지는 `data-theme`도 다시 붙인다. 헤드리스 검사 17항목(전환 종류·테마 유지·Dock 시작 상태·필터 유지·목차 중복 없음·복사 버튼·시계·브라우저 뒤로·해시 링크)과 **사용자 브라우저 확인**(임시 콘텐츠 9건, 지적 없음)을 모두 통과했다. 커밋 6개(목록은 12장) → 병합 `0cd15af` → 기능 브랜치 삭제 → `origin/develop` push까지 끝났다. 결정과 근거는 **5-17**. 이어서 **콘텐츠 검색의 방식 4가지**(색인·여는 곳·결과 모양·입력 길이)를 사용자가 **확정**했고(**5-18**) 구현은 아직 시작하지 않았다. **새 채팅은 2-1의 1(상태 확인) → 2-6 "콘텐츠 검색"**부터 시작한다. 지금 브랜치는 `develop`이고 작업 트리는 깨끗하다
+- **마지막 세션 종료(2026-09-21)**: **콘텐츠 검색을 구현했다**(브랜치 `feature/content-search`, 커밋 6개, 목록은 12장). 빌드 때 본문까지 담은 JSON 색인(`/search-index.json`)을 만들고, 검색 창을 처음 열 때 한 번 내려받아 브라우저에서 부분 문자열로 찾는다. 창은 `<dialog>` 모달이라 포커스 가두기·Esc·뒤 화면 잠금을 브라우저가 맡고, ⌘K(맥)·Ctrl+K와 돋보기 버튼(데스크톱은 메뉴바, 모바일·태블릿은 홈=메뉴바·목록/상세=창 타이틀 바)으로 연다. 결과는 컬렉션별로 묶고 일치 글자를 강조하며, 요약에 없으면 본문에서 잘라 온 줄을, 그것도 없으면 걸린 태그·기술을 보여 준다. 실시간 CDP 검사(열고 닫기 4경로·키보드 이동·전환 뒤 재동작·색인 1회 요청·브라우저 뒤로·색인 실패)와 5폭 라이트/다크 화면을 확인했다. 결정과 근거는 **5-19**(방식 확정은 5-18). **아직 `develop`에 병합하지 않았다 — 남은 일은 사용자 브라우저 확인 → 임시 콘텐츠 삭제 → 문서 정리 → 병합·push다.** 새 채팅은 **2-1의 1(상태 확인) → 2-6 "콘텐츠 검색 마무리"**부터 시작한다. 지금 브랜치는 `feature/content-search`이고, 작업 트리에 **추적되지 않는 임시 콘텐츠 7건**(`src/content/*/tmp-*`)이 남아 있다
 
 ## 1. 한눈에 보기
 - **무엇을 만드나**: iOS 개발자 Chu Yumin의 개인 홈페이지(자기소개·프로젝트·스터디 기록·세미나 기록)
-- **지금 단계**: 디자인 시안 완료, 기술 스택 확정(Astro + 일반 CSS), **Astro 프로젝트 생성**(임시 홈 1장, 빌드 확인), **전역 토큰 CSS 이식**(`src/styles/tokens.css`), **콘텐츠 컬렉션 스키마**(프로젝트·스터디·세미나, MDX) , **공통 셸**(테마 버튼·메뉴바·Dock 자동 숨김·창·시계, 목록 틀 3개), **홈 페이지**(첫 화면·iPhone 목업·최근 기록), **프로젝트 목록·상세**(필터 칩·카드·상세 페이지) — 여기까지 `develop` 병합·원격 push 완료. **스터디 목록·글**(카드·필터·글 페이지·목차·코드 블록·읽는 시간)까지 `develop` 병합·push 완료(2026-09-20, 병합 `4351c43`, 결정은 5-15). **세미나 목록·행사 상세**(타임라인·가로/세로 카드·표지 사진·사진 컴포넌트 3종·홈 최근 기록 링크)도 브라우저 확인까지 마치고 `develop`에 병합·push했다(2026-09-20, 병합 `8f704a4`, 결정은 5-16). **페이지 전환 모션**(View Transitions·스크립트 재실행·전환 종류별 모션)도 브라우저 확인까지 마치고 `develop`에 병합·push했다(2026-09-20, 병합 `0cd15af`, 결정은 5-17). 다음은 콘텐츠 검색이고, 작업 계획은 2-6에 정리해 두었다
+- **지금 단계**: 디자인 시안 완료, 기술 스택 확정(Astro + 일반 CSS), **Astro 프로젝트 생성**(임시 홈 1장, 빌드 확인), **전역 토큰 CSS 이식**(`src/styles/tokens.css`), **콘텐츠 컬렉션 스키마**(프로젝트·스터디·세미나, MDX) , **공통 셸**(테마 버튼·메뉴바·Dock 자동 숨김·창·시계, 목록 틀 3개), **홈 페이지**(첫 화면·iPhone 목업·최근 기록), **프로젝트 목록·상세**(필터 칩·카드·상세 페이지) — 여기까지 `develop` 병합·원격 push 완료. **스터디 목록·글**(카드·필터·글 페이지·목차·코드 블록·읽는 시간)까지 `develop` 병합·push 완료(2026-09-20, 병합 `4351c43`, 결정은 5-15). **세미나 목록·행사 상세**(타임라인·가로/세로 카드·표지 사진·사진 컴포넌트 3종·홈 최근 기록 링크)도 브라우저 확인까지 마치고 `develop`에 병합·push했다(2026-09-20, 병합 `8f704a4`, 결정은 5-16). **페이지 전환 모션**(View Transitions·스크립트 재실행·전환 종류별 모션)도 브라우저 확인까지 마치고 `develop`에 병합·push했다(2026-09-20, 병합 `0cd15af`, 결정은 5-17). **콘텐츠 검색**(빌드 색인 JSON·찾기 헬퍼·`<dialog>` 검색 창·⌘K·돋보기 버튼)은 구현과 헤드리스 확인을 마쳤고 **사용자 브라우저 확인 전이라 아직 병합하지 않았다**(2026-09-21, 브랜치 `feature/content-search`, 결정은 5-19). 마무리 절차는 2-6에 정리해 두었다
 - **시안 진행도**
   - 데스크톱 7화면(홈·목록 3·상세 3) — 완료
   - 모바일 7화면(홈 화면 메타포) — 완료
@@ -15,17 +15,17 @@
 - **기술 스택**: Astro + 일반 CSS + TypeScript + Markdown Content Collections 확정(2026-09-14). 비교·약점·면접 질문은 `docs/tech-stack.md`
 - **시안 캔버스**: https://claude.ai/code/artifact/48a3c34c-b882-4f13-8e2f-7e3668bdb7b1 (v22, 페이지 5개 · 아트보드 25장)
 - **Git**: 시안·기술 스택 문서·`.claude/settings.json`(`92083d0`)이 `develop`에 반영되어 있다. `feature/astro-setup`(커밋 4개)을 `develop`에 병합 `004589b` → 브랜치 삭제(2026-09-14). `feature/site-shell`(테마 버튼 `872ec4b`, 공통 셸 `20d40c8`, Dock 자동 숨김 `e8eea35`, 시계 `88e86ca`, 문서 `cfe9270`)을 `develop`에 병합 `0227fa3` → 브랜치 삭제(2026-09-15). `feature/home-page`(첫 화면 `9907ebe`, iPhone 목업 `6da0b04`, 문서 `f6741d5`, 최근 기록 `062e860`, 문서 `1f8cbb8`)를 `develop`에 병합 `8c7568f` → 브랜치 삭제 → push(2026-09-16), 뒤이어 문서 `a725134` push. `feature/project-pages`(기능 12 + 문서 3, 커밋 목록은 12장)를 `develop`에 병합 `53f528e` → 로컬·원격 브랜치 삭제 → push(2026-09-18). `feature/study-pages`(기능 9 + 문서 2, 커밋 목록은 12장)를 `develop`에 병합 `4351c43` → 브랜치 삭제 → push(2026-09-20). `feature/seminar-pages`(기능 7 + 문서 1, 커밋 목록은 12장)를 `develop`에 병합 `8f704a4` → 브랜치 삭제 → push(2026-09-20). **원격**: `origin/develop` = 로컬 `develop`과 같음(2026-09-20 push), `origin/master` = `8bf0e7b`(로컬 `master`와 같음, 아직 건드리지 않았다). `develop` → `master` 병합은 아직 하지 않았다
-- **다음 단계**: 홈 완료 → 프로젝트 목록·상세 완료(병합·push 완료) → 스터디 목록·글 완료(병합 `4351c43`, 5-15) → 세미나 목록·행사 상세 완료(병합 `8f704a4`, 5-16) + 홈 최근 기록 링크를 상세로(함께 끝냄) → 페이지 전환 모션 완료(병합 `0cd15af`, 5-17) → **콘텐츠 검색** → placeholder 정리 → 배포 → **마지막: 개발 과정 설명 세션**(2026-09-17 요청). 화면마다 `develop`에서 `feature/*` 브랜치를 새로 만든다
+- **다음 단계**: 홈 완료 → 프로젝트 목록·상세 완료(병합·push 완료) → 스터디 목록·글 완료(병합 `4351c43`, 5-15) → 세미나 목록·행사 상세 완료(병합 `8f704a4`, 5-16) + 홈 최근 기록 링크를 상세로(함께 끝냄) → 페이지 전환 모션 완료(병합 `0cd15af`, 5-17) → **콘텐츠 검색 구현 완료, 사용자 확인·병합 남음**(5-19) → placeholder 정리 → 배포 → **마지막: 개발 과정 설명 세션**(2026-09-17 요청). 화면마다 `develop`에서 `feature/*` 브랜치를 새로 만든다
 
 ## 2. 새 채팅에서 이어서 시작하기
 ### 2-1. 지금 바로 할 일
 1. `git status`로 브랜치와 작업 트리를 확인한다
-   - 기대 상태: **`develop` 브랜치**, 마지막 커밋은 문서(`docs:`) 커밋이고 그 앞에 병합 `0cd15af`가 있다. 작업 트리 깨끗, `origin/develop`과 같음
-   - 기능 브랜치는 남아 있지 않다(`feature/page-transitions`는 병합 후 삭제)
-   - 원격: `origin/develop` = 로컬 `develop`과 같음, `origin/master` = `8bf0e7b`(아직 건드리지 않았다). `develop` → `master` 병합은 아직 하지 않았다
+   - 기대 상태: **`feature/content-search` 브랜치**(아직 병합 전), 마지막 커밋은 문서(`docs:`) 커밋이고 그 앞에 검색 기능 커밋 5개가 있다
+   - **추적되지 않는 임시 콘텐츠 7건**(`src/content/projects/tmp-*`, `src/content/study/tmp-*.md`, `src/content/seminars/tmp-*`)이 남아 있다. 사용자 브라우저 확인용이며, 확인이 끝나면 지운다
+   - 원격: `origin/develop` = `develop`과 같음(2026-09-20 push), `origin/master` = `8bf0e7b`. `develop` → `master` 병합은 아직 하지 않았다. `feature/content-search`는 아직 push하지 않았다
 2. Node는 **nvm의 24**를 쓴다. 셸 기본값이 21.7.3이라 명령 전에 `source ~/.nvm/nvm.sh && nvm use`(`.nvmrc` = 24)를 먼저 실행한다. 검증 방법은 2-2
-3. **다음 작업은 콘텐츠 검색이다 → 2-6을 그대로 따라간다.** 시작할 때 `git switch -c feature/content-search`(`develop`에서)
-4. 그 뒤 순서: 콘텐츠 검색(계획 2-6 · 결정 5-18) → 대괄호 `[ ]` placeholder 실제 콘텐츠 정리 → GitHub Actions 배포 → **마지막 단계: 개발 과정 설명 세션**(2026-09-17 사용자 요청). 화면마다 `develop`에서 `feature/*` 새 브랜치
+3. **지금 할 일은 콘텐츠 검색 마무리다 → 2-6을 그대로 따라간다**(사용자 브라우저 확인 → 임시 콘텐츠 삭제 → 병합·push)
+4. 그 뒤 순서: 대괄호 `[ ]` placeholder 실제 콘텐츠 정리 → GitHub Actions 배포 → **마지막 단계: 개발 과정 설명 세션**(2026-09-17 사용자 요청). 화면마다 `develop`에서 `feature/*` 새 브랜치
    - 마지막 단계 내용: 사이트가 완성되면 사용자에게 개발 과정 전체를 설명한다. 쓰인 문법(Astro 컴포넌트·프런트매터·스코프 스타일·`light-dark()`·Content Collections·TypeScript 등), 핵심 기능별 구현 원리(테마·Dock 자동 숨김·필터·콘텐츠 헬퍼 등), 면접에서 나올 만한 질문과 답을 다룬다. 기술 선택 근거는 `docs/tech-stack.md`와 연결한다. 구현하면서 설명할 거리(원리·대안·트레이드오프)는 5장 결정 기록에 계속 남긴다
 
 ### 2-2. 검증 방법 (다시 쓰는 요령)
@@ -49,8 +49,23 @@
   - 좁은 폭은 여전히 `--window-size=390`으로 찍지 않는다(창 최소 폭). `dist/`에 `<script>localStorage…</script><iframe src="/my-homepage/…" width="390" height="…">`만 있는 하네스를 만들고 `--window-size=410,…`으로 찍는다. 스크린샷·DOM 검사 스크립트는 scratchpad의 `shot.py`·`dump.py`로 만들어 썼다(세션이 끝나면 사라진다)
   - 끝나면 `npx astro preview stop`, `dist/tmp-*` 삭제
 - **커밋 나누기**: 작업을 한꺼번에 한 뒤 나눌 때는 최종 파일을 scratchpad에 복사해 두고 작업 트리를 되돌린 다음, 커밋 단위마다 파일을 다시 복사(한 파일에 두 변경이 섞였으면 중간 상태를 스크립트로 만든다) → 빌드 → 커밋. 끝나면 `cmp`로 최종 파일과 같은지 확인
+- **실시간 브라우저 조종(CDP, 2026-09-21 도입)** — virtual time으로 볼 수 없는 것을 확인할 때 쓴다. 검색 창을 만들며 필요해졌고, 앞으로 모달·키보드·포커스가 걸린 기능은 이 방법이 낫다
+  - **virtual time의 한계 2가지**: ① `<dialog>`의 `close` 이벤트가 오지 않는다(빈 `<dialog>`로도 재현) ② 스크립트로 만든 `KeyboardEvent`는 **신뢰된 입력이 아니라** Esc로 창이 닫히는 것 같은 브라우저 기본 동작이 일어나지 않는다
+  - 방법: `--headless=new --remote-debugging-port=<포트>`로 Chrome을 띄우고 `http://127.0.0.1:<포트>/json/list`에서 page 타깃을 찾아 WebSocket으로 붙는다(Node 24에는 `WebSocket`이 내장이다). `Page.enable` · `Runtime.enable` 뒤 `Runtime.evaluate`(`awaitPromise: true`, `returnByValue: true`)로 페이지 안에서 async 함수를 돌리고 결과를 받는다
+  - **`Emulation.setFocusEmulationEnabled { enabled: true }`를 반드시 켠다.** headless 창은 포커스를 갖지 못할 때가 있어, 켜지 않으면 `Input.dispatchKeyEvent`가 페이지에 닿지 않는다(증상: ⌘K를 보내도 아무 일도 없다)
+  - 진짜 키 입력은 `Input.dispatchKeyEvent`(`keyDown`/`keyUp`, `key`·`code`·`windowsVirtualKeyCode`, modifiers는 Alt 1·Ctrl 2·Meta 4·Shift 8), 글자는 `Input.insertText`
+  - **좁은 폭은 `Emulation.setDeviceMetricsOverride`로 바로 만든다** — 창 최소 폭 문제가 없어 320·390px iframe 하네스가 더 이상 필요 없다. `mobile` 값을 도중에 바꾸면 렌더러가 갈려 `Runtime.evaluate`가 응답하지 않으니 고정하고, 폭을 바꿀 때마다 `Page.navigate`로 다시 연다
+  - 스크린샷은 `Page.captureScreenshot`, 명령마다 타임아웃(15초)을 두어야 응답이 없을 때 스크립트가 멈추지 않는다
+  - 같은 출처 주의: `file://` 페이지에서 `http://localhost` iframe의 `contentWindow.document`는 교차 출처로 막힌다. 하네스 페이지는 `dist/`에 두어 같은 출처로 연다
 
 ### 2-3. 최근 세션에서 끝낸 일 (요약, 자세한 결정은 5장)
+- 콘텐츠 검색(`feature/content-search`, 2026-09-21, 결정은 **5-19**, 커밋 6개 목록은 12장, **아직 병합 전**)
+  - 공용 헬퍼: `lib/markdownText.ts`(마크다운 → 본문 텍스트. 읽는 시간과 검색이 함께 쓰고 코드 블록만 `keepCode`로 가른다)
+  - 색인: `pages/search-index.json.ts`(빌드 때 한 번) + `lib/searchIndex.ts`. `lib/content.ts` 헬퍼를 그대로 써서 draft 제외·정렬을 복제하지 않는다. 본문 전체를 담는다(임시 7건 기준 5.6KB / gzip 2.1KB)
+  - 찾기: `lib/search.ts`(순수 함수). 낱말 AND, 걸린 칸의 무게로 정렬, 강조는 조각 배열로 돌려주고 요소는 컴포넌트가 만든다
+  - 화면: `components/SearchPanel.astro`(`<dialog>` 모달, `SiteLayout`이 모든 화면에 하나) · `components/SearchButton.astro`(돋보기)
+  - 셸 처리: 창이 열린 동안 메뉴바·Dock을 흐리게 한다(`styles/transitions.css`) — `transition:name`이 붙은 요소가 `::backdrop` 위에 그려지기 때문
+  - 확인: 실시간 CDP로 열고 닫기 4경로·키보드·전환 뒤 재동작·색인 1회·브라우저 뒤로·색인 실패, 5폭 라이트/다크 화면. **사용자 브라우저 확인은 아직**
 - 페이지 전환 모션(`feature/page-transitions` → `develop` 병합 `0cd15af`, 2026-09-20, 결정은 **5-17**, 커밋 6개 목록은 12장)
   - `ClientRouter`(`components/PageTransitions.astro`)를 `BaseLayout`에 넣어 링크 이동을 화면 전환으로 바꿨다
   - 전환 종류는 **두 주소의 관계**로 정한다(`astro:before-preparation`에서 `direction`을 바꿔 `<html data-astro-transition="…">`으로 내보냄): `open`·`close`·`push`·`pop`·`fade`. 모션은 `styles/transitions.css`
@@ -103,41 +118,27 @@
 - 마크다운: 글머리 기호는 `-`, 헤더 바로 다음 줄에 본문(빈 줄 없음)
 - 기술 스택을 정할 때는 선택 이유와 React·Next.js 등 대안 대비 장단점, 예상 면접 질문까지 정리한다
 
-### 2-6. 다음 작업: 콘텐츠 검색 (2026-09-20 작성, 브랜치 `feature/content-search`)
-목록·상세가 모두 생겨 검색 결과를 보낼 곳이 마련됐다(5-12에서 "목록·상세 구현 뒤"로 미뤄 둔 작업). **시작 전에 정할 것 4가지는 2026-09-20에 모두 확정했다 — 근거와 감수하는 약점은 5-18에 있다.** 메뉴바·타이틀 바의 검색 아이콘은 아직 없다. 동작이 정해진 뒤에 넣기로 했기 때문이다(5-12 원칙).
+### 2-6. 지금 할 일: 콘텐츠 검색 마무리 (2026-09-21, 브랜치 `feature/content-search`)
+구현은 끝났다(커밋 6개, 결정은 5-19). **남은 것은 사용자 브라우저 확인 → 임시 콘텐츠 삭제 → 병합·push 세 가지다.**
 
-#### 확정된 것 (5-18)
-1. **색인**: 빌드 때 JSON 한 벌에 제목·요약·태그·분류 + **본문 텍스트**까지 담고, 브라우저에서 **부분 문자열**로 찾는다. 검색 창을 **처음 열 때** 내려받는다(첫 화면 비용 0)
-2. **여는 곳**: **창 타이틀 바의 돋보기**(`[‹/창 점] [제목] [돋보기] [✕]`) + 홈은 메뉴바 테마 버튼 옆. 데스크톱은 메뉴바에만 두고 타이틀 바는 그대로. 단축키 ⌘K(맥) / Ctrl+K
-3. **결과**: 프로젝트·스터디·세미나로 **묶고** 묶음마다 소제목, 일치한 글자 **강조**. 본문에서 걸렸으면 앞뒤 한 줄을 함께 보여 준다. 결과가 없는 묶음은 그리지 않는다
-4. **입력 길이**: **2글자부터** 찾는다. 1글자 이하면 안내 문구 대신 최근 글을 조용히 보여 준다. Enter를 기다리지 않고 치는 대로 좁힌다
+#### 1. 사용자 브라우저 확인 (지금 차례)
+임시 콘텐츠 7건이 이미 `src/content/*/tmp-*`에 있다(프로젝트 2 · 스터디 3 · 세미나 2, 추적되지 않음). `npm run dev`로 띄워 확인한다.
+- 여는 길: ⌘K / Ctrl+K · 데스크톱 메뉴바 돋보기 · 모바일 홈 메뉴바 돋보기 · 모바일 목록·상세 타이틀 바 돋보기
+- 찾기: `swift`(대소문자) · `마이그레이`(한글 부분 일치) · `위젯 습관`(공백 여러 개) · `widgetkit`(기술 스택에서만 걸림 → 걸린 항목이 보이는지) · 없는 말 · 한 글자
+- 키보드만으로: ⌘K → ↑↓ → Enter → 상세 도착 → 브라우저 뒤로 → 다시 ⌘K
+- 눈으로 볼 것: 창이 열리고 닫히는 모션, **메뉴바·Dock이 뒤로 물러나는 정도가 적당한지**(지금 `opacity .4` + `blur(6px)`), 강조 색, 320px에서 타이틀 바 제목 말줄임
+- 헤드리스로 확인한 항목은 5-19 끝에 있다(다시 볼 필요 없음)
 
-#### 구현하며 정할 것 (사용자에게 물을 필요 없는 수준)
-- 1글자 이하일 때 보여 줄 최근 글 개수
-- 색인에 담을 본문 길이(전체 / 앞부분만) — 실제 파일 크기를 보고 정한다
-- 검색 창의 폭·높이와 결과 최대 개수
+#### 2. 확인이 끝나면
+- 임시 콘텐츠 삭제: `rm -rf src/content/projects/tmp-* src/content/study/tmp-*.md src/content/seminars/tmp-*` → `git status`로 콘텐츠 폴더가 깨끗한지 확인(예시 글 `sample-*`은 `draft: true` 그대로여야 한다)
+- 지적 사항이 있으면 고쳐 커밋을 더 쌓고, 5-19에 결정을 남긴다
+- `develop`에 `--no-ff` 병합 → 기능 브랜치 삭제 → `origin/develop` push (사용자 확인 후)
 
-#### 미리 정해진 제약
-- 결과는 **상세 페이지로 바로 간다**(목록이 아니라). 주소는 `projectHref()`·`studyHref()`·`seminarHref()`
-- 검색 창은 페이지 이동이 아니라 **같은 페이지 안에서 열리는 겹침 화면**이라 페이지 전환(5-17)과 겹치지 않는다. 다만 창을 연 채로 결과를 누르면 전환이 시작되므로, 창을 닫는 처리를 링크 클릭이나 `astro:before-preparation`에서 해 준다
-- 스크립트는 반드시 `lib/pageInit.ts`의 `onEachPage`로 감싼다(전환 뒤에도 동작해야 한다, 5-17). 색인은 한 번 받아 두고 페이지를 옮겨도 다시 받지 않게 모듈 바깥에 둔다
-- 강조는 문자열을 이어 붙이지 말고 조각을 나눠 요소로 만든다(글 내용이 HTML로 해석되지 않게)
-- 동작하지 않는 아이콘은 만들지 않는다(5-12)
-
-#### 확인할 것
-- 한글 부분 일치(`스터디를`로 `스터디` 찾기)·영문 대소문자 무시·공백 여러 개·1글자 입력
-- **타이틀 바에 돋보기가 들어가 가운데 제목 칸이 좁아진다** → 긴 제목 말줄임과 44px 누름 영역을 320·390·768px에서 확인(5-18)
-- 결과에서 상세로 갔다가 브라우저 뒤로 왔을 때 검색 창 상태, 전환 중에 창이 남지 않는지
-- 키보드만으로 열기·이동·선택·닫기(⌘K / ↑↓ / Enter / Esc), 포커스가 창 밖으로 새지 않는지
-- 색인 파일 크기와 검색 창을 처음 열 때 걸리는 시간
-- 5폭 라이트/다크
-
-#### 커밋 순서 (빌드되는 가장 작은 단위, 2-5)
-1. 빌드 때 JSON 색인 만들기 + 찾기 헬퍼(화면 없음)
-2. 검색 창 컴포넌트(입력·묶음 결과·강조·빈 결과, 아직 여는 곳 없음)
-3. 창 타이틀 바·메뉴바 돋보기와 ⌘K 연결
-4. 다듬기(최근 글·포커스 처리 등)
-- 각 커밋 **직전마다** `npm run build`
+#### 확정한 수치 (2-6 옛 "구현하며 정할 것"의 답)
+- 색인에 담을 본문: **전체**. 임시 7건 기준 5.6KB(gzip 2.1KB)라 자를 이유가 없다
+- 1글자 이하일 때 최근 글: **묶음마다 2건**(최대 6줄)
+- 묶음마다 결과: **최대 5건**, 넘으면 "그 밖 N건"
+- 검색 창: 너비 `min(100% - 24px, 640px)`, 결과 칸 높이 `min(64dvh, 480px)`, 위 여백 모바일 12px · 태블릿 10vh · 데스크톱 12vh
 
 ## 3. 프로젝트 개요
 - 자기소개, 프로젝트 포트폴리오, 학습 기록, 세미나·행사 기록(사진 포함)을 모으는 개인 홈페이지
@@ -204,6 +205,12 @@
 | 셸 고정 | 메뉴바·Dock에 `transition:name`을 주어 본문 스냅샷에서 제외 | `feature/page-transitions` | 빌드 HTML에서 `view-transition-name` 확인(2026-09-20) |
 | 전환 모션 | 두 주소의 관계로 종류를 정하고(`push`·`pop`·`open`·`close`·`fade`) `styles/transitions.css`가 모션 선택 | `feature/page-transitions` | 종류 9가지 분류·CSS 파싱 확인(2026-09-20) |
 | 전환 병합 | 기능 5 + 문서 1 = 커밋 6개, 사용자 브라우저 확인 통과 | `feature/page-transitions` | `develop` 병합 `0cd15af` → 브랜치 삭제 → push(2026-09-20) |
+| 본문 텍스트 공용화 | 마크다운 → 읽는 글자 추출을 `lib/markdownText.ts`로 분리(`keepCode`로 코드 블록만 가름) | `feature/content-search` | 예시 글 3개로 읽는 시간 계산값 동일 확인, `b90396e`(2026-09-21) |
+| 검색 색인·헬퍼 | 빌드 때 `/search-index.json`(본문 포함) + 찾기 헬퍼 `lib/search.ts`(화면 없음) | `feature/content-search` | 임시 7건으로 한글 부분 일치·대소문자·AND·2글자 문턱·묶음 검사, `b87ba8a`(2026-09-21) |
+| 검색 창 | `<dialog>` 모달 `SearchPanel` + `SiteLayout` 연결 + ⌘K·Ctrl+K | `feature/content-search` | 실시간 CDP로 열고 닫기 4경로·키보드·전환 뒤 재동작·색인 1회, `1aa1fe7`(2026-09-21) |
+| 셸 물러나기 | 창이 열린 동안 메뉴바·Dock을 흐리게(`transition:name`이 `::backdrop` 위에 그려지는 문제) | `feature/content-search` | 1440 라이트/다크 스크린샷으로 확인, `f77115f`(2026-09-21) |
+| 돋보기 버튼 | `SearchButton` + 메뉴바(데스크톱·모바일 홈)·창 타이틀 바(모바일·태블릿) | `feature/content-search` | 5폭에서 한 곳에만 나오는 것·44px·제목 말줄임·포커스 복귀, `5a8e75e`(2026-09-21) |
+| 검색 다듬기 | 걸린 태그·기술 보여 주기, "그 밖 N건", "불러오는 중…" | `feature/content-search` | 출처 3종·한도 낮춰 잘린 개수 일치 확인, `04e3022`(2026-09-21) |
 
 ### 남은 일
 - [x] 모션·✕·문서 커밋 → `develop` 병합 → 브랜치 삭제 (2026-09-14, 사용자 확인)
@@ -240,7 +247,9 @@
 - [x] 페이지 전환 사용자 브라우저 확인(2026-09-20, 임시 콘텐츠 9개로 확인, 문제 없음)
 - [x] `feature/page-transitions` → `develop` 병합 `0cd15af` → 브랜치 삭제 → push (2026-09-20)
 - [x] 콘텐츠 검색 방식 확정 4건(색인·여는 곳·결과 모양·입력 길이) — 2026-09-20 사용자 선택, 5-18
-- [ ] **콘텐츠 검색 기능 구현** ← 다음 할 일. 계획은 **2-6**, 결정은 **5-18**, 브랜치 `feature/content-search`
+- [x] **콘텐츠 검색 기능 구현**(색인·헬퍼·검색 창·⌘K·돋보기·다듬기) — `feature/content-search`, 2026-09-21, 커밋 6개, 결정은 **5-19**
+- [ ] 콘텐츠 검색 **사용자 브라우저 확인** ← 지금 할 일. 확인 항목은 **2-6**
+- [ ] 확인 뒤 임시 콘텐츠 7건(`src/content/*/tmp-*`) 삭제 → `feature/content-search` → `develop` 병합 → 브랜치 삭제 → push
 - [x] `draft` 제외 헬퍼·목록 정렬(날짜 내림차순)·날짜 표기 — `src/lib/content.ts`·`src/lib/date.ts`(2026-09-16, 홈 최근 기록과 함께). 목록 페이지도 이 헬퍼만 쓴다
 - [x] 스터디 글 코드 블록 결정: 복사 버튼은 실제 동작, 파일 이름은 울타리 meta + Shiki transformer (2026-09-19, 5-15)
 - [x] 스터디 읽는 시간 계산·목차 (2026-09-19~20, 5-15)
@@ -555,6 +564,39 @@
   - 1글자 이하일 때는 "두 글자 이상 입력하세요" 같은 안내 대신 **최근 글을 조용히 보여 준다**(빈 화면을 만들지 않는다). 몇 개를 보여 줄지는 구현하면서 정한다
   - 치는 대로 좁혀지고(Enter를 기다리지 않는다), 입력이 빠를 때 화면이 덜컹거리지 않게 한 프레임에 한 번만 다시 그린다
 
+### 5-19. 콘텐츠 검색 구현 (2026-09-21 결정)
+방식 4가지는 5-18에서 정해 두었고, 여기에는 **구현하면서 정한 것과 만든 뒤에야 알게 된 것**을 적는다.
+- **검색 창은 `<dialog>`의 `showModal()`로 만든다**
+  - 한 줄로 네 가지가 따라온다: top layer로 올라가 메뉴바(z-index 80)·Dock(60) 위에 뜨고, 뒤 화면이 눌리지 않고(inert), Tab이 창 밖으로 새지 않고, Esc로 닫힌다. 직접 만들면 넷을 모두 손으로 써야 한다
+  - 뒷정리(입력·결과 비우기, 스크롤 잠금 해제, 포커스 돌려주기)는 **`close` 이벤트 한 곳**에 모았다. Esc·backdrop·닫기 버튼·`astro:before-preparation` 어느 경로로 닫혀도 여기를 지난다
+  - **입력칸은 `type="search"`가 아니라 `type="text"`다.** search 입력칸은 Esc를 가로채 **값만 지우고 창을 닫지 않는다**(브라우저마다 다르다). Esc는 언제나 창을 닫아야 해서 text로 두고 모바일 키보드 확인 키만 `enterkeyhint="search"`로 맞췄다
+  - 여는 버튼을 `open(from)`으로 **명시적으로 기억한다**. 맥 사파리·파이어폭스는 버튼을 눌러도 포커스를 주지 않아, `document.activeElement`만 보면 닫을 때 포커스가 `<body>`로 돌아간다
+- **`transition:name`이 붙은 요소는 모달의 `::backdrop`보다 위에 그려진다(만든 뒤 발견)**
+  - 증상: 뒤 화면은 흐려지는데 메뉴바·Dock만 또렷하게 남아, 누를 수도 없으면서 살아 있는 것처럼 보였다
+  - **열릴 때 `view-transition-name: none`으로 바꾸는 방법은 듣지 않는다.** 계산값은 바뀌지만 이미 올라간 합성 레이어가 내려오지 않아 그대로 위에 그려진다(Chrome 153에서 확인)
+  - 그래서 그리는 순서를 다투지 않고, 창이 열린 동안 셸을 직접 `opacity: .4` + `blur(6px)`로 물러나게 했다(`styles/transitions.css`). 순서가 반대인 브라우저에서도 결과가 같아 안전하다
+- **색인**
+  - 본문은 **전체를 담는다**. 임시 7건 기준 5.6KB(gzip 2.1KB), 글 하나당 800B·gzip 300B다. 앞부분만 자르면 글 뒤쪽을 못 찾는 손해가 더 크다. 5-18의 "부담스러워지면 그때 자른다"는 그대로 남겨 둔다
+  - 만드는 곳은 엔드포인트 `src/pages/search-index.json.ts`(정적 빌드라 빌드 때 한 번 돌고 파일로 남는다) + `lib/searchIndex.ts`. `lib/content.ts` 헬퍼를 그대로 써서 draft 제외·정렬 규칙을 복제하지 않는다
+  - **색인 주소 상수는 `lib/search.ts`에 둔다.** 엔드포인트 파일은 `astro:content`를 끌어와 브라우저가 import할 수 없다
+  - 프로젝트는 프런트매터의 **주요 기능(제목·설명)** 도 본문에 붙인다. 상세 화면에 보이는 글자이기 때문이다
+  - 코드 블록은 색인에서 뺀다(결과 문장이 지저분해지고 색인만 커진다). 읽는 시간은 코드도 세므로, 공용 헬퍼 `lib/markdownText.ts`에서 `keepCode` 옵션으로 갈랐다
+- **찾기 규칙(`lib/search.ts`, 순수 함수)**
+  - 낱말을 공백으로 나눠 **모두 가진 글만**(AND) 고른다. 공백이 여러 개여도 빈 낱말이 생기지 않는다
+  - 점수는 걸린 칸의 무게 합: 제목 6 · 요약/분류/태그 3 · 본문 1. 같으면 색인 순서(= 목록 순서, 최신 글 먼저)를 지킨다. **묶음 순서는 점수와 무관하게 메뉴 순서**(프로젝트 → 스터디 → 세미나)라 점수는 묶음 안에서만 의미가 있다
+  - 결과 줄은 **요약 → 본문 발췌 → 걸린 태그·기술** 순으로 고른다. 태그·기술은 화면에 없는 값이라, 여기서만 걸리면 강조가 하나도 없어 왜 나왔는지 알 수 없었다(다듬기에서 고침)
+  - 강조는 `{ text, hit }` 조각 배열로 돌려주고 요소는 컴포넌트가 만든다. 소문자로 바꿔도 길이가 같은 글자(한글·영문)만 다루므로 원문 위치를 그대로 쓸 수 있다
+  - 묶음마다 5건까지 그리고 넘으면 "그 밖 N건". 안내 줄의 전체 건수와 어긋나지 않게 한다
+- **전환과의 관계**: 창은 페이지를 옮기지 않으므로 전환(5-17)과 겹치지 않는다. 결과를 누르면 전환이 시작되므로 `astro:before-preparation`에서 창을 닫는다. 스크립트는 `onEachPage`로 감싸고, 색인은 **모듈 바깥**에 캐시해 페이지를 옮겨도 다시 받지 않는다(전환 뒤에도 요청 1회 확인)
+- **결과 요소는 스크립트가 만들어 Astro 스코프 속성이 붙지 않는다** → 스타일을 `.results :global(...)`로 한정했다(Markdown 본문에 `prose.css`를 쓰는 것과 같은 이유)
+- **확인 결과(임시 콘텐츠 7건 = 프로젝트 2 · 스터디 3 · 세미나 2)**
+  - 찾기: 한글 부분 일치(`마이그레이`) · 조사 붙은 본문(`개발자` → `개발자들이`) · 대소문자 무시(`swiftui`/`SWIFTUI`) · 공백 여러 개 · AND(`위젯 아스트로` 0건) · 숨은 칸(`WidgetKit`·날짜) · 2글자 문턱 ✓
+  - 창: ⌘K 열기·토글 · Esc · 닫기 버튼 · backdrop 클릭 — 네 경로 모두 뒷정리까지 ✓ / 창이 열린 동안 바깥 링크로 포커스가 새지 않음 ✓ / 닫으면 열었던 자리로 포커스 복귀 ✓
+  - 이동: ↓↓ 첫·둘째 결과 → ↑↑ 입력칸 복귀 → Enter로 상세 도착, 창 닫힘·스크롤 잠금 해제 ✓ / 브라우저 뒤로 와도 창은 닫힌 상태 ✓ / 옮긴 페이지에서 ⌘K 다시 동작, **색인 요청 총 1회** ✓
+  - 실패: 색인을 받지 못하면 안내를 띄우고 다시 열면 재시도 ✓
+  - 화면: 320·390·768·1180·1440 × 라이트/다크 ✓ / 빈 결과 · 1글자(최근 글) · 태그에서만 걸린 결과 ✓
+  - **사용자 브라우저 확인은 아직 하지 않았다**(2-6)
+
 ## 6. 저작권 주의선
 - macOS·Xcode의 실제 UI를 복제하지 않는다. Apple 로고, SF Symbols, 신호등 색(빨강·노랑·초록) 창 컨트롤, 실제 메뉴 구조를 쓰지 않는다
 - 자체 팔레트와 직접 그린 SVG 아이콘을 쓴다. 창 컨트롤 점은 라일락 2개 + 민트 1개(장식이며 기능 없음). 닫기는 별도 ✕ 버튼으로 둔다
@@ -701,7 +743,13 @@
 | `src/assets/iphone-16-pro.png` | Apple Design Resources iPhone 16 Pro 프레임(450×920 RGBA, 50KB). 사용자 허용으로 커밋(5-8) |
 | `src/layouts/BaseLayout.astro` | 모든 페이지 공통 문서 뼈대: `lang="ko"`, 메타(title·description 기본값), Noto Sans KR `<link>`, `tokens.css`·`global.css`·`transitions.css` import, `<head>` 인라인 스크립트(저장된 테마를 첫 화면 전에 `data-theme`에 적용 + `astro:after-swap`에서 다시 적용), `PageTransitions`, `<slot />` |
 | `src/components/PageTransitions.astro` | 페이지 전환: `ClientRouter` + 떠나는/가는 주소로 전환 종류를 정해 `event.direction`에 넣는 스크립트(`open`·`close`·`push`·`pop`·`fade`, 상세↔상세는 링크의 `rel`)(5-17) |
-| `src/styles/transitions.css` | 전환 종류별 `::view-transition-old/new(root)` 모션. 시간·곡선은 모션 토큰만 쓰고 `pop`·`close`는 나가는 화면을 위로(`z-index: 1`). 데스크톱은 시트 대신 창이 커지며 열린다(5-17) |
+| `src/styles/transitions.css` | 전환 종류별 `::view-transition-old/new(root)` 모션. 시간·곡선은 모션 토큰만 쓰고 `pop`·`close`는 나가는 화면을 위로(`z-index: 1`). 데스크톱은 시트 대신 창이 커지며 열린다(5-17) 맨 아래에 검색 창이 열린 동안 메뉴바·Dock을 흐리게 하는 규칙(5-19) |
+| `src/lib/markdownText.ts` | 마크다운·MDX에서 읽는 글자만 남기는 `markdownToText(body, { keepCode })`. 읽는 시간(코드 포함)과 검색 색인(코드 제외)이 함께 쓴다(5-19) |
+| `src/lib/search.ts` | 검색 순수 함수: `parseQuery`·`isSearchable`(2글자 문턱)·`searchDocs`(낱말 AND + 칸 무게로 정렬)·`highlight`(조각 배열)·`bodySnippet`·`groupHits`(컬렉션별 묶음 + 잘린 건수)·`recentGroups`. 색인 주소 `SEARCH_INDEX_URL`도 여기 있다(5-19) |
+| `src/lib/searchIndex.ts` | 빌드 때 색인을 만든다. `content.ts` 헬퍼로 글을 읽고 제목·요약·분류/날짜·태그 목록·본문 텍스트를 담는다(프로젝트는 주요 기능도)(5-19) |
+| `src/pages/search-index.json.ts` | `/my-homepage/search-index.json` 엔드포인트. 정적 빌드라 빌드 때 한 번 돌고 파일로 남는다(5-19) |
+| `src/components/SearchPanel.astro` | 검색 창(`<dialog>` 모달). `SiteLayout`이 모든 화면에 하나씩 둔다. 색인은 처음 열 때 받아 모듈 바깥에 캐시. 결과 요소 스타일은 `.results :global(...)`(5-19) |
+| `src/components/SearchButton.astro` | 돋보기 버튼. `data-search-open`만 붙이고 동작은 `SearchPanel`이 문서 위임으로 처리한다. `size`(desktop·touch) · `tone`(shell·window)(5-19) |
 | `src/lib/pageInit.ts` | `onEachPage(setUp)`: 첫 화면에서 한 번, 그 뒤 `astro:after-swap`마다 초기화를 다시 부른다. 넘겨주는 `AbortSignal`로 지난 페이지의 window·document 이벤트를 끊는다(5-17) |
 | `src/components/ThemeToggle.astro` | 테마 전환 버튼(해/달 아이콘, `size` desktop/touch). 문서 위임 클릭 → `data-theme`·`localStorage('theme')` 저장, 버튼 이름 갱신, 누른 뒤 아이콘 애니메이션 |
 | `src/styles/tokens.css` | 디자인 토큰. 모션 곡선 3·시간 12, 색 55쌍 `light-dark()`, `color-scheme` 3가지(`:root`·`[data-theme="dark"]`·`[data-theme="light"]`) |
@@ -732,7 +780,15 @@
 - 인터랙션은 `onClick="{{handler}}"`, 조건 표시는 `<sc-if value="{{bool}}">`, 상태 스타일은 `data-*="{{값}}"` + CSS 선택자로 만든다(`class`에 값 끼워 넣기는 쓰지 않았다)
 
 ## 12. 브랜치·커밋 기록
-- 로컬 브랜치: `master`, `develop`(현재). 원격(`origin`, `https://github.com/yuminc03/my-homepage.git`): `master` `8bf0e7b`(로컬과 같음), `develop`(2026-09-20 push, `origin/develop` 추적, 로컬과 같음 — 마지막은 페이지 전환 병합 뒤 문서 커밋). 기능 브랜치는 남아 있지 않다. `develop` → `master` 병합은 아직 하지 않았다
+- 로컬 브랜치: `master`, `develop`, **`feature/content-search`(현재, 아직 병합·push 전)**. 원격(`origin`, `https://github.com/yuminc03/my-homepage.git`): `master` `8bf0e7b`(로컬과 같음), `develop`(2026-09-20 push, `origin/develop` 추적, 로컬과 같음 — 마지막은 콘텐츠 검색 방식 확정 문서 커밋). `develop` → `master` 병합은 아직 하지 않았다
+- `feature/content-search`(2026-09-21, `develop` `5fa1638`에서 분기, **아직 병합 전**), 오래된 순. 각 커밋 직전에 `npm run build`
+  - `b90396e` refactor: 마크다운 본문 텍스트 추출을 markdownText.ts로 분리
+  - `b87ba8a` feat: 콘텐츠 검색 색인(JSON)과 찾기 헬퍼 추가
+  - `1aa1fe7` feat: 콘텐츠 검색 창과 ⌘K 단축키 추가
+  - `f77115f` fix: 검색 창이 열린 동안 메뉴바·Dock을 뒤로 물러나게
+  - `5a8e75e` feat: 메뉴바·창 타이틀 바에 검색 돋보기 버튼 추가
+  - `04e3022` feat: 검색 결과에 걸린 이유·잘린 개수·불러오는 중을 보여 준다
+  - (이 문서 갱신) docs: 콘텐츠 검색 구현 기록과 마무리 절차 정리
 - `feature/page-transitions`(2026-09-20, `develop` `f509654`에서 분기, **`develop` 병합 `0cd15af`로 완료, 브랜치 삭제**), 오래된 순. 각 커밋 직전에 `npm run build`
   - `f3f2735` refactor: 컴포넌트 초기화를 페이지마다 다시 실행하는 onEachPage 헬퍼 추가 (`src/lib/pageInit.ts` 신규 + `Dock`이 첫 사용자)
   - `379dab5` refactor: 나머지 컴포넌트 스크립트도 onEachPage로 감싸기 (`Toc`·`MenuClock`·`ThemeToggle`·`FilterChips`·`Window`·`CodeCopy`)
