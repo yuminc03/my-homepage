@@ -21,8 +21,8 @@ export interface SearchDoc {
 	summary: string;
 	/** 결과 줄에 함께 보여 주는 보조 정보(분류·날짜·장소) */
 	meta: string;
-	/** 찾기만 되고 화면에는 그리지 않는 값(태그·기술·역할) */
-	keywords: string;
+	/** 평소에는 화면에 없는 값(태그·기술·역할). 여기서만 걸렸을 때는 걸린 항목을 결과 줄에 보여 준다 */
+	keywords: string[];
 	/** 마크다운 기호와 코드를 걷어낸 본문. 줄바꿈으로 문단이 나뉘어 있다 */
 	body: string;
 }
@@ -33,13 +33,15 @@ export interface HighlightPart {
 	hit: boolean;
 }
 
+/** 결과 줄 아래에 무엇을 보여 주는지. 화면에서 표시를 달리한다 */
+export type SnippetSource = 'summary' | 'body' | 'keywords';
+
 export interface SearchHit {
 	doc: SearchDoc;
 	title: HighlightPart[];
-	/** 요약, 또는 요약에 없고 본문에서 걸렸으면 본문에서 잘라 온 줄 */
+	/** 요약 / 본문에서 잘라 온 줄 / 걸린 태그·기술 */
 	snippet: HighlightPart[];
-	/** snippet이 본문 발췌인지(화면에서 표시를 달리한다) */
-	fromBody: boolean;
+	from: SnippetSource;
 }
 
 export interface SearchGroup {
@@ -47,6 +49,8 @@ export interface SearchGroup {
 	/** 묶음 소제목(apps.ts의 앱 이름) */
 	label: string;
 	hits: SearchHit[];
+	/** 자르기 전 이 묶음의 전체 건수. hits보다 크면 "그 밖 N건"을 알린다 */
+	total: number;
 }
 
 /** 이 글자 수부터 찾는다. 1글자는 너무 많이 걸려 최근 글을 대신 보여 준다(5-18) */
@@ -54,6 +58,9 @@ export const MIN_QUERY_LENGTH = 2;
 
 /** 본문에서 잘라 올 한 줄의 최대 글자 수 */
 const SNIPPET_LENGTH = 120;
+
+/** 태그·기술이 여러 개 걸렸을 때 결과 줄에 늘어놓는 구분자 */
+const KEYWORD_SEPARATOR = ' · ';
 
 // 어느 칸에서 걸렸는지에 따른 점수. 제목이 가장 무겁고 본문이 가장 가볍다
 const WEIGHTS = [
@@ -129,12 +136,39 @@ export const bodySnippet = (body: string, terms: string[]): string => {
 	return `${from > 0 ? '…' : ''}${line.slice(from, to).trim()}${to < line.length ? '…' : ''}`;
 };
 
+/** 이 칸에 낱말이 들어 있나. keywords만 여러 값이라 이어 붙여 본다 */
+const fieldHas = (doc: SearchDoc, field: (typeof WEIGHTS)[number]['field'], term: string): boolean =>
+	(field === 'keywords' ? doc.keywords.join(' ') : doc[field]).toLowerCase().includes(term);
+
 /** 낱말 하나가 이 글에서 걸린 가장 무거운 칸의 점수. 0이면 어디에도 없다 */
 const termScore = (doc: SearchDoc, term: string): number => {
 	for (const { field, weight } of WEIGHTS) {
-		if (doc[field].toLowerCase().includes(term)) return weight;
+		if (fieldHas(doc, field, term)) return weight;
 	}
 	return 0;
+};
+
+/** 걸린 태그·기술만 골라 한 줄로 잇는다 */
+const matchedKeywords = (doc: SearchDoc, terms: string[]): string =>
+	doc.keywords
+		.filter((keyword) => terms.some((term) => keyword.toLowerCase().includes(term)))
+		.join(KEYWORD_SEPARATOR);
+
+/**
+ * 결과 줄에 무엇을 보여 줄지 고른다.
+ * 요약에 걸렸으면 요약을, 없으면 본문에서 잘라 온 줄을, 그것도 없으면 걸린 태그·기술을 보여 준다.
+ * 마지막 경우가 없으면 요약으로 돌아간다(분류·날짜에서만 걸린 경우)
+ */
+const pickSnippet = (doc: SearchDoc, terms: string[]): { text: string; from: SnippetSource } => {
+	if (terms.some((term) => doc.summary.toLowerCase().includes(term))) return { text: doc.summary, from: 'summary' };
+
+	const body = bodySnippet(doc.body, terms);
+	if (body) return { text: body, from: 'body' };
+
+	const keywords = matchedKeywords(doc, terms);
+	if (keywords) return { text: keywords, from: 'keywords' };
+
+	return { text: doc.summary, from: 'summary' };
 };
 
 /**
@@ -154,16 +188,15 @@ export const searchDocs = (docs: readonly SearchDoc[], raw: string): SearchHit[]
 			score += termPoints;
 		}
 
-		const inSummary = terms.some((term) => doc.summary.toLowerCase().includes(term));
-		const snippet = inSummary ? '' : bodySnippet(doc.body, terms);
+		const snippet = pickSnippet(doc, terms);
 		scored.push({
 			score,
 			order,
 			hit: {
 				doc,
 				title: highlight(doc.title, terms),
-				snippet: highlight(snippet || doc.summary, terms),
-				fromBody: Boolean(snippet),
+				snippet: highlight(snippet.text, terms),
+				from: snippet.from,
 			},
 		});
 	});
@@ -174,11 +207,10 @@ export const searchDocs = (docs: readonly SearchDoc[], raw: string): SearchHit[]
 /** 결과를 컬렉션별로 묶는다. 순서는 메뉴와 같고, 빈 묶음은 돌려주지 않는다(5-18) */
 export const groupHits = (hits: readonly SearchHit[], limitPerGroup: number): SearchGroup[] =>
 	APPS.filter((app): app is (typeof APPS)[number] & { id: SearchCollection } => app.id !== 'home')
-		.map((app) => ({
-			id: app.id,
-			label: app.label,
-			hits: hits.filter((hit) => hit.doc.collection === app.id).slice(0, limitPerGroup),
-		}))
+		.map((app) => {
+			const mine = hits.filter((hit) => hit.doc.collection === app.id);
+			return { id: app.id, label: app.label, hits: mine.slice(0, limitPerGroup), total: mine.length };
+		})
 		.filter((group) => group.hits.length > 0);
 
 /** 강조할 것이 없는 결과 한 줄(최근 글용) */
@@ -186,13 +218,14 @@ const plainHit = (doc: SearchDoc): SearchHit => ({
 	doc,
 	title: [{ text: doc.title, hit: false }],
 	snippet: [{ text: doc.summary, hit: false }],
-	fromBody: false,
+	from: 'summary',
 });
 
 /**
  * 아직 찾을 말이 없을 때 보여 줄 최근 글(5-18).
  * 색인 순서가 곧 목록 순서(최신 글 먼저)라 앞에서 몇 건씩 끊으면 된다.
- * 결과와 같은 모양으로 돌려주므로 화면도 같은 코드로 그린다
+ * 결과와 같은 모양으로 돌려주므로 화면도 같은 코드로 그린다.
+ * total은 보여 주는 만큼으로 맞춘다 — 찾은 결과가 아니므로 "그 밖 N건"을 알릴 일이 없다
  */
 export const recentGroups = (docs: readonly SearchDoc[], perGroup: number): SearchGroup[] =>
-	groupHits(docs.map(plainHit), perGroup);
+	groupHits(docs.map(plainHit), perGroup).map((group) => ({ ...group, total: group.hits.length }));

@@ -21,7 +21,8 @@ export async function buildSearchIndex(): Promise<SearchDoc[]> {
 			title,
 			summary,
 			meta: categories.join(' · '),
-			keywords: [...tags, ...stack, role, platform].join(' '),
+			// 목록 카드에는 없지만 상세에 적힌 값들. 여기서만 걸리면 결과 줄에 걸린 항목을 보여 준다
+			keywords: [...new Set([...tags, ...stack, role, platform])].filter(Boolean),
 			// 주요 기능은 본문이 아니라 프런트매터에 있지만 상세 화면에는 함께 보이므로 색인에 넣는다
 			body: joinBody(
 				markdownToText(project.body),
@@ -38,7 +39,7 @@ export async function buildSearchIndex(): Promise<SearchDoc[]> {
 			title,
 			summary,
 			meta: `${category} · ${formatDay(pubDate)}`,
-			keywords: '',
+			keywords: [],
 			body: markdownToText(post.body),
 		};
 	});
@@ -51,7 +52,7 @@ export async function buildSearchIndex(): Promise<SearchDoc[]> {
 			title,
 			summary,
 			meta: `${formatMonth(date)} · ${location}`,
-			keywords: '',
+			keywords: [],
 			body: markdownToText(seminar.body),
 		};
 	});
