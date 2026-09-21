@@ -10,7 +10,8 @@
 import ThemeToggle from './ThemeToggle.astro';
 import MenuClock from './MenuClock.astro';
 import SearchButton from './SearchButton.astro';
-import { APPS, getApp, type AppId } from '../data/apps';
+import AppIcon from './AppIcon.astro';
+import { APPS, BRAND, getApp, type AppId } from '../data/apps';
 import { withBase } from '../lib/url';
 
 interface Props {
@@ -24,7 +25,7 @@ const home = getApp('home');
 
 <header class="menubar" data-touch={showOnTouch ? 'show' : 'hide'} transition:name="menubar">
 	<a class="brand" href={withBase(home.href)}>
-		<span class="logo" style={`--logo-bg: ${home.background};`} aria-hidden="true">CY</span>
+		<AppIcon app={BRAND} />
 		<span class="name">{home.title}</span>
 	</a>
 
@@ -71,26 +72,17 @@ const home = getApp('home');
 		display: none;
 	}
 
+	/* 로고 타일(AppIcon)은 자식 컴포넌트라 스코프 스타일이 닿지 않아 크기를 CSS 변수로 내려보낸다 */
 	.brand,
 	.brand:hover {
+		--icon-size: 24px;
+		--icon-radius: 7px;
+		--glyph-size: 24px;
+		--glyph-stroke: 1.875;
 		display: flex;
 		align-items: center;
 		gap: 9px;
 		color: var(--ink-strong);
-	}
-
-	.logo {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 24px;
-		height: 24px;
-		border-radius: 7px;
-		background: var(--logo-bg);
-		color: oklch(99% 0 0);
-		font-size: 10.5px;
-		font-weight: 800;
-		letter-spacing: -0.02em;
 	}
 
 	.name {
@@ -150,11 +142,11 @@ const home = getApp('home');
 				0 8px 32px var(--glass-shadow);
 		}
 
-		.logo {
-			width: 19px;
-			height: 19px;
-			border-radius: 6px;
-			font-size: 9.5px;
+		.brand,
+		.brand:hover {
+			--icon-size: 19px;
+			--icon-radius: 6px;
+			--glyph-size: 19px;
 		}
 
 		.name {
