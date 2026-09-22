@@ -27,6 +27,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 아키텍처
 
+- 글꼴: Noto Sans KR 가변 글꼴(100~900)을 `@fontsource-variable/noto-sans-kr` 패키지로 사이트가 직접 제공합니다. `BaseLayout`이 `import`하고 글꼴 이름은 `'Noto Sans KR Variable'`입니다. Google Fonts `<link>`는 쓰지 않습니다(외부 연결·무거운 CSS, 굵기 600 누락 문제). 근거는 `PROGRESS.md` 5-24.
 - 스타일 계층: `src/layouts/BaseLayout.astro`가 `src/styles/tokens.css`(색·모션 토큰)와 `src/styles/global.css`(전역 기본)를 한 번 불러오고, 화면별 스타일은 각 컴포넌트의 스코프 `<style>`에서 토큰(`var(--…)`)만 참조합니다. Markdown이 만든 본문 요소만 예외로 `src/styles/prose.css`(+ 거기서 `@import`하는 `code-block.css`)를 쓰는 화면에서 `import`합니다 — Markdown 요소에는 스코프 속성이 붙지 않아 `:global`이 필요하고, 프로젝트 상세와 스터디 글이 같은 규칙을 복제하지 않기 위해서입니다. 적용 범위는 `.prose-body`(프로젝트는 `sections.ts`가 만드는 `.doc-lead`·`.doc-section`, 스터디 글은 본문 `<article>`)이고, 문단 사이 간격은 `--prose-gap`으로 화면마다 바꿉니다. 색 값을 컴포넌트에 직접 쓰지 않습니다(앱 아이콘 그라디언트·코드 에디터·iPhone 앱 화면처럼 테마와 무관한 고정색은 예외).
 - 테마: 색 토큰은 `light-dark(라이트, 다크)` 한 쌍이고, `:root`의 `color-scheme`이 어느 쪽을 쓸지 정합니다. 기본은 시스템 설정, `<html data-theme="dark"|"light">`이면 그 테마로 고정합니다. 테마를 바꾸는 코드는 `data-theme`만 바꿉니다. 사용자 선택은 `src/components/ThemeToggle.astro`가 `localStorage('theme')`에 저장하고, `BaseLayout`의 `<head>` 인라인 스크립트가 첫 화면을 그리기 전에 다시 적용합니다(깜빡임 방지). 저장값이 없으면 속성을 붙이지 않아 시스템 설정을 따릅니다.
 - 셸 원칙과 반응형 구간(모바일 `< 744px` · 태블릿 `744–1179px` · 데스크톱 `≥ 1180px`)은 `PROGRESS.md` 5-12. 동작이 없는 버튼·아이콘은 만들지 않습니다.
