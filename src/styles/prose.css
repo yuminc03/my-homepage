@@ -57,6 +57,116 @@
 	border-left: 3px solid var(--win-chip-line);
 }
 
+/* 북마크 카드: 주소 하나만 쓴 문단을 src/lib/bookmark.ts가 바꾼 것. 글 → 오른쪽 썸네일
+   - 위의 a·img 규칙(0,1,1)을 덮어야 해서 선택자를 한 단계 더 붙였다(0,2,x)
+   - 썸네일은 상대 사이트의 og:image(대부분 1.91:1)를 칸에 cover로 채운다. 카드가 높아지면 좌우가 잘리므로
+     줄 수를 묶어 높이를 고정한다: 모바일 제목 2줄·설명 1줄 / 태블릿·데스크톱 제목 1줄·설명 2줄(썸네일 칸 약 220×118) */
+.prose-body a.bookmark {
+	display: flex;
+	min-height: 100px;
+	overflow: hidden;
+	border: 1px solid var(--win-divider);
+	border-radius: 14px;
+	background: var(--win-card);
+	color: inherit;
+	text-decoration: none;
+	transition:
+		border-color var(--dur-fast) var(--ease-out),
+		transform var(--dur-press) var(--ease-out);
+}
+
+.prose-body a.bookmark:active {
+	transform: scale(0.99);
+}
+
+@media (hover: hover) {
+	.prose-body a.bookmark:hover {
+		border-color: var(--win-chip-line);
+	}
+}
+
+.prose-body .bookmark-text {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	justify-content: center;
+	gap: 4px;
+	min-width: 0;
+	padding: 14px 16px;
+}
+
+.prose-body :is(.bookmark-title, .bookmark-desc) {
+	display: -webkit-box;
+	overflow: hidden;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: var(--lines);
+	word-break: keep-all;
+	overflow-wrap: anywhere;
+}
+
+.prose-body .bookmark-title {
+	--lines: 2;
+	color: var(--win-ink-strong);
+	font-size: 15px;
+	font-weight: 600;
+	line-height: 1.45;
+}
+
+.prose-body .bookmark-desc {
+	--lines: 1;
+	color: var(--win-ink-muted);
+	font-size: 13px;
+	line-height: 1.55;
+}
+
+.prose-body .bookmark-url {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	margin-top: 4px;
+	color: var(--win-ink-sub);
+	font-size: 12.5px;
+	line-height: 1.4;
+}
+
+.prose-body .bookmark-url-text {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.prose-body .bookmark-favicon {
+	flex: none;
+	width: 16px;
+	height: 16px;
+	border-radius: 3px;
+}
+
+.prose-body .bookmark-thumb {
+	position: relative;
+	flex: 0 0 clamp(88px, 30%, 120px);
+	background: var(--win-divider);
+}
+
+.prose-body .bookmark-thumb img {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	border-radius: 0;
+	object-fit: cover;
+}
+
+.prose-body .bookmark-sr {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+
 /* 문단 사이 간격. 위의 margin: 0 규칙들과 명시도가 같아 반드시 뒤에 와야 간격이 살아난다.
    제목 바로 다음 요소는 제목의 margin-bottom만 쓴다 */
 .prose-body > :not(h2) + * {
@@ -66,6 +176,26 @@
 @media (min-width: 744px) {
 	.prose-body :is(p, li) {
 		font-size: 17px;
+	}
+
+	.prose-body a.bookmark {
+		min-height: 112px;
+	}
+
+	.prose-body .bookmark-text {
+		padding: 16px 20px;
+	}
+
+	.prose-body .bookmark-title {
+		--lines: 1;
+	}
+
+	.prose-body .bookmark-desc {
+		--lines: 2;
+	}
+
+	.prose-body .bookmark-thumb {
+		flex-basis: min(34%, 224px);
 	}
 }
 
