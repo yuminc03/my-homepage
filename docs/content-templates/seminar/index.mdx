@@ -1,0 +1,57 @@
+---
+# 새 세미나 틀(쓰는 법은 docs/content-templates/README.md): src/content/seminars/<이름>/index.mdx로 복사한다
+# 표지 cover.png와 본문 사진(photo-1.png…)을 같은 폴더에 두고, 아래 import의 파일 이름을 실제 파일에 맞춘다
+# Photo · PhotoPair · PhotoSide는 import하지 않아도 된다(상세 페이지가 <Content components={...} />로 넘겨준다)
+title: '[세미나 / 컨퍼런스 이름]'
+date: 2026-09-14
+location: '[장소]'
+summary: '[어떤 세션이 기억에 남았는지, 무엇을 얻었는지 짧게 기록하세요.]'
+cover: ./cover.png
+coverAlt: '[표지 사진 설명]'
+draft: true
+---
+
+import photo1 from './photo-1.png';
+import photo2 from './photo-2.png';
+import photo3 from './photo-3.png';
+import photo4 from './photo-4.png';
+
+[행사를 소개하는 도입 문단입니다. 어떤 행사였고 왜 참석했는지 두세 문장으로 적습니다.]
+
+## SESSION 01 · [발표자]
+
+### [세션 제목]
+
+[세션 내용을 정리하는 문단입니다. 발표에서 인상 깊었던 내용과 핵심 메시지를 적습니다.]
+
+<Photo src={photo1} alt="[사진 설명]" caption="[사진 설명]" />
+
+[사진 뒤에 이어지는 문단입니다. 이 세션에서 얻은 점을 적습니다.]
+
+## SESSION 02 · [발표자]
+
+### [세션 제목]
+
+[세션 내용을 정리하는 문단입니다. 함께 보면 좋은 사진이 두 장이면 나란히 둡니다.]
+
+<PhotoPair a={photo2} aAlt="[사진 설명]" b={photo3} bAlt="[사진 설명]" caption="[두 사진을 함께 설명하는 문장]" />
+
+[사진 뒤에 이어지는 문단입니다.]
+
+## SESSION 03 · [발표자]
+
+### [세션 제목]
+
+<PhotoSide src={photo4} alt="[사진 설명]">
+
+[짧은 세션이나 가벼운 순간은 사진 옆에 글을 붙여 공간을 아낍니다.]
+
+[두 번째 문단입니다. 모바일에서는 사진이 위, 글이 아래로 쌓입니다.]
+
+</PhotoSide>
+
+## 배운 점 · 소감
+
+[행사 전체를 돌아보며 배운 점과 소감을 적습니다.]
+
+[다음에 적용해 보고 싶은 것이나 만난 사람들과 나눈 이야기를 남깁니다.]
