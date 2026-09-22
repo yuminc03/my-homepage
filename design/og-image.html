@@ -1,0 +1,180 @@
+<!doctype html>
+<!--
+  사이트 대표 이미지(OG 이미지) 원본: 1200×630(1.91:1). 결과물은 public/og-image.png
+  - 링크를 공유·북마크할 때 Notion·카카오톡·Slack 카드의 썸네일로 쓰인다(PROGRESS.md 5-23)
+  - 색은 사이트 토큰 파일을 그대로 불러온다. 토큰을 바꾸면 이 파일을 다시 찍는다
+  - 아이콘 모양·그라디언트는 src/data/apps.ts(BRAND·APPS·CONTACT)를 옮겨 적었다. 바꾸면 함께 고친다
+  - 다시 만들기: Chrome 헤드리스로 1200×630을 찍는다
+    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --hide-scrollbars \
+      --allow-file-access-from-files --window-size=1200,630 --virtual-time-budget=4000 \
+      --screenshot=public/og-image.png "file://$PWD/design/og-image.html"
+-->
+<html lang="ko" data-theme="dark">
+	<head>
+		<meta charset="utf-8" />
+		<title>Lia.log OG 이미지</title>
+		<link rel="stylesheet" href="../src/styles/tokens.css" />
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap"
+		/>
+		<style>
+			* {
+				box-sizing: border-box;
+			}
+
+			html,
+			body {
+				margin: 0;
+			}
+
+			body {
+				position: relative;
+				width: 1200px;
+				height: 630px;
+				overflow: hidden;
+				background: var(--desk);
+				color: var(--ink-strong);
+				font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+			}
+
+			/* 사이트 바탕과 같은 블러 글로우(SiteLayout의 .glow를 이 캔버스 크기에 맞춰 옮김) */
+			.glow {
+				position: absolute;
+				border-radius: 50%;
+			}
+
+			.glow-a {
+				top: -220px;
+				left: -160px;
+				width: 620px;
+				height: 620px;
+				background: var(--glow-a);
+				filter: blur(110px);
+				opacity: 0.42;
+			}
+
+			.glow-b {
+				right: -200px;
+				bottom: -260px;
+				width: 620px;
+				height: 620px;
+				background: var(--glow-b);
+				filter: blur(120px);
+				opacity: 0.34;
+			}
+
+			.glow-c {
+				top: 120px;
+				right: 180px;
+				width: 360px;
+				height: 360px;
+				background: var(--glow-c);
+				filter: blur(120px);
+				opacity: 0.22;
+			}
+
+			.content {
+				position: relative;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				height: 100%;
+				padding-bottom: 12px;
+				text-align: center;
+			}
+
+			.icon {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				border-radius: 23%;
+				color: oklch(99% 0 0);
+			}
+
+			.icon svg {
+				fill: none;
+				stroke: currentColor;
+				stroke-linecap: round;
+				stroke-linejoin: round;
+			}
+
+			/* 카드 썸네일은 대부분 작게 줄어든다 → 한 줄 소개는 넣지 않고(카드 설명 칸에 같은 문장이 나온다)
+			   로고와 이름만 작게 보여도 알아볼 크기로 둔다 */
+			.brand {
+				width: 136px;
+				height: 136px;
+				margin-bottom: 30px;
+				background: linear-gradient(145deg, oklch(70% 0.13 300), oklch(58% 0.15 285));
+				box-shadow: 0 18px 40px var(--icon-shadow);
+			}
+
+			.brand svg {
+				width: 136px;
+				height: 136px;
+				stroke-width: 1.875;
+			}
+
+			h1 {
+				margin: 0;
+				font-size: 92px;
+				font-weight: 800;
+				line-height: 1.1;
+				letter-spacing: -0.02em;
+			}
+
+			/* 사이트의 Dock처럼 유리 위에 앱 아이콘을 늘어놓는다 */
+			.dock {
+				display: flex;
+				gap: 14px;
+				margin-top: 40px;
+				padding: 12px;
+				border: 1px solid var(--glass-line);
+				border-radius: 26px;
+				background: var(--glass);
+				box-shadow:
+					inset 0 1px 0 var(--glass-hi),
+					0 14px 32px var(--dock-shadow);
+			}
+
+			.dock .icon {
+				width: 60px;
+				height: 60px;
+				border-radius: 16px;
+			}
+
+			.dock .icon svg {
+				width: 28px;
+				height: 28px;
+				stroke-width: 1.7;
+			}
+		</style>
+	</head>
+	<body>
+		<span class="glow glow-a"></span>
+		<span class="glow glow-b"></span>
+		<span class="glow glow-c"></span>
+
+		<main class="content">
+			<span class="icon brand">
+				<svg viewBox="0 0 24 24"><rect x="4.5" y="5.75" width="15" height="12.5" rx="2.25" /><path d="M4.5 9.75h15" /></svg>
+			</span>
+			<h1>Lia.log</h1>
+			<div class="dock">
+				<span class="icon" style="background: linear-gradient(145deg, oklch(70% 0.13 300), oklch(58% 0.15 285))">
+					<svg viewBox="0 0 24 24"><path d="M4 10.5 12 4l8 6.5V20H4z" /></svg>
+				</span>
+				<span class="icon" style="background: linear-gradient(145deg, oklch(76% 0.11 170), oklch(64% 0.11 185))">
+					<svg viewBox="0 0 24 24"><path d="M3 7h6l2 2h10v9H3z" /></svg>
+				</span>
+				<span class="icon" style="background: linear-gradient(145deg, oklch(72% 0.12 340), oklch(60% 0.14 320))">
+					<svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z" /></svg>
+				</span>
+				<span class="icon" style="background: linear-gradient(145deg, oklch(78% 0.1 220), oklch(64% 0.12 255))">
+					<svg viewBox="0 0 24 24"><path d="M4 8h3l2-2h6l2 2h3v11H4z" /><circle cx="12" cy="13" r="3.5" /></svg>
+				</span>
+			</div>
+		</main>
+	</body>
+</html>

@@ -7,6 +7,7 @@
 // - 주소는 콘텐츠 폴더 이름(seminar.id). 세미나 glob이 폴더형뿐이라 id에 /가 없어 [slug] 하나로 받는다(프로젝트와 같다)
 // - 본문 MDX의 사진 컴포넌트는 여기서 넘겨야 렌더링된다(<Content components={{ ... }} />)
 // - 프로젝트 상세·스터디 글과 같게 Dock은 모든 폭에서 숨긴 채 시작한다(5-14)
+import { getImage } from 'astro:assets';
 import { render, type CollectionEntry } from 'astro:content';
 import SiteLayout from '../../layouts/SiteLayout.astro';
 import Window from '../../components/Window.astro';
@@ -44,9 +45,13 @@ const app = getApp('seminars');
 const listHref = withBase(app.href);
 
 const pagerLink = (entry?: Seminar) => entry && { href: seminarHref(entry), title: entry.data.title };
+
+// 공유 카드 썸네일: 표지 사진을 OG 비율(1200×630)로 잘라 쓴다. 행사 사진이 사이트 대표 이미지보다 이 글을 잘 알려 준다
+const cover = await getImage({ src: data.cover, width: 1200, height: 630, fit: 'cover', format: 'jpg' });
+const shareImage = { url: cover.src, width: 1200, height: 630, alt: data.coverAlt };
 ---
 
-<SiteLayout active={app.id} title={data.title} description={data.summary} dockHidden>
+<SiteLayout active={app.id} title={data.title} description={data.summary} dockHidden shareImage={shareImage}>
 	<Window title={app.title} back={{ href: listHref, label: `${app.label} 목록으로` }}>
 		<div class="column">
 			<a class="back" href={listHref} data-back-link>
