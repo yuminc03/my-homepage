@@ -32,7 +32,7 @@
    - **`master`에 push하면 배포가 돌아간다** — 실제 콘텐츠가 준비되면 `develop` → `master` 병합으로 다시 배포한다. 문서만 고칠 때는 `develop`에만 push한다
 2. Node는 **nvm의 24**를 쓴다. 셸 기본값이 21.7.3이라 명령 전에 `source ~/.nvm/nvm.sh && nvm use`(`.nvmrc` = 24)를 먼저 실행한다. 검증 방법은 2-2
 3. **2026-09-22 배포 완료**: Pointer Quest·README·북마크 카드·OG 태그를 `develop` → `master` 병합 `81b7ac3`으로 한 번에 배포했다(run 35736175779 성공). 실제 주소에서 홈·`og-image.png`·프로젝트 상세·스터디 목록 200, 상세의 `og:*` 확인, `getLinkPreview(실제 주소)`로 홈·Pointer Quest 모두 제목·설명·대표 이미지·파비콘이 나온다.
-   - **지금 하는 일(2026-09-22, 사용자 승인 순서)**: ① 글꼴을 사이트가 직접 제공하도록 변경(`feature/self-host-font`, 5-24) — **완료, `develop` 병합(배포는 다음에 함께)** ② 스터디·세미나 예시 글·임시 이미지 삭제 + 쓰는 틀은 `docs/content-templates/`로(`feature/content-templates`) ③ 실제 콘텐츠 채우기(2-6, 재료가 오면 `feature/real-content`) ④ 실기기 확인(사용자가 확인 후 알려 주기로 함) ⑤ 개발 과정 설명 세션
+   - **지금 하는 일(2026-09-22, 사용자 승인 순서)**: ① 글꼴을 사이트가 직접 제공하도록 변경(`feature/self-host-font`, 5-24) — **완료, `develop` 병합(배포는 다음에 함께)** ② 스터디·세미나 예시 글·임시 이미지 삭제 + 쓰는 틀은 `docs/content-templates/`로(`feature/content-templates`) — **완료, `develop` 병합**. 이어서 사용자가 **여러 세션으로 된(주최 기관이 있는) 세미나를 읽기 쉽게 정리하는 방법**을 물어 방식을 제안했다(답 대기) ③ 실제 콘텐츠 채우기(2-6, 재료가 오면 `feature/real-content`) ④ 실기기 확인(사용자가 확인 후 알려 주기로 함) ⑤ 개발 과정 설명 세션
    - 그 전에 할 수 있는 선택 작업: 저장소를 iCloud 동기화 밖으로 옮기기(2-2 끝, 사용자 결정 필요)
 4. 그 뒤 순서: 글이 쌓이면 `develop` → `master` 병합으로 배포 → 실기기 확인 → **마지막 단계: 개발 과정 설명 세션**(2026-09-17 사용자 요청)
    - 마지막 단계 내용: 사이트가 완성되면 사용자에게 개발 과정 전체를 설명한다. 쓰인 문법(Astro 컴포넌트·프런트매터·스코프 스타일·`light-dark()`·Content Collections·TypeScript 등), 핵심 기능별 구현 원리(테마·Dock 자동 숨김·필터·콘텐츠 헬퍼 등), 면접에서 나올 만한 질문과 답을 다룬다. 기술 선택 근거는 `docs/tech-stack.md`와 연결한다. 구현하면서 설명할 거리(원리·대안·트레이드오프)는 5장 결정 기록에 계속 남긴다
@@ -52,6 +52,8 @@
 - **긴 상세 페이지 스크린샷**: 데스크톱은 `--window-size=1440,3700`처럼 세로로 길게, 모바일·태블릿은 iframe 높이 3900px 하네스로 찍고 `sips -Z 2000`으로 줄여서 본다
 - **Dock 동작 검사(상세)**: 사본 `<head>` 맨 앞에서 rAF를 `setTimeout(16ms)`으로 바꾸고 `</body>` 앞에 높이 4000px 빈 칸 + 검사 스크립트를 넣는다. `scrollTo(0, y)` 뒤 `scroll` 이벤트를 직접 보내 `data-state`를 확인(상세: 시작 hidden → y 30에서도 hidden → 위로 올리면 shown / 목록: 시작 shown)
 - **Markdown 처리 방식을 바꿨다면 `node_modules/.astro`를 지우고 빌드한다**(2026-09-19). 콘텐츠 컬렉션의 렌더 결과가 캐시되어, `shikiConfig`·transformer를 고쳐도 글이 바뀌지 않으면 예전 HTML이 그대로 나온다. 페이지(`src/pages/*.md`)는 캐시를 타지 않아 증상이 헷갈린다
+  - **글·이미지를 지운 뒤에도 캐시를 지운다**(2026-09-23): 예시 세미나를 지운 뒤 캐시가 남아 `[ImageNotFound] ./cover.png`로 빌드가 실패했다. 캐시를 지우면 정상. GitHub Actions는 매번 새로 빌드해 영향이 없다
+  - 커밋 스크립트에서 `npm run build | grep`은 실패해도 멈추지 않는다 → 빌드 결과에 `Complete!`가 있는지 보고 커밋한다(같은 날 이 때문에 실패한 빌드 뒤에 커밋이 진행됐다. 코드는 정상이라 커밋은 유지)
 - **`astro preview`(localhost)로 확인하기**(2026-09-19, 클립보드·실제 주소가 필요할 때)
   - `navigator.clipboard`는 보안 컨텍스트에서만 있다 → `file://`에서는 복사 버튼을 확인할 수 없고 `http://localhost`에서는 된다
   - 테마는 `dist/`에 임시 페이지를 만들어 `localStorage.setItem('theme', …)`을 먼저 실행하게 한다(`dist/`는 git에 없어 지우면 그만이다)
@@ -72,6 +74,11 @@
   - 근본 해결은 저장소를 iCloud 밖(예: `~/Developer/`)으로 옮기거나 동기화를 끄는 것이다. `.git` 안에 사본이 생기면 저장소가 깨질 수 있어 옮기는 편이 안전하다 — 사용자에게 제안만 했다
 
 ### 2-3. 최근 세션에서 끝낸 일 (요약, 자세한 결정은 5장)
+- 예시 글 정리(`feature/content-templates`, 2026-09-23, 커밋 `7c58bb9`·`67ae987`·`dc5edb7`, `develop` 병합)
+  - 스터디 `sample-post.md`, 세미나 `sample-seminar/`(글 + 임시 이미지 5장) 삭제. 빈 폴더는 `.gitkeep`으로 남김(폴더가 없으면 "base directory does not exist" 경고가 하나 더 나온다)
+  - 틀을 `docs/content-templates/`로: `README.md`(쓰는 순서·코드 블록·북마크 카드·목차·사진·프로젝트 본문 규칙) + `project/index.md`(git 기록의 옛 `sample-project`에서 되살림) · `study.md` · `seminar/index.mdx`. 맨 위 주석을 새 위치·이미지 규칙에 맞게 고침
+  - 사이트 결과는 그대로(예시 글은 원래 `draft`). 빌드 때 스터디·세미나 "컬렉션이 비었다" 경고는 첫 글이 생기면 사라진다
+  - README의 "글 쓰기"를 틀 위치로 바꾸고 북마크 카드 한 줄 추가(주요 기능 목록에는 넣지 않음 — 사용자 결정)
 - 글꼴 직접 제공(`feature/self-host-font`, 2026-09-22~23, 커밋 `142349f`, `develop` 병합·아직 배포 전, 결정은 **5-24**)
   - `npm install @fontsource-variable/noto-sans-kr` → `BaseLayout`에서 `import`, Google Fonts `<link>`·`preconnect` 3줄 삭제, `global.css`의 글꼴 이름을 `'Noto Sans KR Variable'`로. `design/og-image.html`도 같은 패키지를 불러오게 바꿈(이미지는 다시 찍지 않음 — 모양 같음)
   - 확인: 빌드, `dist/_astro`에 woff2 124개(3.6MB, 페이지마다 필요한 조각만 받는다), 전송량·연결 호스트 비교(아래 5-24), 실제 사이트(전)와 로컬 미리보기(후) 화면 비교 — 굵기 600인 곳만 아주 조금 가늘어짐
@@ -184,14 +191,15 @@
 
 #### 순서
 1. 사용자에게 재료를 받는다(컬렉션 하나씩 시작하는 편이 낫다)
-2. 예시 폴더를 복사해 이름을 바꾸고 내용을 채운다 → `draft: false`
+2. `docs/content-templates/`의 틀을 복사해 이름을 바꾸고 내용을 채운다 → `draft: false`
 3. `npm run build` → `npm run dev`로 확인. 글이 생기면 **목록 정렬·필터 칩·Pager·홈 최근 기록·검색 결과가 모두 실제 내용으로 바뀌므로** 함께 본다
-4. 각 컬렉션에 실제 글이 하나라도 생기면 그 컬렉션의 `sample-*`과 임시 이미지를 지운다
+4. (끝남) 예시 글·임시 이미지는 2026-09-23에 모두 지웠다
 5. 커밋은 글 단위로 나눈다(`content:` 대신 `feat:` 또는 `docs:`가 아니라 실제 콘텐츠이므로 `content:`를 새로 쓰기보다 `feat: <컬렉션> 글 추가` 정도로 통일)
 
 #### 진행 상황 (2026-09-22~)
-- [x] 프로젝트 1: Pointer Quest(`projects/pointer-quest/`) + `sample-project` 삭제 — 커밋 완료, `develop` 병합·배포 전
-- [ ] 다음 프로젝트·스터디 글·세미나는 재료가 오는 대로. 스터디·세미나의 `sample-*`은 그 컬렉션에 실제 글이 생길 때 지운다
+- [x] 프로젝트 1: Pointer Quest(`projects/pointer-quest/`) + `sample-project` 삭제 — 2026-09-22 배포(`81b7ac3`)
+- [x] 스터디·세미나 예시 글·임시 이미지 삭제, 틀은 `docs/content-templates/`로(2026-09-23, 사용자 결정 — 천천히 채울 예정이라)
+- [ ] 다음 프로젝트·스터디 글·세미나는 재료가 오는 대로
 
 #### 배포는 이미 되어 있다 (2026-09-21)
 배포를 먼저 하기로 해 사이트가 이미 떠 있다(5-20, 최근 배포 `398be50`). 글을 쓰면 `develop`에서 확인 → `develop` → `master` 병합으로 올린다. 실제 주소에서 보면서 실기기 확인(남은 일)도 함께 할 수 있다.
@@ -320,7 +328,7 @@
 - [x] 스터디 읽는 시간 계산·목차 (2026-09-19~20, 5-15)
 - [x] 세미나 MDX 컴포넌트 `Photo`·`PhotoPair`·`PhotoSide`(상세 페이지가 `<Content components={{ ... }} />`로 넘김) (2026-09-20, 5-16)
 - [x] 본문(Markdown) 스타일 공용화: `src/styles/prose.css`로 분리 (2026-09-19, 5-15)
-- [ ] **대괄호 `[ ]` placeholder를 실제 콘텐츠로** ← 다음 할 일(계획은 **2-6**). 남은 대괄호는 예시 글 3개뿐이고 `src/data/profile.ts`는 이미 실제 내용이다. 실제 글을 쓰면 예시 글 3개(`sample-*`)와 임시 이미지 10장을 삭제한다. **2026-09-22 프로젝트 Pointer Quest를 쓰고 `sample-project`를 지웠다**(남은 예시: 스터디·세미나)
+- [ ] **대괄호 `[ ]` placeholder를 실제 콘텐츠로** ← 다음 할 일(계획은 **2-6**). 남은 대괄호는 예시 글 3개뿐이고 `src/data/profile.ts`는 이미 실제 내용이다. 실제 글을 쓰면 예시 글 3개(`sample-*`)와 임시 이미지 10장을 삭제한다. **2026-09-22 프로젝트 Pointer Quest를 쓰고 `sample-project`를 지웠다.** 2026-09-23 스터디·세미나는 천천히 채울 예정이라 사용자 결정으로 **예시 글·임시 이미지를 모두 지우고 틀은 `docs/content-templates/`로 옮겼다** → `src/content/`에 대괄호 placeholder가 남아 있지 않다. 남은 것은 실제 글을 쓰는 일(재료가 오는 대로)
 - [x] GitHub Actions로 GitHub Pages 자동 배포 설정 + 저장소 공개 전환 + 첫 배포 성공 (2026-09-21, 5-20). 사이트: https://yuminc03.github.io/my-homepage/
 - [x] 연락처 링크(GitHub·Email)는 `src/data/profile.ts`에 실제 주소로 들어가 있다(LinkedIn은 두지 않았다 — 동작 없는 링크 금지)
 - [x] `develop` → `master` 병합 `ea31474`·push (2026-09-21, 첫 배포). 앞으로도 배포는 이 병합으로 한다
@@ -416,7 +424,7 @@
   - **projects** `src/content/projects/*/index.{md,mdx}`: `title`·`summary`·`categories`(`iOS`/`Web`/`Side Project` 중 1개 이상, 여러 개 가능)·`tags`·`icon`(이미지)·`startDate`·`endDate`(없으면 진행 중)·`role`·`stack`(1개 이상)·`platform`·`links.appStore`/`links.github`(URL)·`screenshots`(이미지 배열)·`features[]`(`title`·`description`·`image`). 본문은 `## 소개` / `## 기술적으로 고민한 점` / `## 배운 점`
   - **study** `src/content/study/**/*.{md,mdx}`: `title`·`summary`·`category`(자유 문자열, 필터 칩은 글에서 모아 만듦)·`pubDate`·`updatedDate`. 읽는 시간·목차는 본문에서 계산(`render()`의 `headings`)
   - **seminars** `src/content/seminars/*/index.{md,mdx}`: `title`·`date`·`location`·`summary`·`cover`(이미지)·`coverAlt`. 본문은 MDX: `## SESSION 01 · 발표자` + `### 세션 제목`, 사진은 `<Photo>`(넓게 1장) · `<PhotoPair>`(2장 나란히) · `<PhotoSide>`(사진 옆 글) — 이미지는 본문에서 `import`해 넘긴다
-- 새 글 쓰기: `src/content/<컬렉션>/sample-*`를 복사해 이름을 바꾸고 `draft: false`로(프로젝트는 2026-09-22부터 실제 글 `pointer-quest/`를 복사한다). 필드가 틀리면 `npm run build`(또는 `npx astro sync`)가 어떤 필드가 왜 틀렸는지 알려 주며 실패한다
+- 새 글 쓰기: **`docs/content-templates/`의 틀**(프로젝트 `project/index.md` · 스터디 `study.md` · 세미나 `seminar/index.mdx`)을 `src/content/<컬렉션>/`에 복사해 이름을 바꾸고 `draft: false`로(2026-09-23부터. 그 전에는 `src/content/*/sample-*` 예시 글을 복사했다). 쓰는 법은 그 폴더의 `README.md`. 필드가 틀리면 `npm run build`(또는 `npx astro sync`)가 어떤 필드가 왜 틀렸는지 알려 주며 실패한다
 - 브라우저에서 글을 쓰고 싶어지면 Keystatic·Decap CMS(git 기반), 사진이 많아지면 사진만 이미지 서비스로
 - Firebase는 관리자 화면·인증을 직접 만들어야 하고 검색 노출·비용 면에서 과하다
 
@@ -831,8 +839,8 @@
 | `astro.config.mjs` | `site: 'https://yuminc03.github.io'`, `base: '/my-homepage'`, `integrations: [mdx()]`, `markdown.shikiConfig`(코드 블록 테마 + transformer, 5-15) |
 | `src/content.config.ts` | 콘텐츠 컬렉션 `projects`·`study`·`seminars` 스키마(5-10), `PROJECT_CATEGORIES` 내보내기, 폴더형/파일형 id 생성 |
 | `src/content/projects/pointer-quest/` | 첫 실제 프로젝트 `index.md` + 아이콘(512)·스크린샷 5장(660×1434, 그중 3장을 주요 기능에도 씀). 예시 `sample-project/`는 2026-09-22에 지웠다 |
-| `src/content/study/sample-post.md` | 예시 스터디 글(`draft: true`, 인라인 코드·Swift 코드 블록) |
-| `src/content/seminars/sample-seminar/` | 예시 행사 `index.mdx`(`draft: true`, 세션 3개·사진 컴포넌트 3종) + 단색 임시 이미지 5장(표지·사진 4) |
+| `src/content/study/` · `src/content/seminars/` | 아직 글이 없다(`.gitkeep`만). 예시 글 `sample-post.md`·`sample-seminar/`는 2026-09-23에 지웠다 |
+| `docs/content-templates/` | 새 글 틀: `README.md`(쓰는 순서·본문 기능) · `project/index.md` · `study.md` · `seminar/index.mdx`(사진 컴포넌트 3종 쓰는 법). 사이트 빌드에는 쓰이지 않는다 |
 | `tsconfig.json` | `astro/tsconfigs/strict` 상속, `dist`·`design` 제외 |
 | `.nvmrc` | `24` |
 | `.gitignore` | `dist/`·`.astro/`·`node_modules/`·`.env`·`.DS_Store` 등(Astro 템플릿 그대로) |
@@ -928,6 +936,12 @@
 
 ## 12. 브랜치·커밋 기록
 - 로컬 브랜치: `master`, `develop`(현재). **`develop`이 `master`보다 앞서 있다**(글꼴 직접 제공 — 다음 배포 때 함께 올라간다). 원격(`origin`, `https://github.com/yuminc03/my-homepage.git`, **2026-09-21부터 공개 저장소**): `master` `81b7ac3`(2026-09-22 배포, 로컬과 같음), `develop`(2026-09-22 push, `origin/develop` 추적). **`master`에 push하면 GitHub Actions가 배포한다**(5-20)
+- `feature/content-templates`(2026-09-23, `develop` `17a722e`에서 분기, **`develop` 병합으로 완료, 브랜치 삭제·push**)
+  - `7c58bb9` docs: 새 글 틀을 docs/content-templates로 정리
+  - `67ae987` chore: 스터디·세미나 예시 글과 임시 이미지 삭제
+  - `dc5edb7` docs: README 글 쓰기 안내를 새 글 틀 위치로 변경
+  - (이 문서 갱신) docs: 예시 글 정리와 새 글 틀 위치 기록
+  - 주의: `67ae987`·`dc5edb7` 커밋 직전 빌드는 콘텐츠 캐시 때문에 `ImageNotFound`로 실패했는데 스크립트가 멈추지 않았다. 캐시를 지우고 다시 빌드해 코드가 정상임을 확인했다(2-2)
 - `feature/self-host-font`(2026-09-22~23, `develop` `290720a`에서 분기, **`develop` 병합으로 완료, 브랜치 삭제·push**, 배포는 다음 콘텐츠와 함께). 각 커밋 직전에 `npm run build`
   - `142349f` feat: Noto Sans KR 가변 글꼴을 Google Fonts 대신 사이트에서 직접 제공
   - (이 문서 갱신) docs: 글꼴 직접 제공 결정과 측정 결과, iPhone SE Dock 확인 기록
