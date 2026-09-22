@@ -1,7 +1,8 @@
 # 진행 상황
 - 최종 업데이트: 2026-09-22
 - 이 문서 하나만 읽으면 새 채팅에서 바로 이어서 작업할 수 있도록 정리한 단일 기준 문서다
-- **마지막 세션(2026-09-22, 이어서 3)**: 사용자가 "그 순서로 진행"을 승인 → **`feature/bookmark-card`를 `develop`에 병합 `56027aa` → 브랜치 삭제 → push**하고, `develop`에서 **`feature/og-meta`** 를 만들어 **이 사이트의 공유·북마크 카드(OG 태그)** 를 붙였다(결정은 **5-23**). `BaseLayout`에 canonical·`og:*`·`twitter:card`, 사이트 대표 이미지 `public/og-image.png`(1200×630, 원본 `design/og-image.html`을 헤드리스 Chrome으로 찍음), 세미나 상세는 표지 사진을 1200×630으로 잘라 썸네일로. 빌드 결과 HTML로 홈·목록·프로젝트 상세·(임시 공개한) 세미나 상세의 태그를 확인했다. 대표 이미지는 모형 카드 페이지로 비교한 뒤 사용자가 **한 줄 소개를 빼고 로고·이름을 키운 B안**을 골랐다. 사용자 확인 뒤 커밋 4개(12장) → `develop` 병합 `15cff8f` → **`develop` → `master` 병합 `81b7ac3`으로 배포 성공**(run 35736175779). 실제 주소를 `getLinkPreview`로 읽어 카드 정보가 모두 나오는 것을 확인했다. 배포 뒤 실제 주소를 `linkPreview`로 읽어 카드를 확인하는 일이 남았다. 작업 중 ` 2` 사본(소스 2개·`node_modules` 132개)을 또 지우고 `npm ci`
+- **마지막 세션(2026-09-22, 이어서 4)**: 사용자가 남은 일을 물어 목록을 정리했고(콘텐츠 외에 실기기 확인·320px Dock·글꼴·설명 세션), 추천 순서대로 **글꼴부터** 정했다. 측정해 보니 Google CSS가 570KB였고 굵기 600이 빠져 700으로 그려지고 있었다 → **Noto Sans KR 가변 글꼴을 사이트가 직접 제공**(`feature/self-host-font`, 5-24, 커밋 `142349f` → `develop` 병합, 배포는 다음 콘텐츠와 함께). 사용자가 **iPhone SE에서 Dock이 잘리지 않고 괜찮다**고 확인해 줬고, 실기기 확인(트랙패드·hover·동작 줄이기)은 직접 보고 알려 주기로 했다. 스터디·세미나는 천천히 채울 예정이라 **예시 글·임시 이미지를 지우고 쓰는 틀은 `docs/content-templates/`로 옮기기로 했다**(다음 브랜치)
+- **그 전 세션(2026-09-22, 이어서 3)**: 사용자가 "그 순서로 진행"을 승인 → **`feature/bookmark-card`를 `develop`에 병합 `56027aa` → 브랜치 삭제 → push**하고, `develop`에서 **`feature/og-meta`** 를 만들어 **이 사이트의 공유·북마크 카드(OG 태그)** 를 붙였다(결정은 **5-23**). `BaseLayout`에 canonical·`og:*`·`twitter:card`, 사이트 대표 이미지 `public/og-image.png`(1200×630, 원본 `design/og-image.html`을 헤드리스 Chrome으로 찍음), 세미나 상세는 표지 사진을 1200×630으로 잘라 썸네일로. 빌드 결과 HTML로 홈·목록·프로젝트 상세·(임시 공개한) 세미나 상세의 태그를 확인했다. 대표 이미지는 모형 카드 페이지로 비교한 뒤 사용자가 **한 줄 소개를 빼고 로고·이름을 키운 B안**을 골랐다. 사용자 확인 뒤 커밋 4개(12장) → `develop` 병합 `15cff8f` → **`develop` → `master` 병합 `81b7ac3`으로 배포 성공**(run 35736175779). 실제 주소를 `getLinkPreview`로 읽어 카드 정보가 모두 나오는 것을 확인했다. 배포 뒤 실제 주소를 `linkPreview`로 읽어 카드를 확인하는 일이 남았다. 작업 중 ` 2` 사본(소스 2개·`node_modules` 132개)을 또 지우고 `npm ci`
 - **그 전 세션(2026-09-22, 이어서 2)**: README를 커밋(`8e9805c`·`43f7a56`·`1f945ba`)해 `develop`에 병합 `5b8237c` → push하고, 사용자 요청으로 **Notion식 북마크 카드**를 만들었다(`feature/bookmark-card`, 결정은 **5-22**). 글에 **주소 하나만 한 문단으로 쓰면** 빌드할 때 그 페이지의 OG 태그를 읽어 제목·설명·주소·파비콘·썸네일 카드로 바꾼다(Sätteri hast 플러그인 `src/lib/bookmark.ts` + 가져오기·캐시 `src/lib/linkPreview.ts`, 캐시 `src/data/link-previews.json`은 커밋). 스터디(.md)·세미나(.mdx)에 임시 주소 8가지로 확인하고 되돌렸다. 사용자가 개발 서버에서 카드를 직접 보고 확인한 뒤 커밋했다(12장, **`develop` 병합 전**). 이어서 사용자가 **이 사이트 자체를 Notion 등에 북마크했을 때의 카드**를 물어, OG 태그 방식을 제안했다(다음 작업 후보, 2-1의 3). 작업 중 `node_modules` 안 ` 2` 사본 144개를 발견해 지우고 `npm ci`
 - **그 전 세션(2026-09-22, 이어서)**: 사용자 요청으로 콘텐츠를 더 넣기 전에 **`feature/real-content`를 `develop`에 병합 `6354a23` → 브랜치 삭제 → push**하고, `develop`에서 **`feature/readme`** 를 만들어 **README를 새로 썼다**(사이트 링크·스크린샷 3장·소개·주요 기능·기술 스택·시작하기·글 쓰기·배포·구조·문서·저작권). 스크린샷은 `docs/screenshots/`(데스크톱 홈 다크 · 프로젝트 상세 라이트 · 모바일 3화면 다크, 2배율로 찍어 가로 1600px로 줄임). **사용자 확인·커밋 대기 중**(커밋 제안은 12장). 사용자가 README를 `master`에서 바로 쓸지 물어 → Git Flow상 `develop`에서 `feature/*`로 쓰고, **README와 Pointer Quest를 `develop` → `master` 병합 한 번으로 함께 배포**하기로 했다(README만 `master`에 올려도 배포 워크플로가 돈다). 순서: README 병합 → `master` 배포 → 다음 콘텐츠
 - **그 전 세션(2026-09-22)**: **실제 콘텐츠 채우기를 시작했다.** 브랜치 `feature/real-content`(`develop` `c63bdc4`에서 분기)에서 **첫 프로젝트 Pointer Quest**(`src/content/projects/pointer-quest/`)를 썼다 — 재료는 사용자가 준 [pointer-quest README](https://github.com/yuminc03/pointer-quest/blob/master/README.md)이고, 아이콘·스크린샷 5장은 그 저장소에서 받아 줄여 넣었다. 실제 프로젝트 글이 생겨 **`sample-project`(예시 글 + 임시 이미지 5장)를 지웠다**. 빌드와 1440 다크·390 다크·768 라이트 스크린샷으로 확인했다. 사용자 확인 뒤 커밋 3개를 마쳤다(12장). **`develop` 병합·배포는 아직**. 사용자가 ` 2` 사본 파일은 앞으로 보이면 묻지 않고 지우기로 했다(2-2 끝)
@@ -30,7 +31,8 @@
    - ` 2`가 붙은 파일·폴더가 다시 보이면 iCloud 동기화 사본이다(2-2 끝). **묻지 않고 바로 지운다**(2026-09-22 사용자 결정)
    - **`master`에 push하면 배포가 돌아간다** — 실제 콘텐츠가 준비되면 `develop` → `master` 병합으로 다시 배포한다. 문서만 고칠 때는 `develop`에만 push한다
 2. Node는 **nvm의 24**를 쓴다. 셸 기본값이 21.7.3이라 명령 전에 `source ~/.nvm/nvm.sh && nvm use`(`.nvmrc` = 24)를 먼저 실행한다. 검증 방법은 2-2
-3. **2026-09-22 배포 완료**: Pointer Quest·README·북마크 카드·OG 태그를 `develop` → `master` 병합 `81b7ac3`으로 한 번에 배포했다(run 35736175779 성공). 실제 주소에서 홈·`og-image.png`·프로젝트 상세·스터디 목록 200, 상세의 `og:*` 확인, `getLinkPreview(실제 주소)`로 홈·Pointer Quest 모두 제목·설명·대표 이미지·파비콘이 나온다. **다음은 실제 콘텐츠 채우기(2-6)** — 재료가 오면 `develop`에서 `feature/real-content`를 다시 만든다. 그 뒤 **실제 콘텐츠 채우기(2-6)** 를 이어 간다 — 다음 재료가 오면 `develop`에서 `feature/real-content`를 다시 만든다(2026-09-22 Pointer Quest까지 병합 `6354a23`)
+3. **2026-09-22 배포 완료**: Pointer Quest·README·북마크 카드·OG 태그를 `develop` → `master` 병합 `81b7ac3`으로 한 번에 배포했다(run 35736175779 성공). 실제 주소에서 홈·`og-image.png`·프로젝트 상세·스터디 목록 200, 상세의 `og:*` 확인, `getLinkPreview(실제 주소)`로 홈·Pointer Quest 모두 제목·설명·대표 이미지·파비콘이 나온다.
+   - **지금 하는 일(2026-09-22, 사용자 승인 순서)**: ① 글꼴을 사이트가 직접 제공하도록 변경(`feature/self-host-font`, 5-24) — **완료, `develop` 병합(배포는 다음에 함께)** ② 스터디·세미나 예시 글·임시 이미지 삭제 + 쓰는 틀은 `docs/content-templates/`로(`feature/content-templates`) ③ 실제 콘텐츠 채우기(2-6, 재료가 오면 `feature/real-content`) ④ 실기기 확인(사용자가 확인 후 알려 주기로 함) ⑤ 개발 과정 설명 세션
    - 그 전에 할 수 있는 선택 작업: 저장소를 iCloud 동기화 밖으로 옮기기(2-2 끝, 사용자 결정 필요)
 4. 그 뒤 순서: 글이 쌓이면 `develop` → `master` 병합으로 배포 → 실기기 확인 → **마지막 단계: 개발 과정 설명 세션**(2026-09-17 사용자 요청)
    - 마지막 단계 내용: 사이트가 완성되면 사용자에게 개발 과정 전체를 설명한다. 쓰인 문법(Astro 컴포넌트·프런트매터·스코프 스타일·`light-dark()`·Content Collections·TypeScript 등), 핵심 기능별 구현 원리(테마·Dock 자동 숨김·필터·콘텐츠 헬퍼 등), 면접에서 나올 만한 질문과 답을 다룬다. 기술 선택 근거는 `docs/tech-stack.md`와 연결한다. 구현하면서 설명할 거리(원리·대안·트레이드오프)는 5장 결정 기록에 계속 남긴다
@@ -70,6 +72,9 @@
   - 근본 해결은 저장소를 iCloud 밖(예: `~/Developer/`)으로 옮기거나 동기화를 끄는 것이다. `.git` 안에 사본이 생기면 저장소가 깨질 수 있어 옮기는 편이 안전하다 — 사용자에게 제안만 했다
 
 ### 2-3. 최근 세션에서 끝낸 일 (요약, 자세한 결정은 5장)
+- 글꼴 직접 제공(`feature/self-host-font`, 2026-09-22~23, 커밋 `142349f`, `develop` 병합·아직 배포 전, 결정은 **5-24**)
+  - `npm install @fontsource-variable/noto-sans-kr` → `BaseLayout`에서 `import`, Google Fonts `<link>`·`preconnect` 3줄 삭제, `global.css`의 글꼴 이름을 `'Noto Sans KR Variable'`로. `design/og-image.html`도 같은 패키지를 불러오게 바꿈(이미지는 다시 찍지 않음 — 모양 같음)
+  - 확인: 빌드, `dist/_astro`에 woff2 124개(3.6MB, 페이지마다 필요한 조각만 받는다), 전송량·연결 호스트 비교(아래 5-24), 실제 사이트(전)와 로컬 미리보기(후) 화면 비교 — 굵기 600인 곳만 아주 조금 가늘어짐
 - 사이트 공유·북마크 카드(`feature/og-meta`, 2026-09-22, 커밋 `1ac0f65`·`18d71c2`·`19c18ac`, 결정은 **5-23**)
   - `BaseLayout`: `shareTitle`·`shareType`·`shareImage` prop → canonical + `og:type/site_name/locale/url/title/description/image(+width·height·alt)` + `twitter:card`. 주소는 `new URL(경로, Astro.site)`로 절대 주소
   - `SiteLayout`: `title`이 있으면(상세) `article` + 글 제목만, 없으면 `website` + 탭 제목. `shareImage`를 그대로 넘긴다
@@ -136,7 +141,7 @@
 - 홈(`feature/home-page` → `develop` 병합 `8c7568f`, 2026-09-16, 결정은 5-13): 첫 화면 `9907ebe` · iPhone 목업 `6da0b04` · 최근 기록 `062e860`
 - 공통 셸(`feature/site-shell` → `develop` 병합 `0227fa3`, 2026-09-15): 테마 버튼 · 메뉴바·Dock·창 · Dock 자동 숨김 · 시계
   - 실제 브라우저에서 아직 볼 것: Dock 트랙패드 스크롤 느낌·하단 hover·동작 줄이기
-- 알려진 문제: 320px 폭에서 모바일 Dock(아이콘 5개)이 화면 폭과 거의 같다(작은 기기 대응은 나중에)
+- ~~알려진 문제: 320px 폭에서 모바일 Dock(아이콘 5개)이 화면 폭과 거의 같다~~ → 사용자가 iPhone SE에서 확인, 잘리지 않고 괜찮다(2026-09-22)
 
 ### 2-4. 세션 시작 체크리스트 (매번)
 1. `git status`, `git branch --show-current`로 브랜치와 작업 트리 확인
@@ -279,7 +284,7 @@
 - [x] Astro 프로젝트 생성 커밋 (2026-09-14, 사용자 확인)
 - [x] 전역 토큰 CSS 이식 커밋 (2026-09-14, 사용자 확인)
 - [x] 테마 전환 스크립트·버튼(`<head>` 인라인 스크립트로 `localStorage` 값을 `data-theme`에 먼저 적용) (2026-09-14, 사용자 확인 후 커밋)
-- [ ] 글꼴 로딩 방식 확정: 지금은 시안처럼 Google Fonts `<link>`. 자체 호스팅(서브셋)과 비교 — 화면 구현 때
+- [x] 글꼴 로딩 방식 확정: Google Fonts `<link>` → **Noto Sans KR 가변 글꼴을 사이트가 직접 제공**(`@fontsource-variable/noto-sans-kr`, 2026-09-22 사용자 선택, 5-24)
 - [x] 프로젝트 분류는 여러 개 가능, 세미나 사진 배치는 MDX 컴포넌트, 예시 글은 컬렉션마다 1개 `draft` (2026-09-14, 사용자 선택)
 - [x] MDX 통합·콘텐츠 컬렉션 스키마 커밋 (2026-09-14, 사용자 확인)
 - [x] `feature/astro-setup` → `develop` 병합 `004589b` → 브랜치 삭제 (2026-09-14, 사용자 확인)
@@ -300,7 +305,8 @@
 - [x] 홈 최근 기록의 카드·위젯 링크를 목록에서 **상세로** 바꿈(빈 상태만 목록으로 간다, 2026-09-20)
 - [x] 세미나 목록·행사 상세 사용자 브라우저 확인(2026-09-20, 임시 행사 3건으로 확인, 문제 없음)
 - [x] `feature/seminar-pages` → `develop` 병합 `8f704a4` → 브랜치 삭제 → push (2026-09-20, 사용자 요청)
-- [ ] 실기기 확인(이제 실제 주소에서 볼 수 있다 — https://yuminc03.github.io/my-homepage/): Dock 트랙패드 스크롤 느낌·하단 hover·"동작 줄이기" / 320px 폭에서 모바일 Dock이 화면 폭과 거의 같은 문제
+- [ ] 실기기 확인(이제 실제 주소에서 볼 수 있다 — https://yuminc03.github.io/my-homepage/): Dock 트랙패드 스크롤 느낌·하단 hover·"동작 줄이기" — 사용자가 확인한 뒤 알려 주기로 함(2026-09-22)
+- [x] 320px 폭 모바일 Dock: **사용자가 iPhone SE에서 확인 — 잘리지 않고 괜찮다**(2026-09-22). 고치지 않는다
 - [x] **페이지 전환 모션 구현**(View Transitions `ClientRouter`, 메뉴바·Dock은 `transition:name`으로 제자리, 종류별 모션) — `feature/page-transitions`, 2026-09-20, 결정은 **5-17**
 - [x] 페이지 전환 커밋 6개(`f3f2735`…, 12장, 2026-09-20)
 - [x] 페이지 전환 사용자 브라우저 확인(2026-09-20, 임시 콘텐츠 9개로 확인, 문제 없음)
@@ -713,6 +719,26 @@
 - **반영 시점**: 크롤러는 배포된 사이트를 읽으므로 `master` 배포 뒤에 바뀐다. Notion·카카오톡은 한 번 읽은 카드를 캐시한다 → 태그를 넣기 전에 북마크한 링크는 다시 북마크해야 한다(카카오톡은 카카오 개발자 도구의 캐시 초기화)
 - **확인 방법**: 배포 뒤 `src/lib/linkPreview.ts`의 `getLinkPreview(실제 주소)`로 읽으면 Notion이 볼 정보를 그대로 볼 수 있다(북마크 카드와 같은 순서로 읽는다)
 
+### 5-24. 글꼴을 사이트가 직접 제공 (2026-09-22 결정)
+- **결정**: Google Fonts `<link>` → **`@fontsource-variable/noto-sans-kr`**(Noto Sans KR 가변 글꼴, 굵기 100~900)를 npm으로 설치해 `BaseLayout`에서 `import`(사용자 선택 A). 글꼴 이름은 `'Noto Sans KR Variable'`
+- **바꾸기 전 문제 두 가지**(측정)
+  - Google에 굵기 6개(300·400·500·700·800·900)를 따로 요청해 CSS가 **570KB(gzip 137KB)**, `@font-face` 744개(굵기 6 × 글자 조각 124). 이 CSS는 화면 표시를 막는 외부 파일이다
+  - 사이트가 **굵기 600을 20곳**에서 쓰는데 요청 목록에 없어 **700으로 그려지고 있었다**(글꼴 매칭 규칙: 500보다 무거운 값은 더 무거운 쪽부터 찾는다). 가변 글꼴은 100~900 전부 있어 600이 제대로 나온다
+- **비교**(첫 화면에서 받는 양, CDP 네트워크 이벤트로 측정)
+  | 방식 | 홈 | 프로젝트 상세 | 연결 호스트 |
+  | --- | --- | --- | --- |
+  | 전: Google 굵기 6개 | CSS 137 + 글꼴 10개 168KB | CSS 136 + 글꼴 17개 309KB | 사이트 + googleapis + gstatic |
+  | Google 가변(`wght@100..900`) | CSS 23 + 168KB | CSS 23 + 309KB | 3곳 |
+  | **후: 직접 제공(가변)** | 글꼴 CSS가 사이트 CSS에 합쳐짐 + 171KB | + 314KB | **사이트 1곳** |
+  | 시스템 글꼴 | 0 | 0 | 1곳(대신 OS마다 모양이 다르다) |
+  - Google은 굵기별 요청에도 같은 가변 파일을 내려보내 **글꼴 파일 양은 방식과 무관하게 같다**. 차이는 CSS 크기와 연결 수다
+  - 예전 Google Fonts의 장점(다른 사이트와 캐시 공유)은 브라우저가 캐시를 사이트별로 나누면서 사라졌다 → 직접 제공이 연결 수·개인정보(방문 기록이 Google에 가지 않음) 면에서 낫다
+- **구조**: 패키지 CSS가 글자 조각 124개의 `@font-face`(`unicode-range`)라 브라우저는 화면에 나온 글자가 든 조각만 받는다. 빌드하면 woff2 124개(3.6MB)가 `dist/_astro`에 복사되지만 방문자가 받는 건 페이지당 10~20개다. `font-display: swap`
+- **측정하며 알게 된 것**
+  - `file://`로 연 페이지에서는 Chrome이 외부(Google) 글꼴을 받지 않는다 → **예전 헤드리스 스크린샷은 대체 글꼴로 찍혔을 수 있다**(이 Mac에는 Noto Sans KR이 설치되어 있어 비슷해 보였다). 이제 글꼴이 사이트 안에 있어 `file://` 스크린샷도 같은 글꼴로 나온다
+  - 리소스 타이밍 API에는 글꼴 요청이 잡히지 않아 CDP `Network.loadingFinished`의 `encodedDataLength`로 셌다
+- `design/og-image.html`도 같은 패키지 CSS(`../node_modules/...`)를 불러온다(`npm install` 뒤에 찍는다)
+
 ## 6. 저작권 주의선
 - macOS·Xcode의 실제 UI를 복제하지 않는다. Apple 로고, SF Symbols, 신호등 색(빨강·노랑·초록) 창 컨트롤, 실제 메뉴 구조를 쓰지 않는다
 - 자체 팔레트와 직접 그린 SVG 아이콘을 쓴다. 창 컨트롤 점은 라일락 2개 + 민트 1개(장식이며 기능 없음). 닫기는 별도 ✕ 버튼으로 둔다
@@ -901,7 +927,10 @@
 - 인터랙션은 `onClick="{{handler}}"`, 조건 표시는 `<sc-if value="{{bool}}">`, 상태 스타일은 `data-*="{{값}}"` + CSS 선택자로 만든다(`class`에 값 끼워 넣기는 쓰지 않았다)
 
 ## 12. 브랜치·커밋 기록
-- 로컬 브랜치: `master`, `develop`(현재). 원격(`origin`, `https://github.com/yuminc03/my-homepage.git`, **2026-09-21부터 공개 저장소**): `master` `81b7ac3`(2026-09-22 배포, 로컬과 같음), `develop`(2026-09-22 push, `origin/develop` 추적). **`master`에 push하면 GitHub Actions가 배포한다**(5-20)
+- 로컬 브랜치: `master`, `develop`(현재). **`develop`이 `master`보다 앞서 있다**(글꼴 직접 제공 — 다음 배포 때 함께 올라간다). 원격(`origin`, `https://github.com/yuminc03/my-homepage.git`, **2026-09-21부터 공개 저장소**): `master` `81b7ac3`(2026-09-22 배포, 로컬과 같음), `develop`(2026-09-22 push, `origin/develop` 추적). **`master`에 push하면 GitHub Actions가 배포한다**(5-20)
+- `feature/self-host-font`(2026-09-22~23, `develop` `290720a`에서 분기, **`develop` 병합으로 완료, 브랜치 삭제·push**, 배포는 다음 콘텐츠와 함께). 각 커밋 직전에 `npm run build`
+  - `142349f` feat: Noto Sans KR 가변 글꼴을 Google Fonts 대신 사이트에서 직접 제공
+  - (이 문서 갱신) docs: 글꼴 직접 제공 결정과 측정 결과, iPhone SE Dock 확인 기록
 - **`develop` → `master` 병합 `81b7ac3`**(2026-09-22, 세 번째 배포, run 35736175779 성공): Pointer Quest(`6354a23`)·README(`5b8237c`)·북마크 카드(`56027aa`)·OG 태그(`15cff8f`)를 함께 올림
 - `feature/og-meta`(2026-09-22, `develop` `56027aa`에서 분기, **`develop` 병합 `15cff8f`로 완료, 브랜치 삭제·push**). 각 커밋 직전에 `npm run build`
   - `1ac0f65` feat: 사이트 대표 이미지(OG 이미지)와 원본 HTML 추가
