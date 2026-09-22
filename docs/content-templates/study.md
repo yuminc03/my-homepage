@@ -1,5 +1,6 @@
 ---
-# 예시 스터디 글: 스키마 검증과 새 글 작성용 틀. 사진이 필요한 글은 폴더(slug/index.md)로 만든다
+# 새 스터디 글 틀(쓰는 법은 docs/content-templates/README.md): src/content/study/<이름>.md로 복사한다
+# 사진이 필요한 글은 폴더(study/<이름>/index.md)로 만들고 사진을 옆에 둔다. 칩은 글에 쓰인 category를 모아 만든다
 title: '[포스트 제목을 입력하세요]'
 summary: '[포스트 요약 내용이 두 줄 정도 들어갑니다. 무엇을 공부했고 어떤 점이 핵심이었는지 짧게 적어두면 나중에 다시 찾기 좋습니다.]'
 category: '[카테고리]'
