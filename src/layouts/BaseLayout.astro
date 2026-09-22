@@ -7,15 +7,43 @@ import PageTransitions from '../components/PageTransitions.astro';
 import { SITE_NAME } from '../data/apps';
 import { withBase } from '../lib/url';
 
+/** 공유 카드 썸네일. url은 사이트 안 경로(base 포함)나 절대 주소 */
+export interface ShareImage {
+	url: string;
+	width: number;
+	height: number;
+	alt: string;
+}
+
 interface Props {
 	title?: string;
 	description?: string;
+	/** 공유 카드(OG) 제목. 탭 제목과 달리 사이트 이름을 붙이지 않는다(카드에 og:site_name이 따로 나온다) */
+	shareTitle?: string;
+	/** 글 한 편(상세 화면)이면 article, 나머지는 website */
+	shareType?: 'website' | 'article';
+	/** 없으면 사이트 대표 이미지(public/og-image.png, 원본 design/og-image.html) */
+	shareImage?: ShareImage;
 }
+
+const DEFAULT_IMAGE: ShareImage = {
+	url: withBase('/og-image.png'),
+	width: 1200,
+	height: 630,
+	alt: `${SITE_NAME} — iOS 개발자 Chu Yumin의 프로젝트·스터디·세미나 기록`,
+};
 
 const {
 	title = SITE_NAME,
 	description = 'iOS 개발자 Chu Yumin의 프로젝트·스터디·세미나 기록',
+	shareTitle = title,
+	shareType = 'website',
+	shareImage = DEFAULT_IMAGE,
 } = Astro.props;
+
+// 공유 카드를 읽는 쪽(Notion·카카오톡·Slack 등)은 절대 주소만 따라간다 → astro.config.mjs의 site를 앞에 붙인다
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const imageUrl = new URL(shareImage.url, Astro.site).href;
 ---
 
 <html lang="ko">
@@ -25,6 +53,19 @@ const {
 		<meta name="generator" content={Astro.generator} />
 		<meta name="description" content={description} />
 		<title>{title}</title>
+		<link rel="canonical" href={canonical} />
+		<!-- 공유·북마크 카드(Open Graph + X/Twitter). 북마크 카드(src/lib/linkPreview.ts)도 같은 순서로 읽는다 -->
+		<meta property="og:type" content={shareType} />
+		<meta property="og:site_name" content={SITE_NAME} />
+		<meta property="og:locale" content="ko_KR" />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:title" content={shareTitle} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={imageUrl} />
+		<meta property="og:image:width" content={String(shareImage.width)} />
+		<meta property="og:image:height" content={String(shareImage.height)} />
+		<meta property="og:image:alt" content={shareImage.alt} />
+		<meta name="twitter:card" content="summary_large_image" />
 		<!-- 파비콘: SVG를 읽는 브라우저는 SVG를, 못 읽으면 ICO(16·32)를 쓴다. ICO는 sizes="32x32"로 두어야 SVG보다 앞서 고르지 않는다 -->
 		<link rel="icon" href={withBase('/favicon.ico')} sizes="32x32" />
 		<link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml" />
