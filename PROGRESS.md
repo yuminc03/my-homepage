@@ -1,7 +1,7 @@
 # 진행 상황
 - 최종 업데이트: 2026-09-22
 - 이 문서 하나만 읽으면 새 채팅에서 바로 이어서 작업할 수 있도록 정리한 단일 기준 문서다
-- **마지막 세션(2026-09-22, 이어서 2)**: README를 커밋(`8e9805c`·`43f7a56`·`1f945ba`)해 `develop`에 병합 `5b8237c` → push하고, 사용자 요청으로 **Notion식 북마크 카드**를 만들었다(`feature/bookmark-card`, 결정은 **5-22**). 글에 **주소 하나만 한 문단으로 쓰면** 빌드할 때 그 페이지의 OG 태그를 읽어 제목·설명·주소·파비콘·썸네일 카드로 바꾼다(Sätteri hast 플러그인 `src/lib/bookmark.ts` + 가져오기·캐시 `src/lib/linkPreview.ts`, 캐시 `src/data/link-previews.json`은 커밋). 스터디(.md)·세미나(.mdx)에 임시 주소 8가지로 확인하고 되돌렸다. **사용자 확인·커밋 대기 중**(커밋 제안은 12장). 작업 중 `node_modules` 안 ` 2` 사본 144개를 발견해 지우고 `npm ci`
+- **마지막 세션(2026-09-22, 이어서 2)**: README를 커밋(`8e9805c`·`43f7a56`·`1f945ba`)해 `develop`에 병합 `5b8237c` → push하고, 사용자 요청으로 **Notion식 북마크 카드**를 만들었다(`feature/bookmark-card`, 결정은 **5-22**). 글에 **주소 하나만 한 문단으로 쓰면** 빌드할 때 그 페이지의 OG 태그를 읽어 제목·설명·주소·파비콘·썸네일 카드로 바꾼다(Sätteri hast 플러그인 `src/lib/bookmark.ts` + 가져오기·캐시 `src/lib/linkPreview.ts`, 캐시 `src/data/link-previews.json`은 커밋). 스터디(.md)·세미나(.mdx)에 임시 주소 8가지로 확인하고 되돌렸다. 사용자가 개발 서버에서 카드를 직접 보고 확인한 뒤 커밋했다(12장, **`develop` 병합 전**). 이어서 사용자가 **이 사이트 자체를 Notion 등에 북마크했을 때의 카드**를 물어, OG 태그 방식을 제안했다(다음 작업 후보, 2-1의 3). 작업 중 `node_modules` 안 ` 2` 사본 144개를 발견해 지우고 `npm ci`
 - **그 전 세션(2026-09-22, 이어서)**: 사용자 요청으로 콘텐츠를 더 넣기 전에 **`feature/real-content`를 `develop`에 병합 `6354a23` → 브랜치 삭제 → push**하고, `develop`에서 **`feature/readme`** 를 만들어 **README를 새로 썼다**(사이트 링크·스크린샷 3장·소개·주요 기능·기술 스택·시작하기·글 쓰기·배포·구조·문서·저작권). 스크린샷은 `docs/screenshots/`(데스크톱 홈 다크 · 프로젝트 상세 라이트 · 모바일 3화면 다크, 2배율로 찍어 가로 1600px로 줄임). **사용자 확인·커밋 대기 중**(커밋 제안은 12장). 사용자가 README를 `master`에서 바로 쓸지 물어 → Git Flow상 `develop`에서 `feature/*`로 쓰고, **README와 Pointer Quest를 `develop` → `master` 병합 한 번으로 함께 배포**하기로 했다(README만 `master`에 올려도 배포 워크플로가 돈다). 순서: README 병합 → `master` 배포 → 다음 콘텐츠
 - **그 전 세션(2026-09-22)**: **실제 콘텐츠 채우기를 시작했다.** 브랜치 `feature/real-content`(`develop` `c63bdc4`에서 분기)에서 **첫 프로젝트 Pointer Quest**(`src/content/projects/pointer-quest/`)를 썼다 — 재료는 사용자가 준 [pointer-quest README](https://github.com/yuminc03/pointer-quest/blob/master/README.md)이고, 아이콘·스크린샷 5장은 그 저장소에서 받아 줄여 넣었다. 실제 프로젝트 글이 생겨 **`sample-project`(예시 글 + 임시 이미지 5장)를 지웠다**. 빌드와 1440 다크·390 다크·768 라이트 스크린샷으로 확인했다. 사용자 확인 뒤 커밋 3개를 마쳤다(12장). **`develop` 병합·배포는 아직**. 사용자가 ` 2` 사본 파일은 앞으로 보이면 묻지 않고 지우기로 했다(2-2 끝)
 - **그 전 세션(2026-09-21, 이어서)**: **사이트 이름을 `Lia.log`(닉네임 리아 + 기록)로 바꾸고, 메뉴바 로고를 `CY` 글자에서 창 그림으로, 같은 그림으로 파비콘을 추가했다**(결정은 **5-21**). 브랜치 `feature/site-name-favicon`(커밋 3개 + 문서 1개, 12장)을 `develop`에 병합 `cc6040f` → 브랜치 삭제 → push하고, `develop` → `master` 병합 `398be50`으로 **배포까지 마쳤다**(run 35576351264 성공, 실제 주소에서 탭 제목·메뉴바·파비콘 3종 200 확인). 작업 중 저장소에 생기던 ` 2` 사본 파일의 원인이 **iCloud "데스크탑 및 문서" 동기화**임을 확인하고 모두 지웠다(2-2 끝). 콘텐츠 재료를 받는 형식은 2-6에 정리해 사용자에게 안내했다. **사용자가 콘텐츠는 조금 나중에 올리기 시작하겠다고 했다** — 새 채팅은 2-1의 1(상태 확인) 뒤, 사용자가 재료를 보내 주면 2-6을 따라간다. 지금 브랜치는 `develop`이고 작업 트리는 깨끗하며 `origin/develop`과 같다
@@ -29,7 +29,7 @@
    - ` 2`가 붙은 파일·폴더가 다시 보이면 iCloud 동기화 사본이다(2-2 끝). **묻지 않고 바로 지운다**(2026-09-22 사용자 결정)
    - **`master`에 push하면 배포가 돌아간다** — 실제 콘텐츠가 준비되면 `develop` → `master` 병합으로 다시 배포한다. 문서만 고칠 때는 `develop`에만 push한다
 2. Node는 **nvm의 24**를 쓴다. 셸 기본값이 21.7.3이라 명령 전에 `source ~/.nvm/nvm.sh && nvm use`(`.nvmrc` = 24)를 먼저 실행한다. 검증 방법은 2-2
-3. **지금은 북마크 카드(`feature/bookmark-card`, 5-22)를 마무리하는 중이다.** 사용자 확인 → 커밋 → `develop` 병합 → `develop` → `master` 병합으로 Pointer Quest·README와 함께 한 번에 배포한다. 그 뒤 **실제 콘텐츠 채우기(2-6)** 를 이어 간다 — 다음 재료가 오면 `develop`에서 `feature/real-content`를 다시 만든다(2026-09-22 Pointer Quest까지 병합 `6354a23`)
+3. **북마크 카드(`feature/bookmark-card`, 5-22)는 커밋까지 끝났다(`develop` 병합 전).** 다음 후보는 **이 사이트의 OG 태그(공유·북마크 카드)** — 제안만 했고 사용자 답을 기다린다. 끝나면 `develop` 병합 → `develop` → `master` 병합으로 Pointer Quest·README와 함께 한 번에 배포한다. 그 뒤 **실제 콘텐츠 채우기(2-6)** 를 이어 간다 — 다음 재료가 오면 `develop`에서 `feature/real-content`를 다시 만든다(2026-09-22 Pointer Quest까지 병합 `6354a23`)
    - 그 전에 할 수 있는 선택 작업: 저장소를 iCloud 동기화 밖으로 옮기기(2-2 끝, 사용자 결정 필요)
 4. 그 뒤 순서: 글이 쌓이면 `develop` → `master` 병합으로 배포 → 실기기 확인 → **마지막 단계: 개발 과정 설명 세션**(2026-09-17 사용자 요청)
    - 마지막 단계 내용: 사이트가 완성되면 사용자에게 개발 과정 전체를 설명한다. 쓰인 문법(Astro 컴포넌트·프런트매터·스코프 스타일·`light-dark()`·Content Collections·TypeScript 등), 핵심 기능별 구현 원리(테마·Dock 자동 숨김·필터·콘텐츠 헬퍼 등), 면접에서 나올 만한 질문과 답을 다룬다. 기술 선택 근거는 `docs/tech-stack.md`와 연결한다. 구현하면서 설명할 거리(원리·대안·트레이드오프)는 5장 결정 기록에 계속 남긴다
@@ -69,7 +69,7 @@
   - 근본 해결은 저장소를 iCloud 밖(예: `~/Developer/`)으로 옮기거나 동기화를 끄는 것이다. `.git` 안에 사본이 생기면 저장소가 깨질 수 있어 옮기는 편이 안전하다 — 사용자에게 제안만 했다
 
 ### 2-3. 최근 세션에서 끝낸 일 (요약, 자세한 결정은 5장)
-- 북마크 카드(`feature/bookmark-card`, 2026-09-22, 커밋 대기, 결정은 **5-22**)
+- 북마크 카드(`feature/bookmark-card`, 2026-09-22, 커밋 `5a26a3d`·`6cc97b1`·`7cf091d`, 결정은 **5-22**, 사용자가 개발 서버에서 직접 확인)
   - 쓰는 법: 글에 주소만 한 문단으로 쓴다(맨 URL 또는 `<https://…>`). `[글자](주소)`·문장 속 링크·목록 안 링크는 그대로 링크다
   - `src/lib/bookmark.ts`(Sätteri hast 플러그인, `astro.config.mjs`의 `markdown.processor: satteri({ hastPlugins: [bookmarkCard()] })`) · `src/lib/linkPreview.ts`(OG 읽기·이미지 확인·캐시) · `src/styles/prose.css`의 `.bookmark`
   - 확인: 빌드, 임시 주소 8가지(Apple 문서·GitHub·velog·한글 위키백과·없는 도메인·글자 링크·문장 속·목록 안), 스크린샷 320·390·768·1440 라이트/다크, 세미나 MDX에도 적용
@@ -878,10 +878,11 @@
 
 ## 12. 브랜치·커밋 기록
 - 로컬 브랜치: `master`, `develop`, `feature/bookmark-card`(현재, 2026-09-22 `develop` `5b8237c`에서 분기). 원격(`origin`, `https://github.com/yuminc03/my-homepage.git`, **2026-09-21부터 공개 저장소**): `master` `398be50`(Lia.log 배포, 로컬과 같음), `develop`(2026-09-21 push, `origin/develop` 추적). **`master`에 push하면 GitHub Actions가 배포한다**(5-20)
-- `feature/bookmark-card`(2026-09-22, `develop` `5b8237c`에서 분기, **진행 중**). 커밋 제안(사용자 확인 대기)
-  - feat: 링크 미리보기 정보를 빌드 때 가져와 캐시하는 linkPreview 추가
-  - feat: 주소 하나만 쓴 문단을 북마크 카드로 바꾸는 Markdown 플러그인 추가
-  - docs: 북마크 카드 결정과 쓰는 법 기록
+- `feature/bookmark-card`(2026-09-22, `develop` `5b8237c`에서 분기, **커밋 완료, `develop` 병합 전**). 각 커밋 직전에 `npm run build`
+  - `5a26a3d` feat: 링크 미리보기 정보를 빌드 때 가져와 캐시하는 linkPreview 추가
+  - `6cc97b1` feat: 주소 하나만 쓴 문단을 북마크 카드로 바꾸는 Markdown 플러그인 추가
+  - `7cf091d` docs: 북마크 카드 결정과 쓰는 법 기록
+  - (이 문서 갱신) docs: 북마크 카드 커밋 결과와 사이트 OG 카드 제안 기록
 - `feature/readme`(2026-09-22, `develop` `6354a23`에서 분기, **`develop` 병합 `5b8237c`로 완료, 브랜치 삭제·push**)
   - `8e9805c` docs: README용 화면 스크린샷 3장 추가
   - `43f7a56` docs: README를 사이트 소개·기술 스택·실행·글 쓰기·배포 안내로 새로 작성
