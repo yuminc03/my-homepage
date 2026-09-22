@@ -1,7 +1,8 @@
 # 진행 상황
 - 최종 업데이트: 2026-09-22
 - 이 문서 하나만 읽으면 새 채팅에서 바로 이어서 작업할 수 있도록 정리한 단일 기준 문서다
-- **마지막 세션(2026-09-22, 이어서)**: 사용자 요청으로 콘텐츠를 더 넣기 전에 **`feature/real-content`를 `develop`에 병합 `6354a23` → 브랜치 삭제 → push**하고, `develop`에서 **`feature/readme`** 를 만들어 **README를 새로 썼다**(사이트 링크·스크린샷 3장·소개·주요 기능·기술 스택·시작하기·글 쓰기·배포·구조·문서·저작권). 스크린샷은 `docs/screenshots/`(데스크톱 홈 다크 · 프로젝트 상세 라이트 · 모바일 3화면 다크, 2배율로 찍어 가로 1600px로 줄임). **사용자 확인·커밋 대기 중**(커밋 제안은 12장). 사용자가 README를 `master`에서 바로 쓸지 물어 → Git Flow상 `develop`에서 `feature/*`로 쓰고, **README와 Pointer Quest를 `develop` → `master` 병합 한 번으로 함께 배포**하기로 했다(README만 `master`에 올려도 배포 워크플로가 돈다). 순서: README 병합 → `master` 배포 → 다음 콘텐츠
+- **마지막 세션(2026-09-22, 이어서 2)**: README를 커밋(`8e9805c`·`43f7a56`·`1f945ba`)해 `develop`에 병합 `5b8237c` → push하고, 사용자 요청으로 **Notion식 북마크 카드**를 만들었다(`feature/bookmark-card`, 결정은 **5-22**). 글에 **주소 하나만 한 문단으로 쓰면** 빌드할 때 그 페이지의 OG 태그를 읽어 제목·설명·주소·파비콘·썸네일 카드로 바꾼다(Sätteri hast 플러그인 `src/lib/bookmark.ts` + 가져오기·캐시 `src/lib/linkPreview.ts`, 캐시 `src/data/link-previews.json`은 커밋). 스터디(.md)·세미나(.mdx)에 임시 주소 8가지로 확인하고 되돌렸다. 사용자가 개발 서버에서 카드를 직접 보고 확인한 뒤 커밋했다(12장, **`develop` 병합 전**). 이어서 사용자가 **이 사이트 자체를 Notion 등에 북마크했을 때의 카드**를 물어, OG 태그 방식을 제안했다(다음 작업 후보, 2-1의 3). 작업 중 `node_modules` 안 ` 2` 사본 144개를 발견해 지우고 `npm ci`
+- **그 전 세션(2026-09-22, 이어서)**: 사용자 요청으로 콘텐츠를 더 넣기 전에 **`feature/real-content`를 `develop`에 병합 `6354a23` → 브랜치 삭제 → push**하고, `develop`에서 **`feature/readme`** 를 만들어 **README를 새로 썼다**(사이트 링크·스크린샷 3장·소개·주요 기능·기술 스택·시작하기·글 쓰기·배포·구조·문서·저작권). 스크린샷은 `docs/screenshots/`(데스크톱 홈 다크 · 프로젝트 상세 라이트 · 모바일 3화면 다크, 2배율로 찍어 가로 1600px로 줄임). **사용자 확인·커밋 대기 중**(커밋 제안은 12장). 사용자가 README를 `master`에서 바로 쓸지 물어 → Git Flow상 `develop`에서 `feature/*`로 쓰고, **README와 Pointer Quest를 `develop` → `master` 병합 한 번으로 함께 배포**하기로 했다(README만 `master`에 올려도 배포 워크플로가 돈다). 순서: README 병합 → `master` 배포 → 다음 콘텐츠
 - **그 전 세션(2026-09-22)**: **실제 콘텐츠 채우기를 시작했다.** 브랜치 `feature/real-content`(`develop` `c63bdc4`에서 분기)에서 **첫 프로젝트 Pointer Quest**(`src/content/projects/pointer-quest/`)를 썼다 — 재료는 사용자가 준 [pointer-quest README](https://github.com/yuminc03/pointer-quest/blob/master/README.md)이고, 아이콘·스크린샷 5장은 그 저장소에서 받아 줄여 넣었다. 실제 프로젝트 글이 생겨 **`sample-project`(예시 글 + 임시 이미지 5장)를 지웠다**. 빌드와 1440 다크·390 다크·768 라이트 스크린샷으로 확인했다. 사용자 확인 뒤 커밋 3개를 마쳤다(12장). **`develop` 병합·배포는 아직**. 사용자가 ` 2` 사본 파일은 앞으로 보이면 묻지 않고 지우기로 했다(2-2 끝)
 - **그 전 세션(2026-09-21, 이어서)**: **사이트 이름을 `Lia.log`(닉네임 리아 + 기록)로 바꾸고, 메뉴바 로고를 `CY` 글자에서 창 그림으로, 같은 그림으로 파비콘을 추가했다**(결정은 **5-21**). 브랜치 `feature/site-name-favicon`(커밋 3개 + 문서 1개, 12장)을 `develop`에 병합 `cc6040f` → 브랜치 삭제 → push하고, `develop` → `master` 병합 `398be50`으로 **배포까지 마쳤다**(run 35576351264 성공, 실제 주소에서 탭 제목·메뉴바·파비콘 3종 200 확인). 작업 중 저장소에 생기던 ` 2` 사본 파일의 원인이 **iCloud "데스크탑 및 문서" 동기화**임을 확인하고 모두 지웠다(2-2 끝). 콘텐츠 재료를 받는 형식은 2-6에 정리해 사용자에게 안내했다. **사용자가 콘텐츠는 조금 나중에 올리기 시작하겠다고 했다** — 새 채팅은 2-1의 1(상태 확인) 뒤, 사용자가 재료를 보내 주면 2-6을 따라간다. 지금 브랜치는 `develop`이고 작업 트리는 깨끗하며 `origin/develop`과 같다
 - **그 전 세션(2026-09-21)**: **콘텐츠 검색을 끝내 병합하고, 이어서 사이트를 배포해 공개했다.** 먼저 검색부터 — 구현은 브랜치 `feature/content-search`(커밋 8개, 목록은 12장)에서 했다. 빌드 때 본문까지 담은 JSON 색인(`/search-index.json`)을 만들고, 검색 창을 처음 열 때 한 번 내려받아 브라우저에서 부분 문자열로 찾는다. 창은 `<dialog>` 모달이라 포커스 가두기·Esc·뒤 화면 잠금을 브라우저가 맡고, ⌘K(맥)·Ctrl+K와 돋보기 버튼(데스크톱은 메뉴바, 모바일·태블릿은 홈=메뉴바·목록/상세=창 타이틀 바)으로 연다. 결과는 컬렉션별로 묶고 일치 글자를 강조하며, 요약에 없으면 본문에서 잘라 온 줄을, 그것도 없으면 걸린 태그·기술을 보여 준다. 실시간 CDP 검사(열고 닫기 4경로·키보드 이동·전환 뒤 재동작·색인 1회 요청·브라우저 뒤로·색인 실패)와 5폭 라이트/다크 화면, **사용자 브라우저 확인**(임시 콘텐츠 7건, 지적 없음)을 모두 통과했다. 커밋 8개(목록은 12장) → 병합 `d81c5fc` → 기능 브랜치 삭제 → `origin/develop` push까지 끝났다. 결정과 근거는 **5-19**(방식 확정은 5-18). 이로써 **계획한 화면·기능 구현이 모두 끝났다.** 이어서 **GitHub Actions 배포까지 마쳤다**(2026-09-21): 저장소를 공개로 바꾸고 Pages를 GitHub Actions 방식으로 켠 뒤 `develop` → `master` 병합 `ea31474`를 push해 첫 배포에 성공했다. **사이트가 https://yuminc03.github.io/my-homepage/ 에 실제로 떠 있다**(결정은 5-20). 다만 **공개된 글은 아직 하나도 없다** — 예시 글 3개가 모두 `draft: true`라 목록이 빈 상태로 나온다. 다음은 대괄호 `[ ]` placeholder를 실제 콘텐츠로 채우는 일이고(2-6), 그 뒤 실기기 확인 → 마지막 개발 과정 설명 세션이다. (이 세션 뒤 사이트 이름·파비콘 작업이 이어졌다 — 바로 위 항목)
@@ -28,7 +29,7 @@
    - ` 2`가 붙은 파일·폴더가 다시 보이면 iCloud 동기화 사본이다(2-2 끝). **묻지 않고 바로 지운다**(2026-09-22 사용자 결정)
    - **`master`에 push하면 배포가 돌아간다** — 실제 콘텐츠가 준비되면 `develop` → `master` 병합으로 다시 배포한다. 문서만 고칠 때는 `develop`에만 push한다
 2. Node는 **nvm의 24**를 쓴다. 셸 기본값이 21.7.3이라 명령 전에 `source ~/.nvm/nvm.sh && nvm use`(`.nvmrc` = 24)를 먼저 실행한다. 검증 방법은 2-2
-3. **지금은 `feature/readme`(README 작성)를 마무리하는 중이다.** 사용자 확인 → 커밋 → `develop` 병합 → `develop` → `master` 병합으로 Pointer Quest와 함께 배포한다. 그 뒤 **실제 콘텐츠 채우기(2-6)** 를 이어 간다 — 다음 재료가 오면 `develop`에서 `feature/real-content`를 다시 만든다(2026-09-22 Pointer Quest까지 병합 `6354a23`)
+3. **북마크 카드(`feature/bookmark-card`, 5-22)는 커밋까지 끝났다(`develop` 병합 전).** 다음 후보는 **이 사이트의 OG 태그(공유·북마크 카드)** — 제안만 했고 사용자 답을 기다린다. 끝나면 `develop` 병합 → `develop` → `master` 병합으로 Pointer Quest·README와 함께 한 번에 배포한다. 그 뒤 **실제 콘텐츠 채우기(2-6)** 를 이어 간다 — 다음 재료가 오면 `develop`에서 `feature/real-content`를 다시 만든다(2026-09-22 Pointer Quest까지 병합 `6354a23`)
    - 그 전에 할 수 있는 선택 작업: 저장소를 iCloud 동기화 밖으로 옮기기(2-2 끝, 사용자 결정 필요)
 4. 그 뒤 순서: 글이 쌓이면 `develop` → `master` 병합으로 배포 → 실기기 확인 → **마지막 단계: 개발 과정 설명 세션**(2026-09-17 사용자 요청)
    - 마지막 단계 내용: 사이트가 완성되면 사용자에게 개발 과정 전체를 설명한다. 쓰인 문법(Astro 컴포넌트·프런트매터·스코프 스타일·`light-dark()`·Content Collections·TypeScript 등), 핵심 기능별 구현 원리(테마·Dock 자동 숨김·필터·콘텐츠 헬퍼 등), 면접에서 나올 만한 질문과 답을 다룬다. 기술 선택 근거는 `docs/tech-stack.md`와 연결한다. 구현하면서 설명할 거리(원리·대안·트레이드오프)는 5장 결정 기록에 계속 남긴다
@@ -68,7 +69,11 @@
   - 근본 해결은 저장소를 iCloud 밖(예: `~/Developer/`)으로 옮기거나 동기화를 끄는 것이다. `.git` 안에 사본이 생기면 저장소가 깨질 수 있어 옮기는 편이 안전하다 — 사용자에게 제안만 했다
 
 ### 2-3. 최근 세션에서 끝낸 일 (요약, 자세한 결정은 5장)
-- README 새로 작성(`feature/readme`, 2026-09-22, 커밋 대기)
+- 북마크 카드(`feature/bookmark-card`, 2026-09-22, 커밋 `5a26a3d`·`6cc97b1`·`7cf091d`, 결정은 **5-22**, 사용자가 개발 서버에서 직접 확인)
+  - 쓰는 법: 글에 주소만 한 문단으로 쓴다(맨 URL 또는 `<https://…>`). `[글자](주소)`·문장 속 링크·목록 안 링크는 그대로 링크다
+  - `src/lib/bookmark.ts`(Sätteri hast 플러그인, `astro.config.mjs`의 `markdown.processor: satteri({ hastPlugins: [bookmarkCard()] })`) · `src/lib/linkPreview.ts`(OG 읽기·이미지 확인·캐시) · `src/styles/prose.css`의 `.bookmark`
+  - 확인: 빌드, 임시 주소 8가지(Apple 문서·GitHub·velog·한글 위키백과·없는 도메인·글자 링크·문장 속·목록 안), 스크린샷 320·390·768·1440 라이트/다크, 세미나 MDX에도 적용
+- README 새로 작성(`feature/readme`, 2026-09-22, `develop` 병합 `5b8237c`)
   - 구성: 가운데 정렬 머리(이름·한 줄 소개·배지 4개·사이트 링크) → 스크린샷 3장 → 소개(앱 4개 표) → 주요 기능 7개 → 기술 스택 표 + 고른 이유 한 문단(`docs/tech-stack.md` 링크) → 시작하기(`nvm use`·명령 표) → 글 쓰기 → 배포(Git Flow) → 구조 → 문서 → 라이선스(`© 2026 Chu Yumin. All rights reserved.`, Pointer Quest README와 같은 표기)
   - 배지의 배포 상태는 `deploy.yml` 워크플로 배지라 저절로 갱신된다
   - 스크린샷 다시 찍는 법: `dist/*.html` 사본(2-2 방식)을 `--force-device-scale-factor=2`로 1440×900에서 찍고, 모바일은 390×844 iframe 3개 하네스(바탕 `#16131f`)를 1330×924로 찍은 뒤 `sips -Z 1600`. 글이 늘어 화면이 바뀌면 다시 찍는다
@@ -671,6 +676,20 @@
   - `<link rel="icon" href=".ico" sizes="32x32">`를 SVG보다 먼저 둔다. `sizes`가 없으면 Chrome이 SVG 대신 ICO를 고르는 경우가 있다. 주소는 `withBase()`
   - **모양을 바꿀 때는 `BRAND`와 `favicon.svg`를 함께 고치고 ICO·PNG를 다시 만든다**(정적 파일이라 코드에서 읽을 수 없다)
 
+### 5-22. 북마크 카드 (2026-09-22 결정)
+- **넣는 방식: 주소만 한 문단으로 쓰면 카드가 된다**(사용자 선택). 대안이던 MDX `<Bookmark url>`은 확실하지만 `.md` 글을 `.mdx`로 바꾸고 상세 페이지마다 컴포넌트를 넘겨야 한다
+  - 대상은 **링크 하나만 든 `<p>`이면서 링크 글자가 주소 그대로**인 것. `[글자](주소)`는 쓴 사람이 글자를 고른 링크라 그대로 둔다(카드로 만들기 싫을 때 쓰는 탈출구). 목록 항목에는 `<p>`가 없어 목록 속 주소도 그대로다
+  - 한글 주소는 `href`만 퍼센트 인코딩되고 링크 글자는 한글이라, `decodeURI(href)`와도 비교한다(확인 중 발견)
+- **정보 출처: 빌드할 때 자동으로**(사용자 선택). 그 페이지 `<head>`의 `og:*` → `twitter:*` → `<title>`·`description` 순서, 인코딩은 응답 헤더·`<meta charset>`(EUC-KR 대비). 썸네일·파비콘은 실제로 `image/*`가 오는지 확인한 것만 남긴다(아이콘 없으면 `/favicon.ico`)
+  - **캐시 `src/data/link-previews.json`을 커밋한다**: 배포 빌드가 네트워크·상대 사이트 상태와 무관하게 같은 카드를 그리고, 빌드도 빨라진다. 주소 순으로 정렬해 저장. **다시 가져오려면 그 항목을 지우고 빌드**, 글에서 주소를 지워도 항목은 남으므로 손으로 지운다
+  - 가져오지 못하면(타임아웃 8초·404·HTML 아님) 빌드 로그에 `[bookmark]` 경고를 남기고 **도메인 이름·주소만 있는 카드**로 그린다. 실패는 캐시하지 않아 다음 빌드에서 다시 시도한다
+  - 썸네일·파비콘은 상대 사이트 이미지를 그대로 건다(`referrerpolicy="no-referrer"`, `loading="lazy"`). 내려받아 저장하지 않은 것은 저작권·저장소 용량 때문
+- **구현 위치: Sätteri hast 플러그인**(`src/lib/bookmark.ts`). `visit`가 Promise를 돌려주면 그 노드와 바꿔 끼우므로(Shiki 강조가 같은 방식) 빌드 중 `fetch`가 가능하다. `markdown.processor: satteri({ hastPlugins })`로 넣으면 Shiki 설정은 그대로 전달되고 MDX도 이어받는다(`@astrojs/mdx`의 `extendMarkdownConfig`). 프로젝트 상세의 `sections.ts`처럼 HTML 문자열을 다시 자르는 방식보다 세 컬렉션에 한 번에 적용된다
+- **모양**(`prose.css`의 `.bookmark`): 카드 바탕 `--win-card` + 테두리 `--win-divider`(hover `--win-chip-line`), 모서리 14px, 누름 `scale(.99)`. 글(제목·설명·파비콘+주소) → 오른쪽 썸네일
+  - OG 이미지는 대부분 1.91:1이라 카드 높이가 늘면 좌우가 잘린다 → **줄 수를 묶어 높이를 고정**: 모바일 제목 2줄·설명 1줄·썸네일 30%(88–120px) / 태블릿·데스크톱 제목 1줄·설명 2줄·썸네일 `min(34%, 224px)`(약 220×118로 OG 비율과 비슷)
+  - 새 창으로 열리고 스크린 리더용 "(새 창)"을 넣는다(프로젝트 상세 링크 버튼과 같은 방식)
+  - 알려진 한계: GitHub처럼 **시스템 테마를 따르는 SVG 파비콘**은 사이트 테마를 시스템과 다르게 고정하면 잘 안 보일 수 있다
+
 ## 6. 저작권 주의선
 - macOS·Xcode의 실제 UI를 복제하지 않는다. Apple 로고, SF Symbols, 신호등 색(빨강·노랑·초록) 창 컨트롤, 실제 메뉴 구조를 쓰지 않는다
 - 자체 팔레트와 직접 그린 SVG 아이콘을 쓴다. 창 컨트롤 점은 라일락 2개 + 민트 1개(장식이며 기능 없음). 닫기는 별도 ✕ 버튼으로 둔다
@@ -798,6 +817,8 @@
 | `src/components/Toc.astro` | 스터디 글 목차. DOM 한 벌로 모바일·태블릿 접히는 상자 / 데스크톱 sticky 레일, 현재 항목은 스크롤할 때 위치를 다시 재서 표시. `##`만 모음(5-15) |
 | `src/components/CodeCopy.astro` | 코드 블록 복사 버튼 동작. 클립보드를 쓸 수 있을 때만 버튼의 `hidden`을 푼다. 코드 블록이 나올 수 있는 화면이 한 번 부른다 |
 | `src/lib/readingTime.ts` | 읽는 시간 `readingMinutes()`·`readingTime()`(공백 뺀 글자 ÷ 500, 올림, 최소 1분. 기호·주소는 빼고 센다)(5-15) |
+| `src/lib/bookmark.ts` | 북마크 카드 Sätteri hast 플러그인 `bookmarkCard()`: 주소만 든 문단 → `<a class="bookmark">` 카드. `astro.config.mjs`가 쓴다(5-22) |
+| `src/lib/linkPreview.ts` | `getLinkPreview(url)`: OG 태그 읽기·이미지 확인·`src/data/link-previews.json` 캐시(5-22) |
 | `src/lib/codeBlock.ts` | 코드 블록 Shiki transformer(`<figure>`로 감싸고 파일 이름 머리줄·복사 버튼)와 시안 색 테마 `CODE_THEME`. `astro.config.mjs`가 쓴다(5-15) |
 | `src/styles/prose.css` | Markdown 본문 공통 스타일(`.prose-body`): 문단·목록·강조·링크·이미지·인라인 코드·인용, 간격 변수 `--prose-gap`. `code-block.css`를 `@import` |
 | `src/styles/code-block.css` | 코드 블록 모양: 머리줄·복사 버튼·줄 번호(CSS 카운터 + sticky)·폭별 글자 크기. 테마와 무관한 고정 어두운 색 |
@@ -856,11 +877,16 @@
 - 인터랙션은 `onClick="{{handler}}"`, 조건 표시는 `<sc-if value="{{bool}}">`, 상태 스타일은 `data-*="{{값}}"` + CSS 선택자로 만든다(`class`에 값 끼워 넣기는 쓰지 않았다)
 
 ## 12. 브랜치·커밋 기록
-- 로컬 브랜치: `master`, `develop`, `feature/readme`(현재, 2026-09-22 `develop` `6354a23`에서 분기). 원격(`origin`, `https://github.com/yuminc03/my-homepage.git`, **2026-09-21부터 공개 저장소**): `master` `398be50`(Lia.log 배포, 로컬과 같음), `develop`(2026-09-21 push, `origin/develop` 추적). **`master`에 push하면 GitHub Actions가 배포한다**(5-20)
-- `feature/readme`(2026-09-22, `develop` `6354a23`에서 분기, **진행 중**). 커밋 제안(사용자 확인 대기)
-  - docs: README용 화면 스크린샷 3장 추가
-  - docs: README를 사이트 소개·기술 스택·실행·글 쓰기·배포 안내로 새로 작성
-  - docs: README 작성과 배포 순서 기록
+- 로컬 브랜치: `master`, `develop`, `feature/bookmark-card`(현재, 2026-09-22 `develop` `5b8237c`에서 분기). 원격(`origin`, `https://github.com/yuminc03/my-homepage.git`, **2026-09-21부터 공개 저장소**): `master` `398be50`(Lia.log 배포, 로컬과 같음), `develop`(2026-09-21 push, `origin/develop` 추적). **`master`에 push하면 GitHub Actions가 배포한다**(5-20)
+- `feature/bookmark-card`(2026-09-22, `develop` `5b8237c`에서 분기, **커밋 완료, `develop` 병합 전**). 각 커밋 직전에 `npm run build`
+  - `5a26a3d` feat: 링크 미리보기 정보를 빌드 때 가져와 캐시하는 linkPreview 추가
+  - `6cc97b1` feat: 주소 하나만 쓴 문단을 북마크 카드로 바꾸는 Markdown 플러그인 추가
+  - `7cf091d` docs: 북마크 카드 결정과 쓰는 법 기록
+  - (이 문서 갱신) docs: 북마크 카드 커밋 결과와 사이트 OG 카드 제안 기록
+- `feature/readme`(2026-09-22, `develop` `6354a23`에서 분기, **`develop` 병합 `5b8237c`로 완료, 브랜치 삭제·push**)
+  - `8e9805c` docs: README용 화면 스크린샷 3장 추가
+  - `43f7a56` docs: README를 사이트 소개·기술 스택·실행·글 쓰기·배포 안내로 새로 작성
+  - `1f945ba` docs: README 작성과 배포 순서 기록
 - `feature/real-content`(2026-09-22, `develop` `c63bdc4`에서 분기, **`develop` 병합 `6354a23`로 완료, 브랜치 삭제·push**), 오래된 순. 각 커밋 직전에 `npm run build`
   - `30ce6e4` feat: 첫 프로젝트 Pointer Quest 글 추가
   - `e8e6964` chore: 실제 프로젝트 글이 생겨 예시 프로젝트 sample-project 삭제
