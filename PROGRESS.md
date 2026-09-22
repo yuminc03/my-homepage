@@ -1,7 +1,8 @@
 # 진행 상황
 - 최종 업데이트: 2026-09-22
 - 이 문서 하나만 읽으면 새 채팅에서 바로 이어서 작업할 수 있도록 정리한 단일 기준 문서다
-- **마지막 세션(2026-09-22, 이어서 2)**: README를 커밋(`8e9805c`·`43f7a56`·`1f945ba`)해 `develop`에 병합 `5b8237c` → push하고, 사용자 요청으로 **Notion식 북마크 카드**를 만들었다(`feature/bookmark-card`, 결정은 **5-22**). 글에 **주소 하나만 한 문단으로 쓰면** 빌드할 때 그 페이지의 OG 태그를 읽어 제목·설명·주소·파비콘·썸네일 카드로 바꾼다(Sätteri hast 플러그인 `src/lib/bookmark.ts` + 가져오기·캐시 `src/lib/linkPreview.ts`, 캐시 `src/data/link-previews.json`은 커밋). 스터디(.md)·세미나(.mdx)에 임시 주소 8가지로 확인하고 되돌렸다. 사용자가 개발 서버에서 카드를 직접 보고 확인한 뒤 커밋했다(12장, **`develop` 병합 전**). 이어서 사용자가 **이 사이트 자체를 Notion 등에 북마크했을 때의 카드**를 물어, OG 태그 방식을 제안했다(다음 작업 후보, 2-1의 3). 작업 중 `node_modules` 안 ` 2` 사본 144개를 발견해 지우고 `npm ci`
+- **마지막 세션(2026-09-22, 이어서 3)**: 사용자가 "그 순서로 진행"을 승인 → **`feature/bookmark-card`를 `develop`에 병합 `56027aa` → 브랜치 삭제 → push**하고, `develop`에서 **`feature/og-meta`** 를 만들어 **이 사이트의 공유·북마크 카드(OG 태그)** 를 붙였다(결정은 **5-23**). `BaseLayout`에 canonical·`og:*`·`twitter:card`, 사이트 대표 이미지 `public/og-image.png`(1200×630, 원본 `design/og-image.html`을 헤드리스 Chrome으로 찍음), 세미나 상세는 표지 사진을 1200×630으로 잘라 썸네일로. 빌드 결과 HTML로 홈·목록·프로젝트 상세·(임시 공개한) 세미나 상세의 태그를 확인했다. 대표 이미지는 모형 카드 페이지로 비교한 뒤 사용자가 **한 줄 소개를 빼고 로고·이름을 키운 B안**을 골랐다. 사용자 확인 뒤 커밋 4개(12장) → `develop` 병합 → **`develop` → `master` 병합으로 배포**(결과는 2-1의 3과 12장). 배포 뒤 실제 주소를 `linkPreview`로 읽어 카드를 확인하는 일이 남았다. 작업 중 ` 2` 사본(소스 2개·`node_modules` 132개)을 또 지우고 `npm ci`
+- **그 전 세션(2026-09-22, 이어서 2)**: README를 커밋(`8e9805c`·`43f7a56`·`1f945ba`)해 `develop`에 병합 `5b8237c` → push하고, 사용자 요청으로 **Notion식 북마크 카드**를 만들었다(`feature/bookmark-card`, 결정은 **5-22**). 글에 **주소 하나만 한 문단으로 쓰면** 빌드할 때 그 페이지의 OG 태그를 읽어 제목·설명·주소·파비콘·썸네일 카드로 바꾼다(Sätteri hast 플러그인 `src/lib/bookmark.ts` + 가져오기·캐시 `src/lib/linkPreview.ts`, 캐시 `src/data/link-previews.json`은 커밋). 스터디(.md)·세미나(.mdx)에 임시 주소 8가지로 확인하고 되돌렸다. 사용자가 개발 서버에서 카드를 직접 보고 확인한 뒤 커밋했다(12장, **`develop` 병합 전**). 이어서 사용자가 **이 사이트 자체를 Notion 등에 북마크했을 때의 카드**를 물어, OG 태그 방식을 제안했다(다음 작업 후보, 2-1의 3). 작업 중 `node_modules` 안 ` 2` 사본 144개를 발견해 지우고 `npm ci`
 - **그 전 세션(2026-09-22, 이어서)**: 사용자 요청으로 콘텐츠를 더 넣기 전에 **`feature/real-content`를 `develop`에 병합 `6354a23` → 브랜치 삭제 → push**하고, `develop`에서 **`feature/readme`** 를 만들어 **README를 새로 썼다**(사이트 링크·스크린샷 3장·소개·주요 기능·기술 스택·시작하기·글 쓰기·배포·구조·문서·저작권). 스크린샷은 `docs/screenshots/`(데스크톱 홈 다크 · 프로젝트 상세 라이트 · 모바일 3화면 다크, 2배율로 찍어 가로 1600px로 줄임). **사용자 확인·커밋 대기 중**(커밋 제안은 12장). 사용자가 README를 `master`에서 바로 쓸지 물어 → Git Flow상 `develop`에서 `feature/*`로 쓰고, **README와 Pointer Quest를 `develop` → `master` 병합 한 번으로 함께 배포**하기로 했다(README만 `master`에 올려도 배포 워크플로가 돈다). 순서: README 병합 → `master` 배포 → 다음 콘텐츠
 - **그 전 세션(2026-09-22)**: **실제 콘텐츠 채우기를 시작했다.** 브랜치 `feature/real-content`(`develop` `c63bdc4`에서 분기)에서 **첫 프로젝트 Pointer Quest**(`src/content/projects/pointer-quest/`)를 썼다 — 재료는 사용자가 준 [pointer-quest README](https://github.com/yuminc03/pointer-quest/blob/master/README.md)이고, 아이콘·스크린샷 5장은 그 저장소에서 받아 줄여 넣었다. 실제 프로젝트 글이 생겨 **`sample-project`(예시 글 + 임시 이미지 5장)를 지웠다**. 빌드와 1440 다크·390 다크·768 라이트 스크린샷으로 확인했다. 사용자 확인 뒤 커밋 3개를 마쳤다(12장). **`develop` 병합·배포는 아직**. 사용자가 ` 2` 사본 파일은 앞으로 보이면 묻지 않고 지우기로 했다(2-2 끝)
 - **그 전 세션(2026-09-21, 이어서)**: **사이트 이름을 `Lia.log`(닉네임 리아 + 기록)로 바꾸고, 메뉴바 로고를 `CY` 글자에서 창 그림으로, 같은 그림으로 파비콘을 추가했다**(결정은 **5-21**). 브랜치 `feature/site-name-favicon`(커밋 3개 + 문서 1개, 12장)을 `develop`에 병합 `cc6040f` → 브랜치 삭제 → push하고, `develop` → `master` 병합 `398be50`으로 **배포까지 마쳤다**(run 35576351264 성공, 실제 주소에서 탭 제목·메뉴바·파비콘 3종 200 확인). 작업 중 저장소에 생기던 ` 2` 사본 파일의 원인이 **iCloud "데스크탑 및 문서" 동기화**임을 확인하고 모두 지웠다(2-2 끝). 콘텐츠 재료를 받는 형식은 2-6에 정리해 사용자에게 안내했다. **사용자가 콘텐츠는 조금 나중에 올리기 시작하겠다고 했다** — 새 채팅은 2-1의 1(상태 확인) 뒤, 사용자가 재료를 보내 주면 2-6을 따라간다. 지금 브랜치는 `develop`이고 작업 트리는 깨끗하며 `origin/develop`과 같다
@@ -29,7 +30,7 @@
    - ` 2`가 붙은 파일·폴더가 다시 보이면 iCloud 동기화 사본이다(2-2 끝). **묻지 않고 바로 지운다**(2026-09-22 사용자 결정)
    - **`master`에 push하면 배포가 돌아간다** — 실제 콘텐츠가 준비되면 `develop` → `master` 병합으로 다시 배포한다. 문서만 고칠 때는 `develop`에만 push한다
 2. Node는 **nvm의 24**를 쓴다. 셸 기본값이 21.7.3이라 명령 전에 `source ~/.nvm/nvm.sh && nvm use`(`.nvmrc` = 24)를 먼저 실행한다. 검증 방법은 2-2
-3. **북마크 카드(`feature/bookmark-card`, 5-22)는 커밋까지 끝났다(`develop` 병합 전).** 다음 후보는 **이 사이트의 OG 태그(공유·북마크 카드)** — 제안만 했고 사용자 답을 기다린다. 끝나면 `develop` 병합 → `develop` → `master` 병합으로 Pointer Quest·README와 함께 한 번에 배포한다. 그 뒤 **실제 콘텐츠 채우기(2-6)** 를 이어 간다 — 다음 재료가 오면 `develop`에서 `feature/real-content`를 다시 만든다(2026-09-22 Pointer Quest까지 병합 `6354a23`)
+3. **지금은 `feature/og-meta`(사이트 OG 태그·대표 이미지, 5-23)를 마무리하는 중이다.** 사용자가 대표 이미지 시안을 확인 → 커밋 → `develop` 병합 → **`develop` → `master` 병합으로 Pointer Quest·README·북마크 카드·OG 태그를 한 번에 배포** → 실제 주소를 `getLinkPreview`로 읽어 카드 확인(순서는 사용자 승인, 2026-09-22). 그 뒤 **실제 콘텐츠 채우기(2-6)** 를 이어 간다 — 다음 재료가 오면 `develop`에서 `feature/real-content`를 다시 만든다(2026-09-22 Pointer Quest까지 병합 `6354a23`)
    - 그 전에 할 수 있는 선택 작업: 저장소를 iCloud 동기화 밖으로 옮기기(2-2 끝, 사용자 결정 필요)
 4. 그 뒤 순서: 글이 쌓이면 `develop` → `master` 병합으로 배포 → 실기기 확인 → **마지막 단계: 개발 과정 설명 세션**(2026-09-17 사용자 요청)
    - 마지막 단계 내용: 사이트가 완성되면 사용자에게 개발 과정 전체를 설명한다. 쓰인 문법(Astro 컴포넌트·프런트매터·스코프 스타일·`light-dark()`·Content Collections·TypeScript 등), 핵심 기능별 구현 원리(테마·Dock 자동 숨김·필터·콘텐츠 헬퍼 등), 면접에서 나올 만한 질문과 답을 다룬다. 기술 선택 근거는 `docs/tech-stack.md`와 연결한다. 구현하면서 설명할 거리(원리·대안·트레이드오프)는 5장 결정 기록에 계속 남긴다
@@ -69,6 +70,12 @@
   - 근본 해결은 저장소를 iCloud 밖(예: `~/Developer/`)으로 옮기거나 동기화를 끄는 것이다. `.git` 안에 사본이 생기면 저장소가 깨질 수 있어 옮기는 편이 안전하다 — 사용자에게 제안만 했다
 
 ### 2-3. 최근 세션에서 끝낸 일 (요약, 자세한 결정은 5장)
+- 사이트 공유·북마크 카드(`feature/og-meta`, 2026-09-22, 커밋 `1ac0f65`·`18d71c2`·`19c18ac`, 결정은 **5-23**)
+  - `BaseLayout`: `shareTitle`·`shareType`·`shareImage` prop → canonical + `og:type/site_name/locale/url/title/description/image(+width·height·alt)` + `twitter:card`. 주소는 `new URL(경로, Astro.site)`로 절대 주소
+  - `SiteLayout`: `title`이 있으면(상세) `article` + 글 제목만, 없으면 `website` + 탭 제목. `shareImage`를 그대로 넘긴다
+  - 세미나 상세: `getImage({ src: cover, width: 1200, height: 630, fit: 'cover', format: 'jpg' })`
+  - 대표 이미지: `design/og-image.html`(사이트 `tokens.css`를 그대로 불러옴) → `public/og-image.png`. 다크 바탕 글로우 + 창 로고 + `Lia.log` + Dock 모양 앱 아이콘 4개(한 줄 소개는 작은 썸네일에서 읽히지 않아 뺐다 — 사용자 선택)
+  - README에 북마크 카드를 넣지 않기로 했다(사용자 결정)
 - 북마크 카드(`feature/bookmark-card`, 2026-09-22, 커밋 `5a26a3d`·`6cc97b1`·`7cf091d`, 결정은 **5-22**, 사용자가 개발 서버에서 직접 확인)
   - 쓰는 법: 글에 주소만 한 문단으로 쓴다(맨 URL 또는 `<https://…>`). `[글자](주소)`·문장 속 링크·목록 안 링크는 그대로 링크다
   - `src/lib/bookmark.ts`(Sätteri hast 플러그인, `astro.config.mjs`의 `markdown.processor: satteri({ hastPlugins: [bookmarkCard()] })`) · `src/lib/linkPreview.ts`(OG 읽기·이미지 확인·캐시) · `src/styles/prose.css`의 `.bookmark`
@@ -690,6 +697,22 @@
   - 새 창으로 열리고 스크린 리더용 "(새 창)"을 넣는다(프로젝트 상세 링크 버튼과 같은 방식)
   - 알려진 한계: GitHub처럼 **시스템 테마를 따르는 SVG 파비콘**은 사이트 테마를 시스템과 다르게 고정하면 잘 안 보일 수 있다
 
+### 5-23. 사이트 공유·북마크 카드(OG) (2026-09-22 결정)
+- **왜**: Notion·카카오톡·Slack은 링크 카드를 그 페이지 `<head>`의 OG 태그로 그린다. 전에는 `<title>`·`description`만 있어 썸네일이 비었다. 방식은 사용자가 승인한 제안대로 **대표 이미지 한 장 + 세미나 상세만 표지 사진**
+- **태그**(`BaseLayout`): canonical, `og:type`(상세 `article` / 나머지 `website`) · `og:site_name`(`Lia.log`) · `og:locale`(`ko_KR`) · `og:url` · `og:title` · `og:description` · `og:image`(+`width`·`height`·`alt`) · `twitter:card`(`summary_large_image`)
+  - **모든 주소는 절대 주소**: 카드를 읽는 쪽은 상대 경로를 따라가지 않는다. `new URL(Astro.url.pathname, Astro.site)`와 `new URL(withBase('/og-image.png'), Astro.site)`. `Astro.url.pathname`에 이미 base(`/my-homepage`)가 들어 있다
+  - **`og:title`은 글 제목만**(상세). 사이트 이름은 카드에 `og:site_name`으로 따로 나오므로 탭 제목(`글 · 앱 · Lia.log`)처럼 붙이면 두 번 나온다. 목록은 탭 제목(`프로젝트 · Lia.log`) 그대로
+- **대표 이미지**: `public/og-image.png` 1200×630(OG 표준 1.91:1, 대부분의 카드가 이 비율로 자른다)
+  - 원본은 `design/og-image.html`. **사이트 `src/styles/tokens.css`를 그대로 불러오고** `data-theme="dark"`로 고정해 색이 사이트와 어긋나지 않는다. 아이콘 모양·그라디언트는 `apps.ts`에서 옮겨 적었으므로 바꾸면 함께 고친다
+  - 구성: 다크 바탕 + 사이트와 같은 블러 글로우 3개, 가운데 창 로고(136px) → `Lia.log`(92px) → Dock 유리 위 앱 아이콘 4개. 카드 썸네일은 작게 줄고 가운데를 남기며 잘리므로 가운데 정렬
+  - **한 줄 소개는 넣지 않는다**(사용자 선택 B, 2026-09-22): 첫 시안(로고 112 · 이름 76 · 소개 30px)을 모형 카드(Notion 북마크·메신저·Slack)로 비교하니 작은 썸네일에서 소개 문장이 읽히지 않았고, 같은 문장이 카드 설명 칸에 이미 나온다. 대신 로고·이름을 키워 가로 300px에서도 알아볼 수 있게 했다
+  - 확인용 모형 페이지: 빌드 결과 HTML의 OG 값을 읽어 세 형태의 카드를 그리는 HTML을 scratchpad에 만들어 `open`으로 보여 줬다(세션이 끝나면 사라진다. 다시 만들 때는 `dist/*.html`에서 `og:*`를 정규식으로 읽어 같은 방식으로)
+  - 다시 만들기: 원본 맨 위 주석의 헤드리스 Chrome 명령(1200×630 캡처)
+  - 글마다 이미지를 자동으로 만드는 방식(`satori` 등)은 의존성 2개와 빌드 시간이 늘어 보류. 글이 쌓인 뒤 필요하면 더한다
+- **세미나 상세**: 표지 사진을 `getImage({ width: 1200, height: 630, fit: 'cover', format: 'jpg' })`로 잘라 쓴다. 프로젝트는 아이콘이 정사각형이라 카드에서 잘리므로 대표 이미지를 쓴다
+- **반영 시점**: 크롤러는 배포된 사이트를 읽으므로 `master` 배포 뒤에 바뀐다. Notion·카카오톡은 한 번 읽은 카드를 캐시한다 → 태그를 넣기 전에 북마크한 링크는 다시 북마크해야 한다(카카오톡은 카카오 개발자 도구의 캐시 초기화)
+- **확인 방법**: 배포 뒤 `src/lib/linkPreview.ts`의 `getLinkPreview(실제 주소)`로 읽으면 Notion이 볼 정보를 그대로 볼 수 있다(북마크 카드와 같은 순서로 읽는다)
+
 ## 6. 저작권 주의선
 - macOS·Xcode의 실제 UI를 복제하지 않는다. Apple 로고, SF Symbols, 신호등 색(빨강·노랑·초록) 창 컨트롤, 실제 메뉴 구조를 쓰지 않는다
 - 자체 팔레트와 직접 그린 SVG 아이콘을 쓴다. 창 컨트롤 점은 라일락 2개 + 민트 1개(장식이며 기능 없음). 닫기는 별도 ✕ 버튼으로 둔다
@@ -854,6 +877,7 @@
 
 ### 10-3. 그 밖의 파일
 - `docs/tech-stack.md` — 기술 스택 비교표·약점·예상 면접 질문·결정 기록
+- `design/og-image.html` → `public/og-image.png` — 사이트 대표 이미지(OG, 1200×630) 원본과 결과물. 다시 찍는 명령은 원본 파일 맨 위 주석(5-23)
 - `README.md` — 저장소 첫 화면 소개(2026-09-22 새로 작성, 구성은 2-3). 스크린샷은 `docs/screenshots/`(`desktop-home.png`·`desktop-project.png`·`mobile.png`, 가로 1600px)
 - `design/canvas.json` — 페이지·아트보드 배치·크기·메모·첫 화면
 - `design/chu-yumin-portfolio.html` — 조립 결과물. **직접 편집하지 말고 항상 재조립**
@@ -877,8 +901,13 @@
 - 인터랙션은 `onClick="{{handler}}"`, 조건 표시는 `<sc-if value="{{bool}}">`, 상태 스타일은 `data-*="{{값}}"` + CSS 선택자로 만든다(`class`에 값 끼워 넣기는 쓰지 않았다)
 
 ## 12. 브랜치·커밋 기록
-- 로컬 브랜치: `master`, `develop`, `feature/bookmark-card`(현재, 2026-09-22 `develop` `5b8237c`에서 분기). 원격(`origin`, `https://github.com/yuminc03/my-homepage.git`, **2026-09-21부터 공개 저장소**): `master` `398be50`(Lia.log 배포, 로컬과 같음), `develop`(2026-09-21 push, `origin/develop` 추적). **`master`에 push하면 GitHub Actions가 배포한다**(5-20)
-- `feature/bookmark-card`(2026-09-22, `develop` `5b8237c`에서 분기, **커밋 완료, `develop` 병합 전**). 각 커밋 직전에 `npm run build`
+- 로컬 브랜치: `master`, `develop`, `feature/og-meta`(현재, 2026-09-22 `develop` `56027aa`에서 분기). 원격(`origin`, `https://github.com/yuminc03/my-homepage.git`, **2026-09-21부터 공개 저장소**): `master` `398be50`(Lia.log 배포, 로컬과 같음), `develop`(2026-09-21 push, `origin/develop` 추적). **`master`에 push하면 GitHub Actions가 배포한다**(5-20)
+- `feature/og-meta`(2026-09-22, `develop` `56027aa`에서 분기, **`develop` 병합으로 완료, 브랜치 삭제**). 각 커밋 직전에 `npm run build`
+  - `1ac0f65` feat: 사이트 대표 이미지(OG 이미지)와 원본 HTML 추가
+  - `18d71c2` feat: 모든 페이지에 공유 카드용 OG 태그와 canonical 추가
+  - `19c18ac` feat: 세미나 상세의 공유 카드 썸네일을 표지 사진으로
+  - (이 문서 갱신) docs: 사이트 OG 카드 결정과 대표 이미지 다시 만드는 법 기록
+- `feature/bookmark-card`(2026-09-22, `develop` `5b8237c`에서 분기, **`develop` 병합 `56027aa`로 완료, 브랜치 삭제·push**). 각 커밋 직전에 `npm run build`
   - `5a26a3d` feat: 링크 미리보기 정보를 빌드 때 가져와 캐시하는 linkPreview 추가
   - `6cc97b1` feat: 주소 하나만 쓴 문단을 북마크 카드로 바꾸는 Markdown 플러그인 추가
   - `7cf091d` docs: 북마크 카드 결정과 쓰는 법 기록
