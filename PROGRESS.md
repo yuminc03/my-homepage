@@ -1,7 +1,8 @@
 # 진행 상황
-- 최종 업데이트: 2026-09-21
+- 최종 업데이트: 2026-09-22
 - 이 문서 하나만 읽으면 새 채팅에서 바로 이어서 작업할 수 있도록 정리한 단일 기준 문서다
-- **마지막 세션 종료(2026-09-21, 이어서)**: **사이트 이름을 `Lia.log`(닉네임 리아 + 기록)로 바꾸고, 메뉴바 로고를 `CY` 글자에서 창 그림으로, 같은 그림으로 파비콘을 추가했다**(결정은 **5-21**). 브랜치 `feature/site-name-favicon`(커밋 3개 + 문서 1개, 12장)을 `develop`에 병합 `cc6040f` → 브랜치 삭제 → push하고, `develop` → `master` 병합 `398be50`으로 **배포까지 마쳤다**(run 35576351264 성공, 실제 주소에서 탭 제목·메뉴바·파비콘 3종 200 확인). 작업 중 저장소에 생기던 ` 2` 사본 파일의 원인이 **iCloud "데스크탑 및 문서" 동기화**임을 확인하고 모두 지웠다(2-2 끝). 콘텐츠 재료를 받는 형식은 2-6에 정리해 사용자에게 안내했다. **사용자가 콘텐츠는 조금 나중에 올리기 시작하겠다고 했다** — 새 채팅은 2-1의 1(상태 확인) 뒤, 사용자가 재료를 보내 주면 2-6을 따라간다. 지금 브랜치는 `develop`이고 작업 트리는 깨끗하며 `origin/develop`과 같다
+- **마지막 세션(2026-09-22)**: **실제 콘텐츠 채우기를 시작했다.** 브랜치 `feature/real-content`(`develop` `c63bdc4`에서 분기)에서 **첫 프로젝트 Pointer Quest**(`src/content/projects/pointer-quest/`)를 썼다 — 재료는 사용자가 준 [pointer-quest README](https://github.com/yuminc03/pointer-quest/blob/master/README.md)이고, 아이콘·스크린샷 5장은 그 저장소에서 받아 줄여 넣었다. 실제 프로젝트 글이 생겨 **`sample-project`(예시 글 + 임시 이미지 5장)를 지웠다**. 빌드와 1440 다크·390 다크·768 라이트 스크린샷으로 확인했다. 사용자 확인 뒤 커밋 3개를 마쳤다(12장). **`develop` 병합·배포는 아직**. 사용자가 ` 2` 사본 파일은 앞으로 보이면 묻지 않고 지우기로 했다(2-2 끝)
+- **그 전 세션(2026-09-21, 이어서)**: **사이트 이름을 `Lia.log`(닉네임 리아 + 기록)로 바꾸고, 메뉴바 로고를 `CY` 글자에서 창 그림으로, 같은 그림으로 파비콘을 추가했다**(결정은 **5-21**). 브랜치 `feature/site-name-favicon`(커밋 3개 + 문서 1개, 12장)을 `develop`에 병합 `cc6040f` → 브랜치 삭제 → push하고, `develop` → `master` 병합 `398be50`으로 **배포까지 마쳤다**(run 35576351264 성공, 실제 주소에서 탭 제목·메뉴바·파비콘 3종 200 확인). 작업 중 저장소에 생기던 ` 2` 사본 파일의 원인이 **iCloud "데스크탑 및 문서" 동기화**임을 확인하고 모두 지웠다(2-2 끝). 콘텐츠 재료를 받는 형식은 2-6에 정리해 사용자에게 안내했다. **사용자가 콘텐츠는 조금 나중에 올리기 시작하겠다고 했다** — 새 채팅은 2-1의 1(상태 확인) 뒤, 사용자가 재료를 보내 주면 2-6을 따라간다. 지금 브랜치는 `develop`이고 작업 트리는 깨끗하며 `origin/develop`과 같다
 - **그 전 세션(2026-09-21)**: **콘텐츠 검색을 끝내 병합하고, 이어서 사이트를 배포해 공개했다.** 먼저 검색부터 — 구현은 브랜치 `feature/content-search`(커밋 8개, 목록은 12장)에서 했다. 빌드 때 본문까지 담은 JSON 색인(`/search-index.json`)을 만들고, 검색 창을 처음 열 때 한 번 내려받아 브라우저에서 부분 문자열로 찾는다. 창은 `<dialog>` 모달이라 포커스 가두기·Esc·뒤 화면 잠금을 브라우저가 맡고, ⌘K(맥)·Ctrl+K와 돋보기 버튼(데스크톱은 메뉴바, 모바일·태블릿은 홈=메뉴바·목록/상세=창 타이틀 바)으로 연다. 결과는 컬렉션별로 묶고 일치 글자를 강조하며, 요약에 없으면 본문에서 잘라 온 줄을, 그것도 없으면 걸린 태그·기술을 보여 준다. 실시간 CDP 검사(열고 닫기 4경로·키보드 이동·전환 뒤 재동작·색인 1회 요청·브라우저 뒤로·색인 실패)와 5폭 라이트/다크 화면, **사용자 브라우저 확인**(임시 콘텐츠 7건, 지적 없음)을 모두 통과했다. 커밋 8개(목록은 12장) → 병합 `d81c5fc` → 기능 브랜치 삭제 → `origin/develop` push까지 끝났다. 결정과 근거는 **5-19**(방식 확정은 5-18). 이로써 **계획한 화면·기능 구현이 모두 끝났다.** 이어서 **GitHub Actions 배포까지 마쳤다**(2026-09-21): 저장소를 공개로 바꾸고 Pages를 GitHub Actions 방식으로 켠 뒤 `develop` → `master` 병합 `ea31474`를 push해 첫 배포에 성공했다. **사이트가 https://yuminc03.github.io/my-homepage/ 에 실제로 떠 있다**(결정은 5-20). 다만 **공개된 글은 아직 하나도 없다** — 예시 글 3개가 모두 `draft: true`라 목록이 빈 상태로 나온다. 다음은 대괄호 `[ ]` placeholder를 실제 콘텐츠로 채우는 일이고(2-6), 그 뒤 실기기 확인 → 마지막 개발 과정 설명 세션이다. (이 세션 뒤 사이트 이름·파비콘 작업이 이어졌다 — 바로 위 항목)
 
 ## 1. 한눈에 보기
@@ -23,10 +24,10 @@
 1. `git status`로 브랜치와 작업 트리를 확인한다
    - 기대 상태: **`develop` 브랜치**, 마지막 커밋은 문서(`docs:`) 커밋이다. 작업 트리 깨끗, `origin/develop`과 같음
    - 기능 브랜치는 남아 있지 않다(`feature/site-name-favicon`도 병합 `cc6040f` 후 삭제). `origin/master` = `398be50`(Lia.log 배포)
-   - ` 2`가 붙은 파일·폴더가 다시 보이면 iCloud 동기화 사본이다(2-2 끝). 원본과 비교한 뒤 지운다
+   - ` 2`가 붙은 파일·폴더가 다시 보이면 iCloud 동기화 사본이다(2-2 끝). **묻지 않고 바로 지운다**(2026-09-22 사용자 결정)
    - **`master`에 push하면 배포가 돌아간다** — 실제 콘텐츠가 준비되면 `develop` → `master` 병합으로 다시 배포한다. 문서만 고칠 때는 `develop`에만 push한다
 2. Node는 **nvm의 24**를 쓴다. 셸 기본값이 21.7.3이라 명령 전에 `source ~/.nvm/nvm.sh && nvm use`(`.nvmrc` = 24)를 먼저 실행한다. 검증 방법은 2-2
-3. **다음 할 일은 대괄호 `[ ]` placeholder를 실제 콘텐츠로 채우는 일이다 → 2-6을 그대로 따라간다.** 사용자가 "콘텐츠는 조금 나중에 올리기 시작하겠다"고 했으므로(2026-09-21) 재료가 올 때 시작한다. 시작할 때 `git switch -c feature/real-content`(`develop`에서)
+3. **지금 하는 일은 실제 콘텐츠 채우기다 → 2-6을 그대로 따라간다.** 2026-09-22에 `feature/real-content`를 만들고 프로젝트 Pointer Quest를 썼다(진행 상황은 2-6 끝). 다음 재료가 오면 같은 브랜치에서 이어 쓴다
    - 그 전에 할 수 있는 선택 작업: 저장소를 iCloud 동기화 밖으로 옮기기(2-2 끝, 사용자 결정 필요)
 4. 그 뒤 순서: 글이 쌓이면 `develop` → `master` 병합으로 배포 → 실기기 확인 → **마지막 단계: 개발 과정 설명 세션**(2026-09-17 사용자 요청)
    - 마지막 단계 내용: 사이트가 완성되면 사용자에게 개발 과정 전체를 설명한다. 쓰인 문법(Astro 컴포넌트·프런트매터·스코프 스타일·`light-dark()`·Content Collections·TypeScript 등), 핵심 기능별 구현 원리(테마·Dock 자동 숨김·필터·콘텐츠 헬퍼 등), 면접에서 나올 만한 질문과 답을 다룬다. 기술 선택 근거는 `docs/tech-stack.md`와 연결한다. 구현하면서 설명할 거리(원리·대안·트레이드오프)는 5장 결정 기록에 계속 남긴다
@@ -62,9 +63,16 @@
   - 같은 출처 주의: `file://` 페이지에서 `http://localhost` iframe의 `contentWindow.document`는 교차 출처로 막힌다. 하네스 페이지는 `dist/`에 두어 같은 출처로 연다
 - **` 2`가 붙은 사본 파일(2026-09-21 원인 확인)**: 저장소가 `~/Documents` 아래에 있고 macOS의 **iCloud "데스크탑 및 문서 폴더" 동기화**가 켜져 있다(`defaults read com.apple.finder FXICloudDriveDesktop` = 1). 동기화가 충돌을 만나면 `파일 2.확장자`·`폴더 2` 사본을 만든다. 이번에는 루트·`design/`·`src/` 파일 30개(세션 도중 스스로 사라짐), 빈 폴더 9개, `node_modules` 안 612개가 있었다. `.git` 안에는 없었다
   - 정리: 빈 폴더는 `rmdir`, `node_modules`는 통째로 지우고 `npm ci`(설치 스크립트 경고는 `fsevents` 하나뿐이고 무시해도 된다)
+  - **2026-09-22 사용자 결정: ` 2` 사본은 원본과 내용이 달라도 묻지 않고 지운다**(원본은 git에 커밋된 쪽이 기준)
   - 근본 해결은 저장소를 iCloud 밖(예: `~/Developer/`)으로 옮기거나 동기화를 끄는 것이다. `.git` 안에 사본이 생기면 저장소가 깨질 수 있어 옮기는 편이 안전하다 — 사용자에게 제안만 했다
 
 ### 2-3. 최근 세션에서 끝낸 일 (요약, 자세한 결정은 5장)
+- 첫 실제 프로젝트 Pointer Quest(`feature/real-content`, 2026-09-22, 커밋 `30ce6e4`·`e8e6964`)
+  - 재료: 사용자가 준 pointer-quest 저장소 README. 이미지는 그 저장소의 `docs/screenshots/raw/*.png`(1320×2868)와 기본 앱 아이콘(1024)을 받아 `sips`로 660×1434·512로 줄였다(가장 크게 보이는 폭이 190px × 2배라 충분하다)
+  - 글: `src/content/projects/pointer-quest/index.md`. 분류 iOS + Side Project, 시작일은 저장소 생성일 2026-01-12, `1.1.0`을 개발 중이라 종료일을 비워 **진행 중**으로 둠. 주요 기능 3개(드래그 연결·개념 카드·플레이그라운드), 기술적으로 고민한 점 4개(레슨 데이터화·화살표 레이어·도식 단일 출처·색에만 기대지 않는 표기)
+  - `sample-project` 삭제(2-6의 4단계). 이제 **새 프로젝트 글은 `pointer-quest/`를 복사해 쓴다**
+  - 주의: 주요 기능 `description`은 Markdown이 아니라 일반 텍스트로 나온다(백틱이 그대로 보인다)
+  - 확인: 빌드, 스크린샷 1440 다크(목록·상세·홈) / 390 다크(목록·상세) / 768 라이트(상세). 홈 최근 기록은 원래 스터디·세미나만 보여 주므로 프로젝트가 나오지 않는 게 맞다
 - 사이트 이름·로고·파비콘(`feature/site-name-favicon` → `develop` 병합 `cc6040f` → `master` `398be50` 배포, 2026-09-21, 결정은 **5-21**)
   - 이름 `Lia.log`: `apps.ts`의 `SITE_NAME` 하나. 탭 제목은 `SiteLayout`이 `글 제목 · 앱 라벨 · SITE_NAME`으로 조립(상세 페이지 3곳의 `· Chu Yumin` 중복 제거). 실명은 자기소개와 `description` 메타에만 남김
   - 로고: `CY` 글자 → 창 그림 `BRAND`(`AppIcon`으로 그림). 홈 앱과 같은 그라디언트는 `LILAC` 상수
@@ -158,6 +166,10 @@
 3. `npm run build` → `npm run dev`로 확인. 글이 생기면 **목록 정렬·필터 칩·Pager·홈 최근 기록·검색 결과가 모두 실제 내용으로 바뀌므로** 함께 본다
 4. 각 컬렉션에 실제 글이 하나라도 생기면 그 컬렉션의 `sample-*`과 임시 이미지를 지운다
 5. 커밋은 글 단위로 나눈다(`content:` 대신 `feat:` 또는 `docs:`가 아니라 실제 콘텐츠이므로 `content:`를 새로 쓰기보다 `feat: <컬렉션> 글 추가` 정도로 통일)
+
+#### 진행 상황 (2026-09-22~)
+- [x] 프로젝트 1: Pointer Quest(`projects/pointer-quest/`) + `sample-project` 삭제 — 커밋 완료, `develop` 병합·배포 전
+- [ ] 다음 프로젝트·스터디 글·세미나는 재료가 오는 대로. 스터디·세미나의 `sample-*`은 그 컬렉션에 실제 글이 생길 때 지운다
 
 #### 배포는 이미 되어 있다 (2026-09-21)
 배포를 먼저 하기로 해 사이트가 이미 떠 있다(5-20, 최근 배포 `398be50`). 글을 쓰면 `develop`에서 확인 → `develop` → `master` 병합으로 올린다. 실제 주소에서 보면서 실기기 확인(남은 일)도 함께 할 수 있다.
@@ -285,7 +297,7 @@
 - [x] 스터디 읽는 시간 계산·목차 (2026-09-19~20, 5-15)
 - [x] 세미나 MDX 컴포넌트 `Photo`·`PhotoPair`·`PhotoSide`(상세 페이지가 `<Content components={{ ... }} />`로 넘김) (2026-09-20, 5-16)
 - [x] 본문(Markdown) 스타일 공용화: `src/styles/prose.css`로 분리 (2026-09-19, 5-15)
-- [ ] **대괄호 `[ ]` placeholder를 실제 콘텐츠로** ← 다음 할 일(계획은 **2-6**). 남은 대괄호는 예시 글 3개뿐이고 `src/data/profile.ts`는 이미 실제 내용이다. 실제 글을 쓰면 예시 글 3개(`sample-*`)와 임시 이미지 10장을 삭제한다
+- [ ] **대괄호 `[ ]` placeholder를 실제 콘텐츠로** ← 다음 할 일(계획은 **2-6**). 남은 대괄호는 예시 글 3개뿐이고 `src/data/profile.ts`는 이미 실제 내용이다. 실제 글을 쓰면 예시 글 3개(`sample-*`)와 임시 이미지 10장을 삭제한다. **2026-09-22 프로젝트 Pointer Quest를 쓰고 `sample-project`를 지웠다**(남은 예시: 스터디·세미나)
 - [x] GitHub Actions로 GitHub Pages 자동 배포 설정 + 저장소 공개 전환 + 첫 배포 성공 (2026-09-21, 5-20). 사이트: https://yuminc03.github.io/my-homepage/
 - [x] 연락처 링크(GitHub·Email)는 `src/data/profile.ts`에 실제 주소로 들어가 있다(LinkedIn은 두지 않았다 — 동작 없는 링크 금지)
 - [x] `develop` → `master` 병합 `ea31474`·push (2026-09-21, 첫 배포). 앞으로도 배포는 이 병합으로 한다
@@ -381,7 +393,7 @@
   - **projects** `src/content/projects/*/index.{md,mdx}`: `title`·`summary`·`categories`(`iOS`/`Web`/`Side Project` 중 1개 이상, 여러 개 가능)·`tags`·`icon`(이미지)·`startDate`·`endDate`(없으면 진행 중)·`role`·`stack`(1개 이상)·`platform`·`links.appStore`/`links.github`(URL)·`screenshots`(이미지 배열)·`features[]`(`title`·`description`·`image`). 본문은 `## 소개` / `## 기술적으로 고민한 점` / `## 배운 점`
   - **study** `src/content/study/**/*.{md,mdx}`: `title`·`summary`·`category`(자유 문자열, 필터 칩은 글에서 모아 만듦)·`pubDate`·`updatedDate`. 읽는 시간·목차는 본문에서 계산(`render()`의 `headings`)
   - **seminars** `src/content/seminars/*/index.{md,mdx}`: `title`·`date`·`location`·`summary`·`cover`(이미지)·`coverAlt`. 본문은 MDX: `## SESSION 01 · 발표자` + `### 세션 제목`, 사진은 `<Photo>`(넓게 1장) · `<PhotoPair>`(2장 나란히) · `<PhotoSide>`(사진 옆 글) — 이미지는 본문에서 `import`해 넘긴다
-- 새 글 쓰기: `src/content/<컬렉션>/sample-*`를 복사해 이름을 바꾸고 `draft: false`로. 필드가 틀리면 `npm run build`(또는 `npx astro sync`)가 어떤 필드가 왜 틀렸는지 알려 주며 실패한다
+- 새 글 쓰기: `src/content/<컬렉션>/sample-*`를 복사해 이름을 바꾸고 `draft: false`로(프로젝트는 2026-09-22부터 실제 글 `pointer-quest/`를 복사한다). 필드가 틀리면 `npm run build`(또는 `npx astro sync`)가 어떤 필드가 왜 틀렸는지 알려 주며 실패한다
 - 브라우저에서 글을 쓰고 싶어지면 Keystatic·Decap CMS(git 기반), 사진이 많아지면 사진만 이미지 서비스로
 - Firebase는 관리자 화면·인증을 직접 만들어야 하고 검색 노출·비용 면에서 과하다
 
@@ -745,7 +757,7 @@
 | `package.json` · `package-lock.json` | 이름 `my-homepage`, 의존성 `astro` ^7.3.2 · `@astrojs/mdx` ^8.0.1 · `@astrojs/markdown-satteri` ^0.4.1(MDX가 요구), 스크립트 `dev`·`build`·`preview`, `engines.node >=22.12.0` |
 | `astro.config.mjs` | `site: 'https://yuminc03.github.io'`, `base: '/my-homepage'`, `integrations: [mdx()]`, `markdown.shikiConfig`(코드 블록 테마 + transformer, 5-15) |
 | `src/content.config.ts` | 콘텐츠 컬렉션 `projects`·`study`·`seminars` 스키마(5-10), `PROJECT_CATEGORIES` 내보내기, 폴더형/파일형 id 생성 |
-| `src/content/projects/sample-project/` | 예시 프로젝트 `index.md`(`draft: true`) + 단색 임시 이미지 5장(아이콘·스크린샷 2·기능 2) |
+| `src/content/projects/pointer-quest/` | 첫 실제 프로젝트 `index.md` + 아이콘(512)·스크린샷 5장(660×1434, 그중 3장을 주요 기능에도 씀). 예시 `sample-project/`는 2026-09-22에 지웠다 |
 | `src/content/study/sample-post.md` | 예시 스터디 글(`draft: true`, 인라인 코드·Swift 코드 블록) |
 | `src/content/seminars/sample-seminar/` | 예시 행사 `index.mdx`(`draft: true`, 세션 3개·사진 컴포넌트 3종) + 단색 임시 이미지 5장(표지·사진 4) |
 | `tsconfig.json` | `astro/tsconfigs/strict` 상속, `dist`·`design` 제외 |
@@ -838,7 +850,11 @@
 - 인터랙션은 `onClick="{{handler}}"`, 조건 표시는 `<sc-if value="{{bool}}">`, 상태 스타일은 `data-*="{{값}}"` + CSS 선택자로 만든다(`class`에 값 끼워 넣기는 쓰지 않았다)
 
 ## 12. 브랜치·커밋 기록
-- 로컬 브랜치: `master`, `develop`(현재). 원격(`origin`, `https://github.com/yuminc03/my-homepage.git`, **2026-09-21부터 공개 저장소**): `master` `398be50`(Lia.log 배포, 로컬과 같음), `develop`(2026-09-21 push, `origin/develop` 추적). **`master`에 push하면 GitHub Actions가 배포한다**(5-20)
+- 로컬 브랜치: `master`, `develop`, `feature/real-content`(현재, 2026-09-22 `develop` `c63bdc4`에서 분기). 원격(`origin`, `https://github.com/yuminc03/my-homepage.git`, **2026-09-21부터 공개 저장소**): `master` `398be50`(Lia.log 배포, 로컬과 같음), `develop`(2026-09-21 push, `origin/develop` 추적). **`master`에 push하면 GitHub Actions가 배포한다**(5-20)
+- `feature/real-content`(2026-09-22~, `develop` `c63bdc4`에서 분기, **진행 중**), 오래된 순. 각 커밋 직전에 `npm run build`
+  - `30ce6e4` feat: 첫 프로젝트 Pointer Quest 글 추가
+  - `e8e6964` chore: 실제 프로젝트 글이 생겨 예시 프로젝트 sample-project 삭제
+  - (이 문서 갱신) docs: Pointer Quest 추가와 iCloud 사본 삭제 규칙 기록
 - `feature/site-name-favicon`(2026-09-21, `develop` `48ae273`에서 분기, **`develop` 병합 `cc6040f`로 완료, 브랜치 삭제**), 오래된 순. 각 커밋 직전에 `npm run build`
   - `fbef4cb` feat: 사이트 이름을 Lia.log로 바꾸고 탭 제목 조립을 한곳으로 모음
   - `15785f9` feat: 메뉴바 로고를 CY 글자에서 창 그림 아이콘으로 바꿈
