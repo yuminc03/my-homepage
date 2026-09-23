@@ -12,12 +12,14 @@ import { render, type CollectionEntry } from 'astro:content';
 import SiteLayout from '../../layouts/SiteLayout.astro';
 import Window from '../../components/Window.astro';
 import SeminarCover from '../../components/SeminarCover.astro';
+import SessionList from '../../components/SessionList.astro';
 import Photo from '../../components/Photo.astro';
 import PhotoPair from '../../components/PhotoPair.astro';
 import PhotoSide from '../../components/PhotoSide.astro';
 import Pager from '../../components/Pager.astro';
 import { getApp } from '../../data/apps';
 import { getSeminars, seminarHref } from '../../lib/content';
+import { getSeminarSessions } from '../../lib/sessions';
 import { formatDay } from '../../lib/date';
 import { withBase } from '../../lib/url';
 import '../../styles/prose.css';
@@ -40,7 +42,9 @@ export async function getStaticPaths() {
 
 const { seminar, prev, next } = Astro.props;
 const { data } = seminar;
-const { Content } = await render(seminar);
+const { Content, headings } = await render(seminar);
+// 세션 한눈에 보기는 본문 소제목에서 자동으로 뽑는다(5-25)
+const sessions = getSeminarSessions(headings);
 const app = getApp('seminars');
 const listHref = withBase(app.href);
 
@@ -102,6 +106,8 @@ const shareImage = { url: cover.src, width: 1200, height: 630, alt: data.coverAl
 		<SeminarCover src={data.cover} alt="" caption={data.coverAlt} />
 
 		<div class="column">
+			<SessionList sessions={sessions} />
+
 			<article class="prose-body seminar-body">
 				<Content components={{ Photo, PhotoPair, PhotoSide }} />
 			</article>
@@ -171,6 +177,11 @@ const shareImage = { url: cover.src, width: 1200, height: 630, alt: data.coverAl
 	/* 세션 머리는 ## 라벨 + ### 제목 한 쌍이다(2026-09-20 결정, PROGRESS.md 5-16)
 	   - ## 뒤에 ###이 오면 → 작은 액센트 라벨(SESSION 01 · 발표자)
 	   - ## 단독이면 → 마무리 구획 제목(배운 점 · 소감). 위에 구분선을 그린다 */
+	/* 세션 한눈에 보기에서 눌러 왔을 때 라벨이 메뉴바에 가리지 않게 한다(스터디 목차와 같은 값) */
+	.seminar-body :global(:is(h2, h3)) {
+		scroll-margin-top: 80px;
+	}
+
 	.seminar-body :global(h2:has(+ h3)) {
 		margin: 40px 0 6px;
 		color: var(--win-accent);

@@ -1,0 +1,154 @@
+---
+// 행사 상세의 "세션 한눈에 보기" (결정은 PROGRESS.md 5-25)
+// - 표지 사진 바로 아래 인라인 카드. 페이지를 열자마자 세션이 몇 개·무엇인지 보이고, 누르면 그 세션으로 간다
+// - 항목은 본문 소제목에서 자동으로 뽑는다(src/lib/sessions.ts) — 글쓴이가 따로 적을 것이 없다
+// - 세션이 없는 글(세션 구분 없이 쓴 행사 기록)에서는 아예 그리지 않는다
+// - 폭마다 모양을 바꾸지 않는다. 항목이 두세 줄뿐이라 카드 하나로 충분하고, 데스크톱 sticky 레일은
+//   세션 수가 훨씬 많아질 때 다시 판단한다
+import type { SeminarSession } from '../lib/sessions';
+
+interface Props {
+	sessions: SeminarSession[];
+}
+
+const { sessions } = Astro.props;
+---
+
+{
+	sessions.length > 0 && (
+		<nav class="sessions" aria-label="세션 목록">
+			<p class="cap">
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<path d="M8 6h12M8 12h12M8 18h12" />
+					<path d="M4 6h.01M4 12h.01M4 18h.01" />
+				</svg>
+				<span>세션 {sessions.length}개</span>
+			</p>
+
+			<ol class="list">
+				{sessions.map((session) => (
+					<li>
+						<a href={`#${session.slug}`}>
+							<span class="num">{String(session.number).padStart(2, '0')}</span>
+							<span class="text">
+								<span class="title">{session.title}</span>
+								{(session.speaker || session.note) && (
+									<span class="by">{[session.speaker, session.note].filter(Boolean).join(' · ')}</span>
+								)}
+							</span>
+						</a>
+					</li>
+				))}
+			</ol>
+		</nav>
+	)
+}
+
+<style>
+	.sessions {
+		margin: 24px 0 4px;
+		padding: 16px 18px 18px;
+		border: 1px solid var(--win-divider);
+		border-radius: 16px;
+		background: var(--win-card);
+	}
+
+	.cap {
+		display: flex;
+		align-items: center;
+		gap: 7px;
+		margin: 0 0 12px;
+		color: var(--win-ink-sub);
+		font-size: 12px;
+		font-weight: 700;
+		letter-spacing: 0.01em;
+	}
+
+	.cap svg {
+		width: 14px;
+		height: 14px;
+		flex-shrink: 0;
+	}
+
+	.list {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.list a {
+		display: flex;
+		gap: 12px;
+		padding: 9px 10px;
+		border-radius: 10px;
+		transition: background var(--dur-fast) var(--ease-out);
+	}
+
+	/* 카드(--win-card) 위에서 한 칸 들어간 느낌을 주는 창 바탕색 */
+	.list a:hover {
+		background: var(--win-bg);
+	}
+
+	.list a:focus-visible {
+		outline: 2px solid var(--win-accent);
+		outline-offset: 1px;
+	}
+
+	/* 번호는 라벨(SESSION 01)과 같은 액센트 색·크기로 맞춘다 */
+	.num {
+		flex-shrink: 0;
+		padding-top: 2px;
+		color: var(--win-accent);
+		font-size: 12px;
+		font-weight: 800;
+		font-variant-numeric: tabular-nums;
+	}
+
+	.text {
+		display: flex;
+		min-width: 0;
+		flex-direction: column;
+		gap: 3px;
+	}
+
+	.title {
+		color: var(--win-ink-strong);
+		font-size: 15px;
+		font-weight: 700;
+		line-height: 1.45;
+		word-break: keep-all;
+	}
+
+	.by {
+		color: var(--win-ink-muted);
+		font-size: 13px;
+		line-height: 1.4;
+	}
+
+	@media (min-width: 744px) {
+		.sessions {
+			margin-top: 28px;
+			padding: 18px 20px 20px;
+			border-radius: 18px;
+		}
+
+		.title {
+			font-size: 16px;
+		}
+	}
+
+	@media (min-width: 1180px) {
+		.sessions {
+			margin-top: 32px;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.list a {
+			transition: none;
+		}
+	}
+</style>
