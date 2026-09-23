@@ -7,7 +7,14 @@
 | [study.md](study.md) | `src/content/study/<이름>.md` | 파일 하나. 사진이 필요하면 `study/<이름>/index.md` 폴더형 |
 | [seminar/index.mdx](seminar/index.mdx) | `src/content/seminars/<이름>/index.mdx` | 폴더형 MDX(사진 컴포넌트를 씀) |
 
-글을 직접 쓰지 않고 **재료만 넘겨 대신 쓰게 할 때**는 [seminar-input.md](seminar-input.md)(세미나 재료 양식)를 채워서 줍니다. 사진은 **2~3장, 많아야 4장**입니다.
+글을 직접 쓰지 않고 **재료만 넘겨 대신 쓰게 할 때**는 아래 재료 양식을 채워서 줍니다.
+
+| 재료 양식 | 사진 |
+|---|---|
+| [seminar-input.md](seminar-input.md) — 세미나·행사 | **2~3장, 많아야 4장**(표지 1 + 본문 1~2) |
+| [study-input.md](study-input.md) — 스터디 글 | **없어도 됩니다.** 있으면 1~2장 |
+
+둘 다 **다 채우지 않아도 됩니다.** 꼭 필요한 칸은 **"공개하면 안 되는 것"** 하나입니다 — 필기만 봐서는 공개해도 되는 내용인지 판단할 수 없기 때문입니다.
 
 ## 쓰는 순서
 1. 틀을 복사해 폴더(파일) 이름을 정합니다. 이 이름이 곧 주소입니다(예: `projects/pointer-quest` → `/projects/pointer-quest/`)
