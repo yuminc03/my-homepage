@@ -1,7 +1,8 @@
 # 진행 상황
 - 최종 업데이트: 2026-09-23
 - 이 문서 하나만 읽으면 새 채팅에서 바로 이어서 작업할 수 있도록 정리한 단일 기준 문서다
-- **마지막 세션(2026-09-23, 이어서)**: 사용자 요청으로 **Pointer Quest 글에 진행 기간 흐름**을 넣었다(`feature/real-content`, 커밋 `7c48528`). SSC로 시작해 3~6월 방향을 다시 고민하고 7월에 학습 도구로 다시 만든 과정을 저장소 커밋 이력에 맞춰 연표로 적었다(2-3). **`develop` 병합·배포는 아직**이고, 배포하면 글꼴·예시 글 정리도 함께 올라간다
+- **마지막 세션(2026-09-23, 이어서 2)**: **세미나 양식 확장(5-25)을 구현하고 첫 세미나 기록을 썼다.** 사용자가 Notion 링크를 줬는데 `app.notion.com` 사설 페이지라 열리지 않아, 사용자가 **웹에 게시해 `lonalia.notion.site` 주소**로 다시 줬고 그때부터 본문·사진까지 모두 읽혔다(방법은 2-7). 브랜치 `feature/seminar-sessions`에서 주최 `host` 필드(`d8ff10e`) · 세션 한눈에 보기(`222f977`, 뽑는 함수 `src/lib/sessions.ts` + `SessionList.astro`) · 목록 카드의 주최·세션 수·주최별 필터 칩(`1681db3`)을 만들고, **10 Years of Let'Swift**(2026-04-01, Apple Korea 아셈타워) 기록을 썼다(`64f02a0`). 사진은 받은 12장 중 **3장만**(표지·행사 진행 순서·이름표) 골랐고 이름표는 방문 담당자 이름 줄을 잘라냈다. 본문에 `letswift.kr` 주소를 한 문단으로 두어 북마크 카드로 나오게 했고, **여태 커밋된 적이 없던 `src/data/link-previews.json`을 이때 처음 커밋**했다. 1440 라이트/다크 · 390 · 768 스크린샷과 빌드 HTML로 확인했다. **`develop` 병합·배포는 아직**
+- **그 전 세션(2026-09-23, 이어서)**: 사용자 요청으로 **Pointer Quest 글에 진행 기간 흐름**을 넣었다(`feature/real-content`, 커밋 `7c48528`). SSC로 시작해 3~6월 방향을 다시 고민하고 7월에 학습 도구로 다시 만든 과정을 저장소 커밋 이력에 맞춰 연표로 적었다(2-3). **`develop` 병합·배포는 아직**이고, 배포하면 글꼴·예시 글 정리도 함께 올라간다
 - **그 전 세션(2026-09-23)**: 글꼴 직접 제공(`142349f`·`48b0b75` → 병합 `17a722e`)과 예시 글 정리(`7c58bb9`·`67ae987`·`dc5edb7`·`3907525` → 병합 `603b658`)를 커밋·`develop` 병합·push했다. 둘 다 **아직 배포 전**(`develop`이 `master` `81b7ac3`보다 앞서 있다 — 다음 배포 때 함께 올라간다). 이어서 사용자가 **주최 기관이 있고 세션이 여러 개인 세미나를 읽기 쉽게 정리하는 방법**을 물어 제안했고, 사용자가 **그 양식으로 하기로 정했다**(결정은 **5-25**: 주최 `host` 필드 + 세션 한눈에 보기 + 카드의 세션 수). **구현은 사용자가 세미나 내용을 넣을 때 함께 한다.** 사용자가 여기서 세션을 마쳤다. 지금 브랜치는 `develop`, 작업 트리는 이 문서 기록 커밋 뒤 깨끗하다
 - **그 전 세션(2026-09-22, 이어서 4)**: 사용자가 남은 일을 물어 목록을 정리했고(콘텐츠 외에 실기기 확인·320px Dock·글꼴·설명 세션), 추천 순서대로 **글꼴부터** 정했다. 측정해 보니 Google CSS가 570KB였고 굵기 600이 빠져 700으로 그려지고 있었다 → **Noto Sans KR 가변 글꼴을 사이트가 직접 제공**(`feature/self-host-font`, 5-24, 커밋 `142349f` → `develop` 병합, 배포는 다음 콘텐츠와 함께). 사용자가 **iPhone SE에서 Dock이 잘리지 않고 괜찮다**고 확인해 줬고, 실기기 확인(트랙패드·hover·동작 줄이기)은 직접 보고 알려 주기로 했다. 스터디·세미나는 천천히 채울 예정이라 **예시 글·임시 이미지를 지우고 쓰는 틀은 `docs/content-templates/`로 옮기기로 했다**(다음 브랜치)
 - **그 전 세션(2026-09-22, 이어서 3)**: 사용자가 "그 순서로 진행"을 승인 → **`feature/bookmark-card`를 `develop`에 병합 `56027aa` → 브랜치 삭제 → push**하고, `develop`에서 **`feature/og-meta`** 를 만들어 **이 사이트의 공유·북마크 카드(OG 태그)** 를 붙였다(결정은 **5-23**). `BaseLayout`에 canonical·`og:*`·`twitter:card`, 사이트 대표 이미지 `public/og-image.png`(1200×630, 원본 `design/og-image.html`을 헤드리스 Chrome으로 찍음), 세미나 상세는 표지 사진을 1200×630으로 잘라 썸네일로. 빌드 결과 HTML로 홈·목록·프로젝트 상세·(임시 공개한) 세미나 상세의 태그를 확인했다. 대표 이미지는 모형 카드 페이지로 비교한 뒤 사용자가 **한 줄 소개를 빼고 로고·이름을 키운 B안**을 골랐다. 사용자 확인 뒤 커밋 4개(12장) → `develop` 병합 `15cff8f` → **`develop` → `master` 병합 `81b7ac3`으로 배포 성공**(run 35736175779). 실제 주소를 `getLinkPreview`로 읽어 카드 정보가 모두 나오는 것을 확인했다. 배포 뒤 실제 주소를 `linkPreview`로 읽어 카드를 확인하는 일이 남았다. 작업 중 ` 2` 사본(소스 2개·`node_modules` 132개)을 또 지우고 `npm ci`
@@ -13,7 +14,7 @@
 
 ## 1. 한눈에 보기
 - **무엇을 만드나**: iOS 개발자 Chu Yumin의 개인 홈페이지(자기소개·프로젝트·스터디 기록·세미나 기록). 사이트 이름은 **`Lia.log`**(2026-09-21, 5-21)
-- **지금 단계**: 디자인 시안 완료, 기술 스택 확정(Astro + 일반 CSS), **Astro 프로젝트 생성**(임시 홈 1장, 빌드 확인), **전역 토큰 CSS 이식**(`src/styles/tokens.css`), **콘텐츠 컬렉션 스키마**(프로젝트·스터디·세미나, MDX) , **공통 셸**(테마 버튼·메뉴바·Dock 자동 숨김·창·시계, 목록 틀 3개), **홈 페이지**(첫 화면·iPhone 목업·최근 기록), **프로젝트 목록·상세**(필터 칩·카드·상세 페이지) — 여기까지 `develop` 병합·원격 push 완료. **스터디 목록·글**(카드·필터·글 페이지·목차·코드 블록·읽는 시간)까지 `develop` 병합·push 완료(2026-09-20, 병합 `4351c43`, 결정은 5-15). **세미나 목록·행사 상세**(타임라인·가로/세로 카드·표지 사진·사진 컴포넌트 3종·홈 최근 기록 링크)도 브라우저 확인까지 마치고 `develop`에 병합·push했다(2026-09-20, 병합 `8f704a4`, 결정은 5-16). **페이지 전환 모션**(View Transitions·스크립트 재실행·전환 종류별 모션)도 브라우저 확인까지 마치고 `develop`에 병합·push했다(2026-09-20, 병합 `0cd15af`, 결정은 5-17). **콘텐츠 검색**(빌드 색인 JSON·찾기 헬퍼·`<dialog>` 검색 창·⌘K·돋보기 버튼)도 브라우저 확인까지 마치고 `develop`에 병합·push했다(2026-09-21, 병합 `d81c5fc`, 결정은 5-19). **여기까지로 계획한 화면·기능은 모두 끝났다.** 이어서 **GitHub Actions 배포**를 붙이고 저장소를 공개로 전환해 `develop` → `master` 병합 `ea31474`로 첫 배포에 성공했다(2026-09-21, 결정은 5-20). 그 뒤 사이트 이름 `Lia.log`·파비콘(5-21), 첫 프로젝트 Pointer Quest, README, 북마크 카드(5-22), 공유 카드 OG(5-23)까지 배포했고(`master` `81b7ac3`, 2026-09-22), 글꼴 직접 제공(5-24)·예시 글 정리는 `develop`에만 있다(2026-09-23). 남은 것은 **세미나 양식 확장(5-25, 결정됨·구현 대기) · 실제 콘텐츠 · 실기기 확인 · 개발 과정 설명 세션**이다(2-1의 3)
+- **지금 단계**: 디자인 시안 완료, 기술 스택 확정(Astro + 일반 CSS), **Astro 프로젝트 생성**(임시 홈 1장, 빌드 확인), **전역 토큰 CSS 이식**(`src/styles/tokens.css`), **콘텐츠 컬렉션 스키마**(프로젝트·스터디·세미나, MDX) , **공통 셸**(테마 버튼·메뉴바·Dock 자동 숨김·창·시계, 목록 틀 3개), **홈 페이지**(첫 화면·iPhone 목업·최근 기록), **프로젝트 목록·상세**(필터 칩·카드·상세 페이지) — 여기까지 `develop` 병합·원격 push 완료. **스터디 목록·글**(카드·필터·글 페이지·목차·코드 블록·읽는 시간)까지 `develop` 병합·push 완료(2026-09-20, 병합 `4351c43`, 결정은 5-15). **세미나 목록·행사 상세**(타임라인·가로/세로 카드·표지 사진·사진 컴포넌트 3종·홈 최근 기록 링크)도 브라우저 확인까지 마치고 `develop`에 병합·push했다(2026-09-20, 병합 `8f704a4`, 결정은 5-16). **페이지 전환 모션**(View Transitions·스크립트 재실행·전환 종류별 모션)도 브라우저 확인까지 마치고 `develop`에 병합·push했다(2026-09-20, 병합 `0cd15af`, 결정은 5-17). **콘텐츠 검색**(빌드 색인 JSON·찾기 헬퍼·`<dialog>` 검색 창·⌘K·돋보기 버튼)도 브라우저 확인까지 마치고 `develop`에 병합·push했다(2026-09-21, 병합 `d81c5fc`, 결정은 5-19). **여기까지로 계획한 화면·기능은 모두 끝났다.** 이어서 **GitHub Actions 배포**를 붙이고 저장소를 공개로 전환해 `develop` → `master` 병합 `ea31474`로 첫 배포에 성공했다(2026-09-21, 결정은 5-20). 그 뒤 사이트 이름 `Lia.log`·파비콘(5-21), 첫 프로젝트 Pointer Quest, README, 북마크 카드(5-22), 공유 카드 OG(5-23)까지 배포했고(`master` `81b7ac3`, 2026-09-22), 글꼴 직접 제공(5-24)·예시 글 정리는 `develop`에만 있다(2026-09-23). **세미나 양식 확장(5-25: 주최·세션 한눈에 보기·세션 수)과 첫 세미나 기록 10 Years of Let'Swift**도 `feature/seminar-sessions`에서 끝냈다(2026-09-23, 병합 전). 남은 것은 **실제 콘텐츠 · 배포 · 실기기 확인 · 개발 과정 설명 세션**이다(2-1의 3)
 - **시안 진행도**
   - 데스크톱 7화면(홈·목록 3·상세 3) — 완료
   - 모바일 7화면(홈 화면 메타포) — 완료
@@ -23,23 +24,23 @@
 - **기술 스택**: Astro + 일반 CSS + TypeScript + Markdown Content Collections 확정(2026-09-14). 비교·약점·면접 질문은 `docs/tech-stack.md`
 - **시안 캔버스**: https://claude.ai/code/artifact/48a3c34c-b882-4f13-8e2f-7e3668bdb7b1 (v22, 페이지 5개 · 아트보드 25장)
 - **Git**: 시안·기술 스택 문서·`.claude/settings.json`(`92083d0`)이 `develop`에 반영되어 있다. `feature/astro-setup`(커밋 4개)을 `develop`에 병합 `004589b` → 브랜치 삭제(2026-09-14). `feature/site-shell`(테마 버튼 `872ec4b`, 공통 셸 `20d40c8`, Dock 자동 숨김 `e8eea35`, 시계 `88e86ca`, 문서 `cfe9270`)을 `develop`에 병합 `0227fa3` → 브랜치 삭제(2026-09-15). `feature/home-page`(첫 화면 `9907ebe`, iPhone 목업 `6da0b04`, 문서 `f6741d5`, 최근 기록 `062e860`, 문서 `1f8cbb8`)를 `develop`에 병합 `8c7568f` → 브랜치 삭제 → push(2026-09-16), 뒤이어 문서 `a725134` push. `feature/project-pages`(기능 12 + 문서 3, 커밋 목록은 12장)를 `develop`에 병합 `53f528e` → 로컬·원격 브랜치 삭제 → push(2026-09-18). `feature/study-pages`(기능 9 + 문서 2, 커밋 목록은 12장)를 `develop`에 병합 `4351c43` → 브랜치 삭제 → push(2026-09-20). `feature/seminar-pages`(기능 7 + 문서 1, 커밋 목록은 12장)를 `develop`에 병합 `8f704a4` → 브랜치 삭제 → push(2026-09-20). 이어서 `feature/page-transitions`(병합 `0cd15af`) · `feature/content-search`(병합 `d81c5fc`) · `feature/deploy`(병합 `36f0456`) · `feature/site-name-favicon`(병합 `cc6040f`)까지 병합·삭제했다. 2026-09-22~23에는 `feature/real-content`(`6354a23`) · `feature/readme`(`5b8237c`) · `feature/bookmark-card`(`56027aa`) · `feature/og-meta`(`15cff8f`) · `feature/self-host-font`(`17a722e`) · `feature/content-templates`(`603b658`)를 병합·삭제했다. **원격**: `origin/develop` = 로컬 `develop`과 같음(2026-09-23 push), `origin/master` = `81b7ac3`(로컬 `master`와 같음). `develop` → `master` 병합은 첫 배포 `ea31474`, Lia.log 배포 `398be50`, 콘텐츠·README·카드 배포 `81b7ac3` 세 번 했다(12장)
-- **다음 단계**: 홈 완료 → 프로젝트 목록·상세 완료(병합·push 완료) → 스터디 목록·글 완료(병합 `4351c43`, 5-15) → 세미나 목록·행사 상세 완료(병합 `8f704a4`, 5-16) + 홈 최근 기록 링크를 상세로(함께 끝냄) → 페이지 전환 모션 완료(병합 `0cd15af`, 5-17) → 콘텐츠 검색 완료(병합 `d81c5fc`, 5-19) → 배포 완료(`ea31474`, 5-20) → 사이트 이름 Lia.log·로고·파비콘 완료(`cc6040f`, 배포 `398be50`, 5-21) → Pointer Quest·README·북마크 카드·OG 완료(배포 `81b7ac3`) → 글꼴 직접 제공·예시 글 정리 완료(`develop`만) → **세미나 양식 확장(5-25, 세미나 내용과 함께)** → **실제 콘텐츠**(사용자가 천천히 채움) → 실기기 확인(사용자가 보고 알려 줌) → **마지막: 개발 과정 설명 세션**(2026-09-17 요청). 화면마다 `develop`에서 `feature/*` 브랜치를 새로 만든다
+- **다음 단계**: 홈 완료 → 프로젝트 목록·상세 완료(병합·push 완료) → 스터디 목록·글 완료(병합 `4351c43`, 5-15) → 세미나 목록·행사 상세 완료(병합 `8f704a4`, 5-16) + 홈 최근 기록 링크를 상세로(함께 끝냄) → 페이지 전환 모션 완료(병합 `0cd15af`, 5-17) → 콘텐츠 검색 완료(병합 `d81c5fc`, 5-19) → 배포 완료(`ea31474`, 5-20) → 사이트 이름 Lia.log·로고·파비콘 완료(`cc6040f`, 배포 `398be50`, 5-21) → Pointer Quest·README·북마크 카드·OG 완료(배포 `81b7ac3`) → 글꼴 직접 제공·예시 글 정리 완료(`develop`만) → 세미나 양식 확장·첫 세미나 기록 완료(5-25, `feature/seminar-sessions`, 병합 전) → **실제 콘텐츠**(사용자가 천천히 채움) → 실기기 확인(사용자가 보고 알려 줌) → **마지막: 개발 과정 설명 세션**(2026-09-17 요청). 화면마다 `develop`에서 `feature/*` 브랜치를 새로 만든다
 
 ## 2. 새 채팅에서 이어서 시작하기
 ### 2-1. 지금 바로 할 일
 1. `git status`로 브랜치와 작업 트리를 확인한다
-   - 기대 상태: **`develop` 브랜치**, 마지막 커밋은 문서(`docs:`) 커밋이다. 작업 트리 깨끗, `origin/develop`과 같음
-   - 기능 브랜치는 남아 있지 않다(`feature/content-templates`도 병합 `603b658` 후 삭제). `origin/master` = `81b7ac3`(2026-09-22 Pointer Quest·README·북마크 카드·OG 배포)
-   - **`develop`이 `master`보다 앞서 있다**: 글꼴 직접 제공(5-24)·예시 글 정리가 아직 배포되지 않았다. 다음 배포(`develop` → `master`) 때 함께 올라간다
-   - 스터디·세미나에 글이 없어 빌드 때 "컬렉션이 비었다" 경고가 나오는 것은 정상이다. 글·이미지를 지운 뒤에는 `node_modules/.astro`를 지우고 빌드한다(2-2)
+   - 기대 상태: **`feature/seminar-sessions` 브랜치**, 마지막 커밋은 문서(`docs:`) 커밋이다. 작업 트리 깨끗. **`develop` 병합·push는 사용자 확인 대기**(커밋 목록은 12장)
+   - `feature/real-content`는 병합 `e283cd3` 후 삭제했다. `origin/master` = `81b7ac3`(2026-09-22 Pointer Quest·README·북마크 카드·OG 배포)
+   - **`develop`이 `master`보다 앞서 있다**: 글꼴 직접 제공(5-24)·예시 글 정리·Pointer Quest 진행 기간이 아직 배포되지 않았다. 다음 배포(`develop` → `master`) 때 함께 올라간다
+   - 스터디에 글이 없어 빌드 때 "컬렉션이 비었다" 경고가 나오는 것은 정상이다(세미나는 2026-09-23부터 글이 있다). 글·이미지를 지운 뒤에는 `node_modules/.astro`를 지우고 빌드한다(2-2)
    - ` 2`가 붙은 파일·폴더가 다시 보이면 iCloud 동기화 사본이다(2-2 끝). **묻지 않고 바로 지운다**(2026-09-22 사용자 결정)
    - **`master`에 push하면 배포가 돌아간다** — 실제 콘텐츠가 준비되면 `develop` → `master` 병합으로 다시 배포한다. 문서만 고칠 때는 `develop`에만 push한다
 2. Node는 **nvm의 24**를 쓴다. 셸 기본값이 21.7.3이라 명령 전에 `source ~/.nvm/nvm.sh && nvm use`(`.nvmrc` = 24)를 먼저 실행한다. 검증 방법은 2-2
 3. **2026-09-22 배포 완료**: Pointer Quest·README·북마크 카드·OG 태그를 `develop` → `master` 병합 `81b7ac3`으로 한 번에 배포했다(run 35736175779 성공). 실제 주소에서 홈·`og-image.png`·프로젝트 상세·스터디 목록 200, 상세의 `og:*` 확인, `getLinkPreview(실제 주소)`로 홈·Pointer Quest 모두 제목·설명·대표 이미지·파비콘이 나온다.
-   - 2026-09-22~23에 끝낸 것: 글꼴 직접 제공(5-24, `develop` 병합) · 스터디·세미나 예시 글 삭제 + 틀은 `docs/content-templates/`로(`develop` 병합) · 세미나 양식 결정(5-25)
+   - 2026-09-22~23에 끝낸 것: 글꼴 직접 제공(5-24, `develop` 병합) · 스터디·세미나 예시 글 삭제 + 틀은 `docs/content-templates/`로(`develop` 병합) · Pointer Quest 진행 기간(`develop` 병합 `e283cd3`) · **세미나 양식 확장 구현과 첫 세미나 기록**(5-25, `feature/seminar-sessions`, 병합 전)
    - **다음에 할 일(사용자 승인 순서)**
-     1. **세미나 양식 확장(5-25)** — 사용자가 세미나 내용을 보내 주면 `develop`에서 `feature/seminar-sessions`를 만들어 구현하고, 그 세미나로 바로 확인한다. 설계·구현 순서는 5-25에 있다
-     2. **실제 콘텐츠 채우기**(2-6) — 사용자가 천천히 채운다. 재료가 오면 `feature/real-content`. 틀은 `docs/content-templates/`
+     1. (끝남) **세미나 양식 확장(5-25)과 첫 세미나 기록** — `feature/seminar-sessions`에서 구현·작성을 마쳤다(2026-09-23). **`develop` 병합과 배포는 사용자 확인 대기**
+     2. **실제 콘텐츠 채우기**(2-6) — 사용자가 천천히 채운다. 재료가 오면 `feature/real-content`. 틀은 `docs/content-templates/`, Notion 재료를 읽는 방법은 **2-7**
      3. **배포** — 콘텐츠가 들어가면 `develop` → `master`(글꼴·예시 글 정리도 이때 함께 올라간다)
      4. **실기기 확인** — Dock 트랙패드 스크롤·하단 hover·동작 줄이기. 사용자가 직접 보고 알려 주기로 했다(320px Dock은 iPhone SE에서 확인 완료)
      5. **개발 과정 설명 세션**(마지막)
@@ -85,6 +86,14 @@
   - 근본 해결은 저장소를 iCloud 밖(예: `~/Developer/`)으로 옮기거나 동기화를 끄는 것이다. `.git` 안에 사본이 생기면 저장소가 깨질 수 있어 옮기는 편이 안전하다 — 사용자에게 제안만 했다
 
 ### 2-3. 최근 세션에서 끝낸 일 (요약, 자세한 결정은 5장)
+- 세미나 양식 확장 + 첫 세미나 기록(`feature/seminar-sessions`, 2026-09-23, 커밋 `d8ff10e`·`222f977`·`1681db3`·`64f02a0`)
+  - 5-25에서 정해 둔 세 가지를 구현했다: 주최 `host`(선택 필드, 상세 머리·목록 카드·검색 색인) · 세션 한눈에 보기(표지 아래 인라인 카드) · 목록 카드의 "세션 N개"와 주최별 필터 칩(주최가 2곳 이상일 때만)
+  - 세션은 **본문 소제목에서 자동으로 뽑는다**(`src/lib/sessions.ts`의 순수 함수). `render()`의 `headings`에서 `depth 2` 바로 뒤에 `depth 3`이 오는 쌍만 세션으로 본다 — 상세 화면 CSS가 이미 쓰는 `h2:has(+ h3)`와 같은 규칙이라 기준이 하나다. 라벨은 `SESSION 01 · 발표자 · 15분`처럼 `·`로 칸을 나누고 세 번째 칸은 선택이다. 상세(목록 그리기)와 목록 페이지(세션 수 세기)가 같은 함수를 쓴다
+  - 목록 카드의 세션 수는 목록 페이지가 글마다 `render()`해 빌드 때 한 번 센다. 액센트 색으로 두어 가장 먼저 눈에 들어오게 했다
+  - 앵커로 이동할 때 라벨이 메뉴바에 가리지 않게 세미나 본문 `h2`·`h3`에 `scroll-margin-top: 80px`(스터디 목차와 같은 값)
+  - 첫 글은 **10 Years of Let'Swift**(2026-04-01, Apple Korea 아셈타워, 주최 Let'Swift, 세션 2개). 재료는 사용자 Notion 3장(2-7), 사진은 12장 중 3장. 이름표 사진은 방문 담당자 이름이 함께 찍혀 있어 그 줄을 잘라냈다
+  - `src/data/link-previews.json`이 여태 한 번도 커밋되지 않았던 것을 발견해 이번에 함께 커밋했다. 없으면 CI가 빌드 때 OG를 다시 가져오고, 실패하면 북마크 카드가 조용히 맨 링크로 나온다
+  - 확인: 빌드 HTML(세션 목록·주최·앵커·북마크 카드), 1440 다크/라이트 · 390 다크 · 768 라이트 스크린샷
 - Pointer Quest 진행 기간 흐름(`feature/real-content`, 2026-09-23, 커밋 `7c48528`)
   - 사용자 요청: Swift Student Challenge로 시작한 사실과 중간에 디자인·기능을 다시 고민한 기간을 솔직히 드러내고 싶다
   - 요약 칸(`2026.01 – 진행 중`)은 그대로 두고 **소개 본문 끝에 연표 4줄**을 넣었다(01–02 SSC 제출용 / 03–06 멈추고 방향 재고민 / 07–09 학습 도구로 다시 만듦 / 09.15 출시·1.1.0 개발 중)
@@ -217,10 +226,22 @@
 - [x] 프로젝트 1: Pointer Quest(`projects/pointer-quest/`) + `sample-project` 삭제 — 2026-09-22 배포(`81b7ac3`)
 - [x] 스터디·세미나 예시 글·임시 이미지 삭제, 틀은 `docs/content-templates/`로(2026-09-23, 사용자 결정 — 천천히 채울 예정이라)
 - [x] Pointer Quest에 진행 기간 흐름 추가(2026-09-23, 커밋 `7c48528`, 배포 전)
+- [x] 세미나 1: 10 Years of Let'Swift(`seminars/10-years-of-letswift/`) + 세미나 양식 확장(2026-09-23, 커밋 `64f02a0`, 배포 전)
 - [ ] 다음 프로젝트·스터디 글·세미나는 재료가 오는 대로
 
 #### 배포는 이미 되어 있다 (2026-09-21)
 배포를 먼저 하기로 해 사이트가 이미 떠 있다(5-20, 최근 배포 `398be50`). 글을 쓰면 `develop`에서 확인 → `develop` → `master` 병합으로 올린다. 실제 주소에서 보면서 실기기 확인(남은 일)도 함께 할 수 있다.
+
+### 2-7. Notion에 적어 둔 재료 읽어오기 (2026-09-23)
+사용자가 행사·스터디 기록을 Notion에 남기므로, 그 내용을 그대로 읽어 글을 쓴다.
+
+- **사설 페이지(`app.notion.com/p/...`)는 못 읽는다.** `WebFetch`가 제목 `Notion`에 빈 본문만 돌려준다(로그인이 필요한 워크스페이스 페이지이고 Notion 커넥터도 없다). 사용자에게 **Notion에서 `공유 → 웹에 게시`** 를 하고 `<워크스페이스>.notion.site/...` 주소를 달라고 한다
+- **게시된 주소도 `WebFetch`로는 안 된다.** 빈 셸 HTML만 내려와 본문이 없다
+- **되는 방법**: Notion 공개 API를 직접 부른다. `POST https://<워크스페이스>.notion.site/api/v3/loadCachedPageChunkV2`, 본문 `{"page":{"id":"<하이픈 넣은 32자 id>"},"limit":300,"cursor":{"stack":[]},"chunkNumber":0,"verticalColumns":false}`. **id는 반드시 하이픈을 넣어야 한다**(주소의 32자 그대로 보내면 400). 응답 `recordMap.block`을 `content` 순서대로 훑으면 본문이 나온다. 하위 페이지도 같은 방식으로 id만 바꿔 부른다
+- **사진**: `image` 블록의 `properties.source`를 URL 인코딩해 `https://<워크스페이스>.notion.site/image/<인코딩한 주소>?table=block&id=<블록 id>&spaceId=<spaceId>&cache=v2`로 받는다
+- 2026-09-23에 쓴 스크립트는 세션 스크래치패드에 두었다(저장소에는 두지 않는다 — 한 번 쓰고 마는 도구다)
+- **재료를 받는 양식은 `docs/content-templates/seminar-input.md`** (2026-09-23 사용자 요청으로 만듦). 행사·세션·발표 외 순서·소감·사진 칸이 있고 맨 뒤에 복사해 쓰는 빈 양식이 붙어 있다. **소감·배운 점은 선택**이다(2026-09-23 사용자 결정) — 세션 내용에 이미 녹아 있는 경우가 많아, 비어 있으면 본문에서 초안을 써서 보여 주고 사용자가 고친다. Notion에 적어 둔 경우의 최소 재료는 **링크·사진·공개하면 안 되는 것·표지 지정** 네 줄이다. 세션 칸의 **"공개하면 안 되는 것"** 이 중요하다 — 필기에 들어 있어도 공개 자리에 올리기 애매한 내용(발표자가 따로 분석한 수치, 사내 사례 등)을 미리 받아 빼기 위한 칸이다. 실제로 10 Years of Let'Swift 글에서 발표자의 FoundationModels 도입 앱 분석 수치를 사용자 요청으로 뺐다(2026-09-23)
+- **사진은 많이 넣지 않는다**(2026-09-23 사용자 지시): 중요한 것 1~2장, 많아야 3~4장. 발표 슬라이드 촬영본은 저작권·가독성 모두 애매해 되도록 피하고, 표지 한 장 + 흐름을 보여 주는 한 장 + 개인적인 한 장 정도가 적당하다. **제3자의 이름·연락처가 찍힌 사진은 그 부분을 잘라내고 쓴다**
 
 ## 3. 프로젝트 개요
 - 자기소개, 프로젝트 포트폴리오, 학습 기록, 세미나·행사 기록(사진 포함)을 모으는 개인 홈페이지
@@ -445,7 +466,7 @@
   - 공통: 폴더형(`slug/index.md`)은 폴더 이름, 파일형(`slug.md`)은 파일 이름이 id(주소). `draft`(기본 false)
   - **projects** `src/content/projects/*/index.{md,mdx}`: `title`·`summary`·`categories`(`iOS`/`Web`/`Side Project` 중 1개 이상, 여러 개 가능)·`tags`·`icon`(이미지)·`startDate`·`endDate`(없으면 진행 중)·`role`·`stack`(1개 이상)·`platform`·`links.appStore`/`links.github`(URL)·`screenshots`(이미지 배열)·`features[]`(`title`·`description`·`image`). 본문은 `## 소개` / `## 기술적으로 고민한 점` / `## 배운 점`
   - **study** `src/content/study/**/*.{md,mdx}`: `title`·`summary`·`category`(자유 문자열, 필터 칩은 글에서 모아 만듦)·`pubDate`·`updatedDate`. 읽는 시간·목차는 본문에서 계산(`render()`의 `headings`)
-  - **seminars** `src/content/seminars/*/index.{md,mdx}`: `title`·`date`·`location`·`summary`·`cover`(이미지)·`coverAlt`. 본문은 MDX: `## SESSION 01 · 발표자` + `### 세션 제목`, 사진은 `<Photo>`(넓게 1장) · `<PhotoPair>`(2장 나란히) · `<PhotoSide>`(사진 옆 글) — 이미지는 본문에서 `import`해 넘긴다
+  - **seminars** `src/content/seminars/*/index.{md,mdx}`: `title`·`date`·`location`·`host`(선택, 주최 — 5-25)·`summary`·`cover`(이미지)·`coverAlt`. 본문은 MDX: `## SESSION 01 · 발표자` + `### 세션 제목`, 사진은 `<Photo>`(넓게 1장) · `<PhotoPair>`(2장 나란히) · `<PhotoSide>`(사진 옆 글) — 이미지는 본문에서 `import`해 넘긴다
 - 새 글 쓰기: **`docs/content-templates/`의 틀**(프로젝트 `project/index.md` · 스터디 `study.md` · 세미나 `seminar/index.mdx`)을 `src/content/<컬렉션>/`에 복사해 이름을 바꾸고 `draft: false`로(2026-09-23부터. 그 전에는 `src/content/*/sample-*` 예시 글을 복사했다). 쓰는 법은 그 폴더의 `README.md`. 필드가 틀리면 `npm run build`(또는 `npx astro sync`)가 어떤 필드가 왜 틀렸는지 알려 주며 실패한다
 - 브라우저에서 글을 쓰고 싶어지면 Keystatic·Decap CMS(git 기반), 사진이 많아지면 사진만 이미지 서비스로
 - Firebase는 관리자 화면·인증을 직접 만들어야 하고 검색 노출·비용 면에서 과하다
@@ -769,7 +790,7 @@
   - 리소스 타이밍 API에는 글꼴 요청이 잡히지 않아 CDP `Network.loadingFinished`의 `encodedDataLength`로 셌다
 - `design/og-image.html`도 같은 패키지 CSS(`../node_modules/...`)를 불러온다(`npm install` 뒤에 찍는다)
 
-### 5-25. 세미나 양식 확장: 주최·세션 한눈에 보기 (2026-09-23 결정, 구현 대기)
+### 5-25. 세미나 양식 확장: 주최·세션 한눈에 보기 (2026-09-23 결정, 같은 날 구현 완료)
 - **배경**: 사용자 질문 — 특정 기관이 여는 세미나는 한 행사에 세션이 여러 개인데, 읽기 쉽게 정리할 방법이 있나. 지금 구조(행사 하나 = 페이지 하나, 본문 `## SESSION 01 · 발표자` + `### 세션 제목`)의 아쉬운 점
   - 페이지를 열어도 **세션이 몇 개·무엇인지 한눈에 안 보인다**(끝까지 스크롤해야 안다)
   - 특정 세션으로 **바로 갈 방법이 없다**(스터디에는 목차가 있지만 세미나에는 없다)
@@ -787,6 +808,13 @@
   - 목록 카드의 세션 수는 목록 페이지에서 글마다 `render()`해 센다(빌드 때 한 번)
   - 검색 색인(`src/lib/searchIndex.ts`)에 `host`를 넣어 주최 이름으로도 찾게 한다
   - 확인: 세션 1개·3개·시간 있음/없음·주최 없음/1곳/2곳(칩 표시)·5폭 라이트/다크
+- **구현 결과**(2026-09-23, `feature/seminar-sessions`, 커밋 `d8ff10e`·`222f977`·`1681db3`) — 메모대로 했고 달라진 곳만 적는다
+  - 세션 뽑기는 `src/lib/sessions.ts`의 `getSeminarSessions(headings)` 하나다. 라벨 첫 칸이 `SESSION NN`이 아니면 그 칸부터 발표자로 본다(`## 고드름` + `### 제목`처럼 번호 없이 써도 순서대로 번호가 매겨진다)
+  - 화면은 `src/components/SessionList.astro`(표지 아래 인라인 카드, 폭마다 모양을 바꾸지 않는다). **데스크톱 sticky 레일은 두지 않았다** — 세션이 2개뿐이라 카드 하나로 충분했다. 세션이 훨씬 많아지면 그때 다시 본다
+  - 앵커는 라벨(`##`)의 slug다. 눌러 갔을 때 라벨이 메뉴바에 가리지 않게 세미나 본문 `h2`·`h3`에 `scroll-margin-top: 80px`을 줬다(스터디 글과 같은 값)
+  - 목록 카드는 날짜·장소 줄에 주최와 "세션 N개"를 붙였다. 줄이 길어져 `flex-wrap`을 켰고, 세션 수만 액센트 색이다. 데스크톱 타임라인에서는 왼쪽 칸에 네 줄로 쌓인다
+  - 검색 색인의 세미나 `meta`에 주최를 붙이고 `keywords`에도 넣었다(주최 이름으로 검색된다)
+  - 주최별 필터 칩은 `hosts.length > 1`일 때만 그린다(스터디 목록과 같은 조건). 지금은 주최가 한 곳뿐이라 칩이 나오지 않는 것이 정상이다 — **두 번째 주최의 행사가 생기면 그때 칩 동작을 확인한다**
 
 ## 6. 저작권 주의선
 - macOS·Xcode의 실제 UI를 복제하지 않는다. Apple 로고, SF Symbols, 신호등 색(빨강·노랑·초록) 창 컨트롤, 실제 메뉴 구조를 쓰지 않는다
@@ -880,7 +908,8 @@
 | `astro.config.mjs` | `site: 'https://yuminc03.github.io'`, `base: '/my-homepage'`, `integrations: [mdx()]`, `markdown.shikiConfig`(코드 블록 테마 + transformer, 5-15) |
 | `src/content.config.ts` | 콘텐츠 컬렉션 `projects`·`study`·`seminars` 스키마(5-10), `PROJECT_CATEGORIES` 내보내기, 폴더형/파일형 id 생성 |
 | `src/content/projects/pointer-quest/` | 첫 실제 프로젝트 `index.md` + 아이콘(512)·스크린샷 5장(660×1434, 그중 3장을 주요 기능에도 씀). 예시 `sample-project/`는 2026-09-22에 지웠다 |
-| `src/content/study/` · `src/content/seminars/` | 아직 글이 없다(`.gitkeep`만). 예시 글 `sample-post.md`·`sample-seminar/`는 2026-09-23에 지웠다 |
+| `src/content/study/` | 아직 글이 없다(`.gitkeep`만). 예시 글 `sample-post.md`는 2026-09-23에 지웠다 |
+| `src/content/seminars/10-years-of-letswift/` | 첫 세미나 기록(2026-04-01 Let'Swift 10주년 밋업). `index.mdx` + 사진 3장(`cover.jpg`·`photo-agenda.jpg`·`photo-nametag.jpg`)(2026-09-23) |
 | `docs/content-templates/` | 새 글 틀: `README.md`(쓰는 순서·본문 기능) · `project/index.md` · `study.md` · `seminar/index.mdx`(사진 컴포넌트 3종 쓰는 법). 사이트 빌드에는 쓰이지 않는다 |
 | `tsconfig.json` | `astro/tsconfigs/strict` 상속, `dist`·`design` 제외 |
 | `.nvmrc` | `24` |
@@ -906,7 +935,8 @@
 | `src/pages/study/[...slug].astro` | 스터디 글: 뒤로 링크·머리(카테고리·제목·날짜·읽는 시간) → 본문 \| 목차(데스크톱 2단) → `Pager`. Dock 숨김 시작. glob이 `**`라 rest 파라미터(5-15) |
 | `src/pages/seminars/index.astro` | 세미나 목록: `PageHeading` → 행사 항목 1열(최신 순, 항목은 상세 링크), 빈 상태 문구. 분류가 없어 필터 칩을 두지 않는다 |
 | `src/pages/seminars/[slug].astro` | 행사 상세: 뒤로 링크·머리(날짜·장소·이름) → `SeminarCover` → 본문(MDX, 사진 컴포넌트 3종을 `components`로 넘김) → `Pager`. Dock 숨김 시작(5-16) |
-| `src/components/SeminarCard.astro` | 세미나 목록 항목. DOM 한 벌로 모바일 세로 카드 / 태블릿 가로 카드(사진 250px) / 데스크톱 타임라인(`display: contents` + 이어 붙인 `border-left`)(5-16) |
+| `src/components/SeminarCard.astro` | 세미나 목록 항목. DOM 한 벌로 모바일 세로 카드 / 태블릿 가로 카드(사진 250px) / 데스크톱 타임라인(`display: contents` + 이어 붙인 `border-left`)(5-16). 날짜·장소 줄에 주최와 액센트 색 "세션 N개"(5-25) |
+| `src/components/SessionList.astro` | 행사 상세의 세션 한눈에 보기. 표지 아래 인라인 카드, 번호·제목·발표자, 누르면 그 세션으로 이동. 세션이 없으면 그리지 않는다(5-25) |
 | `src/components/SeminarCover.astro` | 행사 상세 표지 사진. 모바일·태블릿은 `--win-pad`로 창 폭 끝까지, 데스크톱은 창 본문 폭 둥근 사진 + 읽기 폭 사진 설명 |
 | `src/components/Photo.astro` | 본문 사진 1장(원본 비율). MDX `<Photo src alt caption>` |
 | `src/components/PhotoPair.astro` | 본문 사진 2장 나란히(4:3으로 잘라 높이를 맞춘다). MDX `<PhotoPair a aAlt b bAlt caption>` |
@@ -940,6 +970,7 @@
 | `src/styles/transitions.css` | 전환 종류별 `::view-transition-old/new(root)` 모션. 시간·곡선은 모션 토큰만 쓰고 `pop`·`close`는 나가는 화면을 위로(`z-index: 1`). 데스크톱은 시트 대신 창이 커지며 열린다(5-17) 맨 아래에 검색 창이 열린 동안 메뉴바·Dock을 흐리게 하는 규칙(5-19) |
 | `src/lib/markdownText.ts` | 마크다운·MDX에서 읽는 글자만 남기는 `markdownToText(body, { keepCode })`. 읽는 시간(코드 포함)과 검색 색인(코드 제외)이 함께 쓴다(5-19) |
 | `src/lib/search.ts` | 검색 순수 함수: `parseQuery`·`isSearchable`(2글자 문턱)·`searchDocs`(낱말 AND + 칸 무게로 정렬)·`highlight`(조각 배열)·`bodySnippet`·`groupHits`(컬렉션별 묶음 + 잘린 건수)·`recentGroups`. 색인 주소 `SEARCH_INDEX_URL`도 여기 있다(5-19) |
+| `src/lib/sessions.ts` | 세미나 본문 소제목에서 세션을 뽑는 `getSeminarSessions(headings)`. `depth 2` 바로 뒤에 `depth 3`이 오는 쌍만 세션. 상세(목록 그리기)와 목록(세션 수)이 함께 쓴다(5-25) |
 | `src/lib/searchIndex.ts` | 빌드 때 색인을 만든다. `content.ts` 헬퍼로 글을 읽고 제목·요약·분류/날짜·태그 목록·본문 텍스트를 담는다(프로젝트는 주요 기능도)(5-19) |
 | `src/pages/search-index.json.ts` | `/my-homepage/search-index.json` 엔드포인트. 정적 빌드라 빌드 때 한 번 돌고 파일로 남는다(5-19) |
 | `src/components/SearchPanel.astro` | 검색 창(`<dialog>` 모달). `SiteLayout`이 모든 화면에 하나씩 둔다. 색인은 처음 열 때 받아 모듈 바깥에 캐시. 결과 요소 스타일은 `.results :global(...)`(5-19) |
@@ -976,10 +1007,16 @@
 - 인터랙션은 `onClick="{{handler}}"`, 조건 표시는 `<sc-if value="{{bool}}">`, 상태 스타일은 `data-*="{{값}}"` + CSS 선택자로 만든다(`class`에 값 끼워 넣기는 쓰지 않았다)
 
 ## 12. 브랜치·커밋 기록
-- 로컬 브랜치: `master`, `develop`, `feature/real-content`(현재). **`develop`이 `master`보다 앞서 있다**(글꼴 직접 제공 — 다음 배포 때 함께 올라간다). 원격(`origin`, `https://github.com/yuminc03/my-homepage.git`, **2026-09-21부터 공개 저장소**): `master` `81b7ac3`(2026-09-22 배포, 로컬과 같음), `develop`(2026-09-22 push, `origin/develop` 추적). **`master`에 push하면 GitHub Actions가 배포한다**(5-20)
-- `feature/real-content`(2026-09-23 재생성, `develop` `6e5a5d5`에서 분기, **진행 중**)
+- 로컬 브랜치: `master`, `develop`, `feature/seminar-sessions`(현재). `feature/real-content`는 병합 `e283cd3` 후 삭제했다. **`develop`이 `master`보다 앞서 있다**(글꼴 직접 제공·예시 글 정리·Pointer Quest 진행 기간 — 다음 배포 때 함께 올라간다). 원격(`origin`, `https://github.com/yuminc03/my-homepage.git`, **2026-09-21부터 공개 저장소**): `master` `81b7ac3`(2026-09-22 배포, 로컬과 같음), `develop`(2026-09-22 push, `origin/develop` 추적). **`master`에 push하면 GitHub Actions가 배포한다**(5-20)
+- `feature/seminar-sessions`(2026-09-23, `develop` `e283cd3`에서 분기, **`develop` 병합 대기**). 각 커밋 직전에 `npm run build`
+  - `d8ff10e` feat: 세미나에 주최(host) 필드 추가
+  - `222f977` feat: 행사 상세에 세션 한눈에 보기 추가
+  - `1681db3` feat: 세미나 목록에 주최·세션 수와 주최별 필터 칩 추가
+  - `64f02a0` feat: 첫 세미나 기록 10 Years of Let'Swift 추가
+  - (이 문서 갱신) docs: 세미나 양식 확장과 첫 세미나 기록 정리
+- `feature/real-content`(2026-09-23 재생성, `develop` `6e5a5d5`에서 분기, **`develop` 병합 `e283cd3`으로 완료, 브랜치 삭제**)
   - `7c48528` feat: Pointer Quest 글에 진행 기간 흐름 추가
-  - (이 문서 갱신) docs: Pointer Quest 진행 기간 기록
+  - `8b30ee2` docs: Pointer Quest 진행 기간 기록
 - `feature/content-templates`(2026-09-23, `develop` `17a722e`에서 분기, **`develop` 병합으로 완료, 브랜치 삭제·push**)
   - `7c58bb9` docs: 새 글 틀을 docs/content-templates로 정리
   - `67ae987` chore: 스터디·세미나 예시 글과 임시 이미지 삭제

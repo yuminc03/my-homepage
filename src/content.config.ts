@@ -66,6 +66,7 @@ const study = defineCollection({
 
 // 세미나 기록: 목록 카드(표지 사진·날짜·장소·이름·짧은 소감) + 행사 상세(글 흐름형)
 // 본문은 MDX: 세션은 ## SESSION 01 · 발표자 / ### 세션 제목, 사진은 <Photo> · <PhotoPair> · <PhotoSide> 컴포넌트
+// 세션 목록은 본문 소제목에서 자동으로 뽑으므로(src/lib/sessions.ts) 프런트매터에 적지 않는다(5-25)
 const seminars = defineCollection({
 	loader: glob({ pattern: '*/index.{md,mdx}', base: './src/content/seminars', generateId }),
 	schema: ({ image }) =>
@@ -73,6 +74,8 @@ const seminars = defineCollection({
 			title: z.string(),
 			date: z.coerce.date(),
 			location: z.string(),
+			// 주최 기관·커뮤니티. 적으면 목록 카드와 상세 머리에 보이고, 두 곳 이상이면 목록에 주최별 필터 칩이 생긴다
+			host: z.string().optional(),
 			summary: z.string(),
 			cover: image(),
 			coverAlt: z.string(),
