@@ -45,14 +45,15 @@ export async function buildSearchIndex(): Promise<SearchDoc[]> {
 	});
 
 	const seminarDocs = seminars.map((seminar): SearchDoc => {
-		const { title, summary, date, location } = seminar.data;
+		const { title, summary, date, location, host } = seminar.data;
 		return {
 			collection: 'seminars',
 			href: seminarHref(seminar),
 			title,
 			summary,
-			meta: `${formatMonth(date)} · ${location}`,
-			keywords: [],
+			meta: [formatMonth(date), location, host].filter(Boolean).join(' · '),
+			// 주최 이름으로도 행사를 찾을 수 있게 한다(5-25)
+			keywords: host ? [host] : [],
 			body: markdownToText(seminar.body),
 		};
 	});

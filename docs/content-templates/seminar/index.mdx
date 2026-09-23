@@ -2,9 +2,13 @@
 # 새 세미나 틀(쓰는 법은 docs/content-templates/README.md): src/content/seminars/<이름>/index.mdx로 복사한다
 # 표지 cover.png와 본문 사진(photo-1.png…)을 같은 폴더에 두고, 아래 import의 파일 이름을 실제 파일에 맞춘다
 # Photo · PhotoPair · PhotoSide는 import하지 않아도 된다(상세 페이지가 <Content components={...} />로 넘겨준다)
+# 세션은 "## SESSION 01 · 발표자" + "### 세션 제목" 한 쌍으로 쓴다 — 표지 아래 "세션 한눈에 보기"가 여기서 자동으로 만들어진다
+# 발표자 뒤에 " · 14:00"처럼 한 칸 더 붙이면 함께 보인다. ###이 없는 ##(배운 점 · 소감)은 세션으로 세지 않는다
 title: '[세미나 / 컨퍼런스 이름]'
 date: 2026-09-14
 location: '[장소]'
+# 주최 기관·커뮤니티(선택). 없으면 줄째 지운다
+host: '[주최]'
 summary: '[어떤 세션이 기억에 남았는지, 무엇을 얻었는지 짧게 기록하세요.]'
 cover: ./cover.png
 coverAlt: '[표지 사진 설명]'
