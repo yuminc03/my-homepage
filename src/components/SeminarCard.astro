@@ -14,10 +14,12 @@ import { formatMonth } from '../lib/date';
 interface Props {
 	seminar: CollectionEntry<'seminars'>;
 	href?: string;
+	/** 본문에서 센 세션 수. 0이면 배지를 그리지 않는다(세션 구분 없이 쓴 행사 기록) */
+	sessionCount?: number;
 }
 
-const { seminar, href } = Astro.props;
-const { title, date, location, summary, cover, coverAlt } = seminar.data;
+const { seminar, href, sessionCount = 0 } = Astro.props;
+const { title, date, location, host, summary, cover, coverAlt } = seminar.data;
 const Tag = href ? 'a' : 'article';
 ---
 
@@ -38,6 +40,22 @@ const Tag = href ? 'a' : 'article';
 			<time datetime={date.toISOString().slice(0, 7)}>{formatMonth(date)}</time>
 			<span class="sep" aria-hidden="true"></span>
 			<span class="place">{location}</span>
+			{
+				host && (
+					<>
+						<span class="sep" aria-hidden="true" />
+						<span class="host">{host}</span>
+					</>
+				)
+			}
+			{
+				sessionCount > 0 && (
+					<>
+						<span class="sep" aria-hidden="true" />
+						<span class="count">세션 {sessionCount}개</span>
+					</>
+				)
+			}
 		</div>
 		<span class="title">{title}</span>
 		<span class="summary">{summary}</span>
@@ -87,12 +105,20 @@ const Tag = href ? 'a' : 'article';
 		padding: 16px 18px 18px;
 	}
 
+	/* 날짜·장소에 주최·세션 수까지 붙어 좁은 폭에서는 줄이 넘어간다 */
 	.when {
 		display: flex;
+		flex-wrap: wrap;
 		align-items: center;
-		gap: 8px;
+		gap: 4px 8px;
 		color: var(--win-ink-sub);
 		font-size: 13px;
+	}
+
+	/* 세션 수만 액센트 색 — 이 행사에 세션이 몇 개인지가 목록에서 가장 먼저 눈에 들어와야 한다 */
+	.count {
+		color: var(--win-accent);
+		font-weight: 700;
 	}
 
 	/* 모바일·태블릿 카드에서 날짜 앞에 찍는 라일락 점(데스크톱에서는 타임라인 위의 점으로 바뀐다) */

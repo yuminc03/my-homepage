@@ -1,16 +1,31 @@
 ---
-// 세미나 기록 목록 창: 제목 → 행사 항목(최신 순)
-// - 세미나는 분류가 없어 필터 칩을 두지 않는다(프로젝트·스터디 목록과 다른 점)
+// 세미나 기록 목록 창: 제목 → (주최가 2곳 이상이면) 필터 칩 → 행사 항목(최신 순)
+// - 세미나에는 분류가 없어 주최(host)를 분류처럼 쓴다. 주최가 한 곳뿐이면 칩을 그리지 않는다(스터디 목록과 같은 규칙)
+// - 카드의 "세션 N개"는 글마다 render()해 본문 소제목에서 센다(빌드 때 한 번, 5-25)
 // - 항목 모양은 SeminarCard가 폭마다 바꾼다(모바일 세로 카드 · 태블릿 가로 카드 · 데스크톱 타임라인)
+import { render } from 'astro:content';
 import SiteLayout from '../../layouts/SiteLayout.astro';
 import Window from '../../components/Window.astro';
 import PageHeading from '../../components/PageHeading.astro';
+import FilterChips from '../../components/FilterChips.astro';
 import SeminarCard from '../../components/SeminarCard.astro';
 import { getApp } from '../../data/apps';
 import { getSeminars, seminarHref } from '../../lib/content';
+import { getSeminarSessions } from '../../lib/sessions';
 
 const app = getApp('seminars');
 const seminars = await getSeminars();
+
+const entries = await Promise.all(
+	seminars.map(async (seminar) => {
+		const { headings } = await render(seminar);
+		return { seminar, sessionCount: getSeminarSessions(headings).length };
+	}),
+);
+
+const hosts = [
+	...new Set(seminars.map((seminar) => seminar.data.host).filter((host): host is string => !!host)),
+].sort((a, b) => a.localeCompare(b, 'ko'));
 ---
 
 <SiteLayout active={app.id}>
@@ -18,13 +33,16 @@ const seminars = await getSeminars();
 		<PageHeading title={app.title} description={app.description} />
 		{
 			seminars.length > 0 ? (
-				<ul class="list">
-					{seminars.map((seminar) => (
-						<li>
-							<SeminarCard seminar={seminar} href={seminarHref(seminar)} />
-						</li>
-					))}
-				</ul>
+				<div data-filter>
+					{hosts.length > 1 && <FilterChips categories={hosts} label="주최" />}
+					<ul class="list">
+						{entries.map(({ seminar, sessionCount }) => (
+							<li data-filter-item data-categories={seminar.data.host}>
+								<SeminarCard seminar={seminar} href={seminarHref(seminar)} sessionCount={sessionCount} />
+							</li>
+						))}
+					</ul>
+				</div>
 			) : (
 				<p class="empty">아직 공개한 세미나 기록이 없습니다. 행사를 추가하면 여기에 사진과 함께 보입니다.</p>
 			)
