@@ -7,6 +7,8 @@
 | [study.md](study.md) | `src/content/study/<이름>.md` | 파일 하나. 사진이 필요하면 `study/<이름>/index.md` 폴더형 |
 | [seminar/index.mdx](seminar/index.mdx) | `src/content/seminars/<이름>/index.mdx` | 폴더형 MDX(사진 컴포넌트를 씀) |
 
+글을 직접 쓰지 않고 **재료만 넘겨 대신 쓰게 할 때**는 [seminar-input.md](seminar-input.md)(세미나 재료 양식)를 채워서 줍니다. 사진은 **2~3장, 많아야 4장**입니다.
+
 ## 쓰는 순서
 1. 틀을 복사해 폴더(파일) 이름을 정합니다. 이 이름이 곧 주소입니다(예: `projects/pointer-quest` → `/projects/pointer-quest/`)
 2. 대괄호 `[ ]` 칸을 채우고, 틀에 적힌 이미지 파일 이름을 실제 파일로 바꿔 글 폴더 안에 둡니다
