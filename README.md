@@ -83,7 +83,8 @@ src/content/
 └── seminars/<이름>/index.mdx   # 본문에 사진 컴포넌트(<Photo> 등)를 쓰는 MDX
 ```
 
-- 같은 컬렉션의 기존 글을 복사해 이름을 바꾸고 내용을 채웁니다. 폴더(파일) 이름이 곧 주소입니다
+- [docs/content-templates/](docs/content-templates/)의 틀을 복사해 이름을 바꾸고 내용을 채웁니다. 폴더(파일) 이름이 곧 주소입니다
+- 주소만 한 문단으로 쓰면 링크 미리보기 카드(북마크 카드)로 바뀝니다
 - `draft: true`인 글은 목록·상세·검색에서 빠집니다
 - 필드가 빠지거나 형식이 틀리면 빌드가 어떤 필드가 왜 틀렸는지 알려 주며 실패합니다. 스키마는 [src/content.config.ts](src/content.config.ts)에 있습니다
 
@@ -104,7 +105,7 @@ src/
 ├── lib/          # 콘텐츠 헬퍼, 날짜·읽는 시간, 검색, 코드 블록 transformer 등
 └── styles/       # 디자인 토큰, 전역·본문·코드 블록·전환 스타일
 design/           # 구현 전에 만든 디자인 시안(데스크톱·태블릿·모바일 각 7화면)
-docs/             # 기술 스택 결정 문서, README 스크린샷
+docs/             # 기술 스택 결정 문서, 새 글 틀(content-templates), README 스크린샷
 ```
 
 ## 문서

@@ -1,5 +1,8 @@
 ---
 // 모든 페이지가 공유하는 문서 뼈대: 메타 태그, 글꼴, 전역 토큰·기본 스타일, 페이지 전환
+// 글꼴: Noto Sans KR 가변 글꼴(100~900)을 사이트가 직접 제공한다(PROGRESS.md 5-24).
+// @font-face가 글자 조각(unicode-range) 124개로 나뉘어 있어 브라우저는 화면에 나온 글자가 든 조각만 받는다
+import '@fontsource-variable/noto-sans-kr';
 import '../styles/tokens.css';
 import '../styles/global.css';
 import '../styles/transitions.css';
@@ -87,12 +90,6 @@ const imageUrl = new URL(shareImage.url, Astro.site).href;
 			})();
 		</script>
 		<PageTransitions />
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			rel="stylesheet"
-			href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;800;900&display=swap"
-		/>
 	</head>
 	<body>
 		<slot />

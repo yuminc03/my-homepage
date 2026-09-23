@@ -14,10 +14,8 @@
 		<meta charset="utf-8" />
 		<title>Lia.log OG 이미지</title>
 		<link rel="stylesheet" href="../src/styles/tokens.css" />
-		<link
-			rel="stylesheet"
-			href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap"
-		/>
+		<!-- 사이트와 같은 글꼴 패키지를 그대로 불러온다(npm install 뒤에 찍는다) -->
+		<link rel="stylesheet" href="../node_modules/@fontsource-variable/noto-sans-kr/index.css" />
 		<style>
 			* {
 				box-sizing: border-box;
@@ -35,7 +33,7 @@
 				overflow: hidden;
 				background: var(--desk);
 				color: var(--ink-strong);
-				font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+				font-family: 'Noto Sans KR Variable', -apple-system, BlinkMacSystemFont, sans-serif;
 			}
 
 			/* 사이트 바탕과 같은 블러 글로우(SiteLayout의 .glow를 이 캔버스 크기에 맞춰 옮김) */
