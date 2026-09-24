@@ -1,10 +1,11 @@
 # 진행 상황
-- 최종 업데이트: 2026-09-24 (WWDC26 글 확인·커밋 완료, **다음은 Apple PR 이벤트 글**)
+- 최종 업데이트: 2026-09-24 (세미나 기록 4개 완성, 브랜치 `feature/seminar-apple-pr-event`, **다음은 이 브랜치 `develop` 병합 → 배포**)
 - 이 문서 하나만 읽으면 새 채팅에서 바로 이어서 작업할 수 있도록 정리한 단일 기준 문서다
-- **마지막 세션(2026-09-24, 이어서)**: **사용자와 WWDC26 글을 함께 확인하고 커밋했다.** 고친 것: 개발자 스토리에서 **발표 제목을 빼고 시연을 "영상 편집 앱에서"로 흐렸다**(회사를 짐작할 수 없게, 따옴표 안의 실제 명령어도 뺐다) · `AutoLayout` → **`Auto Layout`** · `entity` → **`Entity`**로 통일 · `appTransaction` → **`AppTransaction` 안의 `appTransactionID`** · Xcode 문단에 주어를 넣고 계획 모드를 "**Xcode가 먼저 수정하고 개발자가 검토하는 방식**"으로(사용자 설명) · 굿즈는 노트가 아니라 **책 모양 핀 배지 종이 케이스**라 대체 텍스트·캡션을 고치고 파일을 `photo-case.jpg`로 바꿨다 · 마지막 문단은 "이날 발표는 녹화본이 없지만 WWDC26 세션 영상을 참고하면 된다"로. **그대로 둔 것**: MLX 문장(사용자 필기), 제목의 `(오프라인)`(공식 행사명). 커밋은 **`110ccc4` WWDC26 글 → `1b2993f` letswift 워터마크·`aspect`** 두 개(같은 브랜치 `feature/seminar-idea-playground`). **`develop` 병합·배포는 아직**이다
+- **새 채팅은 여기부터**: 지금 브랜치는 **`feature/seminar-apple-pr-event`**(`develop` `c2ac9e0`에서 분기)이고 커밋 `b9b0039`(Apple PR 이벤트 글) + 문서 커밋이 있다. 작업 트리는 깨끗하다(재료 폴더 `seminar_apple_pr_event/`는 2026-09-24 사용자 요청으로 지웠다). 원격 push는 이번 세션에 하지 않았다 — `develop`은 `origin/develop`보다 앞서 있다. **다음 할 일: ① 사용자 확인 후 `feature/seminar-apple-pr-event` → `develop` 병합·브랜치 삭제 ② `develop` push ③ `develop` → `master` 병합 push로 배포**(세미나 3개 · 사진 칸 비율 · 워터마크가 아직 배포 전) ④ 실제 주소에서 세미나 목록·상세 4개 확인. 그 뒤는 다음 콘텐츠(스터디는 아직 0개)
+- **마지막 세션(2026-09-24, 이어서)**: **WWDC26 글을 사용자와 확인·커밋하고, Apple Korea PR 프라이빗 이벤트 글을 써서 커밋했다.** 중간에 `feature/seminar-idea-playground`를 `develop`에 병합(`c2ac9e0`)·삭제하고 `feature/seminar-apple-pr-event`를 새로 땄다(두 브랜치가 모두 `PROGRESS.md`를 고쳐 충돌하지 않게 먼저 병합했다). 아래는 WWDC26 확인 내용. 고친 것: 개발자 스토리에서 **발표 제목을 빼고 시연을 "영상 편집 앱에서"로 흐렸다**(회사를 짐작할 수 없게, 따옴표 안의 실제 명령어도 뺐다) · `AutoLayout` → **`Auto Layout`** · `entity` → **`Entity`**로 통일 · `appTransaction` → **`AppTransaction` 안의 `appTransactionID`** · Xcode 문단에 주어를 넣고 계획 모드를 "**Xcode가 먼저 수정하고 개발자가 검토하는 방식**"으로(사용자 설명) · 굿즈는 노트가 아니라 **책 모양 핀 배지 종이 케이스**라 대체 텍스트·캡션을 고치고 파일을 `photo-case.jpg`로 바꿨다 · 마지막 문단은 "이날 발표는 녹화본이 없지만 WWDC26 세션 영상을 참고하면 된다"로. **그대로 둔 것**: MLX 문장(사용자 필기), 제목의 `(오프라인)`(공식 행사명). 커밋은 **`110ccc4` WWDC26 글 → `1b2993f` letswift 워터마크·`aspect`** 두 개(같은 브랜치 `feature/seminar-idea-playground`). **`develop` 병합·배포는 아직**이다
   - **`.gitignore`의 `/seminar_*/`는 넣지 않기로 했다**(2026-09-24 사용자 결정 — 나중에 `seminar`로 시작하는 폴더가 저장소에 생길 수 있다). 되돌렸다. 대신 재료 폴더 `seminar_apple_pr_event/`는 글을 쓴 뒤 **사용자가 지운다**. 그때까지 `git status`에 `??`로 보이니 **`git add .`·`git add -A`를 쓰지 말고 경로를 지정해 스테이징한다**
   - Astro 7은 **`astro dev`도 백그라운드로 분리되어 계속 떠 있다**(`preview`와 같다). 끄려면 `npx astro dev stop`, 상태는 `npx astro dev status`
-  - 사용자는 **다음 세미나(Apple PR 이벤트) 재료를 검토하는 중**이다
+  - **Apple Korea PR 프라이빗 이벤트 글**(`src/content/seminars/apple-korea-pr-private-event/`, 2026-07-29, 커밋 `b9b0039`, **사용자 확인 완료**). 재료는 `seminar_apple_pr_event/`의 재료 양식 md(사용자가 "내용 괜찮다"고 확인)와 참가 확정 메일 스크린샷 한 장. 정한 것: ① 메일에 **"관계자 얼굴 사진·이름을 옮기지 말라"** 는 안내가 있어 발표자 닉네임 4개를 모두 **`수료생`** 으로 적었다(사용자: 있어도 빼도 상관없으니 그대로) — 앱 이름 **모스픽은 남긴다**(사용자 결정) ② 재료의 "스페셜 컴퓨팅"은 **공간 컴퓨팅(Spatial Computing)**, `VisionOS`는 **`visionOS`** 로 고쳤다 ③ 주최는 초대 메일을 보낸 **`Apple 디벨로퍼 아카데미 @ POSTECH`**(아이디어 플레이그라운드와 같은 값 → 목록 필터에서 한 곳으로 묶인다) ④ 세션별 시간이 없어 라벨 셋째 칸은 비웠다(전체 18:00~19:30은 도입 문단) ⑤ 사진이 메일 한 장뿐이라 **표지는 메일에서 로고·제목·일정 두 줄만 잘라 흰 4:3(1600×1200) 판에 다시 배치**했다(사용자: 그대로 좋다) — 인사말의 실명 줄은 넣지 않았고, 워터마크는 WWDC26 표지와 같은 자리·크기(판 1450–1565 × 757–800). 본문 사진은 없다 ⑥ "발표 말고 다른 순서"는 `## Custom Built Community`(`###` 없음 → 세션으로 세지 않음, 목록은 "세션 4개") ⑦ 소감은 재료를 바탕으로 다듬었고, 해석을 덧붙인 문장 중 "기술을 먼저 고르고 쓸 곳을 찾은 발표는 하나도 없었다"는 사용자 요청으로 뺐다 ⑧ **공식 링크는 없다**(재료의 링크는 카카오맵 단축 주소라 북마크 카드로 쓰지 않는다, 사용자 확인)
 - **그 전 세션(2026-09-24)**: **사진 워터마크(2-9)를 넣고, 그 과정에서 사진 칸이 세로 사진을 잘라 먹는 문제(5-26)를 찾아 고쳤다.** 사용자가 "웹사이트 이미지를 함부로 못 가져가게 하는 방법"을 물어 시작했다 — 완전히 막을 수는 없다고 설명하고(저장소가 공개라 원본도 받아진다) **워터마크**로 정했다. 강도를 세 번 다시 잡았다: 흰 글자 45%(안 보임) → 흰 글자 확대(흰 배경에서 원리적 한계) → **반투명 판 + 흰 글자**. 그래도 칸마다 보였다 안 보였다 해서 원인을 파 보니 **① `PhotoPair`·`PhotoSide`·`SeminarCover`가 `object-fit: cover`로 아래를 22~31% 잘라내고 ② 워터마크를 원본 폭 기준으로 넣어 작게 그려지는 칸에서 10px까지 줄어드는 것**이었다. ①은 `aspect` prop을 만들어 고쳤고(5-26) **이 과정에서 프로토타입 화면이 세로 38%만 남아 지도·버튼이 다 잘려 있던 것을 발견해 함께 고쳤다**, ②는 칸별 표시 폭에서 역산해 모두 18px로 맞췄다. 표지는 어떤 칸에서도 구석이 잘리므로 **모든 칸에서 살아남는 가장 아래 지점**(4:3은 세로 70%, 1.12:1은 66%)에 두기로 사용자가 미리보기를 보고 정했다. 사용자 확인 완료. 이어서 재료 폴더 `seminar_resource/`를 지우고 `.gitignore`에 `/seminar_*/`를 넣었다.
   - **커밋은 아이디어 플레이그라운드 것만 했다**(사용자 지시 — 다른 행사는 내용을 더 보겠다고 했다). 브랜치 `feature/seminar-idea-playground`(`develop` `119d4a1`에서 분기)에 **`a7f91be` 사진 칸 비율 옵션 → `bdeae62` 글·사진 6장·`link-previews.json`** 두 개. 컴포넌트를 앞 커밋으로 뗀 것은 글이 `aspect`를 쓰기 때문이고, 그래야 두 커밋이 각각 빌드된다. **`develop` 병합은 아직**이다
   - 이때 작업 트리에 남겨 둔 WWDC26 글과 letswift 워터마크는 다음 세션에서 커밋했다(위). `.gitignore` 변경은 되돌렸다
@@ -23,7 +24,7 @@
 
 ## 1. 한눈에 보기
 - **무엇을 만드나**: iOS 개발자 Chu Yumin의 개인 홈페이지(자기소개·프로젝트·스터디 기록·세미나 기록). 사이트 이름은 **`Lia.log`**(2026-09-21, 5-21)
-- **지금 단계**: 디자인 시안 완료, 기술 스택 확정(Astro + 일반 CSS), **Astro 프로젝트 생성**(임시 홈 1장, 빌드 확인), **전역 토큰 CSS 이식**(`src/styles/tokens.css`), **콘텐츠 컬렉션 스키마**(프로젝트·스터디·세미나, MDX) , **공통 셸**(테마 버튼·메뉴바·Dock 자동 숨김·창·시계, 목록 틀 3개), **홈 페이지**(첫 화면·iPhone 목업·최근 기록), **프로젝트 목록·상세**(필터 칩·카드·상세 페이지) — 여기까지 `develop` 병합·원격 push 완료. **스터디 목록·글**(카드·필터·글 페이지·목차·코드 블록·읽는 시간)까지 `develop` 병합·push 완료(2026-09-20, 병합 `4351c43`, 결정은 5-15). **세미나 목록·행사 상세**(타임라인·가로/세로 카드·표지 사진·사진 컴포넌트 3종·홈 최근 기록 링크)도 브라우저 확인까지 마치고 `develop`에 병합·push했다(2026-09-20, 병합 `8f704a4`, 결정은 5-16). **페이지 전환 모션**(View Transitions·스크립트 재실행·전환 종류별 모션)도 브라우저 확인까지 마치고 `develop`에 병합·push했다(2026-09-20, 병합 `0cd15af`, 결정은 5-17). **콘텐츠 검색**(빌드 색인 JSON·찾기 헬퍼·`<dialog>` 검색 창·⌘K·돋보기 버튼)도 브라우저 확인까지 마치고 `develop`에 병합·push했다(2026-09-21, 병합 `d81c5fc`, 결정은 5-19). **여기까지로 계획한 화면·기능은 모두 끝났다.** 이어서 **GitHub Actions 배포**를 붙이고 저장소를 공개로 전환해 `develop` → `master` 병합 `ea31474`로 첫 배포에 성공했다(2026-09-21, 결정은 5-20). 그 뒤 사이트 이름 `Lia.log`·파비콘(5-21), 첫 프로젝트 Pointer Quest, README, 북마크 카드(5-22), 공유 카드 OG(5-23)까지 배포했고(`master` `81b7ac3`, 2026-09-22), 글꼴 직접 제공(5-24)·예시 글 정리는 `develop`에만 있다(2026-09-23). **세미나 양식 확장(5-25: 주최·세션 한눈에 보기·세션 수)과 첫 세미나 기록 10 Years of Let'Swift**도 끝내 **`master` `dc3db99`로 배포했다**(2026-09-23). 남은 것은 **실제 콘텐츠 · 실기기 확인 · 개발 과정 설명 세션**이다(2-1의 3)
+- **지금 단계**: 디자인 시안 완료, 기술 스택 확정(Astro + 일반 CSS), **Astro 프로젝트 생성**(임시 홈 1장, 빌드 확인), **전역 토큰 CSS 이식**(`src/styles/tokens.css`), **콘텐츠 컬렉션 스키마**(프로젝트·스터디·세미나, MDX) , **공통 셸**(테마 버튼·메뉴바·Dock 자동 숨김·창·시계, 목록 틀 3개), **홈 페이지**(첫 화면·iPhone 목업·최근 기록), **프로젝트 목록·상세**(필터 칩·카드·상세 페이지) — 여기까지 `develop` 병합·원격 push 완료. **스터디 목록·글**(카드·필터·글 페이지·목차·코드 블록·읽는 시간)까지 `develop` 병합·push 완료(2026-09-20, 병합 `4351c43`, 결정은 5-15). **세미나 목록·행사 상세**(타임라인·가로/세로 카드·표지 사진·사진 컴포넌트 3종·홈 최근 기록 링크)도 브라우저 확인까지 마치고 `develop`에 병합·push했다(2026-09-20, 병합 `8f704a4`, 결정은 5-16). **페이지 전환 모션**(View Transitions·스크립트 재실행·전환 종류별 모션)도 브라우저 확인까지 마치고 `develop`에 병합·push했다(2026-09-20, 병합 `0cd15af`, 결정은 5-17). **콘텐츠 검색**(빌드 색인 JSON·찾기 헬퍼·`<dialog>` 검색 창·⌘K·돋보기 버튼)도 브라우저 확인까지 마치고 `develop`에 병합·push했다(2026-09-21, 병합 `d81c5fc`, 결정은 5-19). **여기까지로 계획한 화면·기능은 모두 끝났다.** 이어서 **GitHub Actions 배포**를 붙이고 저장소를 공개로 전환해 `develop` → `master` 병합 `ea31474`로 첫 배포에 성공했다(2026-09-21, 결정은 5-20). 그 뒤 사이트 이름 `Lia.log`·파비콘(5-21), 첫 프로젝트 Pointer Quest, README, 북마크 카드(5-22), 공유 카드 OG(5-23)까지 배포했고(`master` `81b7ac3`, 2026-09-22), 글꼴 직접 제공(5-24)·예시 글 정리는 `develop`에만 있다(2026-09-23). **세미나 양식 확장(5-25: 주최·세션 한눈에 보기·세션 수)과 첫 세미나 기록 10 Years of Let'Swift**도 끝내 **`master` `dc3db99`로 배포했다**(2026-09-23). 2026-09-23~24에 세미나 기록 3개(**WWDC26 하이라이트 · 아이디어 플레이그라운드 · Apple Korea PR 프라이빗 이벤트**)와 사진 워터마크(2-9)·사진 칸 비율 옵션(5-26)을 더했고, `develop`에는 병합 `c2ac9e0`까지 들어갔다(**배포 전**, Apple PR 글은 `feature/seminar-apple-pr-event`에 있음). 남은 것은 **배포 · 실제 콘텐츠 계속 · 실기기 확인 · 개발 과정 설명 세션**이다(2-1의 3)
 - **시안 진행도**
   - 데스크톱 7화면(홈·목록 3·상세 3) — 완료
   - 모바일 7화면(홈 화면 메타포) — 완료
@@ -32,15 +33,15 @@
   - 데스크톱 창 ✕ 닫기 버튼 — 채택(2026-09-14), 데스크톱 창 화면 6장에 반영, `develop` 병합
 - **기술 스택**: Astro + 일반 CSS + TypeScript + Markdown Content Collections 확정(2026-09-14). 비교·약점·면접 질문은 `docs/tech-stack.md`
 - **시안 캔버스**: https://claude.ai/code/artifact/48a3c34c-b882-4f13-8e2f-7e3668bdb7b1 (v22, 페이지 5개 · 아트보드 25장)
-- **Git**: 시안·기술 스택 문서·`.claude/settings.json`(`92083d0`)이 `develop`에 반영되어 있다. `feature/astro-setup`(커밋 4개)을 `develop`에 병합 `004589b` → 브랜치 삭제(2026-09-14). `feature/site-shell`(테마 버튼 `872ec4b`, 공통 셸 `20d40c8`, Dock 자동 숨김 `e8eea35`, 시계 `88e86ca`, 문서 `cfe9270`)을 `develop`에 병합 `0227fa3` → 브랜치 삭제(2026-09-15). `feature/home-page`(첫 화면 `9907ebe`, iPhone 목업 `6da0b04`, 문서 `f6741d5`, 최근 기록 `062e860`, 문서 `1f8cbb8`)를 `develop`에 병합 `8c7568f` → 브랜치 삭제 → push(2026-09-16), 뒤이어 문서 `a725134` push. `feature/project-pages`(기능 12 + 문서 3, 커밋 목록은 12장)를 `develop`에 병합 `53f528e` → 로컬·원격 브랜치 삭제 → push(2026-09-18). `feature/study-pages`(기능 9 + 문서 2, 커밋 목록은 12장)를 `develop`에 병합 `4351c43` → 브랜치 삭제 → push(2026-09-20). `feature/seminar-pages`(기능 7 + 문서 1, 커밋 목록은 12장)를 `develop`에 병합 `8f704a4` → 브랜치 삭제 → push(2026-09-20). 이어서 `feature/page-transitions`(병합 `0cd15af`) · `feature/content-search`(병합 `d81c5fc`) · `feature/deploy`(병합 `36f0456`) · `feature/site-name-favicon`(병합 `cc6040f`)까지 병합·삭제했다. 2026-09-22~23에는 `feature/real-content`(`6354a23`) · `feature/readme`(`5b8237c`) · `feature/bookmark-card`(`56027aa`) · `feature/og-meta`(`15cff8f`) · `feature/self-host-font`(`17a722e`) · `feature/content-templates`(`603b658`)를 병합·삭제했다. `feature/seminar-sessions`(`b615ca9`)까지 병합·삭제했다. **원격**: `origin/develop` = 로컬 `develop`과 같음(2026-09-23 push), `origin/master` = `dc3db99`(로컬 `master`와 같음). `develop` → `master` 병합은 첫 배포 `ea31474`, Lia.log 배포 `398be50`, 콘텐츠·README·카드 배포 `81b7ac3`, 글꼴·세미나 배포 `dc3db99` 네 번 했다(12장)
-- **다음 단계**: 홈 완료 → 프로젝트 목록·상세 완료(병합·push 완료) → 스터디 목록·글 완료(병합 `4351c43`, 5-15) → 세미나 목록·행사 상세 완료(병합 `8f704a4`, 5-16) + 홈 최근 기록 링크를 상세로(함께 끝냄) → 페이지 전환 모션 완료(병합 `0cd15af`, 5-17) → 콘텐츠 검색 완료(병합 `d81c5fc`, 5-19) → 배포 완료(`ea31474`, 5-20) → 사이트 이름 Lia.log·로고·파비콘 완료(`cc6040f`, 배포 `398be50`, 5-21) → Pointer Quest·README·북마크 카드·OG 완료(배포 `81b7ac3`) → 글꼴 직접 제공·예시 글 정리 완료(`develop`만) → 세미나 양식 확장·첫 세미나 기록 완료(5-25, 배포 `dc3db99`) → **실제 콘텐츠**(사용자가 천천히 채움) → 실기기 확인(사용자가 보고 알려 줌) → **마지막: 개발 과정 설명 세션**(2026-09-17 요청). 화면마다 `develop`에서 `feature/*` 브랜치를 새로 만든다
+- **Git**: 시안·기술 스택 문서·`.claude/settings.json`(`92083d0`)이 `develop`에 반영되어 있다. `feature/astro-setup`(커밋 4개)을 `develop`에 병합 `004589b` → 브랜치 삭제(2026-09-14). `feature/site-shell`(테마 버튼 `872ec4b`, 공통 셸 `20d40c8`, Dock 자동 숨김 `e8eea35`, 시계 `88e86ca`, 문서 `cfe9270`)을 `develop`에 병합 `0227fa3` → 브랜치 삭제(2026-09-15). `feature/home-page`(첫 화면 `9907ebe`, iPhone 목업 `6da0b04`, 문서 `f6741d5`, 최근 기록 `062e860`, 문서 `1f8cbb8`)를 `develop`에 병합 `8c7568f` → 브랜치 삭제 → push(2026-09-16), 뒤이어 문서 `a725134` push. `feature/project-pages`(기능 12 + 문서 3, 커밋 목록은 12장)를 `develop`에 병합 `53f528e` → 로컬·원격 브랜치 삭제 → push(2026-09-18). `feature/study-pages`(기능 9 + 문서 2, 커밋 목록은 12장)를 `develop`에 병합 `4351c43` → 브랜치 삭제 → push(2026-09-20). `feature/seminar-pages`(기능 7 + 문서 1, 커밋 목록은 12장)를 `develop`에 병합 `8f704a4` → 브랜치 삭제 → push(2026-09-20). 이어서 `feature/page-transitions`(병합 `0cd15af`) · `feature/content-search`(병합 `d81c5fc`) · `feature/deploy`(병합 `36f0456`) · `feature/site-name-favicon`(병합 `cc6040f`)까지 병합·삭제했다. 2026-09-22~23에는 `feature/real-content`(`6354a23`) · `feature/readme`(`5b8237c`) · `feature/bookmark-card`(`56027aa`) · `feature/og-meta`(`15cff8f`) · `feature/self-host-font`(`17a722e`) · `feature/content-templates`(`603b658`)를 병합·삭제했다. `feature/seminar-sessions`(`b615ca9`)까지 병합·삭제했다. 2026-09-24 `feature/seminar-idea-playground`(`c2ac9e0`)를 병합·삭제했고(**push 안 함**), 지금은 `feature/seminar-apple-pr-event`에 있다. **원격**(2026-09-23 기준, 그 뒤로 push하지 않음): `origin/develop` = 로컬 `develop`과 같음(2026-09-23 push), `origin/master` = `dc3db99`(로컬 `master`와 같음). `develop` → `master` 병합은 첫 배포 `ea31474`, Lia.log 배포 `398be50`, 콘텐츠·README·카드 배포 `81b7ac3`, 글꼴·세미나 배포 `dc3db99` 네 번 했다(12장)
+- **다음 단계**: 홈 완료 → 프로젝트 목록·상세 완료(병합·push 완료) → 스터디 목록·글 완료(병합 `4351c43`, 5-15) → 세미나 목록·행사 상세 완료(병합 `8f704a4`, 5-16) + 홈 최근 기록 링크를 상세로(함께 끝냄) → 페이지 전환 모션 완료(병합 `0cd15af`, 5-17) → 콘텐츠 검색 완료(병합 `d81c5fc`, 5-19) → 배포 완료(`ea31474`, 5-20) → 사이트 이름 Lia.log·로고·파비콘 완료(`cc6040f`, 배포 `398be50`, 5-21) → Pointer Quest·README·북마크 카드·OG 완료(배포 `81b7ac3`) → 글꼴 직접 제공·예시 글 정리 완료(`develop`만) → 세미나 양식 확장·첫 세미나 기록 완료(5-25, 배포 `dc3db99`) → 세미나 기록 3개·워터마크·사진 칸 비율 완료(2026-09-24, **배포 전**) → **배포** → **실제 콘텐츠 계속**(사용자가 천천히 채움, 스터디 0개) → 실기기 확인(사용자가 보고 알려 줌) → **마지막: 개발 과정 설명 세션**(2026-09-17 요청). 화면마다 `develop`에서 `feature/*` 브랜치를 새로 만든다
 
 ## 2. 새 채팅에서 이어서 시작하기
 ### 2-1. 지금 바로 할 일
 1. `git status`로 브랜치와 작업 트리를 확인한다
-   - 기대 상태: **`develop` 브랜치**, 마지막 커밋은 문서(`docs:`) 커밋이다. 작업 트리 깨끗, `origin/develop`과 같음
-   - 기능 브랜치는 남아 있지 않다(`feature/real-content`·`feature/seminar-sessions` 모두 병합 후 삭제). `origin/master` = `dc3db99`(2026-09-23 배포)
-   - **`develop`과 `master`의 코드는 같다**(2026-09-23 배포 직후). 이 문서처럼 문서만 고친 커밋은 `develop`에만 쌓인다
+   - 기대 상태(2026-09-24 세션 끝): **`feature/seminar-apple-pr-event` 브랜치**, 마지막 커밋은 문서(`docs:`) 커밋. 작업 트리 깨끗(재료 폴더는 지웠다). 재료 폴더 `seminar_*/`는 `.gitignore`에 넣지 않았으므로 새 재료가 오면 **경로를 지정해 스테이징**한다
+   - 로컬 `develop` = `c2ac9e0`(`feature/seminar-idea-playground` 병합). **`origin/develop`(`119d4a1`)보다 앞서 있고 push하지 않았다.** `origin/master` = `dc3db99`(2026-09-23 배포)
+   - **배포되지 않은 것**: 사진 칸 비율 옵션(5-26) · 워터마크(2-9) · 세미나 3개(아이디어 플레이그라운드 · WWDC26 · Apple PR 이벤트). 문서만 고친 커밋은 `develop`에만 쌓는다
    - 스터디에 글이 없어 빌드 때 "컬렉션이 비었다" 경고가 나오는 것은 정상이다(세미나는 2026-09-23부터 글이 있다). 글·이미지를 지운 뒤에는 `node_modules/.astro`를 지우고 빌드한다(2-2)
    - ` 2`가 붙은 파일·폴더가 다시 보이면 iCloud 동기화 사본이다(2-2 끝). **묻지 않고 바로 지운다**(2026-09-22 사용자 결정)
    - **`master`에 push하면 배포가 돌아간다** — 실제 콘텐츠가 준비되면 `develop` → `master` 병합으로 다시 배포한다. 문서만 고칠 때는 `develop`에만 push한다
@@ -49,7 +50,7 @@
    - 2026-09-22~23에 끝낸 것(모두 `dc3db99`로 배포됨): 글꼴 직접 제공(5-24) · 스터디·세미나 예시 글 삭제 + 틀은 `docs/content-templates/`로 · Pointer Quest 진행 기간 · **세미나 양식 확장과 첫 세미나 기록**(5-25). 배포 뒤 **재료 양식 2종**(`seminar-input.md`·`study-input.md`)을 문서로 추가했다(2-6)
    - **다음에 할 일(사용자 승인 순서)**
      1. (끝남) **세미나 양식 확장(5-25)과 첫 세미나 기록** — 구현·작성·병합·배포까지 끝났다(2026-09-23, `dc3db99`)
-     2. **실제 콘텐츠 채우기**(2-6) ← **지금 여기.** 세미나 기록 2개(WWDC26 하이라이트 · 아이디어 플레이그라운드)를 썼고 사진 워터마크(2-9)·사진 칸 비율 옵션(5-26)까지 끝냈다. 지금 브랜치는 **`feature/seminar-idea-playground`**, 커밋은 `a7f91be`(사진 칸 비율) · `bdeae62`(아이디어 플레이그라운드) · `110ccc4`(WWDC26) · `1b2993f`(letswift 워터마크)이고 **두 글 모두 사용자 확인을 마쳤다.** 남은 것은 **`develop` 병합 → `master` 병합(배포)** 이다(사용자에게 확인받고 진행). 다음 재료는 `seminar_apple_pr_event/`(Apple Korea PR 프라이빗 이벤트)에 이미 들어와 있다. 재료가 오면 `docs/content-templates/`의 **재료 양식**(`seminar-input.md` · `study-input.md`)에 맞춰 읽어 글 틀에 채운다. Notion 링크면 **2-7**, 사진 처리는 **2-8**, 워터마크는 **2-9**. **스터디는 아직 글이 하나도 없다**
+     2. **실제 콘텐츠 채우기**(2-6) ← **지금 여기.** 세미나 기록 3개(아이디어 플레이그라운드 · WWDC26 하이라이트 · Apple Korea PR 프라이빗 이벤트)를 썼고 사진 워터마크(2-9)·사진 칸 비율 옵션(5-26)까지 끝냈다. **세 글 모두 사용자 확인을 마쳤다.** 앞의 둘은 `develop` 병합 `c2ac9e0`, Apple PR 글은 **`feature/seminar-apple-pr-event`**(`b9b0039`). **바로 다음: 이 브랜치 `develop` 병합 → push → `master` 병합(배포)** — 사용자에게 확인받고 진행한다(맨 위 "새 채팅은 여기부터"). 그 뒤 새 재료가 오면 `docs/content-templates/`의 **재료 양식**(`seminar-input.md` · `study-input.md`)에 맞춰 읽어 글 틀에 채운다. Notion 링크면 **2-7**, 사진 처리는 **2-8**, 워터마크는 **2-9**. **스터디는 아직 글이 하나도 없다**
      3. **배포** — 콘텐츠가 들어가면 `develop` → `master`. 문서만 고쳤을 때는 하지 않는다
      4. **실기기 확인** — Dock 트랙패드 스크롤·하단 hover·동작 줄이기. 사용자가 직접 보고 알려 주기로 했다(320px Dock은 iPhone SE에서 확인 완료)
      5. **개발 과정 설명 세션**(마지막)
@@ -95,6 +96,10 @@
   - 근본 해결은 저장소를 iCloud 밖(예: `~/Developer/`)으로 옮기거나 동기화를 끄는 것이다. `.git` 안에 사본이 생기면 저장소가 깨질 수 있어 옮기는 편이 안전하다 — 사용자에게 제안만 했다
 
 ### 2-3. 최근 세션에서 끝낸 일 (요약, 자세한 결정은 5장)
+- 세미나 기록 3개 + 사진 워터마크·칸 비율(2026-09-23~24)
+  - `feature/seminar-idea-playground`: `a7f91be` 사진 칸 `aspect` 옵션(5-26) · `bdeae62` 아이디어 플레이그라운드 · `110ccc4` WWDC26 하이라이트 · `1b2993f` letswift 사진 워터마크·이름표 `aspect` → `develop` 병합 `c2ac9e0`, 브랜치 삭제
+  - `feature/seminar-apple-pr-event`: `b9b0039` Apple Korea PR 프라이빗 이벤트(발표자는 `수료생`, 표지는 참가 메일을 잘라 재배치 — 맨 위 세션 기록)
+  - 모든 세미나 사진에 `Lia.log` 워터마크(2-9). 주최 값은 세 가지(`Let'Swift` · `Apple` · `Apple 디벨로퍼 아카데미 @ POSTECH` ×2)라 목록에 주최별 필터 칩이 뜬다. 새 글도 같은 주최면 **글자를 똑같이** 적어야 한 칩으로 묶인다
 - 세미나 양식 확장 + 첫 세미나 기록(`feature/seminar-sessions`, 2026-09-23, 커밋 `d8ff10e`·`222f977`·`1681db3`·`64f02a0`)
   - 5-25에서 정해 둔 세 가지를 구현했다: 주최 `host`(선택 필드, 상세 머리·목록 카드·검색 색인) · 세션 한눈에 보기(표지 아래 인라인 카드) · 목록 카드의 "세션 N개"와 주최별 필터 칩(주최가 2곳 이상일 때만)
   - 세션은 **본문 소제목에서 자동으로 뽑는다**(`src/lib/sessions.ts`의 순수 함수). `render()`의 `headings`에서 `depth 2` 바로 뒤에 `depth 3`이 오는 쌍만 세션으로 본다 — 상세 화면 CSS가 이미 쓰는 `h2:has(+ h3)`와 같은 규칙이라 기준이 하나다. 라벨은 `SESSION 01 · 발표자 · 15분`처럼 `·`로 칸을 나누고 세 번째 칸은 선택이다. 상세(목록 그리기)와 목록 페이지(세션 수 세기)가 같은 함수를 쓴다
@@ -242,6 +247,8 @@
 - [x] Pointer Quest에 진행 기간 흐름 추가(2026-09-23, 커밋 `7c48528`, 배포 `dc3db99`)
 - [x] 세미나 1: 10 Years of Let'Swift(`seminars/10-years-of-letswift/`) + 세미나 양식 확장(2026-09-23, 커밋 `64f02a0`, 배포 `dc3db99`)
 - [x] 세미나·스터디 **재료 양식** 추가(2026-09-23, `d2f5b26`·`769b28a` + 스터디 양식)
+- [x] 세미나 2: 아이디어 플레이그라운드(`seminars/idea-playground-olive-young-n/`, `bdeae62`) · 세미나 3: WWDC26 하이라이트(`seminars/wwdc26-highlights/`, `110ccc4`) — `develop` 병합 `c2ac9e0`(2026-09-24, 배포 전)
+- [x] 세미나 4: Apple Korea PR 프라이빗 이벤트(`seminars/apple-korea-pr-private-event/`, `b9b0039`, 브랜치 `feature/seminar-apple-pr-event`, 2026-09-24, 배포 전)
 - [ ] 다음 프로젝트·스터디 글·세미나는 재료가 오는 대로. **스터디는 아직 글이 하나도 없다**(목록이 빈 상태로 떠 있다)
 
 #### 배포는 이미 되어 있다 (2026-09-21)
@@ -368,6 +375,9 @@
 | 메뉴바 로고 | `CY` 글자 → 창 그림(`BRAND` + `AppIcon`) | `feature/site-name-favicon` | 1440 라이트·다크, 800 다크 스크린샷, `15785f9`(2026-09-21) |
 | 파비콘 | `public/favicon.svg`·`favicon.ico`(16·32)·`apple-touch-icon.png`(180) + `<head>` 링크 | `feature/site-name-favicon` | 후보 4개(반짝임·기록장·창·프롬프트) 중 사용자 선택 C, `f6894bb`(2026-09-21) |
 | iCloud 사본 정리 | ` 2` 사본(빈 폴더 9 · `node_modules` 612) 삭제, `npm ci` | — | 원인 확인(2-2 끝), 남은 사본 0개(2026-09-21) |
+| 사진 칸 비율 · 워터마크 | `PhotoPair`·`PhotoSide`·`Photo`에 `aspect`(5-26), 세미나 사진 전체에 `Lia.log` 워터마크(2-9) | `feature/seminar-idea-playground` | 사용자 미리보기 확인, `a7f91be`·`1b2993f`(2026-09-24) |
+| 세미나 2·3 | 아이디어 플레이그라운드 · WWDC26 하이라이트 | `feature/seminar-idea-playground` | 사용자 내용 확인, `develop` 병합 `c2ac9e0`(2026-09-24, 배포 전) |
+| 세미나 4 | Apple Korea PR 프라이빗 이벤트 | `feature/seminar-apple-pr-event` | 사용자 내용 확인, `b9b0039`(2026-09-24, 병합·배포 전) |
 
 ### 남은 일
 - [x] 모션·✕·문서 커밋 → `develop` 병합 → 브랜치 삭제 (2026-09-14, 사용자 확인)
@@ -421,8 +431,8 @@
 - [x] `feature/site-name-favicon` → `develop` 병합 `cc6040f` → 브랜치 삭제 → push, `develop` → `master` 병합 `398be50`으로 배포 (2026-09-21, 사용자 요청, run 35576351264 성공)
 - [ ] (제안) 저장소를 iCloud 동기화 밖으로 옮기기 — ` 2` 사본이 `.git` 안에 생기면 저장소가 깨질 수 있다(2-2 끝)
 - [x] 스터디·세미나 예시 글·임시 이미지 삭제, 틀은 `docs/content-templates/`로(2026-09-23, 병합 `603b658`, 배포 전)
-- [ ] **세미나 양식 확장**: 주최 `host`·세션 한눈에 보기·카드의 세션 수(2026-09-23 결정, **5-25**) — 사용자가 세미나 내용을 넣을 때 `feature/seminar-sessions`로 구현
-- [ ] 다음 배포: `develop` → `master`(글꼴 직접 제공·예시 글 정리가 아직 `develop`에만 있다)
+- [x] **세미나 양식 확장**: 주최 `host`·세션 한눈에 보기·카드의 세션 수(2026-09-23 결정, **5-25**) — `feature/seminar-sessions`로 구현, 배포 `dc3db99`
+- [ ] 다음 배포: `develop` → `master`(세미나 3개 · 워터마크 · 사진 칸 비율이 아직 배포 전이다. 먼저 `feature/seminar-apple-pr-event`를 `develop`에 병합)
 - [ ] (선택) GitHub Actions 버전 올리기 — 2026-09-22 배포 로그 안내: `actions/deploy-pages@v4`가 Node 20용(Node 24로 강제 실행), `ubuntu-latest`가 2026-10-19부터 Ubuntu 26. 지금 배포에는 문제없음
 - [ ] **마지막 단계: 개발 과정 설명 세션** — 사이트 완성 뒤 문법·핵심 기능·면접 예상 질문을 사용자에게 설명(2026-09-17 요청, 자세한 내용은 2-1의 4)
 - 선택 과제: `DirectionG.dc.html` 색 기준표의 미니 화면은 "창 본문은 항상 밝게" 시절 모습이다. 다시 쓸 일이 생기면 갱신
@@ -1064,7 +1074,17 @@
 - 인터랙션은 `onClick="{{handler}}"`, 조건 표시는 `<sc-if value="{{bool}}">`, 상태 스타일은 `data-*="{{값}}"` + CSS 선택자로 만든다(`class`에 값 끼워 넣기는 쓰지 않았다)
 
 ## 12. 브랜치·커밋 기록
-- 로컬 브랜치: `master`, `develop`(현재). 기능 브랜치는 없다. 원격(`origin`, `https://github.com/yuminc03/my-homepage.git`, **2026-09-21부터 공개 저장소**): `master` `dc3db99`(2026-09-23 배포, 로컬과 같음), `develop`(2026-09-23 push, `origin/develop` 추적). **`master`에 push하면 GitHub Actions가 배포한다**(5-20)
+- 로컬 브랜치: `master`, `develop`(`c2ac9e0`), **`feature/seminar-apple-pr-event`(현재)**. 원격(`origin`, `https://github.com/yuminc03/my-homepage.git`, **2026-09-21부터 공개 저장소**): `master` `dc3db99`(2026-09-23 배포, 로컬과 같음), `develop` `119d4a1`(**로컬 `develop`이 앞서 있다 — 2026-09-24 병합을 아직 push하지 않았다**). **`master`에 push하면 GitHub Actions가 배포한다**(5-20)
+- `feature/seminar-apple-pr-event`(2026-09-24, `develop` `c2ac9e0`에서 분기, **병합 전**). 커밋 직전에 `npm run build`
+  - `b9b0039` content: Apple Korea PR 프라이빗 이벤트 세미나 기록 추가
+  - docs: 세미나 기록 4개 완성과 다음 병합·배포 순서 정리(이 문서와 `CLAUDE.md`, 커밋 해시는 `git log`로 확인 — 이 줄을 고치며 amend했다)
+- `feature/seminar-idea-playground`(2026-09-23~24, `develop` `119d4a1`에서 분기, **`develop` 병합 `c2ac9e0`로 완료, 브랜치 삭제, push 안 함**)
+  - `a7f91be` feat: 세미나 사진 칸에 가로세로 비율 옵션 추가
+  - `bdeae62` content: 아이디어 플레이그라운드 워크숍 기록 추가
+  - `ec9ceb2` docs: 워터마크·사진 칸 비율 결정과 2026-09-24 작업 정리
+  - `110ccc4` content: WWDC26 하이라이트 살펴보기 세미나 기록 추가
+  - `1b2993f` content: 10 Years of Let'Swift 사진에 워터마크와 칸 비율 적용
+  - `a9a4096` docs: WWDC26 글 확인 결과와 재료 폴더 관리 방식 정리
 - `feature/seminar-sessions`(2026-09-23, `develop` `e283cd3`에서 분기, **`develop` 병합 `b615ca9`로 완료, 브랜치 삭제·push**. 배포 `dc3db99`). 각 커밋 직전에 `npm run build`
   - `d8ff10e` feat: 세미나에 주최(host) 필드 추가
   - `222f977` feat: 행사 상세에 세션 한눈에 보기 추가
