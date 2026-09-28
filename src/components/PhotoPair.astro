@@ -1,6 +1,8 @@
 ---
 // 행사 본문 사진 2장 나란히. MDX에서 <PhotoPair a={사진} aAlt="…" b={사진} bAlt="…" caption="…" />로 쓴다
-// - 두 칸의 높이가 맞아야 해서 4:3으로 자른다(object-fit: cover). 한 장짜리 Photo는 원본 비율을 지킨다
+// - 두 칸의 높이가 맞아야 해서 같은 비율로 자른다(object-fit: cover). 한 장짜리 Photo는 원본 비율을 지킨다
+// - 기본 4:3은 가로 사진 기준이다. 휴대폰 화면처럼 세로로 긴 사진은 aspect="1 / 2"처럼 넘겨야 한다
+//   — 안 넘기면 세로가 절반 넘게 잘려 나간다(2026-09-24에 프로토타입 화면이 38%만 남는 것을 겪음)
 // - 좁은 폭에서도 나란히 둔다(시안: 모바일에서도 2열). 사진이 작아지지만 "함께 보는 두 장"이라는 뜻이 남는다
 import { Image } from 'astro:assets';
 
@@ -10,13 +12,15 @@ interface Props {
 	b: ImageMetadata;
 	bAlt: string;
 	caption?: string;
+	/** 두 칸에 함께 적용할 가로세로 비율. CSS aspect-ratio 값 그대로 적는다 */
+	aspect?: string;
 }
 
-const { a, aAlt, b, bAlt, caption } = Astro.props;
+const { a, aAlt, b, bAlt, caption, aspect = '4 / 3' } = Astro.props;
 ---
 
 <figure class="pair">
-	<div class="shots">
+	<div class="shots" style={`--shot-aspect: ${aspect};`}>
 		<Image src={a} alt={aAlt} widths={[200, 400, 600]} sizes="(min-width: 1180px) 394px, (min-width: 744px) 330px, 48vw" loading="lazy" decoding="async" />
 		<Image src={b} alt={bAlt} widths={[200, 400, 600]} sizes="(min-width: 1180px) 394px, (min-width: 744px) 330px, 48vw" loading="lazy" decoding="async" />
 	</div>
@@ -40,7 +44,7 @@ const { a, aAlt, b, bAlt, caption } = Astro.props;
 	.shots img {
 		width: 100%;
 		height: auto;
-		aspect-ratio: 4 / 3;
+		aspect-ratio: var(--shot-aspect, 4 / 3);
 		border-radius: 12px;
 		object-fit: cover;
 	}
